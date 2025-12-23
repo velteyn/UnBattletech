@@ -33,20 +33,20 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x2F49);
     // ADD SI,word ptr [BP + 0x6] (1000_2F46 / 0x12F46)
     // SI += UInt16[SS, (ushort)(BP + 0x6)];
-    SI = Alu.Add16(SI, UInt16[SS, (ushort)(BP + 0x6)]);
+    SI = Alu16.Add(SI, UInt16[SS, (ushort)(BP + 0x6)]);
     CheckExternalEvents(cs7, 0x2F4B);
     // MOV BX,SI (1000_2F49 / 0x12F49)
     BX = SI;
     CheckExternalEvents(cs7, 0x2F4D);
     // SHL BX,0x1 (1000_2F4B / 0x12F4B)
     // BX <<= 0x1;
-    BX = Alu.Shl16(BX, 0x1);
+    BX = Alu16.Shl(BX, 0x1);
     CheckExternalEvents(cs7, 0x2F51);
     // MOV ES,word ptr [0x55e0] (1000_2F4D / 0x12F4D)
     ES = UInt16[DS, 0x55E0];
     CheckExternalEvents(cs7, 0x2F57);
     // CMP word ptr ES:[BX + 0x406a],0x0 (1000_2F51 / 0x12F51)
-    Alu.Sub16(UInt16[ES, (ushort)(BX + 0x406A)], 0x0);
+    Alu16.Sub(UInt16[ES, (ushort)(BX + 0x406A)], 0x0);
     CheckExternalEvents(cs7, 0x2F59);
     // JZ 0x1000:2f65 (1000_2F57 / 0x12F57)
     if(ZeroFlag) {
@@ -55,7 +55,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x2F5B);
     // SUB AX,AX (1000_2F59 / 0x12F59)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x2F5C);
     // PUSH AX (1000_2F5B / 0x12F5B)
     Stack.Push16(AX);
@@ -74,7 +74,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x2)]++;
     CheckExternalEvents(cs7, 0x2F6C);
     // CMP word ptr [BP + -0x2],0xc (1000_2F68 / 0x12F68)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x2)], 0xC);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x2)], 0xC);
     CheckExternalEvents(cs7, 0x2F6E);
     // JL 0x1000:2f43 (1000_2F6C / 0x12F6C)
     if(SignFlag != OverflowFlag) {
@@ -137,7 +137,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_2F92_12F92:
     CheckExternalEvents(cs7, 0x2F96);
     // CMP word ptr [BP + -0xa],0xc (1000_2F92 / 0x12F92)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0xC);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0xC);
     CheckExternalEvents(cs7, 0x2F98);
     // JGE 0x1000:2fa9 (1000_2F96 / 0x12F96)
     if(SignFlag == OverflowFlag) {
@@ -149,13 +149,13 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x2F9D);
     // SHL BX,0x1 (1000_2F9B / 0x12F9B)
     // BX <<= 0x1;
-    BX = Alu.Shl16(BX, 0x1);
+    BX = Alu16.Shl(BX, 0x1);
     CheckExternalEvents(cs7, 0x2FA1);
     // MOV ES,word ptr [0x55e0] (1000_2F9D / 0x12F9D)
     ES = UInt16[DS, 0x55E0];
     CheckExternalEvents(cs7, 0x2FA7);
     // CMP word ptr ES:[BX + 0x406a],0x0 (1000_2FA1 / 0x12FA1)
-    Alu.Sub16(UInt16[ES, (ushort)(BX + 0x406A)], 0x0);
+    Alu16.Sub(UInt16[ES, (ushort)(BX + 0x406A)], 0x0);
     CheckExternalEvents(cs7, 0x2FA9);
     // JZ 0x1000:2f8f (1000_2FA7 / 0x12FA7)
     if(ZeroFlag) {
@@ -165,7 +165,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x2FAB);
     // SUB AX,AX (1000_2FA9 / 0x12FA9)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x2FAE);
     // MOV word ptr [BP + -0x2],AX (1000_2FAB / 0x12FAB)
     UInt16[SS, (ushort)(BP - 0x2)] = AX;
@@ -177,7 +177,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55F2];
     CheckExternalEvents(cs7, 0x2FBA);
     // CMP word ptr ES:[0x90],AX (1000_2FB5 / 0x12FB5)
-    Alu.Sub16(UInt16[ES, 0x90], AX);
+    Alu16.Sub(UInt16[ES, 0x90], AX);
     CheckExternalEvents(cs7, 0x2FBC);
     // JNZ 0x1000:2fbf (1000_2FBA / 0x12FBA)
     if(!ZeroFlag) {
@@ -212,14 +212,14 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x2FDB);
     // ADD SP,0x2 (1000_2FD8 / 0x12FD8)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x2FE0);
     // CALLF 0x1000:7fe8 (1000_2FDB / 0x12FDB)
     FarCall(cs7, 0x2FE0, unknown_17C6_0388_17FE8);
     CheckExternalEvents(cs7, 0x2FE2);
     // SUB AX,AX (1000_2FE0 / 0x12FE0)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x2FE3);
     // PUSH AX (1000_2FE2 / 0x12FE2)
     Stack.Push16(AX);
@@ -235,7 +235,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x2FEF);
     // ADD SP,0x6 (1000_2FEC / 0x12FEC)
     // SP += 0x6;
-    SP = Alu.Add16(SP, 0x6);
+    SP = Alu16.Add(SP, 0x6);
     CheckExternalEvents(cs7, 0x2FF3);
     // MOV ES,word ptr [0x55ec] (1000_2FEF / 0x12FEF)
     ES = UInt16[DS, 0x55EC];
@@ -250,7 +250,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55E6];
     CheckExternalEvents(cs7, 0x3007);
     // CMP byte ptr ES:[BX + 0x3994],0x0 (1000_3001 / 0x13001)
-    Alu.Sub8(UInt8[ES, (ushort)(BX + 0x3994)], 0x0);
+    Alu8.Sub(UInt8[ES, (ushort)(BX + 0x3994)], 0x0);
     CheckExternalEvents(cs7, 0x3009);
     // JZ 0x1000:3024 (1000_3007 / 0x13007)
     if(ZeroFlag) {
@@ -271,7 +271,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3016);
     // ADD SP,0x4 (1000_3013 / 0x13013)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3019);
     // MOV AX,0x1 (1000_3016 / 0x13016)
     AX = 0x1;
@@ -307,7 +307,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3032);
     // ADD SP,0x4 (1000_302F / 0x1302F)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3035);
     // MOV AX,0x3 (1000_3032 / 0x13032)
     AX = 0x3;
@@ -320,7 +320,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x303E);
     // ADD SP,0x2 (1000_303B / 0x1303B)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x3043);
     // CALLF 0x1000:7fe8 (1000_303E / 0x1303E)
     FarCall(cs7, 0x3043, unknown_17C6_0388_17FE8);
@@ -332,7 +332,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[ES, 0x37FE] = 0xF;
     CheckExternalEvents(cs7, 0x3052);
     // CMP word ptr [BP + -0xa],0x4 (1000_304E / 0x1304E)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x3054);
     // JGE 0x1000:306e (1000_3052 / 0x13052)
     if(SignFlag == OverflowFlag) {
@@ -353,7 +353,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3061);
     // ADD SP,0x4 (1000_305E / 0x1305E)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3065);
     // MOV ES,word ptr [0x560c] (1000_3061 / 0x13061)
     ES = UInt16[DS, 0x560C];
@@ -379,7 +379,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x307B);
     // ADD SP,0x4 (1000_3078 / 0x13078)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x307F);
     // MOV ES,word ptr [0x560c] (1000_307B / 0x1307B)
     ES = UInt16[DS, 0x560C];
@@ -389,7 +389,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3086_13086:
     CheckExternalEvents(cs7, 0x308A);
     // CMP word ptr [BP + -0x4],0x0 (1000_3086 / 0x13086)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x4)], 0x0);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x4)], 0x0);
     CheckExternalEvents(cs7, 0x308C);
     // JZ 0x1000:309a (1000_308A / 0x1308A)
     if(ZeroFlag) {
@@ -400,7 +400,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[ES, 0xC6];
     CheckExternalEvents(cs7, 0x3091);
     // DEC AX (1000_3090 / 0x13090)
-    AX = Alu.Dec16(AX);
+    AX = Alu16.Dec(AX);
     CheckExternalEvents(cs7, 0x3095);
     // MOV ES:[0xc8],AX (1000_3091 / 0x13091)
     UInt16[ES, 0xC8] = AX;
@@ -423,7 +423,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x30AB);
     // ADD SP,0x2 (1000_30A8 / 0x130A8)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x30AE);
     // MOV word ptr [BP + -0xc],AX (1000_30AB / 0x130AB)
     UInt16[SS, (ushort)(BP - 0xC)] = AX;
@@ -438,7 +438,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     SI -= 0x2;
     CheckExternalEvents(cs7, 0x30BC);
     // CMP AX,SI (1000_30BA / 0x130BA)
-    Alu.Sub16(AX, SI);
+    Alu16.Sub(AX, SI);
     CheckExternalEvents(cs7, 0x30BE);
     // JL 0x1000:30ca (1000_30BC / 0x130BC)
     if(SignFlag != OverflowFlag) {
@@ -449,7 +449,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x6)]++;
     CheckExternalEvents(cs7, 0x30C3);
     // CMP AX,SI (1000_30C1 / 0x130C1)
-    Alu.Sub16(AX, SI);
+    Alu16.Sub(AX, SI);
     CheckExternalEvents(cs7, 0x30C5);
     // JNZ 0x1000:30ca (1000_30C3 / 0x130C3)
     if(!ZeroFlag) {
@@ -461,7 +461,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_30CA_130CA:
     CheckExternalEvents(cs7, 0x30CE);
     // CMP word ptr [BP + -0xa],0x4 (1000_30CA / 0x130CA)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x30D0);
     // JGE 0x1000:30d6 (1000_30CE / 0x130CE)
     if(SignFlag == OverflowFlag) {
@@ -469,7 +469,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x30D4);
     // CMP word ptr [BP + -0xc],0x3 (1000_30D0 / 0x130D0)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x3);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x3);
     CheckExternalEvents(cs7, 0x30D6);
     // JL 0x1000:30e2 (1000_30D4 / 0x130D4)
     if(SignFlag != OverflowFlag) {
@@ -478,7 +478,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_30D6_130D6:
     CheckExternalEvents(cs7, 0x30DA);
     // CMP word ptr [BP + -0xa],0x4 (1000_30D6 / 0x130D6)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x30DC);
     // JL 0x1000:30ef (1000_30DA / 0x130DA)
     if(SignFlag != OverflowFlag) {
@@ -486,7 +486,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x30E0);
     // CMP word ptr [BP + -0xc],0x0 (1000_30DC / 0x130DC)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x0);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x0);
     CheckExternalEvents(cs7, 0x30E2);
     // JNZ 0x1000:30ef (1000_30E0 / 0x130E0)
     if(!ZeroFlag) {
@@ -511,7 +511,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_30EF_130EF:
     CheckExternalEvents(cs7, 0x30F3);
     // CMP word ptr [BP + -0xa],0x4 (1000_30EF / 0x130EF)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x30F5);
     // JL 0x1000:3138 (1000_30F3 / 0x130F3)
     if(SignFlag != OverflowFlag) {
@@ -519,7 +519,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x30F9);
     // CMP word ptr [BP + -0xc],0x1 (1000_30F5 / 0x130F5)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x1);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x1);
     CheckExternalEvents(cs7, 0x30FB);
     // JNZ 0x1000:3138 (1000_30F9 / 0x130F9)
     if(!ZeroFlag) {
@@ -534,7 +534,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x3106);
     // IMUL word ptr [BP + -0xa] (1000_3103 / 0x13103)
-    int resImul1000_3103 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP - 0xA)]);
+    int resImul1000_3103 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP - 0xA)]);
     AX = (ushort)(resImul1000_3103);
     DX = (ushort)(resImul1000_3103 >> 16);
     CheckExternalEvents(cs7, 0x3108);
@@ -543,7 +543,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x310B);
     // ADD BX,word ptr [BP + -0x8] (1000_3108 / 0x13108)
     // BX += UInt16[SS, (ushort)(BP - 0x8)];
-    BX = Alu.Add16(BX, UInt16[SS, (ushort)(BP - 0x8)]);
+    BX = Alu16.Add(BX, UInt16[SS, (ushort)(BP - 0x8)]);
     CheckExternalEvents(cs7, 0x310F);
     // MOV ES,word ptr [0x55dc] (1000_310B / 0x1310B)
     ES = UInt16[DS, 0x55DC];
@@ -555,7 +555,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x8)]++;
     CheckExternalEvents(cs7, 0x311C);
     // CMP word ptr [BP + -0x8],0x30 (1000_3118 / 0x13118)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x8)], 0x30);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x8)], 0x30);
     CheckExternalEvents(cs7, 0x311E);
     // JL 0x1000:3100 (1000_311C / 0x1311C)
     if(SignFlag != OverflowFlag) {
@@ -573,7 +573,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x312D);
     // SUB AX,AX (1000_312B / 0x1312B)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x312E);
     // PUSH AX (1000_312D / 0x1312D)
     Stack.Push16(AX);
@@ -592,7 +592,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3138_13138:
     CheckExternalEvents(cs7, 0x313C);
     // CMP word ptr [BP + -0xa],0x4 (1000_3138 / 0x13138)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x313E);
     // JGE 0x1000:314e (1000_313C / 0x1313C)
     if(SignFlag == OverflowFlag) {
@@ -600,7 +600,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3142);
     // CMP word ptr [BP + -0xc],0x4 (1000_313E / 0x1313E)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x4);
     CheckExternalEvents(cs7, 0x3144);
     // JNZ 0x1000:314e (1000_3142 / 0x13142)
     if(!ZeroFlag) {
@@ -621,7 +621,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_314E_1314E:
     CheckExternalEvents(cs7, 0x3152);
     // CMP word ptr [BP + -0xa],0x4 (1000_314E / 0x1314E)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x3154);
     // JGE 0x1000:315a (1000_3152 / 0x13152)
     if(SignFlag == OverflowFlag) {
@@ -629,7 +629,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3158);
     // CMP word ptr [BP + -0xc],0x5 (1000_3154 / 0x13154)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x5);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x5);
     CheckExternalEvents(cs7, 0x315A);
     // JZ 0x1000:3166 (1000_3158 / 0x13158)
     if(ZeroFlag) {
@@ -638,7 +638,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_315A_1315A:
     CheckExternalEvents(cs7, 0x315E);
     // CMP word ptr [BP + -0xa],0x4 (1000_315A / 0x1315A)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x3160);
     // JL 0x1000:3181 (1000_315E / 0x1315E)
     if(SignFlag != OverflowFlag) {
@@ -646,7 +646,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3164);
     // CMP word ptr [BP + -0xc],0x3 (1000_3160 / 0x13160)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x3);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x3);
     CheckExternalEvents(cs7, 0x3166);
     // JNZ 0x1000:3181 (1000_3164 / 0x13164)
     if(!ZeroFlag) {
@@ -658,7 +658,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55F2];
     CheckExternalEvents(cs7, 0x3170);
     // CMP word ptr ES:[0x90],0x0 (1000_316A / 0x1316A)
-    Alu.Sub16(UInt16[ES, 0x90], 0x0);
+    Alu16.Sub(UInt16[ES, 0x90], 0x0);
     CheckExternalEvents(cs7, 0x3172);
     // JNZ 0x1000:3181 (1000_3170 / 0x13170)
     if(!ZeroFlag) {
@@ -682,7 +682,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3181_13181:
     CheckExternalEvents(cs7, 0x3185);
     // CMP word ptr [BP + -0xa],0x4 (1000_3181 / 0x13181)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x3187);
     // JGE 0x1000:318d (1000_3185 / 0x13185)
     if(SignFlag == OverflowFlag) {
@@ -690,7 +690,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x318B);
     // CMP word ptr [BP + -0xc],0x3 (1000_3187 / 0x13187)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x3);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x3);
     CheckExternalEvents(cs7, 0x318D);
     // JZ 0x1000:3199 (1000_318B / 0x1318B)
     if(ZeroFlag) {
@@ -699,7 +699,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_318D_1318D:
     CheckExternalEvents(cs7, 0x3191);
     // CMP word ptr [BP + -0xa],0x4 (1000_318D / 0x1318D)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x3193);
     // JL 0x1000:31a4 (1000_3191 / 0x13191)
     if(SignFlag != OverflowFlag) {
@@ -707,7 +707,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3197);
     // CMP word ptr [BP + -0xc],0x2 (1000_3193 / 0x13193)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x2);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x2);
     CheckExternalEvents(cs7, 0x3199);
     // JNZ 0x1000:31a4 (1000_3197 / 0x13197)
     if(!ZeroFlag) {
@@ -726,7 +726,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_31A4_131A4:
     CheckExternalEvents(cs7, 0x31A8);
     // CMP word ptr [BP + -0xa],0x4 (1000_31A4 / 0x131A4)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x31AA);
     // JGE 0x1000:31b0 (1000_31A8 / 0x131A8)
     if(SignFlag == OverflowFlag) {
@@ -734,7 +734,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x31AE);
     // CMP word ptr [BP + -0xc],0x6 (1000_31AA / 0x131AA)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x6);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x6);
     CheckExternalEvents(cs7, 0x31B0);
     // JZ 0x1000:31bc (1000_31AE / 0x131AE)
     if(ZeroFlag) {
@@ -743,7 +743,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_31B0_131B0:
     CheckExternalEvents(cs7, 0x31B4);
     // CMP word ptr [BP + -0xa],0x4 (1000_31B0 / 0x131B0)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x31B6);
     // JL 0x1000:31c6 (1000_31B4 / 0x131B4)
     if(SignFlag != OverflowFlag) {
@@ -751,7 +751,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x31BA);
     // CMP word ptr [BP + -0xc],0x4 (1000_31B6 / 0x131B6)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x4);
     CheckExternalEvents(cs7, 0x31BC);
     // JNZ 0x1000:31c6 (1000_31BA / 0x131BA)
     if(!ZeroFlag) {
@@ -770,7 +770,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x31C6);
     // ADD SP,0x2 (1000_31C3 / 0x131C3)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     label_1000_31C6_131C6:
     CheckExternalEvents(cs7, 0x31CA);
     // MOV ES,word ptr [0x560c] (1000_31C6 / 0x131C6)
@@ -783,7 +783,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX -= 0x3;
     CheckExternalEvents(cs7, 0x31D4);
     // CMP AX,word ptr [BP + -0xc] (1000_31D1 / 0x131D1)
-    Alu.Sub16(AX, UInt16[SS, (ushort)(BP - 0xC)]);
+    Alu16.Sub(AX, UInt16[SS, (ushort)(BP - 0xC)]);
     CheckExternalEvents(cs7, 0x31D6);
     // JNZ 0x1000:3213 (1000_31D4 / 0x131D4)
     if(!ZeroFlag) {
@@ -795,7 +795,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0xA)]++;
     CheckExternalEvents(cs7, 0x31DD);
     // CMP word ptr [BP + -0xa],0xb (1000_31D9 / 0x131D9)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0xB);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0xB);
     CheckExternalEvents(cs7, 0x31DF);
     // JLE 0x1000:31e4 (1000_31DD / 0x131DD)
     if(ZeroFlag || SignFlag != OverflowFlag) {
@@ -811,13 +811,13 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x31E9);
     // SHL BX,0x1 (1000_31E7 / 0x131E7)
     // BX <<= 0x1;
-    BX = Alu.Shl16(BX, 0x1);
+    BX = Alu16.Shl(BX, 0x1);
     CheckExternalEvents(cs7, 0x31ED);
     // MOV ES,word ptr [0x55e0] (1000_31E9 / 0x131E9)
     ES = UInt16[DS, 0x55E0];
     CheckExternalEvents(cs7, 0x31F3);
     // CMP word ptr ES:[BX + 0x406a],0x0 (1000_31ED / 0x131ED)
-    Alu.Sub16(UInt16[ES, (ushort)(BX + 0x406A)], 0x0);
+    Alu16.Sub(UInt16[ES, (ushort)(BX + 0x406A)], 0x0);
     CheckExternalEvents(cs7, 0x31F5);
     // JZ 0x1000:31d6 (1000_31F3 / 0x131F3)
     if(ZeroFlag) {
@@ -825,7 +825,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x31F9);
     // CMP word ptr [BP + -0xa],0x4 (1000_31F5 / 0x131F5)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x4);
     CheckExternalEvents(cs7, 0x31FB);
     // JL 0x1000:3208 (1000_31F9 / 0x131F9)
     if(SignFlag != OverflowFlag) {
@@ -850,7 +850,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3213_13213:
     CheckExternalEvents(cs7, 0x3217);
     // CMP word ptr [BP + -0x6],0x0 (1000_3213 / 0x13213)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x6)], 0x0);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x6)], 0x0);
     CheckExternalEvents(cs7, 0x3219);
     // JNZ 0x1000:321c (1000_3217 / 0x13217)
     if(!ZeroFlag) {
@@ -907,7 +907,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3236);
     // SHL SI,0x1 (1000_3234 / 0x13234)
     // SI <<= 0x1;
-    SI = Alu.Shl16(SI, 0x1);
+    SI = Alu16.Shl(SI, 0x1);
     CheckExternalEvents(cs7, 0x323A);
     // MOV ES,word ptr [0x55d2] (1000_3236 / 0x13236)
     ES = UInt16[DS, 0x55D2];
@@ -928,7 +928,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0xA)] = AX;
     CheckExternalEvents(cs7, 0x3252);
     // CMP word ptr [BP + 0x8],0x0 (1000_324E / 0x1324E)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x8)], 0x0);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x8)], 0x0);
     CheckExternalEvents(cs7, 0x3254);
     // JZ 0x1000:3284 (1000_3252 / 0x13252)
     if(ZeroFlag) {
@@ -946,7 +946,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3260);
     // ADD SP,0x4 (1000_325D / 0x1325D)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3264);
     // MOV ES,word ptr [0x55ce] (1000_3260 / 0x13260)
     ES = UInt16[DS, 0x55CE];
@@ -965,7 +965,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x327A);
     // ADD SP,0x4 (1000_3277 / 0x13277)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x327F);
     // CALLF 0x1000:b7df (1000_327A / 0x1327A)
     FarCall(cs7, 0x327F, unknown_19EF_18EF_1B7DF);
@@ -979,7 +979,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x328B);
     // SUB AX,AX (1000_3289 / 0x13289)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x328E);
     // MOV word ptr [BP + -0x4],AX (1000_328B / 0x1328B)
     UInt16[SS, (ushort)(BP - 0x4)] = AX;
@@ -988,7 +988,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x2)] = AX;
     CheckExternalEvents(cs7, 0x3295);
     // CMP word ptr [BP + 0x6],0x4 (1000_3291 / 0x13291)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
     CheckExternalEvents(cs7, 0x3297);
     // JL 0x1000:32a3 (1000_3295 / 0x13295)
     if(SignFlag != OverflowFlag) {
@@ -996,7 +996,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x329B);
     // CMP word ptr [BP + 0x6],0xc (1000_3297 / 0x13297)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
     CheckExternalEvents(cs7, 0x329D);
     // JL 0x1000:32b2 (1000_329B / 0x1329B)
     if(SignFlag != OverflowFlag) {
@@ -1004,7 +1004,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x32A1);
     // CMP word ptr [BP + 0x6],0xf (1000_329D / 0x1329D)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0xF);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0xF);
     CheckExternalEvents(cs7, 0x32A3);
     // JG 0x1000:32b2 (1000_32A1 / 0x132A1)
     if(!ZeroFlag && SignFlag == OverflowFlag) {
@@ -1055,7 +1055,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x32D9);
     // ADD AX,0xc (1000_32D6 / 0x132D6)
     // AX += 0xC;
-    AX = Alu.Add16(AX, 0xC);
+    AX = Alu16.Add(AX, 0xC);
     CheckExternalEvents(cs7, 0x32DA);
     // PUSH AX (1000_32D9 / 0x132D9)
     Stack.Push16(AX);
@@ -1065,7 +1065,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x32E0);
     // ADD AX,0x1a (1000_32DD / 0x132DD)
     // AX += 0x1A;
-    AX = Alu.Add16(AX, 0x1A);
+    AX = Alu16.Add(AX, 0x1A);
     CheckExternalEvents(cs7, 0x32E1);
     // PUSH AX (1000_32E0 / 0x132E0)
     Stack.Push16(AX);
@@ -1077,14 +1077,14 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     SP += 0x8;
     CheckExternalEvents(cs7, 0x32EC);
     // INC word ptr [BP + -0x8] (1000_32E9 / 0x132E9)
-    UInt16[SS, (ushort)(BP - 0x8)] = Alu.Inc16(UInt16[SS, (ushort)(BP - 0x8)]);
+    UInt16[SS, (ushort)(BP - 0x8)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x8)]);
     label_1000_32EC_132EC:
     CheckExternalEvents(cs7, 0x32EF);
     // MOV AX,word ptr [BP + -0x6] (1000_32EC / 0x132EC)
     AX = UInt16[SS, (ushort)(BP - 0x6)];
     CheckExternalEvents(cs7, 0x32F2);
     // CMP word ptr [BP + -0x8],AX (1000_32EF / 0x132EF)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x8)], AX);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x8)], AX);
     CheckExternalEvents(cs7, 0x32F4);
     // JL 0x1000:32c9 (1000_32F2 / 0x132F2)
     if(SignFlag != OverflowFlag) {
@@ -1092,7 +1092,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x32F8);
     // CMP word ptr [BP + 0x6],0xc (1000_32F4 / 0x132F4)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
     CheckExternalEvents(cs7, 0x32FA);
     // JL 0x1000:32fd (1000_32F8 / 0x132F8)
     if(SignFlag != OverflowFlag) {
@@ -1104,7 +1104,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_32FD_132FD:
     CheckExternalEvents(cs7, 0x3301);
     // CMP word ptr [BP + 0x6],0x4 (1000_32FD / 0x132FD)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
     CheckExternalEvents(cs7, 0x3303);
     // JGE 0x1000:3322 (1000_3301 / 0x13301)
     if(SignFlag == OverflowFlag) {
@@ -1115,7 +1115,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x3309);
     // IMUL word ptr [BP + 0x6] (1000_3306 / 0x13306)
-    int resImul1000_3306 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3306 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3306);
     DX = (ushort)(resImul1000_3306 >> 16);
     CheckExternalEvents(cs7, 0x330B);
@@ -1145,7 +1145,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3320);
     // ADD SP,0x4 (1000_331D / 0x1331D)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3322);
     // JMP 0x1000:332c (1000_3320 / 0x13320)
     goto label_1000_332C_1332C;
@@ -1162,7 +1162,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x332C);
     // ADD SP,0x2 (1000_3329 / 0x13329)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     label_1000_332C_1332C:
     CheckExternalEvents(cs7, 0x332F);
     // PUSH word ptr [BP + 0x6] (1000_332C / 0x1332C)
@@ -1179,7 +1179,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3338);
     // SUB AX,AX (1000_3336 / 0x13336)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x333B);
     // MOV word ptr [BP + -0x8],AX (1000_3338 / 0x13338)
     UInt16[SS, (ushort)(BP - 0x8)] = AX;
@@ -1198,7 +1198,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_334A_1334A:
     CheckExternalEvents(cs7, 0x334E);
     // CMP word ptr [BP + -0x8],0x18 (1000_334A / 0x1334A)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x8)], 0x18);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x8)], 0x18);
     CheckExternalEvents(cs7, 0x3350);
     // JGE 0x1000:33cf (1000_334E / 0x1334E)
     if(SignFlag == OverflowFlag) {
@@ -1213,7 +1213,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3358);
     // ADD BX,SI (1000_3356 / 0x13356)
     // BX += SI;
-    BX = Alu.Add16(BX, SI);
+    BX = Alu16.Add(BX, SI);
     CheckExternalEvents(cs7, 0x335C);
     // MOV ES,word ptr [0x55d8] (1000_3358 / 0x13358)
     ES = UInt16[DS, 0x55D8];
@@ -1235,7 +1235,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x336D);
     // ADD BX,SI (1000_336B / 0x1336B)
     // BX += SI;
-    BX = Alu.Add16(BX, SI);
+    BX = Alu16.Add(BX, SI);
     CheckExternalEvents(cs7, 0x3372);
     // MOV AL,byte ptr ES:[BX + 0x40b4] (1000_336D / 0x1336D)
     AL = UInt8[ES, (ushort)(BX + 0x40B4)];
@@ -1251,7 +1251,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x337C);
     // ADD word ptr [BP + -0x6],AX (1000_3379 / 0x13379)
     // UInt16[SS, (ushort)(BP - 0x6)] += AX;
-    UInt16[SS, (ushort)(BP - 0x6)] = Alu.Add16(UInt16[SS, (ushort)(BP - 0x6)], AX);
+    UInt16[SS, (ushort)(BP - 0x6)] = Alu16.Add(UInt16[SS, (ushort)(BP - 0x6)], AX);
     CheckExternalEvents(cs7, 0x337F);
     // MOV AX,word ptr [BP + -0x4] (1000_337C / 0x1337C)
     AX = UInt16[SS, (ushort)(BP - 0x4)];
@@ -1260,7 +1260,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0xA)] += AX;
     CheckExternalEvents(cs7, 0x3385);
     // INC word ptr [BP + -0x4] (1000_3382 / 0x13382)
-    UInt16[SS, (ushort)(BP - 0x4)] = Alu.Inc16(UInt16[SS, (ushort)(BP - 0x4)]);
+    UInt16[SS, (ushort)(BP - 0x4)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x4)]);
     CheckExternalEvents(cs7, 0x3388);
     // MOV DI,word ptr [BP + -0x4] (1000_3385 / 0x13385)
     DI = UInt16[SS, (ushort)(BP - 0x4)];
@@ -1272,7 +1272,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     DI <<= 0x1;
     CheckExternalEvents(cs7, 0x338F);
     // INC word ptr [BP + -0x2] (1000_338C / 0x1338C)
-    UInt16[SS, (ushort)(BP - 0x2)] = Alu.Inc16(UInt16[SS, (ushort)(BP - 0x2)]);
+    UInt16[SS, (ushort)(BP - 0x2)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x2)]);
     CheckExternalEvents(cs7, 0x3392);
     // MOV BX,word ptr [BP + -0x2] (1000_338F / 0x1338F)
     BX = UInt16[SS, (ushort)(BP - 0x2)];
@@ -1285,7 +1285,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x339B);
     // SUB AX,AX (1000_3399 / 0x13399)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x339C);
     // PUSH AX (1000_339B / 0x1339B)
     Stack.Push16(AX);
@@ -1316,14 +1316,14 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x33B3);
     // ADD SP,0xc (1000_33B0 / 0x133B0)
     // SP += 0xC;
-    SP = Alu.Add16(SP, 0xC);
+    SP = Alu16.Add(SP, 0xC);
     label_1000_33B3_133B3:
     CheckExternalEvents(cs7, 0x33B6);
     // MOV AX,0x18 (1000_33B3 / 0x133B3)
     AX = 0x18;
     CheckExternalEvents(cs7, 0x33B9);
     // IMUL word ptr [BP + 0x6] (1000_33B6 / 0x133B6)
-    int resImul1000_33B6 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_33B6 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_33B6);
     DX = (ushort)(resImul1000_33B6 >> 16);
     CheckExternalEvents(cs7, 0x33BB);
@@ -1335,13 +1335,13 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x33C0);
     // ADD BX,SI (1000_33BE / 0x133BE)
     // BX += SI;
-    BX = Alu.Add16(BX, SI);
+    BX = Alu16.Add(BX, SI);
     CheckExternalEvents(cs7, 0x33C4);
     // MOV ES,word ptr [0x55d8] (1000_33C0 / 0x133C0)
     ES = UInt16[DS, 0x55D8];
     CheckExternalEvents(cs7, 0x33CA);
     // CMP byte ptr ES:[BX + 0x40b4],0x2 (1000_33C4 / 0x133C4)
-    Alu.Sub8(UInt8[ES, (ushort)(BX + 0x40B4)], 0x2);
+    Alu8.Sub(UInt8[ES, (ushort)(BX + 0x40B4)], 0x2);
     CheckExternalEvents(cs7, 0x33CC);
     // JZ 0x1000:33cf (1000_33CA / 0x133CA)
     if(ZeroFlag) {
@@ -1420,7 +1420,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x18;
     CheckExternalEvents(cs7, 0x3403);
     // IMUL word ptr [BP + 0x6] (1000_3400 / 0x13400)
-    int resImul1000_3400 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3400 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3400);
     DX = (ushort)(resImul1000_3400 >> 16);
     CheckExternalEvents(cs7, 0x3405);
@@ -1429,7 +1429,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3408);
     // ADD BX,word ptr [BP + -0x20] (1000_3405 / 0x13405)
     // BX += UInt16[SS, (ushort)(BP - 0x20)];
-    BX = Alu.Add16(BX, UInt16[SS, (ushort)(BP - 0x20)]);
+    BX = Alu16.Add(BX, UInt16[SS, (ushort)(BP - 0x20)]);
     CheckExternalEvents(cs7, 0x340C);
     // MOV ES,word ptr [0x55d8] (1000_3408 / 0x13408)
     ES = UInt16[DS, 0x55D8];
@@ -1441,7 +1441,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x20)]++;
     CheckExternalEvents(cs7, 0x3419);
     // CMP word ptr [BP + -0x20],0x18 (1000_3415 / 0x13415)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x20)], 0x18);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x20)], 0x18);
     CheckExternalEvents(cs7, 0x341B);
     // JL 0x1000:33fd (1000_3419 / 0x13419)
     if(SignFlag != OverflowFlag) {
@@ -1450,7 +1450,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x341D);
     // SUB AX,AX (1000_341B / 0x1341B)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x3420);
     // MOV word ptr [BP + -0x26],AX (1000_341D / 0x1341D)
     UInt16[SS, (ushort)(BP - 0x26)] = AX;
@@ -1517,7 +1517,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x346C);
     // IMUL word ptr [BP + 0x6] (1000_3469 / 0x13469)
-    int resImul1000_3469 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3469 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3469);
     DX = (ushort)(resImul1000_3469 >> 16);
     CheckExternalEvents(cs7, 0x346E);
@@ -1532,7 +1532,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3476);
     // ADD BX,AX (1000_3474 / 0x13474)
     // BX += AX;
-    BX = Alu.Add16(BX, AX);
+    BX = Alu16.Add(BX, AX);
     CheckExternalEvents(cs7, 0x347A);
     // MOV ES,word ptr [0x55dc] (1000_3476 / 0x13476)
     ES = UInt16[DS, 0x55DC];
@@ -1547,7 +1547,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x1A)] = AX;
     CheckExternalEvents(cs7, 0x3484);
     // INC AX (1000_3483 / 0x13483)
-    AX = Alu.Inc16(AX);
+    AX = Alu16.Inc(AX);
     CheckExternalEvents(cs7, 0x3486);
     // JNZ 0x1000:348c (1000_3484 / 0x13484)
     if(!ZeroFlag) {
@@ -1555,7 +1555,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3489);
     // INC word ptr [BP + -0xc] (1000_3486 / 0x13486)
-    UInt16[SS, (ushort)(BP - 0xC)] = Alu.Inc16(UInt16[SS, (ushort)(BP - 0xC)]);
+    UInt16[SS, (ushort)(BP - 0xC)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0xC)]);
     CheckExternalEvents(cs7, 0x348C);
     // JMP 0x1000:36b1 (1000_3489 / 0x13489)
     goto label_1000_36B1_136B1;
@@ -1565,7 +1565,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x3492);
     // IMUL word ptr [BP + 0x6] (1000_348F / 0x1348F)
-    int resImul1000_348F = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_348F = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_348F);
     DX = (ushort)(resImul1000_348F >> 16);
     CheckExternalEvents(cs7, 0x3494);
@@ -1580,21 +1580,21 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x349C);
     // ADD BX,SI (1000_349A / 0x1349A)
     // BX += SI;
-    BX = Alu.Add16(BX, SI);
+    BX = Alu16.Add(BX, SI);
     CheckExternalEvents(cs7, 0x34A1);
     // MOV AL,byte ptr ES:[BX + 0x32c6] (1000_349C / 0x1349C)
     AL = UInt8[ES, (ushort)(BX + 0x32C6)];
     CheckExternalEvents(cs7, 0x34A3);
     // SUB AH,AH (1000_34A1 / 0x134A1)
     // AH -= AH;
-    AH = Alu.Sub8(AH, AH);
+    AH = Alu8.Sub(AH, AH);
     CheckExternalEvents(cs7, 0x34A5);
     // MOV CH,AL (1000_34A3 / 0x134A3)
     CH = AL;
     CheckExternalEvents(cs7, 0x34A7);
     // SUB CL,CL (1000_34A5 / 0x134A5)
     // CL -= CL;
-    CL = Alu.Sub8(CL, CL);
+    CL = Alu8.Sub(CL, CL);
     CheckExternalEvents(cs7, 0x34AA);
     // MOV word ptr [BP + -0x4],CX (1000_34A7 / 0x134A7)
     UInt16[SS, (ushort)(BP - 0x4)] = CX;
@@ -1607,7 +1607,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x34B2);
     // ADD BX,SI (1000_34B0 / 0x134B0)
     // BX += SI;
-    BX = Alu.Add16(BX, SI);
+    BX = Alu16.Add(BX, SI);
     CheckExternalEvents(cs7, 0x34B7);
     // MOV AL,byte ptr ES:[BX + 0x32c6] (1000_34B2 / 0x134B2)
     AL = UInt8[ES, (ushort)(BX + 0x32C6)];
@@ -1617,11 +1617,11 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x34BC);
     // AND CX,0xf00 (1000_34B8 / 0x134B8)
     // CX &= 0xF00;
-    CX = Alu.And16(CX, 0xF00);
+    CX = Alu16.And(CX, 0xF00);
     CheckExternalEvents(cs7, 0x34BE);
     // OR AX,CX (1000_34BC / 0x134BC)
     // AX |= CX;
-    AX = Alu.Or16(AX, CX);
+    AX = Alu16.Or(AX, CX);
     CheckExternalEvents(cs7, 0x34C1);
     // MOV word ptr [BP + -0x14],AX (1000_34BE / 0x134BE)
     UInt16[SS, (ushort)(BP - 0x14)] = AX;
@@ -1634,7 +1634,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x34C9);
     // ADD BX,SI (1000_34C7 / 0x134C7)
     // BX += SI;
-    BX = Alu.Add16(BX, SI);
+    BX = Alu16.Add(BX, SI);
     CheckExternalEvents(cs7, 0x34CE);
     // MOV AL,byte ptr ES:[BX + 0x32c6] (1000_34C9 / 0x134C9)
     AL = UInt8[ES, (ushort)(BX + 0x32C6)];
@@ -1647,11 +1647,11 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x34D6);
     // AND CX,0xf000 (1000_34D2 / 0x134D2)
     // CX &= 0xF000;
-    CX = Alu.And16(CX, 0xF000);
+    CX = Alu16.And(CX, 0xF000);
     CheckExternalEvents(cs7, 0x34D8);
     // OR AX,CX (1000_34D6 / 0x134D6)
     // AX |= CX;
-    AX = Alu.Or16(AX, CX);
+    AX = Alu16.Or(AX, CX);
     CheckExternalEvents(cs7, 0x34DB);
     // MOV word ptr [BP + -0x1c],AX (1000_34D8 / 0x134D8)
     UInt16[SS, (ushort)(BP - 0x1C)] = AX;
@@ -1660,7 +1660,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x24)] = 0x0;
     CheckExternalEvents(cs7, 0x34E4);
     // CMP word ptr [BP + 0x6],0xc (1000_34E0 / 0x134E0)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
     CheckExternalEvents(cs7, 0x34E6);
     // JGE 0x1000:34fa (1000_34E4 / 0x134E4)
     if(SignFlag == OverflowFlag) {
@@ -1674,7 +1674,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55E6];
     CheckExternalEvents(cs7, 0x34F3);
     // CMP byte ptr ES:[BX + 0x3994],0x0 (1000_34ED / 0x134ED)
-    Alu.Sub8(UInt8[ES, (ushort)(BX + 0x3994)], 0x0);
+    Alu8.Sub(UInt8[ES, (ushort)(BX + 0x3994)], 0x0);
     CheckExternalEvents(cs7, 0x34F5);
     // JNZ 0x1000:34fa (1000_34F3 / 0x134F3)
     if(!ZeroFlag) {
@@ -1686,7 +1686,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_34FA_134FA:
     CheckExternalEvents(cs7, 0x34FE);
     // CMP word ptr [BP + -0xa],-0x1 (1000_34FA / 0x134FA)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0xFFFF);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0xFFFF);
     CheckExternalEvents(cs7, 0x3500);
     // JNZ 0x1000:3505 (1000_34FE / 0x134FE)
     if(!ZeroFlag) {
@@ -1698,7 +1698,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3505_13505:
     CheckExternalEvents(cs7, 0x3509);
     // CMP word ptr [BP + -0x24],0x0 (1000_3505 / 0x13505)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x24)], 0x0);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x24)], 0x0);
     CheckExternalEvents(cs7, 0x350B);
     // JZ 0x1000:3537 (1000_3509 / 0x13509)
     if(ZeroFlag) {
@@ -1728,7 +1728,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x352B);
     // ADD SP,0x8 (1000_3528 / 0x13528)
     // SP += 0x8;
-    SP = Alu.Add16(SP, 0x8);
+    SP = Alu16.Add(SP, 0x8);
     CheckExternalEvents(cs7, 0x352E);
     // MOV BX,word ptr [BP + 0x6] (1000_352B / 0x1352B)
     BX = UInt16[SS, (ushort)(BP + 0x6)];
@@ -1757,7 +1757,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[SS, (ushort)(BP - 0x14)];
     CheckExternalEvents(cs7, 0x3551);
     // CMP word ptr ES:[0xe486],AX (1000_354C / 0x1354C)
-    Alu.Sub16(UInt16[ES, 0xE486], AX);
+    Alu16.Sub(UInt16[ES, 0xE486], AX);
     CheckExternalEvents(cs7, 0x3553);
     // JNZ 0x1000:3564 (1000_3551 / 0x13551)
     if(!ZeroFlag) {
@@ -1771,7 +1771,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[SS, (ushort)(BP - 0x1C)];
     CheckExternalEvents(cs7, 0x355F);
     // CMP word ptr ES:[0xe488],AX (1000_355A / 0x1355A)
-    Alu.Sub16(UInt16[ES, 0xE488], AX);
+    Alu16.Sub(UInt16[ES, 0xE488], AX);
     CheckExternalEvents(cs7, 0x3561);
     // JNZ 0x1000:3564 (1000_355F / 0x1355F)
     if(!ZeroFlag) {
@@ -1786,7 +1786,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x5618];
     CheckExternalEvents(cs7, 0x356E);
     // CMP word ptr ES:[0xd57e],0x0 (1000_3568 / 0x13568)
-    Alu.Sub16(UInt16[ES, 0xD57E], 0x0);
+    Alu16.Sub(UInt16[ES, 0xD57E], 0x0);
     CheckExternalEvents(cs7, 0x3570);
     // JZ 0x1000:3573 (1000_356E / 0x1356E)
     if(ZeroFlag) {
@@ -1799,7 +1799,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3575);
     // SUB AX,AX (1000_3573 / 0x13573)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x3576);
     // PUSH AX (1000_3575 / 0x13575)
     Stack.Push16(AX);
@@ -1824,7 +1824,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x358D);
     // ADD SP,0xc (1000_358A / 0x1358A)
     // SP += 0xC;
-    SP = Alu.Add16(SP, 0xC);
+    SP = Alu16.Add(SP, 0xC);
     CheckExternalEvents(cs7, 0x3591);
     // MOV ES,word ptr [0x561c] (1000_358D / 0x1358D)
     ES = UInt16[DS, 0x561C];
@@ -1834,7 +1834,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3598);
     // ADD word ptr [BP + -0x8],AX (1000_3595 / 0x13595)
     // UInt16[SS, (ushort)(BP - 0x8)] += AX;
-    UInt16[SS, (ushort)(BP - 0x8)] = Alu.Add16(UInt16[SS, (ushort)(BP - 0x8)], AX);
+    UInt16[SS, (ushort)(BP - 0x8)] = Alu16.Add(UInt16[SS, (ushort)(BP - 0x8)], AX);
     CheckExternalEvents(cs7, 0x359C);
     // MOV ES,word ptr [0x561e] (1000_3598 / 0x13598)
     ES = UInt16[DS, 0x561E];
@@ -1844,13 +1844,13 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x35A3);
     // ADD word ptr [BP + -0xe],AX (1000_35A0 / 0x135A0)
     // UInt16[SS, (ushort)(BP - 0xE)] += AX;
-    UInt16[SS, (ushort)(BP - 0xE)] = Alu.Add16(UInt16[SS, (ushort)(BP - 0xE)], AX);
+    UInt16[SS, (ushort)(BP - 0xE)] = Alu16.Add(UInt16[SS, (ushort)(BP - 0xE)], AX);
     CheckExternalEvents(cs7, 0x35A6);
     // MOV AX,0x18 (1000_35A3 / 0x135A3)
     AX = 0x18;
     CheckExternalEvents(cs7, 0x35A9);
     // IMUL word ptr [BP + 0x6] (1000_35A6 / 0x135A6)
-    int resImul1000_35A6 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_35A6 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_35A6);
     DX = (ushort)(resImul1000_35A6 >> 16);
     CheckExternalEvents(cs7, 0x35AB);
@@ -1871,7 +1871,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x35BB);
     // ADD BX,SI (1000_35B9 / 0x135B9)
     // BX += SI;
-    BX = Alu.Add16(BX, SI);
+    BX = Alu16.Add(BX, SI);
     CheckExternalEvents(cs7, 0x35BF);
     // MOV ES,word ptr [0x55d8] (1000_35BB / 0x135BB)
     ES = UInt16[DS, 0x55D8];
@@ -1893,7 +1893,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x35D4);
     // ADD BX,SI (1000_35D2 / 0x135D2)
     // BX += SI;
-    BX = Alu.Add16(BX, SI);
+    BX = Alu16.Add(BX, SI);
     CheckExternalEvents(cs7, 0x35D8);
     // MOV ES,word ptr [0x55d8] (1000_35D4 / 0x135D4)
     ES = UInt16[DS, 0x55D8];
@@ -1905,13 +1905,13 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[SS, (ushort)(BP - 0xE)];
     CheckExternalEvents(cs7, 0x35E2);
     // SAR AX,0x1 (1000_35E0 / 0x135E0)
-    AX = Alu.Sar16(AX, 0x1);
+    AX = Alu16.Sar(AX, 0x1);
     CheckExternalEvents(cs7, 0x35E5);
     // MOV CX,0x18 (1000_35E2 / 0x135E2)
     CX = 0x18;
     CheckExternalEvents(cs7, 0x35E7);
     // IMUL CX (1000_35E5 / 0x135E5)
-    int resImul1000_35E5 = Alu.Imul16((short)AX, (short)CX);
+    int resImul1000_35E5 = Alu16.Imul((short)AX, (short)CX);
     AX = (ushort)(resImul1000_35E5);
     DX = (ushort)(resImul1000_35E5 >> 16);
     CheckExternalEvents(cs7, 0x35EA);
@@ -1922,11 +1922,11 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CX -= 0xD;
     CheckExternalEvents(cs7, 0x35EF);
     // SAR CX,0x1 (1000_35ED / 0x135ED)
-    CX = Alu.Sar16(CX, 0x1);
+    CX = Alu16.Sar(CX, 0x1);
     CheckExternalEvents(cs7, 0x35F1);
     // ADD AX,CX (1000_35EF / 0x135EF)
     // AX += CX;
-    AX = Alu.Add16(AX, CX);
+    AX = Alu16.Add(AX, CX);
     CheckExternalEvents(cs7, 0x35F4);
     // MOV word ptr [BP + -0x10],AX (1000_35F1 / 0x135F1)
     UInt16[SS, (ushort)(BP - 0x10)] = AX;
@@ -1939,14 +1939,14 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x35FC);
     // SHL DI,0x1 (1000_35FA / 0x135FA)
     // DI <<= 0x1;
-    DI = Alu.Shl16(DI, 0x1);
+    DI = Alu16.Shl(DI, 0x1);
     CheckExternalEvents(cs7, 0x35FF);
     // MOV BX,word ptr [BP + -0x8] (1000_35FC / 0x135FC)
     BX = UInt16[SS, (ushort)(BP - 0x8)];
     CheckExternalEvents(cs7, 0x3602);
     // AND BX,0x1 (1000_35FF / 0x135FF)
     // BX &= 0x1;
-    BX = Alu.And16(BX, 0x1);
+    BX = Alu16.And(BX, 0x1);
     CheckExternalEvents(cs7, 0x3606);
     // MOV AL,byte ptr [BX + DI + 0x3b12] (1000_3602 / 0x13602)
     AL = UInt8[DS, (ushort)(BX + DI + 0x3B12)];
@@ -1958,7 +1958,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x28)] = AX;
     CheckExternalEvents(cs7, 0x360E);
     // TEST byte ptr [BP + -0x8],0x1 (1000_360A / 0x1360A)
-    Alu.And8(UInt8[SS, (ushort)(BP - 0x8)], 0x1);
+    Alu8.And(UInt8[SS, (ushort)(BP - 0x8)], 0x1);
     CheckExternalEvents(cs7, 0x3610);
     // JZ 0x1000:3623 (1000_360E / 0x1360E)
     if(ZeroFlag) {
@@ -1969,7 +1969,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55CC];
     CheckExternalEvents(cs7, 0x361A);
     // TEST byte ptr ES:[0xa44b],0x1 (1000_3614 / 0x13614)
-    Alu.And8(UInt8[ES, 0xA44B], 0x1);
+    Alu8.And(UInt8[ES, 0xA44B], 0x1);
     CheckExternalEvents(cs7, 0x361C);
     // JZ 0x1000:3623 (1000_361A / 0x1361A)
     if(ZeroFlag) {
@@ -1984,7 +1984,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3623_13623:
     CheckExternalEvents(cs7, 0x3627);
     // TEST byte ptr [BP + -0xe],0x1 (1000_3623 / 0x13623)
-    Alu.And8(UInt8[SS, (ushort)(BP - 0xE)], 0x1);
+    Alu8.And(UInt8[SS, (ushort)(BP - 0xE)], 0x1);
     CheckExternalEvents(cs7, 0x3629);
     // JZ 0x1000:363d (1000_3627 / 0x13627)
     if(ZeroFlag) {
@@ -1995,7 +1995,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55CE];
     CheckExternalEvents(cs7, 0x3633);
     // TEST byte ptr ES:[0xa44d],0x1 (1000_362D / 0x1362D)
-    Alu.And8(UInt8[ES, 0xA44D], 0x1);
+    Alu8.And(UInt8[ES, 0xA44D], 0x1);
     CheckExternalEvents(cs7, 0x3635);
     // JZ 0x1000:363d (1000_3633 / 0x13633)
     if(ZeroFlag) {
@@ -2007,7 +2007,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x363D);
     // XOR byte ptr [BP + -0x28],0x5 (1000_3639 / 0x13639)
     // UInt8[SS, (ushort)(BP - 0x28)] ^= 0x5;
-    UInt8[SS, (ushort)(BP - 0x28)] = Alu.Xor8(UInt8[SS, (ushort)(BP - 0x28)], 0x5);
+    UInt8[SS, (ushort)(BP - 0x28)] = Alu8.Xor(UInt8[SS, (ushort)(BP - 0x28)], 0x5);
     label_1000_363D_1363D:
     CheckExternalEvents(cs7, 0x3641);
     // MOV ES,word ptr [0x5620] (1000_363D / 0x1363D)
@@ -2018,7 +2018,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3649);
     // ADD BX,word ptr [BP + -0x10] (1000_3646 / 0x13646)
     // BX += UInt16[SS, (ushort)(BP - 0x10)];
-    BX = Alu.Add16(BX, UInt16[SS, (ushort)(BP - 0x10)]);
+    BX = Alu16.Add(BX, UInt16[SS, (ushort)(BP - 0x10)]);
     CheckExternalEvents(cs7, 0x364D);
     // MOV ES,word ptr [0x5622] (1000_3649 / 0x13649)
     ES = UInt16[DS, 0x5622];
@@ -2028,7 +2028,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3654);
     // SUB AH,AH (1000_3652 / 0x13652)
     // AH -= AH;
-    AH = Alu.Sub8(AH, AH);
+    AH = Alu8.Sub(AH, AH);
     CheckExternalEvents(cs7, 0x3657);
     // MOV word ptr [BP + -0x18],AX (1000_3654 / 0x13654)
     UInt16[SS, (ushort)(BP - 0x18)] = AX;
@@ -2037,7 +2037,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x2)] = 0x1;
     CheckExternalEvents(cs7, 0x3660);
     // CMP word ptr [BP + -0x1a],0x2 (1000_365C / 0x1365C)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x1A)], 0x2);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x1A)], 0x2);
     CheckExternalEvents(cs7, 0x3662);
     // JZ 0x1000:368d (1000_3660 / 0x13660)
     if(ZeroFlag) {
@@ -2045,7 +2045,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3665);
     // CMP AX,0x40 (1000_3662 / 0x13662)
-    Alu.Sub16(AX, 0x40);
+    Alu16.Sub(AX, 0x40);
     CheckExternalEvents(cs7, 0x3667);
     // JGE 0x1000:368d (1000_3665 / 0x13665)
     if(SignFlag == OverflowFlag) {
@@ -2054,7 +2054,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x366A);
     // AND AX,0xf0 (1000_3667 / 0x13667)
     // AX &= 0xF0;
-    AX = Alu.And16(AX, 0xF0);
+    AX = Alu16.And(AX, 0xF0);
     CheckExternalEvents(cs7, 0x366D);
     // MOV word ptr [BP + -0x6],AX (1000_366A / 0x1366A)
     UInt16[SS, (ushort)(BP - 0x6)] = AX;
@@ -2063,7 +2063,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[SS, (ushort)(BP - 0x28)];
     CheckExternalEvents(cs7, 0x3673);
     // TEST word ptr [BP + -0x18],AX (1000_3670 / 0x13670)
-    Alu.And16(UInt16[SS, (ushort)(BP - 0x18)], AX);
+    Alu16.And(UInt16[SS, (ushort)(BP - 0x18)], AX);
     CheckExternalEvents(cs7, 0x3675);
     // JZ 0x1000:367a (1000_3673 / 0x13673)
     if(ZeroFlag) {
@@ -2075,7 +2075,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_367A_1367A:
     CheckExternalEvents(cs7, 0x367E);
     // CMP word ptr [BP + -0x6],0x20 (1000_367A / 0x1367A)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x6)], 0x20);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x6)], 0x20);
     CheckExternalEvents(cs7, 0x3680);
     // JNZ 0x1000:368d (1000_367E / 0x1367E)
     if(!ZeroFlag) {
@@ -2086,7 +2086,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[SS, (ushort)(BP - 0x28)];
     CheckExternalEvents(cs7, 0x3686);
     // TEST word ptr [BP + -0x18],AX (1000_3683 / 0x13683)
-    Alu.And16(UInt16[SS, (ushort)(BP - 0x18)], AX);
+    Alu16.And(UInt16[SS, (ushort)(BP - 0x18)], AX);
     CheckExternalEvents(cs7, 0x3688);
     // JZ 0x1000:368d (1000_3686 / 0x13686)
     if(ZeroFlag) {
@@ -2105,7 +2105,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3699);
     // SUB word ptr ES:[0x3770],AX (1000_3694 / 0x13694)
     // UInt16[ES, 0x3770] -= AX;
-    UInt16[ES, 0x3770] = Alu.Sub16(UInt16[ES, 0x3770], AX);
+    UInt16[ES, 0x3770] = Alu16.Sub(UInt16[ES, 0x3770], AX);
     CheckExternalEvents(cs7, 0x369B);
     // JNS 0x1000:36a2 (1000_3699 / 0x13699)
     if(!SignFlag) {
@@ -2120,7 +2120,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x561A];
     CheckExternalEvents(cs7, 0x36AC);
     // CMP word ptr ES:[0x3770],0x0 (1000_36A6 / 0x136A6)
-    Alu.Sub16(UInt16[ES, 0x3770], 0x0);
+    Alu16.Sub(UInt16[ES, 0x3770], 0x0);
     CheckExternalEvents(cs7, 0x36AE);
     // JLE 0x1000:36b1 (1000_36AC / 0x136AC)
     if(ZeroFlag || SignFlag != OverflowFlag) {
@@ -2132,7 +2132,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_36B1_136B1:
     CheckExternalEvents(cs7, 0x36B5);
     // CMP word ptr [BP + -0xc],0x0 (1000_36B1 / 0x136B1)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x0);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x0);
     CheckExternalEvents(cs7, 0x36B7);
     // JNZ 0x1000:36ba (1000_36B5 / 0x136B5)
     if(!ZeroFlag) {
@@ -2197,7 +2197,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     Stack.Push16(SI);
     CheckExternalEvents(cs7, 0x36E0);
     // CMP word ptr [BP + 0x6],0xc (1000_36DC / 0x136DC)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
     CheckExternalEvents(cs7, 0x36E2);
     // JGE 0x1000:372f (1000_36E0 / 0x136E0)
     if(SignFlag == OverflowFlag) {
@@ -2211,7 +2211,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55E6];
     CheckExternalEvents(cs7, 0x36EF);
     // CMP byte ptr ES:[BX + 0x3994],0x0 (1000_36E9 / 0x136E9)
-    Alu.Sub8(UInt8[ES, (ushort)(BX + 0x3994)], 0x0);
+    Alu8.Sub(UInt8[ES, (ushort)(BX + 0x3994)], 0x0);
     CheckExternalEvents(cs7, 0x36F1);
     // JZ 0x1000:3722 (1000_36EF / 0x136EF)
     if(ZeroFlag) {
@@ -2226,7 +2226,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x36FC);
     // IMUL word ptr [BP + 0x6] (1000_36F9 / 0x136F9)
-    int resImul1000_36F9 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_36F9 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_36F9);
     DX = (ushort)(resImul1000_36F9 >> 16);
     CheckExternalEvents(cs7, 0x36FE);
@@ -2235,7 +2235,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3701);
     // ADD BX,word ptr [BP + -0x1c] (1000_36FE / 0x136FE)
     // BX += UInt16[SS, (ushort)(BP - 0x1C)];
-    BX = Alu.Add16(BX, UInt16[SS, (ushort)(BP - 0x1C)]);
+    BX = Alu16.Add(BX, UInt16[SS, (ushort)(BP - 0x1C)]);
     CheckExternalEvents(cs7, 0x3705);
     // MOV ES,word ptr [0x55dc] (1000_3701 / 0x13701)
     ES = UInt16[DS, 0x55DC];
@@ -2247,7 +2247,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x1C)]++;
     CheckExternalEvents(cs7, 0x3712);
     // CMP word ptr [BP + -0x1c],0x30 (1000_370E / 0x1370E)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x1C)], 0x30);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x1C)], 0x30);
     CheckExternalEvents(cs7, 0x3714);
     // JL 0x1000:36f6 (1000_3712 / 0x13712)
     if(SignFlag != OverflowFlag) {
@@ -2271,7 +2271,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3722);
     // ADD SP,0x4 (1000_371F / 0x1371F)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     label_1000_3722_13722:
     CheckExternalEvents(cs7, 0x3725);
     // MOV BX,word ptr [BP + 0x6] (1000_3722 / 0x13722)
@@ -2291,7 +2291,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x373A);
     // IMUL word ptr [BP + 0x6] (1000_3737 / 0x13737)
-    int resImul1000_3737 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3737 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3737);
     DX = (ushort)(resImul1000_3737 >> 16);
     CheckExternalEvents(cs7, 0x373C);
@@ -2311,7 +2311,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0xE)] = AX;
     CheckExternalEvents(cs7, 0x374D);
     // CMP word ptr [BP + 0x6],0x4 (1000_3749 / 0x13749)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
     CheckExternalEvents(cs7, 0x374F);
     // JL 0x1000:3752 (1000_374D / 0x1374D)
     if(SignFlag != OverflowFlag) {
@@ -2323,7 +2323,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3752_13752:
     CheckExternalEvents(cs7, 0x3755);
     // CMP AX,0xffff (1000_3752 / 0x13752)
-    Alu.Sub16(AX, 0xFFFF);
+    Alu16.Sub(AX, 0xFFFF);
     CheckExternalEvents(cs7, 0x3757);
     // JNZ 0x1000:375a (1000_3755 / 0x13755)
     if(!ZeroFlag) {
@@ -2335,7 +2335,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_375A_1375A:
     CheckExternalEvents(cs7, 0x375E);
     // CMP word ptr [BP + 0x8],0x2 (1000_375A / 0x1375A)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x8)], 0x2);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x8)], 0x2);
     CheckExternalEvents(cs7, 0x3760);
     // JNZ 0x1000:3777 (1000_375E / 0x1375E)
     if(!ZeroFlag) {
@@ -2346,7 +2346,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x7D;
     CheckExternalEvents(cs7, 0x3766);
     // IMUL word ptr [BP + 0x6] (1000_3763 / 0x13763)
-    int resImul1000_3763 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3763 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3763);
     DX = (ushort)(resImul1000_3763 >> 16);
     CheckExternalEvents(cs7, 0x3768);
@@ -2357,7 +2357,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55D4];
     CheckExternalEvents(cs7, 0x3772);
     // CMP byte ptr ES:[BX + 0xc756],0x0 (1000_376C / 0x1376C)
-    Alu.Sub8(UInt8[ES, (ushort)(BX + 0xC756)], 0x0);
+    Alu8.Sub(UInt8[ES, (ushort)(BX + 0xC756)], 0x0);
     CheckExternalEvents(cs7, 0x3774);
     // JNZ 0x1000:3777 (1000_3772 / 0x13772)
     if(!ZeroFlag) {
@@ -2372,7 +2372,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[SS, (ushort)(BP + 0x8)];
     CheckExternalEvents(cs7, 0x377D);
     // CMP word ptr [BP + -0xe],AX (1000_377A / 0x1377A)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xE)], AX);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xE)], AX);
     CheckExternalEvents(cs7, 0x377F);
     // JNZ 0x1000:3782 (1000_377D / 0x1377D)
     if(!ZeroFlag) {
@@ -2384,7 +2384,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3782_13782:
     CheckExternalEvents(cs7, 0x3785);
     // DEC word ptr [BP + -0xc] (1000_3782 / 0x13782)
-    UInt16[SS, (ushort)(BP - 0xC)] = Alu.Dec16(UInt16[SS, (ushort)(BP - 0xC)]);
+    UInt16[SS, (ushort)(BP - 0xC)] = Alu16.Dec(UInt16[SS, (ushort)(BP - 0xC)]);
     CheckExternalEvents(cs7, 0x3788);
     // MOV AX,0x4 (1000_3785 / 0x13785)
     AX = 0x4;
@@ -2397,7 +2397,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3791);
     // ADD SP,0x2 (1000_378E / 0x1378E)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x3796);
     // CALLF 0x1000:7fe8 (1000_3791 / 0x13791)
     FarCall(cs7, 0x3796, unknown_17C6_0388_17FE8);
@@ -2416,7 +2416,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x37A3);
     // ADD SP,0x4 (1000_37A0 / 0x137A0)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x37A6);
     // MOV BX,word ptr [BP + -0xe] (1000_37A3 / 0x137A3)
     BX = UInt16[SS, (ushort)(BP - 0xE)];
@@ -2426,7 +2426,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x37AA);
     // SHL BX,0x1 (1000_37A8 / 0x137A8)
     // BX <<= 0x1;
-    BX = Alu.Shl16(BX, 0x1);
+    BX = Alu16.Shl(BX, 0x1);
     CheckExternalEvents(cs7, 0x37AE);
     // PUSH word ptr [BX + 0x3cd6] (1000_37AA / 0x137AA)
     Stack.Push16(UInt16[DS, (ushort)(BX + 0x3CD6)]);
@@ -2453,7 +2453,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     SP += 0x8;
     CheckExternalEvents(cs7, 0x37C6);
     // CMP word ptr [BP + -0xe],0x1 (1000_37C2 / 0x137C2)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xE)], 0x1);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xE)], 0x1);
     CheckExternalEvents(cs7, 0x37C8);
     // JNZ 0x1000:37dd (1000_37C6 / 0x137C6)
     if(!ZeroFlag) {
@@ -2486,7 +2486,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x37DD);
     // ADD SP,0x8 (1000_37DA / 0x137DA)
     // SP += 0x8;
-    SP = Alu.Add16(SP, 0x8);
+    SP = Alu16.Add(SP, 0x8);
     label_1000_37DD_137DD:
     CheckExternalEvents(cs7, 0x37E0);
     // MOV AX,0x3b38 (1000_37DD / 0x137DD)
@@ -2515,7 +2515,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x37F2);
     // ADD SP,0x8 (1000_37EF / 0x137EF)
     // SP += 0x8;
-    SP = Alu.Add16(SP, 0x8);
+    SP = Alu16.Add(SP, 0x8);
     CheckExternalEvents(cs7, 0x37F5);
     // MOV AX,0x12 (1000_37F2 / 0x137F2)
     AX = 0x12;
@@ -2534,7 +2534,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3802);
     // ADD SP,0x4 (1000_37FF / 0x137FF)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3805);
     // MOV AX,0x3b3d (1000_3802 / 0x13802)
     AX = 0x3B3D;
@@ -2550,7 +2550,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x380F);
     // ADD SP,0x4 (1000_380C / 0x1380C)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3812);
     // MOV BX,word ptr [BP + 0x8] (1000_380F / 0x1380F)
     BX = UInt16[SS, (ushort)(BP + 0x8)];
@@ -2560,7 +2560,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3816);
     // SHL BX,0x1 (1000_3814 / 0x13814)
     // BX <<= 0x1;
-    BX = Alu.Shl16(BX, 0x1);
+    BX = Alu16.Shl(BX, 0x1);
     CheckExternalEvents(cs7, 0x381A);
     // PUSH word ptr [BX + 0x3cd6] (1000_3816 / 0x13816)
     Stack.Push16(UInt16[DS, (ushort)(BX + 0x3CD6)]);
@@ -2573,7 +2573,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3826);
     // ADD SP,0x4 (1000_3823 / 0x13823)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3829);
     // MOV AX,0x3b4e (1000_3826 / 0x13826)
     AX = 0x3B4E;
@@ -2589,7 +2589,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3833);
     // ADD SP,0x4 (1000_3830 / 0x13830)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3836);
     // MOV AX,0x1 (1000_3833 / 0x13833)
     AX = 0x1;
@@ -2602,11 +2602,11 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x383F);
     // ADD SP,0x2 (1000_383C / 0x1383C)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x3841);
     // OR AX,AX (1000_383F / 0x1383F)
     // AX |= AX;
-    AX = Alu.Or16(AX, AX);
+    AX = Alu16.Or(AX, AX);
     CheckExternalEvents(cs7, 0x3843);
     // JZ 0x1000:389a (1000_3841 / 0x13841)
     if(ZeroFlag) {
@@ -2614,7 +2614,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3846);
     // INC word ptr [BP + -0xc] (1000_3843 / 0x13843)
-    UInt16[SS, (ushort)(BP - 0xC)] = Alu.Inc16(UInt16[SS, (ushort)(BP - 0xC)]);
+    UInt16[SS, (ushort)(BP - 0xC)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0xC)]);
     CheckExternalEvents(cs7, 0x384B);
     // CALLF 0x1000:7fe8 (1000_3846 / 0x13846)
     FarCall(cs7, 0x384B, unknown_17C6_0388_17FE8);
@@ -2633,7 +2633,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3858);
     // ADD SP,0x4 (1000_3855 / 0x13855)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x385B);
     // MOV AX,0x3b8c (1000_3858 / 0x13858)
     AX = 0x3B8C;
@@ -2649,7 +2649,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3865);
     // ADD SP,0x4 (1000_3862 / 0x13862)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x386A);
     // MOV word ptr [BP + -0xa],0x0 (1000_3865 / 0x13865)
     UInt16[SS, (ushort)(BP - 0xA)] = 0x0;
@@ -2659,7 +2659,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x3870);
     // IMUL word ptr [BP + 0x6] (1000_386D / 0x1386D)
-    int resImul1000_386D = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_386D = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_386D);
     DX = (ushort)(resImul1000_386D >> 16);
     CheckExternalEvents(cs7, 0x3872);
@@ -2668,7 +2668,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3875);
     // ADD BX,word ptr [BP + -0xa] (1000_3872 / 0x13872)
     // BX += UInt16[SS, (ushort)(BP - 0xA)];
-    BX = Alu.Add16(BX, UInt16[SS, (ushort)(BP - 0xA)]);
+    BX = Alu16.Add(BX, UInt16[SS, (ushort)(BP - 0xA)]);
     CheckExternalEvents(cs7, 0x3879);
     // MOV ES,word ptr [0x55dc] (1000_3875 / 0x13875)
     ES = UInt16[DS, 0x55DC];
@@ -2680,7 +2680,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0xA)]++;
     CheckExternalEvents(cs7, 0x3886);
     // CMP word ptr [BP + -0xa],0x30 (1000_3882 / 0x13882)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x30);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x30);
     CheckExternalEvents(cs7, 0x3888);
     // JL 0x1000:386a (1000_3886 / 0x13886)
     if(SignFlag != OverflowFlag) {
@@ -2689,7 +2689,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x388A);
     // SUB AX,AX (1000_3888 / 0x13888)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x388B);
     // PUSH AX (1000_388A / 0x1388A)
     Stack.Push16(AX);
@@ -2705,14 +2705,14 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3895);
     // ADD SP,0x4 (1000_3892 / 0x13892)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x389A);
     // CALLF 0x1000:8d29 (1000_3895 / 0x13895)
     FarCall(cs7, 0x389A, unknown_18AD_0259_18D29);
     label_1000_389A_1389A:
     CheckExternalEvents(cs7, 0x389E);
     // CMP word ptr [BP + -0xc],0x0 (1000_389A / 0x1389A)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xC)], 0x0);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xC)], 0x0);
     CheckExternalEvents(cs7, 0x38A0);
     // JNZ 0x1000:38a3 (1000_389E / 0x1389E)
     if(!ZeroFlag) {
@@ -2740,7 +2740,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_38AE_138AE:
     CheckExternalEvents(cs7, 0x38B2);
     // CMP word ptr [BP + -0xa],0x30 (1000_38AE / 0x138AE)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0xA)], 0x30);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0xA)], 0x30);
     CheckExternalEvents(cs7, 0x38B4);
     // JGE 0x1000:38cb (1000_38B2 / 0x138B2)
     if(SignFlag == OverflowFlag) {
@@ -2751,7 +2751,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x38BA);
     // IMUL word ptr [BP + 0x6] (1000_38B7 / 0x138B7)
-    int resImul1000_38B7 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_38B7 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_38B7);
     DX = (ushort)(resImul1000_38B7 >> 16);
     CheckExternalEvents(cs7, 0x38BC);
@@ -2760,13 +2760,13 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x38BF);
     // ADD BX,word ptr [BP + -0xa] (1000_38BC / 0x138BC)
     // BX += UInt16[SS, (ushort)(BP - 0xA)];
-    BX = Alu.Add16(BX, UInt16[SS, (ushort)(BP - 0xA)]);
+    BX = Alu16.Add(BX, UInt16[SS, (ushort)(BP - 0xA)]);
     CheckExternalEvents(cs7, 0x38C3);
     // MOV ES,word ptr [0x55dc] (1000_38BF / 0x138BF)
     ES = UInt16[DS, 0x55DC];
     CheckExternalEvents(cs7, 0x38C9);
     // CMP byte ptr ES:[BX + 0x32c6],0xff (1000_38C3 / 0x138C3)
-    Alu.Sub8(UInt8[ES, (ushort)(BX + 0x32C6)], 0xFF);
+    Alu8.Sub(UInt8[ES, (ushort)(BX + 0x32C6)], 0xFF);
     CheckExternalEvents(cs7, 0x38CB);
     // JNZ 0x1000:38aa (1000_38C9 / 0x138C9)
     if(!ZeroFlag) {
@@ -2775,7 +2775,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_38CB_138CB:
     CheckExternalEvents(cs7, 0x38CF);
     // CMP word ptr [BP + 0x6],0x4 (1000_38CB / 0x138CB)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
     CheckExternalEvents(cs7, 0x38D1);
     // JGE 0x1000:38e0 (1000_38CF / 0x138CF)
     if(SignFlag == OverflowFlag) {
@@ -2796,7 +2796,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x38DE);
     // ADD SP,0x4 (1000_38DB / 0x138DB)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x38E0);
     // JMP 0x1000:38ea (1000_38DE / 0x138DE)
     goto label_1000_38EA_138EA;
@@ -2813,7 +2813,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x38EA);
     // ADD SP,0x2 (1000_38E7 / 0x138E7)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     label_1000_38EA_138EA:
     CheckExternalEvents(cs7, 0x38ED);
     // PUSH word ptr [BP + 0x6] (1000_38EA / 0x138EA)
@@ -2827,7 +2827,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x38F4);
     // ADD SP,0x2 (1000_38F1 / 0x138F1)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x38F8);
     // MOV ES,word ptr [0x5610] (1000_38F4 / 0x138F4)
     ES = UInt16[DS, 0x5610];
@@ -2858,7 +2858,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3916);
     // ADD SP,0x2 (1000_3913 / 0x13913)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x391B);
     // CALLF 0x1000:7fe8 (1000_3916 / 0x13916)
     FarCall(cs7, 0x391B, unknown_17C6_0388_17FE8);
@@ -2867,7 +2867,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x561A];
     CheckExternalEvents(cs7, 0x3925);
     // CMP word ptr ES:[0x3770],0x0 (1000_391F / 0x1391F)
-    Alu.Sub16(UInt16[ES, 0x3770], 0x0);
+    Alu16.Sub(UInt16[ES, 0x3770], 0x0);
     CheckExternalEvents(cs7, 0x3927);
     // JZ 0x1000:392a (1000_3925 / 0x13925)
     if(ZeroFlag) {
@@ -2879,7 +2879,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_392A_1392A:
     CheckExternalEvents(cs7, 0x392E);
     // CMP word ptr [BP + 0x8],0x2 (1000_392A / 0x1392A)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x8)], 0x2);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x8)], 0x2);
     CheckExternalEvents(cs7, 0x3930);
     // JNZ 0x1000:3954 (1000_392E / 0x1392E)
     if(!ZeroFlag) {
@@ -2890,7 +2890,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x7D;
     CheckExternalEvents(cs7, 0x3936);
     // IMUL word ptr [BP + 0x6] (1000_3933 / 0x13933)
-    int resImul1000_3933 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3933 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3933);
     DX = (ushort)(resImul1000_3933 >> 16);
     CheckExternalEvents(cs7, 0x3938);
@@ -2901,7 +2901,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55D4];
     CheckExternalEvents(cs7, 0x3942);
     // CMP byte ptr ES:[BX + 0xc756],0x0 (1000_393C / 0x1393C)
-    Alu.Sub8(UInt8[ES, (ushort)(BX + 0xC756)], 0x0);
+    Alu8.Sub(UInt8[ES, (ushort)(BX + 0xC756)], 0x0);
     CheckExternalEvents(cs7, 0x3944);
     // JNZ 0x1000:3954 (1000_3942 / 0x13942)
     if(!ZeroFlag) {
@@ -2923,14 +2923,14 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3951);
     // ADD SP,0x4 (1000_394E / 0x1394E)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3954);
     // JMP 0x1000:3a3c (1000_3951 / 0x13951)
     goto label_1000_3A3C_13A3C;
     label_1000_3954_13954:
     CheckExternalEvents(cs7, 0x3958);
     // CMP word ptr [BP + 0x6],0x4 (1000_3954 / 0x13954)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
     CheckExternalEvents(cs7, 0x395A);
     // JGE 0x1000:396e (1000_3958 / 0x13958)
     if(SignFlag == OverflowFlag) {
@@ -2944,7 +2944,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55EA];
     CheckExternalEvents(cs7, 0x3967);
     // CMP byte ptr ES:[BX + 0x6e],0x1e (1000_3961 / 0x13961)
-    Alu.Sub8(UInt8[ES, (ushort)(BX + 0x6E)], 0x1E);
+    Alu8.Sub(UInt8[ES, (ushort)(BX + 0x6E)], 0x1E);
     CheckExternalEvents(cs7, 0x3969);
     // JNZ 0x1000:396e (1000_3967 / 0x13967)
     if(!ZeroFlag) {
@@ -2959,7 +2959,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_396E_1396E:
     CheckExternalEvents(cs7, 0x3972);
     // CMP word ptr [BP + 0x6],0x4 (1000_396E / 0x1396E)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
     CheckExternalEvents(cs7, 0x3974);
     // JL 0x1000:398c (1000_3972 / 0x13972)
     if(SignFlag != OverflowFlag) {
@@ -2967,7 +2967,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3978);
     // CMP word ptr [BP + 0x6],0xc (1000_3974 / 0x13974)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0xC);
     CheckExternalEvents(cs7, 0x397A);
     // JGE 0x1000:398c (1000_3978 / 0x13978)
     if(SignFlag == OverflowFlag) {
@@ -2979,7 +2979,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3980);
     // SUB AX,AX (1000_397E / 0x1397E)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x3984);
     // MOV ES:[0x4592],AX (1000_3980 / 0x13980)
     UInt16[ES, 0x4592] = AX;
@@ -2995,7 +2995,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x5626];
     CheckExternalEvents(cs7, 0x3996);
     // CMP word ptr ES:[0x377c],0x0 (1000_3990 / 0x13990)
-    Alu.Sub16(UInt16[ES, 0x377C], 0x0);
+    Alu16.Sub(UInt16[ES, 0x377C], 0x0);
     CheckExternalEvents(cs7, 0x3998);
     // JNZ 0x1000:39a4 (1000_3996 / 0x13996)
     if(!ZeroFlag) {
@@ -3006,7 +3006,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x5624];
     CheckExternalEvents(cs7, 0x39A2);
     // CMP word ptr ES:[0x4592],0x0 (1000_399C / 0x1399C)
-    Alu.Sub16(UInt16[ES, 0x4592], 0x0);
+    Alu16.Sub(UInt16[ES, 0x4592], 0x0);
     CheckExternalEvents(cs7, 0x39A4);
     // JZ 0x1000:39d3 (1000_39A2 / 0x139A2)
     if(ZeroFlag) {
@@ -3028,13 +3028,13 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x39B1);
     // ADD SP,0x4 (1000_39AE / 0x139AE)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x39B5);
     // MOV ES,word ptr [0x5626] (1000_39B1 / 0x139B1)
     ES = UInt16[DS, 0x5626];
     CheckExternalEvents(cs7, 0x39BB);
     // CMP word ptr ES:[0x377c],0x0 (1000_39B5 / 0x139B5)
-    Alu.Sub16(UInt16[ES, 0x377C], 0x0);
+    Alu16.Sub(UInt16[ES, 0x377C], 0x0);
     CheckExternalEvents(cs7, 0x39BD);
     // JZ 0x1000:39c2 (1000_39BB / 0x139BB)
     if(ZeroFlag) {
@@ -3052,7 +3052,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x5624];
     CheckExternalEvents(cs7, 0x39CC);
     // CMP word ptr ES:[0x4592],0x0 (1000_39C6 / 0x139C6)
-    Alu.Sub16(UInt16[ES, 0x4592], 0x0);
+    Alu16.Sub(UInt16[ES, 0x4592], 0x0);
     CheckExternalEvents(cs7, 0x39CE);
     // JZ 0x1000:3a2a (1000_39CC / 0x139CC)
     if(ZeroFlag) {
@@ -3082,7 +3082,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     SP += 0x4;
     CheckExternalEvents(cs7, 0x39E4);
     // CMP word ptr [BP + 0x6],0x4 (1000_39E0 / 0x139E0)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
     CheckExternalEvents(cs7, 0x39E6);
     // JGE 0x1000:39f7 (1000_39E4 / 0x139E4)
     if(SignFlag == OverflowFlag) {
@@ -3097,7 +3097,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x39ED);
     // SHL BX,0x1 (1000_39EB / 0x139EB)
     // BX <<= 0x1;
-    BX = Alu.Shl16(BX, 0x1);
+    BX = Alu16.Shl(BX, 0x1);
     CheckExternalEvents(cs7, 0x39F1);
     // PUSH word ptr [BX + 0x3cd6] (1000_39ED / 0x139ED)
     Stack.Push16(UInt16[DS, (ushort)(BX + 0x3CD6)]);
@@ -3124,7 +3124,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3A04);
     // ADD SP,0x4 (1000_3A01 / 0x13A01)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3A07);
     // MOV AX,0x3c43 (1000_3A04 / 0x13A04)
     AX = 0x3C43;
@@ -3142,7 +3142,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     SP += 0x4;
     CheckExternalEvents(cs7, 0x3A15);
     // CMP word ptr [BP + 0x6],0x4 (1000_3A11 / 0x13A11)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x6)], 0x4);
     CheckExternalEvents(cs7, 0x3A17);
     // JGE 0x1000:3a2a (1000_3A15 / 0x13A15)
     if(SignFlag == OverflowFlag) {
@@ -3150,7 +3150,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3A1B);
     // CMP word ptr [BP + 0x8],0x1 (1000_3A17 / 0x13A17)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x8)], 0x1);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x8)], 0x1);
     CheckExternalEvents(cs7, 0x3A1D);
     // JZ 0x1000:3a2a (1000_3A1B / 0x13A1B)
     if(ZeroFlag) {
@@ -3172,7 +3172,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3A2A);
     // ADD SP,0x4 (1000_3A27 / 0x13A27)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     label_1000_3A2A_13A2A:
     CheckExternalEvents(cs7, 0x3A2E);
     // MOV ES,word ptr [0x5624] (1000_3A2A / 0x13A2A)
@@ -3180,7 +3180,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3A30);
     // SUB AX,AX (1000_3A2E / 0x13A2E)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x3A34);
     // MOV ES:[0x4592],AX (1000_3A30 / 0x13A30)
     UInt16[ES, 0x4592] = AX;
@@ -3218,7 +3218,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3A51);
     // ADD SP,0x4 (1000_3A4E / 0x13A4E)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3A55);
     // MOV ES,word ptr [0x561a] (1000_3A51 / 0x13A51)
     ES = UInt16[DS, 0x561A];
@@ -3231,7 +3231,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3A62);
     // ADD SP,0x2 (1000_3A5F / 0x13A5F)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x3A65);
     // MOV AX,0x3c93 (1000_3A62 / 0x13A62)
     AX = 0x3C93;
@@ -3247,7 +3247,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3A6F);
     // ADD SP,0x4 (1000_3A6C / 0x13A6C)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3A72);
     // MOV AX,0xe (1000_3A6F / 0x13A6F)
     AX = 0xE;
@@ -3278,7 +3278,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3A91);
     // ADD SP,0x8 (1000_3A8E / 0x13A8E)
     // SP += 0x8;
-    SP = Alu.Add16(SP, 0x8);
+    SP = Alu16.Add(SP, 0x8);
     label_1000_3A91_13A91:
     CheckExternalEvents(cs7, 0x3A96);
     // CALLF 0x1000:8d29 (1000_3A91 / 0x13A91)
@@ -3292,14 +3292,14 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3A9F);
     // ADD SP,0x2 (1000_3A9C / 0x13A9C)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x3AA2);
     // MOV word ptr [BP + -0x12],AX (1000_3A9F / 0x13A9F)
     UInt16[SS, (ushort)(BP - 0x12)] = AX;
     CheckExternalEvents(cs7, 0x3AA4);
     // SUB AX,AX (1000_3AA2 / 0x13AA2)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x3AA7);
     // MOV word ptr [BP + -0x8],AX (1000_3AA4 / 0x13AA4)
     UInt16[SS, (ushort)(BP - 0x8)] = AX;
@@ -3314,7 +3314,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX -= 0xFFAF;
     CheckExternalEvents(cs7, 0x3AB3);
     // CMP AX,0xa (1000_3AB0 / 0x13AB0)
-    Alu.Sub16(AX, 0xA);
+    Alu16.Sub(AX, 0xA);
     CheckExternalEvents(cs7, 0x3AB5);
     // JA 0x1000:3b0f (1000_3AB3 / 0x13AB3)
     if(!CarryFlag && !ZeroFlag) {
@@ -3328,7 +3328,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3AB7);
     // ADD AX,AX (1000_3AB5 / 0x13AB5)
     // AX += AX;
-    AX = Alu.Add16(AX, AX);
+    AX = Alu16.Add(AX, AX);
     CheckExternalEvents(cs7, 0x3AB8);
     // XCHG AX,BX (1000_3AB7 / 0x13AB7)
     (BX, AX) = (AX, BX);
@@ -3361,7 +3361,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[ES, 0x3778] += AX;
     CheckExternalEvents(cs7, 0x3B21);
     // CMP word ptr ES:[0x3778],0xd (1000_3B1B / 0x13B1B)
-    Alu.Sub16(UInt16[ES, 0x3778], 0xD);
+    Alu16.Sub(UInt16[ES, 0x3778], 0xD);
     CheckExternalEvents(cs7, 0x3B23);
     // JL 0x1000:3b2b (1000_3B21 / 0x13B21)
     if(SignFlag != OverflowFlag) {
@@ -3369,7 +3369,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3B29);
     // CMP word ptr ES:[0x3778],0x27 (1000_3B23 / 0x13B23)
-    Alu.Sub16(UInt16[ES, 0x3778], 0x27);
+    Alu16.Sub(UInt16[ES, 0x3778], 0x27);
     CheckExternalEvents(cs7, 0x3B2B);
     // JLE 0x1000:3b33 (1000_3B29 / 0x13B29)
     if(ZeroFlag || SignFlag != OverflowFlag) {
@@ -3382,7 +3382,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3B33);
     // SUB word ptr ES:[0x3778],AX (1000_3B2E / 0x13B2E)
     // UInt16[ES, 0x3778] -= AX;
-    UInt16[ES, 0x3778] = Alu.Sub16(UInt16[ES, 0x3778], AX);
+    UInt16[ES, 0x3778] = Alu16.Sub(UInt16[ES, 0x3778], AX);
     label_1000_3B33_13B33:
     CheckExternalEvents(cs7, 0x3B37);
     // MOV ES,word ptr [0x5612] (1000_3B33 / 0x13B33)
@@ -3393,7 +3393,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3B3F);
     // ADD word ptr ES:[0x377a],AX (1000_3B3A / 0x13B3A)
     // UInt16[ES, 0x377A] += AX;
-    UInt16[ES, 0x377A] = Alu.Add16(UInt16[ES, 0x377A], AX);
+    UInt16[ES, 0x377A] = Alu16.Add(UInt16[ES, 0x377A], AX);
     CheckExternalEvents(cs7, 0x3B41);
     // JS 0x1000:3b49 (1000_3B3F / 0x13B3F)
     if(SignFlag) {
@@ -3401,7 +3401,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3B47);
     // CMP word ptr ES:[0x377a],0x18 (1000_3B41 / 0x13B41)
-    Alu.Sub16(UInt16[ES, 0x377A], 0x18);
+    Alu16.Sub(UInt16[ES, 0x377A], 0x18);
     CheckExternalEvents(cs7, 0x3B49);
     // JLE 0x1000:3b51 (1000_3B47 / 0x13B47)
     if(ZeroFlag || SignFlag != OverflowFlag) {
@@ -3414,7 +3414,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3B51);
     // SUB word ptr ES:[0x377a],AX (1000_3B4C / 0x13B4C)
     // UInt16[ES, 0x377A] -= AX;
-    UInt16[ES, 0x377A] = Alu.Sub16(UInt16[ES, 0x377A], AX);
+    UInt16[ES, 0x377A] = Alu16.Sub(UInt16[ES, 0x377A], AX);
     label_1000_3B51_13B51:
     CheckExternalEvents(cs7, 0x3B54);
     // MOV AX,word ptr [BP + -0x4] (1000_3B51 / 0x13B51)
@@ -3422,7 +3422,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3B57);
     // OR AX,word ptr [BP + -0x8] (1000_3B54 / 0x13B54)
     // AX |= UInt16[SS, (ushort)(BP - 0x8)];
-    AX = Alu.Or16(AX, UInt16[SS, (ushort)(BP - 0x8)]);
+    AX = Alu16.Or(AX, UInt16[SS, (ushort)(BP - 0x8)]);
     CheckExternalEvents(cs7, 0x3B59);
     // JNZ 0x1000:3b5c (1000_3B57 / 0x13B57)
     if(!ZeroFlag) {
@@ -3459,7 +3459,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3B7D);
     // SUB AX,0xc (1000_3B7A / 0x13B7A)
     // AX -= 0xC;
-    AX = Alu.Sub16(AX, 0xC);
+    AX = Alu16.Sub(AX, 0xC);
     CheckExternalEvents(cs7, 0x3B7E);
     // PUSH AX (1000_3B7D / 0x13B7D)
     Stack.Push16(AX);
@@ -3472,7 +3472,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3B89);
     // SUB AX,0x1a (1000_3B86 / 0x13B86)
     // AX -= 0x1A;
-    AX = Alu.Sub16(AX, 0x1A);
+    AX = Alu16.Sub(AX, 0x1A);
     CheckExternalEvents(cs7, 0x3B8A);
     // PUSH AX (1000_3B89 / 0x13B89)
     Stack.Push16(AX);
@@ -3482,7 +3482,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3B92);
     // ADD SP,0x4 (1000_3B8F / 0x13B8F)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3B96);
     // MOV ES,word ptr [0x55cc] (1000_3B92 / 0x13B92)
     ES = UInt16[DS, 0x55CC];
@@ -3492,7 +3492,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3B9D);
     // AND AX,0x7f (1000_3B9A / 0x13B9A)
     // AX &= 0x7F;
-    AX = Alu.And16(AX, 0x7F);
+    AX = Alu16.And(AX, 0x7F);
     CheckExternalEvents(cs7, 0x3BA0);
     // MOV word ptr [BP + -0x2],AX (1000_3B9D / 0x13B9D)
     UInt16[SS, (ushort)(BP - 0x2)] = AX;
@@ -3505,7 +3505,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3BAB);
     // AND AX,0x7f (1000_3BA8 / 0x13BA8)
     // AX &= 0x7F;
-    AX = Alu.And16(AX, 0x7F);
+    AX = Alu16.And(AX, 0x7F);
     CheckExternalEvents(cs7, 0x3BAE);
     // MOV word ptr [BP + -0x6],AX (1000_3BAB / 0x13BAB)
     UInt16[SS, (ushort)(BP - 0x6)] = AX;
@@ -3515,7 +3515,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3BB5);
     // AND AX,0xf000 (1000_3BB2 / 0x13BB2)
     // AX &= 0xF000;
-    AX = Alu.And16(AX, 0xF000);
+    AX = Alu16.And(AX, 0xF000);
     CheckExternalEvents(cs7, 0x3BB9);
     // MOV ES,word ptr [0x55cc] (1000_3BB5 / 0x13BB5)
     ES = UInt16[DS, 0x55CC];
@@ -3525,18 +3525,18 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3BC2);
     // AND CX,0xf00 (1000_3BBE / 0x13BBE)
     // CX &= 0xF00;
-    CX = Alu.And16(CX, 0xF00);
+    CX = Alu16.And(CX, 0xF00);
     CheckExternalEvents(cs7, 0x3BC4);
     // OR AX,CX (1000_3BC2 / 0x13BC2)
     // AX |= CX;
-    AX = Alu.Or16(AX, CX);
+    AX = Alu16.Or(AX, CX);
     CheckExternalEvents(cs7, 0x3BC6);
     // MOV AL,AH (1000_3BC4 / 0x13BC4)
     AL = AH;
     CheckExternalEvents(cs7, 0x3BC8);
     // SUB AH,AH (1000_3BC6 / 0x13BC6)
     // AH -= AH;
-    AH = Alu.Sub8(AH, AH);
+    AH = Alu8.Sub(AH, AH);
     CheckExternalEvents(cs7, 0x3BCB);
     // MOV word ptr [BP + -0x18],AX (1000_3BC8 / 0x13BC8)
     UInt16[SS, (ushort)(BP - 0x18)] = AX;
@@ -3555,7 +3555,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x3BDD);
     // IMUL word ptr [BP + 0x6] (1000_3BDA / 0x13BDA)
-    int resImul1000_3BDA = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3BDA = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3BDA);
     DX = (ushort)(resImul1000_3BDA >> 16);
     CheckExternalEvents(cs7, 0x3BDF);
@@ -3567,7 +3567,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3BE4);
     // ADD DI,SI (1000_3BE2 / 0x13BE2)
     // DI += SI;
-    DI = Alu.Add16(DI, SI);
+    DI = Alu16.Add(DI, SI);
     CheckExternalEvents(cs7, 0x3BE8);
     // MOV ES,word ptr [0x55dc] (1000_3BE4 / 0x13BE4)
     ES = UInt16[DS, 0x55DC];
@@ -3579,7 +3579,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = (ushort)((short)((sbyte)AL));
     CheckExternalEvents(cs7, 0x3BF1);
     // CMP AX,word ptr [BP + -0x18] (1000_3BEE / 0x13BEE)
-    Alu.Sub16(AX, UInt16[SS, (ushort)(BP - 0x18)]);
+    Alu16.Sub(AX, UInt16[SS, (ushort)(BP - 0x18)]);
     CheckExternalEvents(cs7, 0x3BF3);
     // JNZ 0x1000:3c19 (1000_3BF1 / 0x13BF1)
     if(!ZeroFlag) {
@@ -3593,7 +3593,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = (ushort)((short)((sbyte)AL));
     CheckExternalEvents(cs7, 0x3BFC);
     // CMP AX,word ptr [BP + -0x2] (1000_3BF9 / 0x13BF9)
-    Alu.Sub16(AX, UInt16[SS, (ushort)(BP - 0x2)]);
+    Alu16.Sub(AX, UInt16[SS, (ushort)(BP - 0x2)]);
     CheckExternalEvents(cs7, 0x3BFE);
     // JNZ 0x1000:3c19 (1000_3BFC / 0x13BFC)
     if(!ZeroFlag) {
@@ -3607,7 +3607,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = (ushort)((short)((sbyte)AL));
     CheckExternalEvents(cs7, 0x3C07);
     // CMP AX,word ptr [BP + -0x6] (1000_3C04 / 0x13C04)
-    Alu.Sub16(AX, UInt16[SS, (ushort)(BP - 0x6)]);
+    Alu16.Sub(AX, UInt16[SS, (ushort)(BP - 0x6)]);
     CheckExternalEvents(cs7, 0x3C09);
     // JNZ 0x1000:3c19 (1000_3C07 / 0x13C07)
     if(!ZeroFlag) {
@@ -3622,7 +3622,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3C13);
     // ADD BX,SI (1000_3C11 / 0x13C11)
     // BX += SI;
-    BX = Alu.Add16(BX, SI);
+    BX = Alu16.Add(BX, SI);
     CheckExternalEvents(cs7, 0x3C19);
     // MOV byte ptr ES:[BX + 0x32c6],0xff (1000_3C13 / 0x13C13)
     UInt8[ES, (ushort)(BX + 0x32C6)] = 0xFF;
@@ -3630,14 +3630,14 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3C1D);
     // ADD word ptr [BP + -0x4],0x4 (1000_3C19 / 0x13C19)
     // UInt16[SS, (ushort)(BP - 0x4)] += 0x4;
-    UInt16[SS, (ushort)(BP - 0x4)] = Alu.Add16(UInt16[SS, (ushort)(BP - 0x4)], 0x4);
+    UInt16[SS, (ushort)(BP - 0x4)] = Alu16.Add(UInt16[SS, (ushort)(BP - 0x4)], 0x4);
     label_1000_3C1D_13C1D:
     CheckExternalEvents(cs7, 0x3C20);
     // MOV AX,word ptr [BP + -0xa] (1000_3C1D / 0x13C1D)
     AX = UInt16[SS, (ushort)(BP - 0xA)];
     CheckExternalEvents(cs7, 0x3C23);
     // CMP word ptr [BP + -0x4],AX (1000_3C20 / 0x13C20)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x4)], AX);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x4)], AX);
     CheckExternalEvents(cs7, 0x3C25);
     // JL 0x1000:3bd7 (1000_3C23 / 0x13C23)
     if(SignFlag != OverflowFlag) {
@@ -3645,7 +3645,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3C29);
     // CMP word ptr [BP + -0x8],0x0 (1000_3C25 / 0x13C25)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x8)], 0x0);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x8)], 0x0);
     CheckExternalEvents(cs7, 0x3C2B);
     // JZ 0x1000:3c5a (1000_3C29 / 0x13C29)
     if(ZeroFlag) {
@@ -3656,7 +3656,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x30;
     CheckExternalEvents(cs7, 0x3C31);
     // IMUL word ptr [BP + 0x6] (1000_3C2E / 0x13C2E)
-    int resImul1000_3C2E = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3C2E = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3C2E);
     DX = (ushort)(resImul1000_3C2E >> 16);
     CheckExternalEvents(cs7, 0x3C33);
@@ -3665,7 +3665,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3C36);
     // ADD SI,word ptr [BP + -0xa] (1000_3C33 / 0x13C33)
     // SI += UInt16[SS, (ushort)(BP - 0xA)];
-    SI = Alu.Add16(SI, UInt16[SS, (ushort)(BP - 0xA)]);
+    SI = Alu16.Add(SI, UInt16[SS, (ushort)(BP - 0xA)]);
     CheckExternalEvents(cs7, 0x3C39);
     // MOV AL,byte ptr [BP + 0x8] (1000_3C36 / 0x13C36)
     AL = UInt8[SS, (ushort)(BP + 0x8)];
@@ -3733,7 +3733,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3C88);
     // SUB AX,AX (1000_3C86 / 0x13C86)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x3C89);
     // PUSH AX (1000_3C88 / 0x13C88)
     Stack.Push16(AX);
@@ -3749,7 +3749,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3C93);
     // ADD SP,0x4 (1000_3C90 / 0x13C90)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3C97);
     // MOV ES,word ptr [0x5610] (1000_3C93 / 0x13C93)
     ES = UInt16[DS, 0x5610];
@@ -3798,7 +3798,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3CC7_13CC7:
     CheckExternalEvents(cs7, 0x3CCB);
     // CMP word ptr [BP + -0x12],0x20 (1000_3CC7 / 0x13CC7)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x12)], 0x20);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x12)], 0x20);
     CheckExternalEvents(cs7, 0x3CCD);
     // JZ 0x1000:3cd6 (1000_3CCB / 0x13CCB)
     if(ZeroFlag) {
@@ -3811,7 +3811,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3CD1);
     // CMP word ptr [BP + -0x12],0xd (1000_3CCD / 0x13CCD)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x12)], 0xD);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x12)], 0xD);
     CheckExternalEvents(cs7, 0x3CD3);
     // JZ 0x1000:3cd6 (1000_3CD1 / 0x13CD1)
     if(ZeroFlag) {
@@ -3891,7 +3891,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3CF9);
     // ADD SP,0x2 (1000_3CF6 / 0x13CF6)
     // SP += 0x2;
-    SP = Alu.Add16(SP, 0x2);
+    SP = Alu16.Add(SP, 0x2);
     CheckExternalEvents(cs7, 0x3CFE);
     // CALLF 0x1000:7fe8 (1000_3CF9 / 0x13CF9)
     FarCall(cs7, 0x3CFE, unknown_17C6_0388_17FE8);
@@ -3900,7 +3900,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x7D;
     CheckExternalEvents(cs7, 0x3D04);
     // IMUL word ptr [BP + 0x6] (1000_3D01 / 0x13D01)
-    int resImul1000_3D01 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3D01 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3D01);
     DX = (ushort)(resImul1000_3D01 >> 16);
     CheckExternalEvents(cs7, 0x3D06);
@@ -3915,7 +3915,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3D11);
     // SUB AH,AH (1000_3D0F / 0x13D0F)
     // AH -= AH;
-    AH = Alu.Sub8(AH, AH);
+    AH = Alu8.Sub(AH, AH);
     CheckExternalEvents(cs7, 0x3D14);
     // MOV word ptr [BP + -0x2],AX (1000_3D11 / 0x13D11)
     UInt16[SS, (ushort)(BP - 0x2)] = AX;
@@ -3927,7 +3927,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[SS, (ushort)(BP - 0x4)] = AX;
     CheckExternalEvents(cs7, 0x3D20);
     // TEST byte ptr [BP + -0x2],0x8 (1000_3D1C / 0x13D1C)
-    Alu.And8(UInt8[SS, (ushort)(BP - 0x2)], 0x8);
+    Alu8.And(UInt8[SS, (ushort)(BP - 0x2)], 0x8);
     CheckExternalEvents(cs7, 0x3D22);
     // JZ 0x1000:3d4a (1000_3D20 / 0x13D20)
     if(ZeroFlag) {
@@ -3935,7 +3935,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3D26);
     // TEST byte ptr [BP + -0x4],0x8 (1000_3D22 / 0x13D22)
-    Alu.And8(UInt8[SS, (ushort)(BP - 0x4)], 0x8);
+    Alu8.And(UInt8[SS, (ushort)(BP - 0x4)], 0x8);
     CheckExternalEvents(cs7, 0x3D28);
     // JZ 0x1000:3d4a (1000_3D26 / 0x13D26)
     if(ZeroFlag) {
@@ -3956,7 +3956,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3D35);
     // ADD SP,0x4 (1000_3D32 / 0x13D32)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3D38);
     // MOV AX,0xb (1000_3D35 / 0x13D35)
     AX = 0xB;
@@ -3978,7 +3978,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3D48);
     // ADD SP,0x6 (1000_3D45 / 0x13D45)
     // SP += 0x6;
-    SP = Alu.Add16(SP, 0x6);
+    SP = Alu16.Add(SP, 0x6);
     CheckExternalEvents(cs7, 0x3D4A);
     // JMP 0x1000:3d5c (1000_3D48 / 0x13D48)
     goto label_1000_3D5C_13D5C;
@@ -3998,7 +3998,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3D57);
     // ADD SP,0x4 (1000_3D54 / 0x13D54)
     // SP += 0x4;
-    SP = Alu.Add16(SP, 0x4);
+    SP = Alu16.Add(SP, 0x4);
     CheckExternalEvents(cs7, 0x3D5C);
     // CALLF 0x1000:8d29 (1000_3D57 / 0x13D57)
     FarCall(cs7, 0x3D5C, unknown_18AD_0259_18D29);
@@ -4050,7 +4050,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3D7E);
     // SUB AX,AX (1000_3D7C / 0x13D7C)
     // AX -= AX;
-    AX = Alu.Sub16(AX, AX);
+    AX = Alu16.Sub(AX, AX);
     CheckExternalEvents(cs7, 0x3D82);
     // MOV ES:[0x4592],AX (1000_3D7E / 0x13D7E)
     UInt16[ES, 0x4592] = AX;
@@ -4065,7 +4065,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x7D;
     CheckExternalEvents(cs7, 0x3D90);
     // IMUL word ptr [BP + 0x6] (1000_3D8D / 0x13D8D)
-    int resImul1000_3D8D = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3D8D = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3D8D);
     DX = (ushort)(resImul1000_3D8D >> 16);
     CheckExternalEvents(cs7, 0x3D92);
@@ -4080,7 +4080,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3D9D);
     // SUB AH,AH (1000_3D9B / 0x13D9B)
     // AH -= AH;
-    AH = Alu.Sub8(AH, AH);
+    AH = Alu8.Sub(AH, AH);
     CheckExternalEvents(cs7, 0x3DA1);
     // MOV ES,word ptr [0x561a] (1000_3D9D / 0x13D9D)
     ES = UInt16[DS, 0x561A];
@@ -4089,7 +4089,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[ES, 0x3770] = AX;
     CheckExternalEvents(cs7, 0x3DA9);
     // CMP word ptr [BP + 0x8],0x2 (1000_3DA5 / 0x13DA5)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x8)], 0x2);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x8)], 0x2);
     CheckExternalEvents(cs7, 0x3DAB);
     // JNZ 0x1000:3dbf (1000_3DA9 / 0x13DA9)
     if(!ZeroFlag) {
@@ -4116,7 +4116,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x7D;
     CheckExternalEvents(cs7, 0x3DC5);
     // IMUL word ptr [BP + 0x6] (1000_3DC2 / 0x13DC2)
-    int resImul1000_3DC2 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3DC2 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3DC2);
     DX = (ushort)(resImul1000_3DC2 >> 16);
     CheckExternalEvents(cs7, 0x3DC7);
@@ -4131,7 +4131,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CheckExternalEvents(cs7, 0x3DD2);
     // SUB AH,AH (1000_3DD0 / 0x13DD0)
     // AH -= AH;
-    AH = Alu.Sub8(AH, AH);
+    AH = Alu8.Sub(AH, AH);
     CheckExternalEvents(cs7, 0x3DD5);
     // MOV word ptr [BP + -0x2],AX (1000_3DD2 / 0x13DD2)
     UInt16[SS, (ushort)(BP - 0x2)] = AX;
@@ -4149,7 +4149,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AL |= UInt8[SS, (ushort)(BP - 0x6)];
     CheckExternalEvents(cs7, 0x3DE5);
     // TEST AL,0x8 (1000_3DE3 / 0x13DE3)
-    Alu.And8(AL, 0x8);
+    Alu8.And(AL, 0x8);
     CheckExternalEvents(cs7, 0x3DE7);
     // JNZ 0x1000:3e00 (1000_3DE5 / 0x13DE5)
     if(!ZeroFlag) {
@@ -4173,7 +4173,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3E00_13E00:
     CheckExternalEvents(cs7, 0x3E04);
     // TEST byte ptr [BP + -0x2],0x8 (1000_3E00 / 0x13E00)
-    Alu.And8(UInt8[SS, (ushort)(BP - 0x2)], 0x8);
+    Alu8.And(UInt8[SS, (ushort)(BP - 0x2)], 0x8);
     CheckExternalEvents(cs7, 0x3E06);
     // JZ 0x1000:3e0c (1000_3E04 / 0x13E04)
     if(ZeroFlag) {
@@ -4181,7 +4181,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     }
     CheckExternalEvents(cs7, 0x3E0A);
     // TEST byte ptr [BP + -0x6],0x8 (1000_3E06 / 0x13E06)
-    Alu.And8(UInt8[SS, (ushort)(BP - 0x6)], 0x8);
+    Alu8.And(UInt8[SS, (ushort)(BP - 0x6)], 0x8);
     CheckExternalEvents(cs7, 0x3E0C);
     // JNZ 0x1000:3e3d (1000_3E0A / 0x13E0A)
     if(!ZeroFlag) {
@@ -4193,13 +4193,13 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x561A];
     CheckExternalEvents(cs7, 0x3E15);
     // SAR word ptr ES:[0x3770],0x1 (1000_3E10 / 0x13E10)
-    UInt16[ES, 0x3770] = Alu.Sar16(UInt16[ES, 0x3770], 0x1);
+    UInt16[ES, 0x3770] = Alu16.Sar(UInt16[ES, 0x3770], 0x1);
     CheckExternalEvents(cs7, 0x3E18);
     // MOV AX,0x7d (1000_3E15 / 0x13E15)
     AX = 0x7D;
     CheckExternalEvents(cs7, 0x3E1B);
     // IMUL word ptr [BP + 0x6] (1000_3E18 / 0x13E18)
-    int resImul1000_3E18 = Alu.Imul16((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
+    int resImul1000_3E18 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP + 0x6)]);
     AX = (ushort)(resImul1000_3E18);
     DX = (ushort)(resImul1000_3E18 >> 16);
     CheckExternalEvents(cs7, 0x3E1D);
@@ -4210,7 +4210,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55D4];
     CheckExternalEvents(cs7, 0x3E27);
     // TEST byte ptr ES:[BX + 0xc755],0x1 (1000_3E21 / 0x13E21)
-    Alu.And8(UInt8[ES, (ushort)(BX + 0xC755)], 0x1);
+    Alu8.And(UInt8[ES, (ushort)(BX + 0xC755)], 0x1);
     CheckExternalEvents(cs7, 0x3E29);
     // JZ 0x1000:3e32 (1000_3E27 / 0x13E27)
     if(ZeroFlag) {
@@ -4221,7 +4221,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x561A];
     CheckExternalEvents(cs7, 0x3E32);
     // INC word ptr ES:[0x3770] (1000_3E2D / 0x13E2D)
-    UInt16[ES, 0x3770] = Alu.Inc16(UInt16[ES, 0x3770]);
+    UInt16[ES, 0x3770] = Alu16.Inc(UInt16[ES, 0x3770]);
     label_1000_3E32_13E32:
     CheckExternalEvents(cs7, 0x3E36);
     // MOV ES,word ptr [0x5626] (1000_3E32 / 0x13E32)
@@ -4239,7 +4239,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[SS, (ushort)(BP - 0x4)];
     CheckExternalEvents(cs7, 0x3E48);
     // TEST word ptr [BP + -0x2],AX (1000_3E45 / 0x13E45)
-    Alu.And16(UInt16[SS, (ushort)(BP - 0x2)], AX);
+    Alu16.And(UInt16[SS, (ushort)(BP - 0x2)], AX);
     CheckExternalEvents(cs7, 0x3E4A);
     // JNZ 0x1000:3e5e (1000_3E48 / 0x13E48)
     if(!ZeroFlag) {
@@ -4250,7 +4250,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x561A];
     CheckExternalEvents(cs7, 0x3E53);
     // DEC word ptr ES:[0x3770] (1000_3E4E / 0x13E4E)
-    UInt16[ES, 0x3770] = Alu.Dec16(UInt16[ES, 0x3770]);
+    UInt16[ES, 0x3770] = Alu16.Dec(UInt16[ES, 0x3770]);
     CheckExternalEvents(cs7, 0x3E57);
     // MOV ES,word ptr [0x5626] (1000_3E53 / 0x13E53)
     ES = UInt16[DS, 0x5626];
@@ -4263,7 +4263,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[SS, (ushort)(BP - 0x4)];
     CheckExternalEvents(cs7, 0x3E64);
     // TEST word ptr [BP + -0x6],AX (1000_3E61 / 0x13E61)
-    Alu.And16(UInt16[SS, (ushort)(BP - 0x6)], AX);
+    Alu16.And(UInt16[SS, (ushort)(BP - 0x6)], AX);
     CheckExternalEvents(cs7, 0x3E66);
     // JNZ 0x1000:3e7a (1000_3E64 / 0x13E64)
     if(!ZeroFlag) {
@@ -4274,7 +4274,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x561A];
     CheckExternalEvents(cs7, 0x3E6F);
     // DEC word ptr ES:[0x3770] (1000_3E6A / 0x13E6A)
-    UInt16[ES, 0x3770] = Alu.Dec16(UInt16[ES, 0x3770]);
+    UInt16[ES, 0x3770] = Alu16.Dec(UInt16[ES, 0x3770]);
     CheckExternalEvents(cs7, 0x3E73);
     // MOV ES,word ptr [0x5626] (1000_3E6F / 0x13E6F)
     ES = UInt16[DS, 0x5626];
@@ -4287,7 +4287,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x5626];
     CheckExternalEvents(cs7, 0x3E84);
     // CMP word ptr ES:[0x377c],0x0 (1000_3E7E / 0x13E7E)
-    Alu.Sub16(UInt16[ES, 0x377C], 0x0);
+    Alu16.Sub(UInt16[ES, 0x377C], 0x0);
     CheckExternalEvents(cs7, 0x3E86);
     // JZ 0x1000:3e99 (1000_3E84 / 0x13E84)
     if(ZeroFlag) {
@@ -4298,7 +4298,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x561A];
     CheckExternalEvents(cs7, 0x3E90);
     // CMP word ptr ES:[0x3770],0x0 (1000_3E8A / 0x13E8A)
-    Alu.Sub16(UInt16[ES, 0x3770], 0x0);
+    Alu16.Sub(UInt16[ES, 0x3770], 0x0);
     CheckExternalEvents(cs7, 0x3E92);
     // JNZ 0x1000:3e99 (1000_3E90 / 0x13E90)
     if(!ZeroFlag) {
@@ -4310,10 +4310,10 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_1000_3E99_13E99:
     CheckExternalEvents(cs7, 0x3E9C);
     // SAR word ptr [BP + -0x4],0x1 (1000_3E99 / 0x13E99)
-    UInt16[SS, (ushort)(BP - 0x4)] = Alu.Sar16(UInt16[SS, (ushort)(BP - 0x4)], 0x1);
+    UInt16[SS, (ushort)(BP - 0x4)] = Alu16.Sar(UInt16[SS, (ushort)(BP - 0x4)], 0x1);
     CheckExternalEvents(cs7, 0x3EA0);
     // CMP word ptr [BP + -0x4],0x0 (1000_3E9C / 0x13E9C)
-    Alu.Sub16(UInt16[SS, (ushort)(BP - 0x4)], 0x0);
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x4)], 0x0);
     CheckExternalEvents(cs7, 0x3EA2);
     // JG 0x1000:3e42 (1000_3EA0 / 0x13EA0)
     if(!ZeroFlag && SignFlag == OverflowFlag) {
@@ -4339,7 +4339,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     // IDIV CL (1000_3EB1 / 0x13EB1)
     short op1IDiv1000_3EB1 = (short)AX;
     sbyte op2IDiv1000_3EB1 = (sbyte)CL;
-    sbyte? resIDiv1000_3EB1 = Alu.IDiv8(op1IDiv1000_3EB1, op2IDiv1000_3EB1);
+    sbyte? resIDiv1000_3EB1 = Alu8.Idiv(op1IDiv1000_3EB1, op2IDiv1000_3EB1);
     if(resIDiv1000_3EB1 == null) {
       throw FailAsUntested("Division by 0!");
     }
@@ -4362,7 +4362,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt16[ES, 0x3770] -= AX;
     CheckExternalEvents(cs7, 0x3EC9);
     // CMP word ptr [BP + 0x8],0x1 (1000_3EC5 / 0x13EC5)
-    Alu.Sub16(UInt16[SS, (ushort)(BP + 0x8)], 0x1);
+    Alu16.Sub(UInt16[SS, (ushort)(BP + 0x8)], 0x1);
     CheckExternalEvents(cs7, 0x3ECB);
     // JNZ 0x1000:3ef2 (1000_3EC9 / 0x13EC9)
     if(!ZeroFlag) {
@@ -4373,17 +4373,17 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = UInt16[ES, 0x3770];
     CheckExternalEvents(cs7, 0x3ED1);
     // SAR AX,0x1 (1000_3ECF / 0x13ECF)
-    AX = Alu.Sar16(AX, 0x1);
+    AX = Alu16.Sar(AX, 0x1);
     CheckExternalEvents(cs7, 0x3ED6);
     // ADD word ptr ES:[0x3770],AX (1000_3ED1 / 0x13ED1)
     // UInt16[ES, 0x3770] += AX;
-    UInt16[ES, 0x3770] = Alu.Add16(UInt16[ES, 0x3770], AX);
+    UInt16[ES, 0x3770] = Alu16.Add(UInt16[ES, 0x3770], AX);
     CheckExternalEvents(cs7, 0x3ED9);
     // MOV AX,0x7d (1000_3ED6 / 0x13ED6)
     AX = 0x7D;
     CheckExternalEvents(cs7, 0x3EDB);
     // IMUL BX (1000_3ED9 / 0x13ED9)
-    int resImul1000_3ED9 = Alu.Imul16((short)AX, (short)BX);
+    int resImul1000_3ED9 = Alu16.Imul((short)AX, (short)BX);
     AX = (ushort)(resImul1000_3ED9);
     DX = (ushort)(resImul1000_3ED9 >> 16);
     CheckExternalEvents(cs7, 0x3EDD);
@@ -4394,7 +4394,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55D4];
     CheckExternalEvents(cs7, 0x3EE7);
     // TEST byte ptr ES:[BX + 0xc755],0x1 (1000_3EE1 / 0x13EE1)
-    Alu.And8(UInt8[ES, (ushort)(BX + 0xC755)], 0x1);
+    Alu8.And(UInt8[ES, (ushort)(BX + 0xC755)], 0x1);
     CheckExternalEvents(cs7, 0x3EE9);
     // JZ 0x1000:3ef2 (1000_3EE7 / 0x13EE7)
     if(ZeroFlag) {
@@ -4405,7 +4405,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x561A];
     CheckExternalEvents(cs7, 0x3EF2);
     // INC word ptr ES:[0x3770] (1000_3EED / 0x13EED)
-    UInt16[ES, 0x3770] = Alu.Inc16(UInt16[ES, 0x3770]);
+    UInt16[ES, 0x3770] = Alu16.Inc(UInt16[ES, 0x3770]);
     label_1000_3EF2_13EF2:
     CheckExternalEvents(cs7, 0x3EF5);
     // MOV BX,word ptr [BP + 0x6] (1000_3EF2 / 0x13EF2)
@@ -4415,7 +4415,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x55EA];
     CheckExternalEvents(cs7, 0x3EFF);
     // CMP byte ptr ES:[BX + 0x6e],0x1e (1000_3EF9 / 0x13EF9)
-    Alu.Sub8(UInt8[ES, (ushort)(BX + 0x6E)], 0x1E);
+    Alu8.Sub(UInt8[ES, (ushort)(BX + 0x6E)], 0x1E);
     CheckExternalEvents(cs7, 0x3F01);
     // JNZ 0x1000:3f0c (1000_3EFF / 0x13EFF)
     if(!ZeroFlag) {
@@ -4433,7 +4433,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     ES = UInt16[DS, 0x561A];
     CheckExternalEvents(cs7, 0x3F16);
     // CMP word ptr ES:[0x3770],0x0 (1000_3F10 / 0x13F10)
-    Alu.Sub16(UInt16[ES, 0x3770], 0x0);
+    Alu16.Sub(UInt16[ES, 0x3770], 0x0);
     CheckExternalEvents(cs7, 0x3F18);
     // JGE 0x1000:3f1f (1000_3F16 / 0x13F16)
     if(SignFlag == OverflowFlag) {
