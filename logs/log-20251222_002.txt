@@ -1,0 +1,1 @@
+[2025-12-22 16:32:06.491 +01:00] [INFO] [0/0000:0000] GDB Server listening on port 10000

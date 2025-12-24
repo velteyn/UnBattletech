@@ -1,0 +1,39 @@
+// =========================================================================================
+// DISCOVERIES & ANALYSIS
+// =========================================================================================
+// Game Identity: BattleTech: The Crescent Hawk's Inception (1988)
+// Original File: UNBTECH.exe (likely BTECH.EXE unpacked)
+// Platform: MS-DOS 16-bit Real Mode (MZ Executable)
+// Compiler: Microsoft C 5.0 (detected by Reko)
+//
+// SEGMENT ANALYSIS:
+// -----------------
+// Code Segments:
+// - 0x0800: Core Logic / Main Library
+// - 0x183B: Graphics & UI Initialization (VGA/EGA Ports 0x3C8, 0x3DA)
+// - 0x204B: Timer (INT 8) & Sound (PC Speaker Port 0x61, 0x43)
+// - 0x207F: Utility / Helper Functions
+//
+// GRAPHICS & RESOURCES:
+// ---------------------
+// - Graphics are likely stored in external files (referenced in strings):
+//   TRAINING.BLD, CITADEL.BLD, STARLEAG.ICN, ENDMECH.CMP, etc.
+// - The EXE handles loading and rendering these resources.
+// - Video Mode: Likely VGA (Mode 13h) or EGA, using direct port I/O.
+//
+// GAMEPLAY LOGIC IDENTIFIED:
+// --------------------------
+// - 'Mech Combat: "Use Weapons", "Scan Unit", "Kick", "Heat Sink".
+// - RPG Elements: Skills (Pistols, Rifles), Training.
+// - Economy: Stock Market (Defiance, Nashan, Baker).
+// - Map: "The computer is currently moving this unit".
+//
+// RECREATION STRATEGY:
+// --------------------
+// The Java recreation will implement a prototype focusing on:
+// 1. Turn-based Combat System (Mechs, Weapons, Heat).
+// 2. Stock Market Simulation.
+// 3. Basic RPG Stats.
+// Note: Original graphics assets are external/missing, placeholders will be used.
+// =========================================================================================
+

@@ -1,0 +1,122 @@
+void fn204B_0048()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0800_476D
+// MayUse:  cs:[0..15]
+// LiveOut:
+// Trashed: ax dx Top
+// Preserved: ds sp
+fn204B_0048_entry:
+l204B_0048:
+	Mem11[204B:0012:word16] = Mem7[0000:0020:word16]
+	Mem13[204B:0014:word16] = Mem11[0000:0022:word16]
+	Mem14[204B:0010:word16] = 0x10<16>
+	Mem15[204B:000E:word16] = 0<16>
+	Mem17[204B:0016:word16] = 0x186<16>
+	Mem23[204B:0018:word16] = cs
+	msdos_set_interrupt_vector(8<8>, SEQ(cs, 0x20<16>))
+	__out<byte>(0x43<8>, 0x36<8>)
+	__out<byte>(0x40<8>, 0xFF<8>)
+	__out<byte>(0x40<8>, 0xF<8>)
+	return
+fn204B_0048_exit:
+
+
+void fn204B_0091()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0800_476D
+// MayUse: 
+// LiveOut:
+// Trashed: ax dx Top
+// Preserved: ds sp
+fn204B_0091_entry:
+l204B_0091:
+	msdos_set_interrupt_vector(8<8>, Mem7[204B:0012:(ptr32 code)])
+	__out<byte>(0x43<8>, 0x36<8>)
+	__out<byte>(0x40<8>, 0xFF<8>)
+	__out<byte>(0x40<8>, 0xFF<8>)
+	return
+fn204B_0091_exit:
+
+
+void fn204B_00BD()
+// stackDelta: 2; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn204B_02E4
+//      fn204B_0306
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO Top
+// Preserved: ax sp
+fn204B_00BD_entry:
+l204B_00BD:
+	__out<byte>(0x61<8>, __in<byte>(0x61<8>) | 3<8>)
+	return
+fn204B_00BD_exit:
+
+
+void fn204B_02E4(word16 wArg04)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0800_476D
+// MayUse:  Stack +0004:[0..15]
+// LiveOut:
+// Trashed: SCZO ax bx Top
+// Preserved: bp sp
+fn204B_02E4_entry:
+l204B_02E4:
+	branch wArg04 >= 0xD<16> l204B_0304
+l204B_02EF:
+	fn204B_00BD()
+	call 0x204B<16>:Mem7[0x204B<16>:wArg04 * 4<16> + 0x328<16>:word16] (retsize: 2;)
+		uses: ax:ax_24,Mem:Mem7,Stack +0008:wArg04
+		defs: bx:bx_20
+	ax_24 = Mem7[0x204B<16>:bx_20 + 0x32A<16>:word16]
+	Mem25[204B:0016:word16] = ax_24
+l204B_0304:
+	return
+fn204B_02E4_exit:
+
+
+void fn204B_0306(word16 wArg04)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0800_476D
+// MayUse:  Stack +0004:[0..15]
+// LiveOut:
+// Trashed: SCZO ax bx Top
+// Preserved: bp sp
+fn204B_0306_entry:
+l204B_0306:
+	branch wArg04 >= 0xD<16> l204B_0326
+l204B_0311:
+	fn204B_00BD()
+	call 0x204B<16>:Mem7[0x204B<16>:wArg04 * 4<16> + 0x332<16>:word16] (retsize: 2;)
+		uses: ax:ax_24,Mem:Mem7,Stack +0008:wArg04
+		defs: bx:bx_20
+	ax_24 = Mem7[0x204B<16>:bx_20 + 0x334<16>:word16]
+	Mem25[204B:0016:word16] = ax_24
+l204B_0326:
+	return
+fn204B_0306_exit:
+
+
+word16 fn204B_033C()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0800_476D
+// MayUse: 
+// LiveOut: ax:[0..15]-fn0800_476D
+// Trashed: SCZO ax Top
+// Preserved: sp
+fn204B_033C_entry:
+l204B_033C:
+	branch (Mem0[204B:0016:word16] ^ 0x186<16>) == 0<16> l204B_0348
+l204B_0345:
+	return 0<16>
+l204B_0348:
+	return 1<16>
+fn204B_033C_exit:
+
+

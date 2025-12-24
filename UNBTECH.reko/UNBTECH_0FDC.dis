@@ -1,0 +1,1949 @@
+void fn0FDC_0008(word16 si, word16 di, selector ds, word16 wArg04)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0800_1C12
+//      fn0FDC_0008
+//      fn135D_0004
+//      fn135D_0288
+//      fn135D_04AB
+//      fn135D_055A
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15] Stack +0004:[0..15]
+// LiveOut:
+// Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
+// Preserved:
+fn0FDC_0008_entry:
+l0FDC_0008:
+	fn207F_2FDC(0xA<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_19, out ds_20)
+	Mem29[Mem7[ds_20:0x545C<16>:selector]:0xD316<16>:byte] = 1<8>
+	Mem32[Mem29[ds_20:0x545E<16>:selector]:0x4584<16>:word16] = wArg04
+	bp_103 = fp - 2<i16>
+	sp_18 = <invalid>
+	branch wArg04 == 0x12<16> l0FDC_0041
+l0FDC_002D:
+	branch wArg04 >= 0x16<16> l0FDC_0041
+l0FDC_0032:
+	wArg04 = CONVERT(Mem32[Mem32[ds_20:0x5460<16>:selector]:wArg04 + 0x4602<16>:byte], int8, int16)
+l0FDC_0041:
+	Mem46[ss:sp_18 - 2<i16>:word16] = 1<16>
+	si_112 = fn0800_28CC(si_22, di_19, ds_20, Mem46[ss:sp_18 - 2<i16>:word16], out di_113, out ds_111)
+	sp_108 = sp_18
+	branch wArg04 != 0<16> l0FDC_0085
+l0FDC_0058:
+	branch Mem66[Mem66[ds_111:0x545C<16>:selector]:0xD320<16>:byte] != 0<8> l0FDC_0085
+l0FDC_0064:
+	branch (Mem66[Mem66[ds_111:0x5462<16>:selector]:0x3938<16>:word16] | Mem66[Mem66[ds_111:0x5464<16>:selector]:0x458C<16>:word16]) != 0<16> l0FDC_0085
+l0FDC_0077:
+	sp_108 = <invalid>
+	branch fn1467_08A8(si_112, di_113, ds_111, out bp_103, out si_112, out di_113, out ds_111) == 0<16> l0FDC_0085
+l0FDC_0080:
+	Mem101[ss:bp_103 - 8<i16>:word16] = 0<16>
+l0FDC_0085:
+	branch Mem104[ss:bp_103 - 8<i16>:word16] != 0<16> l0FDC_008E
+l0FDC_008B:
+	goto l0FDC_01BC
+l0FDC_008E:
+	sp_109 = sp_108 - 2<i16>
+	Mem110[ss:sp_109:word16] = Mem104[ss:bp_103 + 6<i16>:word16]
+	sp_124 = <invalid>
+	bp_116 = fn0FDC_1D30(si_112, di_113, ds_111, Mem110[ss:sp_109:word16], out si_123, out di_119, out ds_120)
+	sp_130 = sp_124 + 2<16>
+	bx_131 = Mem110[ss:bp_116 + 6<i16>:word16]
+	branch Mem110[ds_120:bx_131 + 0x141A<16>:byte] == 0<8> l0FDC_00B4
+l0FDC_00A2:
+	Mem136[ss:sp_124:word16] = 1<16>
+	Mem140[ss:sp_124 - 2<i16>:word16] = CONVERT(Mem136[ds_120:bx_131 + 0x141A<16>:byte], int8, int16)
+	sp_150 = <invalid>
+	bp_116 = fn0800_48B7(si_123, di_119, ds_120, Mem140[ss:sp_124 - 2<i16>:word16], out si_123, out di_119, out ds_120)
+	sp_130 = sp_150 + 4<16>
+l0FDC_00B4:
+	sp_162 = sp_130 - 2<i16>
+	Mem164[ss:sp_162:word16] = 0x3092<16>
+	Mem166[ss:sp_162 - 2<i16>:word16] = 0xA0<16>
+	fn0FDC_01C0(si_123, di_119, ds_120)
+	sp_175 = <invalid>
+	Mem186[ss:sp_175 + 2<16>:word16] = 0xE<16>
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn1CD3_0004(si_123, di_119, ds_120, stackArg4, out si_501, out di_502, out ds_503)
+	sp_187 = <invalid>
+	sp_194 = sp_187 + 2<16>
+	es_195 = Mem186[ds_120:0x545C<16>:selector]
+	branch Mem186[es_195:0xD33E<16>:byte] != 0<8> l0FDC_0136
+l0FDC_00DB:
+	branch Mem186[ss:bp_116 + 6<i16>:word16] != 8<16> l0FDC_0136
+l0FDC_00E1:
+	branch Mem186[es_195:0xD33C<16>:byte] == 0<8> l0FDC_0136
+l0FDC_00E9:
+	branch Mem186[es_195:0xD31A<16>:byte] == 0<8> l0FDC_0136
+l0FDC_00F1:
+	Mem206[ss:sp_187:word16] = 6<16>
+	si_229 = fn1E56_0388(bp_116, fn1E56_0281(si_123, di_119, ds_120, Mem206[ss:sp_187:word16], out di_210, out ds_211), di_210, ds_211, out di_225, out ds_226)
+	sp_230 = <invalid>
+	Mem238[ss:sp_230 - 2<i16>:word16] = ds_226
+	Mem240[ss:sp_230 - 4<i16>:word16] = 0x1384<16>
+	fn1E56_03F5(si_229, di_225, ds_226, Mem240[ss:sp_230 - 4<i16>:segptr32], out si_248, out di_244, out ds_245)
+	Mem258[ss:sp_230 - 2<i16>:word16] = ds_245
+	Mem260[ss:sp_230 - 4<i16>:word16] = 0x13B6<16>
+	fn1F3D_0259(fn1CD3_17EA(si_248, di_244, ds_245, Mem260[ss:sp_230 - 4<i16>:word16], Mem260[ss:sp_230 - 2<i16>:word16], out di_264, out ds_265), di_264, ds_265, out si_123, out di_119, out ds_120)
+	Mem291[ss:sp_230 - 2<i16>:word16] = 0x12<16>
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn0FDC_0008(si_123, di_119, ds_120, stackArg4)
+	Mem302[Mem291[ds_120:0x5466<16>:selector]:0x64<16>:byte] = 0xC<8>
+	sp_194 = sp_230
+l0FDC_0136:
+	branch Mem305[ss:bp_116 + 6<i16>:word16] != 0x13<16> l0FDC_015D
+l0FDC_013C:
+	branch Mem305[Mem305[ds_120:0x545C<16>:selector]:0xD31A<16>:byte] == 0<8> l0FDC_015D
+l0FDC_0148:
+	Mem315[ss:sp_194 - 2<i16>:word16] = 0x12<16>
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn0FDC_0008(si_123, di_119, ds_120, stackArg4)
+	Mem330[Mem315[ds_120:0x5466<16>:selector]:0x64<16>:byte] = 0xC<8>
+l0FDC_015D:
+	sp_333 = sp_194 - 2<i16>
+	Mem335[ss:sp_333:word16] = 4<16>
+	si_363 = fn1E56_0388(bp_116, fn1E56_0281(si_123, di_119, ds_120, Mem335[ss:sp_333:word16], out di_343, out ds_344), di_343, ds_344, out di_359, out ds_360)
+	sp_364 = <invalid>
+	Mem372[ss:sp_364 - 2<i16>:word16] = 3<16>
+	si_380 = fn1E56_0281(si_363, di_359, ds_360, Mem372[ss:sp_364 - 2<i16>:word16], out di_376, out ds_377)
+	Mem390[ss:sp_364 - 2<i16>:word16] = 1<16>
+	bp_392 = fn0800_4CAC(si_380, di_376, ds_377, Mem390[ss:sp_364 - 2<i16>:word16], out si_399, out di_395, out ds_396)
+	branch Mem390[ss:bp_392 + 6<i16>:word16] != 0x14<16> l0FDC_01BC
+l0FDC_018C:
+	branch Mem390[Mem390[ds_396:0x545C<16>:selector]:0xD342<16>:byte] == 0<8> l0FDC_01BC
+l0FDC_0198:
+	Mem413[ss:bp_392 - 2<i16>:word16] = 0<16>
+l0FDC_019D:
+	Mem422[Mem416[ds_396:0x545C<16>:selector]:(Mem416[ss:bp_392 - 2<i16>:word16] << 4<8>) + 0xD118<16>:byte] = 0<8>
+	Mem424[ss:bp_392 - 2<i16>:word16] = Mem422[ss:bp_392 - 2<i16>:word16] + 1<16>
+	branch Mem424[ss:bp_392 - 2<i16>:word16] < 8<16> l0FDC_019D
+l0FDC_01B7:
+	fn135D_0004(si_399, di_395, ds_396, out si_506, out di_507, out ds_508)
+l0FDC_01BC:
+	return
+fn0FDC_0008_exit:
+
+
+void fn0FDC_01C0(word16 si, word16 di, selector ds)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0FDC_0008
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15]
+// LiveOut: sp:[0..15]-fn0FDC_0008
+// Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
+// Preserved:
+fn0FDC_01C0_entry:
+l0FDC_01C0:
+	fn207F_2FDC(0xC<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_115, out ds_116)
+	sp_18 = <invalid>
+	Mem29[ss:sp_18 - 2<i16>:word16] = si_22
+	bp_35 = fp - 2<i16>
+	sp_142 = sp_18 - 2<i16>
+	ax_30 = 0<16>
+l0FDC_01D1:
+	Mem36[ss:bp_35 - 10<i16>:word16] = ax_30
+	goto l0FDC_05E9
+l0FDC_01D7:
+	bx_47 = Mem39[ss:bp_35 - 10<i16>:word16]
+	Mem49[ss:bp_35 - 10<i16>:word16] = Mem39[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_50 = Mem49[ss:bp_35 + 6<i16>:segptr32]
+	es_51 = SLICE(es_si_50, selector, 16) (alias)
+	si_203 = SLICE(es_si_50, word16, 0) (alias)
+	ax_54 = CONVERT(Mem49[es_51:bx_47 + si_203:byte], int8, int16)
+	branch ax_54 <=u 0xFFFF<16> l0FDC_01EF
+l0FDC_01EC:
+	goto l0FDC_05E9
+l0FDC_01EF:
+	switch (ax_54 - 0xFFE4<16>) { l0FDC_0599 l0FDC_056D l0FDC_052F l0FDC_0504 l0FDC_04E2 l0FDC_04CC l0FDC_0494 l0FDC_0487 l0FDC_047A l0FDC_041A l0FDC_03CE l0FDC_0394 l0FDC_0367 l0FDC_033F l0FDC_0337 l0FDC_0311 l0FDC_02E9 l0FDC_02D3 l0FDC_02BD l0FDC_0298 l0FDC_0529 l0FDC_0268 l0FDC_0252 l0FDC_024A l0FDC_021D l0FDC_0215 l0FDC_01FF l0FDC_01F7 }
+l0FDC_01F7:
+	Mem64[ss:bp_35 - 8<i16>:word16] = 1<16>
+	goto l0FDC_05E9
+l0FDC_01FF:
+	bx_65 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem67[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	si_69 = Mem67[ss:bp_35 + 6<i16>:word16]
+	sp_169 = sp_142 - 2<i16>
+	Mem73[ss:sp_169:word16] = CONVERT(Mem67[es_51:bx_65 + si_69:byte], int8, int16)
+	fn1E56_0281(si_69, di_115, ds_116, Mem73[ss:sp_169:word16], out di_115, out ds_116)
+	goto l0FDC_05AC
+l0FDC_0215:
+	fn1E56_0388(bp_35, si_203, di_115, ds_116, out di_115, out ds_116)
+	sp_142 = <invalid>
+	goto l0FDC_05E9
+l0FDC_021D:
+	ax_105 = Mem49[ss:bp_35 - 10<i16>:word16] + Mem49[ss:bp_35 + 6<i16>:word16]
+	sp_108 = sp_142 - 2<i16>
+	Mem109[ss:sp_108:word16] = Mem49[ss:bp_35 + 8<i16>:word16]
+	Mem111[ss:sp_108 - 2<i16>:word16] = ax_105
+	fn1E56_03F5(si_203, di_115, ds_116, Mem111[ss:sp_108 - 2<i16>:segptr32], out si_1040, out di_115, out ds_116)
+	ax_127 = Mem111[ss:bp_35 - 10<i16>:word16] + Mem111[ss:bp_35 + 6<i16>:word16]
+	Mem131[ss:sp_108:word16] = Mem111[ss:bp_35 + 8<i16>:word16]
+	Mem133[ss:sp_108 - 2<i16>:word16] = ax_127
+	Mem145[ss:bp_35 - 10<i16>:word16] = Mem133[ss:bp_35 - 10<i16>:word16] + (fn207F_3B9E(Mem133[ss:sp_108 - 2<i16>:segptr32]) + 1<16>)
+	sp_142 = sp_108 + 2<16>
+	goto l0FDC_05E9
+l0FDC_024A:
+	fn1F3D_0259(si_203, di_115, ds_116, out si_1039, out di_115, out ds_116)
+	goto l0FDC_05E9
+l0FDC_0252:
+	bx_160 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem162[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_164 = Mem162[ss:bp_35 + 6<i16>:segptr32]
+	sp_169 = sp_142 - 2<i16>
+	Mem170[ss:sp_169:word16] = CONVERT(Mem162[CONVERT(bx_160, word16, uipr32) + es_si_164:byte], int8, int16)
+	fn1E56_0004(SLICE(es_si_164, word16, 0), di_115, ds_116, Mem170[ss:sp_169:word16], out di_115, out ds_116)
+	goto l0FDC_05AC
+l0FDC_0268:
+	bx_185 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem187[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_189 = Mem187[ss:bp_35 + 6<i16>:segptr32]
+	sp_194 = sp_142 - 2<i16>
+	Mem195[ss:sp_194:word16] = CONVERT(Mem187[CONVERT(bx_185, word16, uipr32) + es_si_189:byte], int8, int16)
+	ax_196 = fn1E56_0B5E(SLICE(es_si_189, word16, 0), di_115, ds_116, Mem195[ss:sp_194:word16], out si_203, out di_115, out ds_116)
+	Mem210[ss:bp_35 - 6<i16>:word16] = ax_196
+	ax_212 = (ax_196 << 1<16>) + Mem210[ss:bp_35 - 10<i16>:word16]
+l0FDC_0286:
+	ax_303 = ax_212 + Mem629[ss:bp_35 + 6<i16>:word16]
+l0FDC_0289:
+	dx_589 = Mem636[ss:bp_35 + 8<i16>:word16]
+l0FDC_028C:
+	sp_647 = sp_142 - 2<i16>
+	Mem650[ss:sp_647:word16] = dx_589
+	Mem654[ss:sp_647 - 2<i16>:word16] = ax_303
+	ax_30 = fn0FDC_05F7(si_203, di_115, ds_116, Mem654[ss:sp_647 - 2<i16>:segptr32], out di_115, out ds_116)
+	sp_142 = sp_647 + 2<16>
+	goto l0FDC_01D1
+l0FDC_0298:
+	bx_214 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem216[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_217 = Mem216[ss:bp_35 + 6<i16>:segptr32]
+	si_203 = SLICE(es_si_217, word16, 0) (alias)
+	branch Mem216[Mem216[ds_116:0x545C<16>:selector]:CONVERT(Mem216[CONVERT(bx_214, word16, uipr32) + es_si_217:byte], int8, int16) + 0xD30C<16>:byte] != 0<8> l0FDC_02B6
+l0FDC_02B3:
+	goto l0FDC_0567
+l0FDC_02B6:
+	ax_226 = Mem216[ss:bp_35 - 10<i16>:word16]
+l0FDC_02B9:
+	ax_303 = ax_226 + si_203
+	goto l0FDC_0289
+l0FDC_02BD:
+	sp_228 = sp_142 - 2<i16>
+	Mem229[ss:sp_228:word16] = 1<16>
+	v70_887 = fn0800_1A13(si_203, di_115, ds_116, Mem229[ss:sp_228:word16], out si_203, out di_115, out ds_116) != 0<16>
+l0FDC_02CB:
+	branch v70_887 l0FDC_02D0
+l0FDC_02CD:
+	goto l0FDC_0567
+l0FDC_02D0:
+	goto l0FDC_0529
+l0FDC_02D3:
+	bx_248 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem250[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_252 = Mem250[ss:bp_35 + 6<i16>:segptr32]
+	Mem258[ss:sp_142 - 2<i16>:word16] = CONVERT(Mem250[CONVERT(bx_248, word16, uipr32) + es_si_252:byte], int8, int16)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn1CD3_0004(SLICE(es_si_252, word16, 0), di_115, ds_116, stackArg4, out si_1036, out di_1037, out ds_1038)
+	sp_169 = <invalid>
+	goto l0FDC_05AC
+l0FDC_02E9:
+	bx_267 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem269[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_270 = Mem269[ss:bp_35 + 6<i16>:segptr32]
+	es_271 = SLICE(es_si_270, selector, 16) (alias)
+	si_272 = SLICE(es_si_270, word16, 0) (alias)
+	Mem275[ss:bp_35 - 6<i16>:word16] = CONVERT(Mem269[es_271:bx_267 + si_272:byte], int8, int16)
+	bx_276 = Mem275[ss:bp_35 - 10<i16>:word16]
+	Mem278[ss:bp_35 - 10<i16>:word16] = Mem275[ss:bp_35 - 10<i16>:word16] + 1<16>
+	Mem283[Mem278[ds_116:0x545C<16>:selector]:Mem278[ss:bp_35 - 6<i16>:word16] + 0xD30C<16>:byte] = Mem278[es_271:bx_276 + si_272:byte]
+	goto l0FDC_05E9
+l0FDC_0311:
+	bx_284 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem286[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_287 = Mem286[ss:bp_35 + 6<i16>:segptr32]
+	Mem297[ss:bp_35 - 6<i16>:word16] = CONVERT(Mem286[Mem286[ds_116:0x545C<16>:selector]:CONVERT(Mem286[CONVERT(bx_284, word16, uipr32) + es_si_287:byte], int8, int16) + 0xD30C<16>:byte], int8, int16) << 1<16>
+	si_203 = SLICE(es_si_287, word16, 0) (alias)
+	ax_226 = Mem297[ss:bp_35 - 10<i16>:word16] + Mem297[ss:bp_35 - 6<i16>:word16]
+	goto l0FDC_02B9
+l0FDC_0337:
+	fn1F3D_086A(bp_35, si_203, di_115, ds_116, out di_115, out ds_116)
+	sp_142 = <invalid>
+	goto l0FDC_05E9
+l0FDC_033F:
+	bx_319 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem321[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_322 = Mem321[ss:bp_35 + 6<i16>:segptr32]
+	es_323 = SLICE(es_si_322, selector, 16) (alias)
+	si_324 = SLICE(es_si_322, word16, 0) (alias)
+	Mem327[ss:bp_35 - 6<i16>:word16] = CONVERT(Mem321[es_323:bx_319 + si_324:byte], int8, int16)
+	bx_328 = Mem327[ss:bp_35 - 10<i16>:word16]
+	Mem330[ss:bp_35 - 10<i16>:word16] = Mem327[ss:bp_35 - 10<i16>:word16] + 1<16>
+	bx_332 = Mem330[ss:bp_35 - 6<i16>:word16]
+	es_333 = Mem330[ds_116:0x545C<16>:selector]
+	Mem335[es_333:bx_332 + 0xD30C<16>:byte] = Mem330[es_333:bx_332 + 0xD30C<16>:byte] + Mem330[es_323:bx_328 + si_324:byte]
+	goto l0FDC_05E9
+l0FDC_0367:
+	bx_337 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem339[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_340 = Mem339[ss:bp_35 + 6<i16>:segptr32]
+	Mem346[Mem339[ds_116:0x5468<16>:selector]:0x3748<16>:word16] = CONVERT(Mem339[CONVERT(bx_337, word16, uipr32) + es_si_340:byte], int8, int16)
+	bx_347 = Mem346[ss:bp_35 - 10<i16>:word16]
+	Mem349[ss:bp_35 - 10<i16>:word16] = Mem346[ss:bp_35 - 10<i16>:word16] + 1<16>
+	Mem355[Mem349[ds_116:0x546A<16>:selector]:0x374E<16>:word16] = CONVERT(Mem349[Mem349[ss:bp_35 + 8<i16>:selector]:bx_347 + SLICE(es_si_340, word16, 0):byte], int8, int16)
+	goto l0FDC_05E9
+l0FDC_0394:
+	ax_357 = Mem49[ss:bp_35 - 10<i16>:word16] + Mem49[ss:bp_35 + 6<i16>:word16]
+	sp_360 = sp_142 - 2<i16>
+	Mem361[ss:sp_360:word16] = Mem49[ss:bp_35 + 8<i16>:word16]
+	Mem363[ss:sp_360 - 2<i16>:word16] = ax_357
+	ax_364 = fn0FDC_19F6(si_203, di_115, ds_116, Mem363[ss:sp_360 - 2<i16>:segptr32], out si_203, out di_115, out ds_116)
+	Mem378[ss:bp_35 - 2<i16>:word16] = ax_364
+	Mem380[ss:bp_35 - 10<i16>:word16] = Mem378[ss:bp_35 - 10<i16>:word16] + 2<16>
+	es_382 = Mem380[ds_116:0x545C<16>:selector]
+	branch Mem380[es_382:0xD372<16>:word16] >=u 0<16> l0FDC_03BC
+l0FDC_03B9:
+	goto l0FDC_0567
+l0FDC_03BC:
+	branch Mem380[es_382:0xD372<16>:word16] <=u 0<16> l0FDC_03C1
+l0FDC_03BE:
+	goto l0FDC_0529
+l0FDC_03C1:
+	branch ax_364 <=u Mem380[es_382:0xD370<16>:word16] l0FDC_03CB
+l0FDC_03C8:
+	goto l0FDC_0567
+l0FDC_03CB:
+	goto l0FDC_0529
+l0FDC_03CE:
+	ax_391 = Mem49[ss:bp_35 - 10<i16>:word16] + Mem49[ss:bp_35 + 6<i16>:word16]
+	sp_394 = sp_142 - 2<i16>
+	Mem395[ss:sp_394:word16] = Mem49[ss:bp_35 + 8<i16>:word16]
+	Mem397[ss:sp_394 - 2<i16>:word16] = ax_391
+	ax_398 = fn0FDC_19F6(si_203, di_115, ds_116, Mem397[ss:sp_394 - 2<i16>:segptr32], out si_405, out di_401, out ds_402)
+	Mem412[ss:bp_35 - 2<i16>:word16] = ax_398
+	Mem414[ss:bp_35 - 10<i16>:word16] = Mem412[ss:bp_35 - 10<i16>:word16] + 2<16>
+	es_416 = Mem414[ds_402:0x545C<16>:selector]
+	branch Mem414[es_416:0xD372<16>:word16] <u 0<16> l0FDC_040D
+l0FDC_03F3:
+	branch Mem414[es_416:0xD372<16>:word16] >u 0<16> l0FDC_03FC
+l0FDC_03F5:
+	branch ax_398 >u Mem414[es_416:0xD370<16>:word16] l0FDC_040D
+l0FDC_03FC:
+	Mem442[es_416:0xD370<16>:ui32] = Mem437[es_416:0xD370<16>:ui32] - CONVERT(Mem414[ss:bp_35 - 2<i16>:word16], uint16, uint32)
+	goto l0FDC_0592
+l0FDC_040D:
+	Mem427[es_416:0xD372<16>:word16] = 0<16>
+	Mem428[es_416:0xD370<16>:word16] = 0<16>
+	goto l0FDC_0592
+l0FDC_041A:
+	bx_444 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem446[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_447 = Mem446[ss:bp_35 + 6<i16>:segptr32]
+	es_448 = SLICE(es_si_447, selector, 16) (alias)
+	si_449 = SLICE(es_si_447, word16, 0) (alias)
+	Mem452[ss:bp_35 - 6<i16>:word16] = CONVERT(Mem446[es_448:bx_444 + si_449:byte], int8, int16)
+	bx_453 = Mem452[ss:bp_35 - 10<i16>:word16]
+	Mem455[ss:bp_35 - 10<i16>:word16] = Mem452[ss:bp_35 - 10<i16>:word16] + 1<16>
+	Mem459[ss:bp_35 - 4<i16>:word16] = CONVERT(Mem455[es_448:bx_453 + si_449:byte], int8, int16)
+	Mem460[ss:bp_35 - 2<i16>:word16] = 0<16>
+	Mem461[ss:bp_35 - 12<i16>:word16] = 0<16>
+l0FDC_0441:
+	ax_467 = Mem465[ss:bp_35 - 12<i16>:word16] *s 0x11<16> (alias)
+	si_203 = ax_467
+	es_470 = Mem465[ds_116:0x545C<16>:selector]
+	branch Mem465[es_470:Mem465[ss:bp_35 - 12<i16>:word16] *s 0x11<16> + 0xC614<16>:byte] == 0xFF<8> l0FDC_046A
+l0FDC_0455:
+	branch CONVERT(Mem465[es_470:Mem465[ss:bp_35 - 6<i16>:word16] + ax_467 + 0xC618<16>:byte], int8, int16) < Mem465[ss:bp_35 - 4<i16>:word16] l0FDC_046A
+l0FDC_0465:
+	Mem479[ss:bp_35 - 2<i16>:word16] = 1<16>
+l0FDC_046A:
+	Mem484[ss:bp_35 - 12<i16>:word16] = Mem482[ss:bp_35 - 12<i16>:word16] + 1<16>
+	branch Mem484[ss:bp_35 - 12<i16>:word16] < 8<16> l0FDC_0441
+l0FDC_0473:
+	v70_887 = Mem484[ss:bp_35 - 2<i16>:word16] != 0<16>
+	goto l0FDC_02CB
+l0FDC_047A:
+	v70_887 = Mem49[Mem49[ds_116:0x545C<16>:selector]:0xD450<16>:byte] != 0<8>
+	goto l0FDC_02CB
+l0FDC_0487:
+	v70_887 = Mem49[Mem49[ds_116:0x545C<16>:selector]:0xD451<16>:byte] != 0<8>
+	goto l0FDC_02CB
+l0FDC_0494:
+	bx_497 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem499[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_500 = Mem499[ss:bp_35 + 6<i16>:segptr32]
+	Mem505[ss:bp_35 - 4<i16>:word16] = CONVERT(Mem499[CONVERT(bx_497, word16, uipr32) + es_si_500:byte], int8, int16)
+	si_502 = SLICE(es_si_500, word16, 0) (alias)
+	branch Mem505[Mem505[ds_116:0x5462<16>:selector]:0x3938<16>:word16] != 0<16> l0FDC_04C6
+l0FDC_04B0:
+	sp_513 = sp_142 - 2<i16>
+	Mem514[ss:sp_513:word16] = CONVERT(Mem505[Mem505[ss:bp_35 + 8<i16>:selector]:Mem505[ss:bp_35 - 10<i16>:word16] + si_502:byte], int8, int16)
+	Mem517[ss:sp_513 - 2<i16>:word16] = Mem514[ss:bp_35 - 4<i16>:word16]
+	sp_527 = <invalid>
+	bp_35 = fn0800_48B7(si_502, di_115, ds_116, Mem517[ss:sp_513 - 2<i16>:word16], out si_1041, out di_115, out ds_116)
+	sp_142 = sp_527 + 4<16>
+l0FDC_04C6:
+	Mem540[ss:bp_35 - 10<i16>:word16] = Mem538[ss:bp_35 - 10<i16>:word16] + 1<16>
+	goto l0FDC_05E9
+l0FDC_04CC:
+	bx_542 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem544[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_546 = Mem544[ss:bp_35 + 6<i16>:segptr32]
+	Mem552[ss:sp_142 - 2<i16>:word16] = CONVERT(Mem544[CONVERT(bx_542, word16, uipr32) + es_si_546:byte], int8, int16)
+	bp_35 = fn11B8_0D58(SLICE(es_si_546, word16, 0), di_115, ds_116, out di_115, out ds_116)
+	sp_169 = <invalid>
+	goto l0FDC_05AC
+l0FDC_04E2:
+	ax_568 = fn207F_0BC0()
+	bx_573 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem575[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_576 = Mem575[ss:bp_35 + 6<i16>:segptr32]
+	es_578 = SLICE(es_si_576, selector, 16) (alias)
+	si_203 = SLICE(es_si_576, word16, 0) (alias)
+	branch (ax_568 & CONVERT(Mem575[CONVERT(bx_573, word16, uipr32) + es_si_576:byte], int8, int16)) == 0<16> l0FDC_0567
+l0FDC_04FA:
+	ax_303 = Mem575[ss:bp_35 - 10<i16>:word16] + si_203
+	dx_589 = es_578
+	goto l0FDC_028C
+l0FDC_0504:
+	ax_591 = Mem49[ss:bp_35 - 10<i16>:word16] + Mem49[ss:bp_35 + 6<i16>:word16]
+	sp_594 = sp_142 - 2<i16>
+	Mem595[ss:sp_594:word16] = es_51
+	Mem597[ss:sp_594 - 2<i16>:word16] = ax_591
+	Mem612[ss:bp_35 - 2<i16>:word16] = fn0FDC_19F6(si_203, di_115, ds_116, Mem597[ss:sp_594 - 2<i16>:segptr32], out si_203, out di_115, out ds_116)
+	Mem614[ss:bp_35 - 10<i16>:word16] = Mem612[ss:bp_35 - 10<i16>:word16] + 2<16>
+	branch Mem614[ss:bp_35 - 2<i16>:word16] != Mem614[Mem614[ds_116:0x546C<16>:selector]:0xA44B<16>:word16] l0FDC_0567
+l0FDC_0529:
+	ax_212 = Mem623[ss:bp_35 - 10<i16>:word16]
+	goto l0FDC_0286
+l0FDC_052F:
+	ax_700 = Mem49[ss:bp_35 - 10<i16>:word16] + Mem49[ss:bp_35 + 6<i16>:word16]
+	sp_703 = sp_142 - 2<i16>
+	Mem704[ss:sp_703:word16] = Mem49[ss:bp_35 + 8<i16>:word16]
+	Mem706[ss:sp_703 - 2<i16>:word16] = ax_700
+	Mem722[Mem706[ds_711:0x546C<16>:selector]:0xA44B<16>:word16] = fn0FDC_19F6(si_203, di_115, ds_116, Mem706[ss:sp_703 - 2<i16>:segptr32], out si_714, out di_710, out ds_711)
+	Mem724[ss:bp_35 - 10<i16>:word16] = Mem722[ss:bp_35 - 10<i16>:word16] + 2<16>
+	ax_726 = Mem724[ss:bp_35 - 10<i16>:word16] + Mem724[ss:bp_35 + 6<i16>:word16]
+	Mem730[ss:sp_703:word16] = Mem724[ss:bp_35 + 8<i16>:word16]
+	Mem732[ss:sp_703 - 2<i16>:word16] = ax_726
+	Mem749[Mem732[ds_737:0x546E<16>:selector]:0xA44D<16>:word16] = fn0FDC_19F6(si_714, di_710, ds_711, Mem732[ss:sp_703 - 2<i16>:segptr32], out si_1034, out di_115, out ds_737)
+	ds_116 = ds_737
+l0FDC_0567:
+	Mem754[ss:bp_35 - 10<i16>:word16] = Mem752[ss:bp_35 - 10<i16>:word16] + 2<16>
+	goto l0FDC_05E9
+l0FDC_056D:
+	ax_757 = Mem49[ss:bp_35 - 10<i16>:word16] + Mem49[ss:bp_35 + 6<i16>:word16]
+	sp_760 = sp_142 - 2<i16>
+	Mem761[ss:sp_760:word16] = Mem49[ss:bp_35 + 8<i16>:word16]
+	Mem763[ss:sp_760 - 2<i16>:word16] = ax_757
+	ax_764 = fn0FDC_19F6(si_203, di_115, ds_116, Mem763[ss:sp_760 - 2<i16>:segptr32], out si_405, out di_401, out ds_402)
+	es_779 = Mem763[ds_402:0x545C<16>:selector]
+	Mem787[es_779:0xD370<16>:ui32] = Mem782[es_779:0xD370<16>:ui32] + CONVERT(ax_764, uint16, uint32)
+	Mem789[ss:bp_35 - 10<i16>:word16] = Mem787[ss:bp_35 - 10<i16>:word16] + 2<16>
+l0FDC_0592:
+	bp_35 = fn1631_1FDF(si_405, di_401, ds_402, out si_1042, out di_115, out ds_116)
+	sp_142 = <invalid>
+	goto l0FDC_05E9
+l0FDC_0599:
+	bx_821 = Mem49[ss:bp_35 - 10<i16>:word16]
+	Mem823[ss:bp_35 - 10<i16>:word16] = Mem49[ss:bp_35 - 10<i16>:word16] + 1<16>
+	es_si_825 = Mem823[ss:bp_35 + 6<i16>:segptr32]
+	sp_169 = sp_142 - 2<i16>
+	Mem831[ss:sp_169:word16] = CONVERT(Mem823[CONVERT(bx_821, word16, uipr32) + es_si_825:byte], int8, int16)
+	fn0800_19BF(SLICE(es_si_825, word16, 0), di_115, ds_116, Mem831[ss:sp_169:word16], out di_115, out ds_116)
+l0FDC_05AC:
+	sp_142 = sp_169 + 2<16>
+l0FDC_05E9:
+	branch Mem39[ss:bp_35 - 8<i16>:word16] != 0<16> l0FDC_05F2
+l0FDC_05EF:
+	goto l0FDC_01D7
+l0FDC_05F2:
+	return
+fn0FDC_01C0_exit:
+
+
+word16 fn0FDC_05F7(word16 si, word16 di, selector ds, segptr32 ptrArg04, word16 & diOut, selector & dsOut)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0FDC_01C0
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15] Stack +0004:[0..31]
+// LiveOut: ax:[0..15]-fn0FDC_01C0 di:[0..15]-fn0FDC_01C0 ds:[0..15]-fn0FDC_01C0
+// Trashed: SCZOP ax bx cx di ds dx es si Top
+// Preserved: bp sp
+fn0FDC_05F7_entry:
+l0FDC_05F7:
+	fn207F_2FDC(6<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_71, out di_19, out ds_20)
+	ax_47 = SEQ(Mem34[ptrArg04 + 1<i16>:byte], 0<8>) + CONVERT(Mem7[ptrArg04:byte], uint8, uint16)
+	diOut = di_19
+	dsOut = ds_20
+	return ax_47
+fn0FDC_05F7_exit:
+
+
+void fn0FDC_0629(word16 si, word16 di, selector ds, word16 wArg04)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn11B8_152F
+//      fn1CD3_0004
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15] Stack +0004:[0..15]
+// LiveOut: sp:[0..15]-fn1CD3_0004
+// Trashed: SCZOP ax bp bx cx di ds dx es si sp Top
+// Preserved: D
+fn0FDC_0629_entry:
+l0FDC_0629:
+	fn207F_2FDC(0x24<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_1028, out di_1024, out ds_1025)
+	sp_18 = <invalid>
+	Mem29[ss:sp_18 - 2<i16>:word16] = si_1028
+	bp_1097 = fp - 2<i16>
+	sp_1010 = sp_18 - 2<i16>
+	branch wArg04 <=u 9<16> l0FDC_0648
+l0FDC_0645:
+	goto l0FDC_0883
+l0FDC_0648:
+	switch (wArg04) { l0FDC_0650 l0FDC_0678 l0FDC_06F8 l0FDC_074D l0FDC_0765 l0FDC_0770 l0FDC_0770 l0FDC_0770 l0FDC_07F7 l0FDC_0814 }
+l0FDC_0650:
+	Mem479[Mem32[ds_1025:0x5470<16>:selector]:0x200A<16>:byte] = 0<8>
+l0FDC_066A:
+	sp_487 = sp_1010 - 2<i16>
+	Mem489[ss:sp_487:word16] = 0<16>
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn0800_218F(si_1028, di_1024, ds_1025, stackArg4, out si_1891, out di_1892, out ds_1893)
+	sp_1010 = sp_487 + 2<16>
+	goto l0FDC_0883
+l0FDC_0678:
+	ax_388 = fn207F_0BC0()
+	ax_400 = CONVERT(Mem398[ds_1025:(ax_388 & 7<16>) + 0x163A<16>:byte], int8, int16)
+	ax_397 = CONVERT(Mem394[ds_1025:(ax_388 & 7<16>) + 0x1632<16>:byte], int8, int16)
+	Mem423[Mem417[ds_1025:0x5470<16>:selector]:((ax_400 & 0x78<16>) << 6<8>) + ((ax_400 & 7<16>) << 3<8>) + ((ax_397 & 0x78<16>) << 3<8>) + (ax_397 & 7<16>) + 0x101D<16>:byte] = 0x50<8>
+	branch Mem423[Mem423[ds_1025:0x545C<16>:selector]:0xC724<16>:byte] != 0x4C<8> l0FDC_066A
+l0FDC_06DE:
+	si_434 = fn1CD3_17C6(fp - 2<i16>, si_1028, di_1024, ds_1025, out di_430, out ds_431)
+	sp_435 = <invalid>
+	Mem444[ss:sp_435 - 2<i16>:word16] = ds_431
+	Mem446[ss:sp_435 - 4<i16>:word16] = 0x1434<16>
+	fn1F3D_0259(fn1CD3_17EA(si_434, di_430, ds_431, Mem446[ss:sp_435 - 4<i16>:word16], Mem446[ss:sp_435 - 2<i16>:word16], out di_450, out ds_451), di_450, ds_451, out si_1028, out di_1024, out ds_1025)
+	sp_1010 = sp_435
+	goto l0FDC_066A
+l0FDC_06F8:
+	Mem307[ss:sp_18 - 4<i16>:word16] = 0<16>
+	Mem310[ss:sp_18 - 6<i16>:word16] = 1<16>
+	si_296 = fn0FDC_0D49(si_1028, di_1024, ds_1025, Mem310[ss:sp_18 - 6<i16>:word16], Mem310[ss:sp_18 - 4<i16>:word16], out di_292, out ds_293)
+	es_325 = Mem310[ds_293:0x545C<16>:selector]
+	Mem328[es_325:0xC93D<16>:byte] = 0<8>
+	Mem329[es_325:0xC93C<16>:byte] = 0<8>
+	wLoc22_1687 = 0xC93F<16>
+l0FDC_0719:
+	Mem336[es_325:wLoc22_1687 + 0<16>:byte] = 0<8>
+	v48_337 = wLoc22_1687 + 1<16>
+	wLoc22_1687 = v48_337
+	branch v48_337 <= 0x3718<16> l0FDC_0719
+l0FDC_072B:
+	Mem343[es_325:0xC94A<16>:byte] = 0<8>
+	Mem344[es_325:0xC949<16>:byte] = 0<8>
+l0FDC_0735:
+	Mem350[ss:sp_18 - 4<16>:word16] = 1<16>
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn183B_000A(si_296, di_292, ds_293, stackArg4, out si_1910, out di_1911, out ds_1912)
+	sp_362 = <invalid>
+	sp_1010 = sp_362 + 2<16>
+	si_1028 = fn0FDC_134B(si_296, di_292, ds_293, out di_1024, out ds_1025)
+l0FDC_0745:
+	goto l0FDC_0883
+l0FDC_074D:
+	Mem284[ss:sp_18 - 4<i16>:word16] = (fn207F_0BC0() & 3<16>) + 3<16>
+	Mem288[ss:sp_18 - 6<i16>:word16] = 0<16>
+	si_296 = fn0FDC_0D49(si_1028, di_1024, ds_1025, Mem288[ss:sp_18 - 6<i16>:word16], Mem288[ss:sp_18 - 4<i16>:word16], out di_292, out ds_293)
+	goto l0FDC_0735
+l0FDC_0765:
+	Mem150[Mem32[ds_1025:0x5472<16>:selector]:0x90<16>:word16] = 1<16>
+l0FDC_0770:
+	branch wArg04 != 6<16> l0FDC_078A
+l0FDC_0776:
+	branch (SLICE(fn207F_0BC0(), byte, 0) & 1<8>) == 0<8> l0FDC_078A
+l0FDC_077F:
+	Mem168[Mem153[ds_1025:0x5474<16>:selector]:0x3772<16>:word16] = 1<16>
+l0FDC_078A:
+	branch wArg04 != 7<16> l0FDC_079B
+l0FDC_0790:
+	Mem176[Mem171[ds_1025:0x5474<16>:selector]:0x3772<16>:word16] = 1<16>
+l0FDC_079B:
+	branch Mem178[Mem178[ds_1025:0x5474<16>:selector]:0x3772<16>:word16] == 0<16> l0FDC_07C3
+l0FDC_07A7:
+	wLoc04_1680 = 0x200D<16>
+l0FDC_07AC:
+	Mem191[Mem187[ds_1025:0x5470<16>:selector]:wLoc04_1680 + 0<16>:byte] = 0x40<8>
+	v29_192 = wLoc04_1680 + 1<16>
+	wLoc04_1680 = v29_192
+	branch v29_192 < 0xFFE3<16> l0FDC_07AC
+l0FDC_07C3:
+	Mem204[ss:sp_18 - 4<i16>:word16] = 0<16>
+	Mem210[ss:sp_18 - 6<i16>:word16] = wArg04 - 3<16>
+	si_234 = fn0FDC_0D49(si_1028, di_1024, ds_1025, Mem210[ss:sp_18 - 6<i16>:word16], Mem210[ss:sp_18 - 4<i16>:word16], out di_230, out ds_231)
+	Mem244[ss:sp_18 - 4<16>:word16] = 1<16>
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn183B_000A(si_234, di_230, ds_231, stackArg4, out si_1895, out di_1896, out ds_1897)
+	si_1028 = fn0FDC_134B(si_234, di_230, ds_231, out di_1024, out ds_1025)
+	Mem275[Mem273[ds_1025:0x5472<16>:selector]:0x90<16>:word16] = 0<16>
+	sp_250 = <invalid>
+	sp_1010 = sp_250 + 2<16>
+	goto l0FDC_0883
+l0FDC_07F7:
+	Mem118[ss:sp_18 - 4<i16>:word16] = 0<16>
+	Mem121[ss:sp_18 - 6<i16>:word16] = 0x81<16>
+	si_1028 = fn0FDC_0D49(si_1028, di_1024, ds_1025, Mem121[ss:sp_18 - 6<i16>:word16], Mem121[ss:sp_18 - 4<i16>:word16], out di_1024, out ds_1025)
+	Mem139[ss:sp_18 - 4<16>:word16] = 2<16>
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn183B_000A(si_1028, di_1024, ds_1025, stackArg4, out si_1887, out di_1888, out ds_1889)
+	sp_140 = <invalid>
+	sp_1010 = sp_140 + 2<16>
+	goto l0FDC_0745
+l0FDC_0814:
+	Mem47[Mem45[ds_1025:0x5476<16>:selector]:0x398E<16>:word16] = 1<16>
+	Mem51[ss:sp_18 - 4<i16>:word16] = Mem47[Mem47[ds_1025:0x546E<16>:selector]:0xA44D<16>:word16]
+	Mem55[ss:sp_18 - 6<i16>:word16] = Mem51[Mem51[ds_1025:0x546C<16>:selector]:0xA44B<16>:word16]
+	fn207F_1314(Mem55[ss:sp_18 - 6<i16>:word16], Mem55[ss:sp_18 - 4<i16>:word16])
+	fn207F_18EF()
+	fn1F3D_06C3(fp - 2<i16>, fn0800_051B(si_1028, di_1024, ds_1025, out di_80, out ds_81), di_80, ds_81, out di_1024, out ds_1025)
+	sp_1010 = sp_18 - 2<16>
+	wLoc1E_1674 = 0<16>
+l0FDC_0855:
+	Mem109[ss:fp - 14<i16> + (wLoc1E_1674 << 1<16>):word16] = 0<16>
+	v26_110 = wLoc1E_1674 + 1<16>
+	si_1028 = wLoc1E_1674 << 1<16>
+	wLoc1E_1674 = v26_110
+	branch v26_110 < 4<16> l0FDC_0855
+l0FDC_0868:
+l0FDC_0883:
+	branch wArg04 != 8<16> l0FDC_0899
+l0FDC_0894:
+l0FDC_0899:
+l0FDC_089E:
+	branch Mem522[ss:bp_1097 - 16<i16>:word16] == 0<16> l0FDC_08A7
+l0FDC_08A4:
+	goto l0FDC_0BF2
+l0FDC_08A7:
+	branch Mem522[Mem522[ds_1025:0x546C<16>:selector]:0xA44B<16>:word16] >u 0xC3C<16> l0FDC_08FE
+l0FDC_08B4:
+	es_529 = Mem522[ds_1025:0x546E<16>:selector]
+	branch Mem522[es_529:0xA44D<16>:word16] <u 0xC049<16> l0FDC_08FE
+l0FDC_08C1:
+	branch Mem522[es_529:0xA44D<16>:word16] >u 0xC04F<16> l0FDC_08FE
+l0FDC_08CA:
+	branch Mem522[ss:bp_1097 - 2<i16>:word16] == 0<16> l0FDC_08D7
+l0FDC_08D0:
+	Mem606[ss:bp_1097 - 16<i16>:word16] = 1<16>
+	goto l0FDC_08FE
+l0FDC_08D7:
+	branch Mem522[ss:bp_1097 - 14<i16>:word16] != 0<16> l0FDC_08F9
+l0FDC_08DD:
+	si_548 = fn1CD3_17C6(bp_1097, si_1028, di_1024, ds_1025, out di_544, out ds_545)
+	sp_549 = <invalid>
+	Mem558[ss:sp_549 - 2<i16>:word16] = ds_545
+	Mem560[ss:sp_549 - 4<i16>:word16] = 0x146B<16>
+	fn1E56_03F5(si_548, di_544, ds_545, Mem560[ss:sp_549 - 4<i16>:segptr32], out si_568, out di_564, out ds_565)
+	fn1F3D_0259(fn1F3D_086A(bp_1097, si_568, di_564, ds_565, out di_579, out ds_580), di_579, ds_580, out si_1028, out di_1024, out ds_1025)
+	sp_1010 = <invalid>
+l0FDC_08F9:
+	Mem605[ss:bp_1097 - 14<i16>:word16] = 1<16>
+l0FDC_08FE:
+	branch Mem609[ss:bp_1097 - 16<i16>:word16] != 0<16> l0FDC_089E
+l0FDC_0904:
+	Mem612[ss:bp_1097 - 18<i16>:word16] = 0<16>
+	branch fn1F3D_002F(bp_1097, si_1028, di_1024, ds_1025, out si_628, out di_624, out ds_625) == 0<16> l0FDC_0945
+l0FDC_0912:
+	Mem665[ss:bp_1097 - 18<i16>:word16] = 1<16>
+	sp_679 = sp_1010 - 2<i16>
+	Mem680[ss:sp_679:word16] = fn1F3D_0259(si_628, di_624, ds_625, out si_673, out di_669, out ds_670)
+	Mem696[ss:bp_1097 - 32<i16>:word16] = fn1E56_0D1D(si_673, di_669, ds_670, Mem680[ss:sp_679:word16], out si_688, out di_684, out ds_685)
+	si_704 = fn0800_2A2B(bp_1097, si_688, di_684, ds_685, out di_700, out ds_701)
+	Mem712[ss:sp_679:word16] = Mem696[ss:bp_1097 - 32<i16>:word16]
+	si_1028 = fn0800_231D(si_704, di_700, ds_701, Mem712[ss:sp_679:word16], out di_1024, out ds_1025)
+	Mem730[ss:sp_679:word16] = Mem712[ss:bp_1097 - 32<i16>:word16]
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn0800_218F(si_1028, di_1024, ds_1025, stackArg4, out si_1902, out di_1903, out ds_1904)
+	goto l0FDC_095B
+l0FDC_0945:
+	sp_643 = sp_1010 - 2<i16>
+	Mem644[ss:sp_643:word16] = 1<16>
+	si_1028 = fn1F3D_0006(si_628, di_624, ds_625, Mem644[ss:sp_643:word16], out di_1024, out ds_1025)
+	v34_660 = Mem644[ss:bp_1097 - 30<i16>:word16] - 1<16>
+	Mem661[ss:bp_1097 - 30<i16>:word16] = v34_660
+	branch v34_660 >= 0<16> l0FDC_095B
+l0FDC_0956:
+	Mem664[ss:bp_1097 - 18<i16>:word16] = 1<16>
+l0FDC_095B:
+	branch Mem745[ss:bp_1097 - 18<i16>:word16] != 0<16> l0FDC_0964
+l0FDC_0961:
+	goto l0FDC_089E
+l0FDC_0964:
+	Mem748[ss:bp_1097 - 30<i16>:word16] = 0xA<16>
+	si_760 = fn0800_240B(si_1028, di_1024, ds_1025, out di_756, out ds_757)
+	Mem767[ds_757:0x5802<16>:word16] = Mem748[ds_757:0x5802<16>:word16] + 1<16>
+	branch Mem767[ds_757:0x5802<16>:word16] != 1<16> l0FDC_097E
+l0FDC_0979:
+	si_760 = fn0800_24C2(si_760, di_756, ds_757, out di_756, out ds_757)
+l0FDC_097E:
+	Mem786[ds_757:0x5802<16>:word16] = Mem767[ds_757:0x5802<16>:word16] & 3<16>
+	fn207F_18EF()
+	si_1028 = fn1F3D_06C3(bp_1097, fn0800_051B(si_760, di_756, ds_757, out di_807, out ds_808), di_807, ds_808, out di_1024, out ds_1025)
+	ax_831 = Mem786[ss:bp_1097 + 6<i16>:word16]
+	branch ax_831 == 0<16> l0FDC_09A9
+l0FDC_0999:
+	branch ax_831 == 1<16> l0FDC_0A0A
+l0FDC_099E:
+	branch ax_831 != 9<16> l0FDC_09A6
+l0FDC_09A3:
+	goto l0FDC_0AA8
+l0FDC_09A6:
+	goto l0FDC_089E
+l0FDC_09A9:
+	Mem838[ss:bp_1097 - 20<i16>:word16] = Mem786[ss:bp_1097 - 20<i16>:word16] + 1<16>
+	es_839 = Mem838[ds_1025:0x5478<16>:selector]
+	branch Mem838[es_839:0x32AE<16>:byte] == 0<8> l0FDC_09C4
+l0FDC_09B8:
+	Mem847[ss:bp_1097 - 20<i16>:word16] = Mem838[ss:bp_1097 - 20<i16>:word16] + (CONVERT(Mem838[es_839:0x32AE<16>:byte], int8, int16) >> 3<8>)
+l0FDC_09C4:
+	branch Mem850[Mem850[ds_1025:0x546C<16>:selector]:0xA44B<16>:word16] >=u 0xC78<16> l0FDC_09D4
+l0FDC_09D1:
+	goto l0FDC_089E
+l0FDC_09D4:
+	branch Mem850[Mem850[ds_1025:0x546E<16>:selector]:0xA44D<16>:word16] >=u 0xC07C<16> l0FDC_09E4
+l0FDC_09E1:
+	goto l0FDC_089E
+l0FDC_09E4:
+	branch Mem850[ss:bp_1097 - 2<i16>:word16] == 0<16> l0FDC_09ED
+l0FDC_09EA:
+	goto l0FDC_089E
+l0FDC_09ED:
+	Mem862[ss:bp_1097 - 2<i16>:word16] = Mem850[ss:bp_1097 - 2<i16>:word16] + 1<16>
+	si_874 = fn1CD3_17C6(bp_1097, si_1028, di_1024, ds_1025, out di_870, out ds_871)
+	sp_875 = <invalid>
+	Mem884[ss:sp_875 - 2<i16>:word16] = ds_871
+	Mem886[ss:sp_875 - 4<i16>:word16] = 0x14A1<16>
+	si_1009 = fn1CD3_17EA(si_874, di_870, ds_871, Mem886[ss:sp_875 - 4<i16>:word16], Mem886[ss:sp_875 - 2<i16>:word16], out di_1005, out ds_1006)
+	sp_1010 = sp_875
+l0FDC_0A02:
+	fn1F3D_0259(si_1009, di_1005, ds_1006, out si_1028, out di_1024, out ds_1025)
+	goto l0FDC_089E
+l0FDC_0A0A:
+	Mem908[ss:bp_1097 - 22<i16>:word16] = (Mem786[Mem786[ds_1025:0x546C<16>:selector]:0xA44B<16>:word16] & 0x7F<16>) >>u 1<16>
+	Mem913[ss:bp_1097 - 26<i16>:word16] = (Mem908[Mem908[ds_1025:0x546E<16>:selector]:0xA44D<16>:word16] & 0x7F<16>) >>u 1<16>
+	ax_916 = CONVERT(Mem913[ds_1025:Mem913[ss:bp_1097 - 34<i16>:word16] + 0x1632<16>:byte], int8, int16)
+	si_1028 = ax_916
+	branch Mem913[ss:bp_1097 - 22<i16>:word16] >= ax_916 - 1<i16> l0FDC_0A3F
+l0FDC_0A3C:
+	goto l0FDC_089E
+l0FDC_0A3F:
+	branch Mem913[ss:bp_1097 - 22<i16>:word16] <= ax_916 l0FDC_0A47
+l0FDC_0A44:
+	goto l0FDC_089E
+l0FDC_0A47:
+	branch CONVERT(Mem913[ds_1025:Mem913[ss:bp_1097 - 34<i16>:word16] + 0x163A<16>:byte], int8, int16) + 1<16> == Mem913[ss:bp_1097 - 26<i16>:word16] l0FDC_0A58
+l0FDC_0A55:
+	goto l0FDC_089E
+l0FDC_0A58:
+	branch Mem913[ss:bp_1097 - 2<i16>:word16] == 0<16> l0FDC_0A61
+l0FDC_0A5E:
+	goto l0FDC_089E
+l0FDC_0A61:
+	Mem932[ss:bp_1097 - 2<i16>:word16] = Mem913[ss:bp_1097 - 2<i16>:word16] + 1<16>
+	si_941 = fn1CD3_17C6(bp_1097, ax_916, di_1024, ds_1025, out di_937, out ds_938)
+	sp_942 = <invalid>
+	branch Mem932[Mem932[ds_938:0x545C<16>:selector]:0xC724<16>:byte] != 0x4C<8> l0FDC_0A84
+l0FDC_0A75:
+	Mem978[ss:sp_942 - 2<i16>:word16] = ds_938
+	Mem980[ss:sp_942 - 4<i16>:word16] = 0x14EF<16>
+	fn1E56_03F5(si_941, di_937, ds_938, Mem980[ss:sp_942 - 4<i16>:segptr32], out si_964, out di_1000, out ds_961)
+	goto l0FDC_0AA0
+l0FDC_0A84:
+	Mem954[ss:sp_942 - 2<i16>:word16] = ds_938
+	Mem956[ss:sp_942 - 4<i16>:word16] = 0x152A<16>
+	fn1E56_03F5(si_941, di_937, ds_938, Mem956[ss:sp_942 - 4<i16>:segptr32], out si_964, out di_1000, out ds_961)
+	Mem975[Mem956[ds_961:0x5470<16>:selector]:Mem956[ss:bp_1097 - 4<i16>:word16] + 0x101D<16>:byte] = Mem956[ss:bp_1097 - 24<i16>:byte]
+l0FDC_0AA0:
+	si_1009 = fn1F3D_086A(bp_1097, si_964, di_1000, ds_961, out di_1005, out ds_1006)
+	sp_1010 = <invalid>
+	goto l0FDC_0A02
+l0FDC_0AA8:
+	ax_1036 = Mem786[ss:bp_1097 - 20<i16>:word16]
+	Mem1038[ss:bp_1097 - 20<i16>:word16] = Mem786[ss:bp_1097 - 20<i16>:word16] + 1<16>
+	branch ax_1036 < 0x50<16> l0FDC_0AE7
+l0FDC_0AB3:
+	sp_1044 = sp_1010 - 2<i16>
+	Mem1045[ss:sp_1044:word16] = 0x88<16>
+	Mem1049[ss:sp_1044 - 2<i16>:word16] = 0<16>
+	si_1028 = fn0FDC_0D49(si_1028, di_1024, ds_1025, Mem1049[ss:sp_1044 - 2<i16>:word16], Mem1049[ss:sp_1044:word16], out di_1024, out ds_1025)
+	Mem1067[ss:sp_1044:word16] = 3<16>
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg4 = <invalid>
+	fn183B_000A(si_1028, di_1024, ds_1025, stackArg4, out si_1906, out di_1907, out ds_1908)
+	Mem1078[ss:bp_1097 - 20<i16>:word16] = 0<16>
+	sp_1070 = <invalid>
+	sp_1010 = sp_1070 + 2<16>
+	branch Mem1078[Mem1078[ds_1025:0x547A<16>:selector]:0x14A<16>:word16] != 0<16> l0FDC_0AE7
+l0FDC_0ADE:
+	Mem1083[ss:bp_1097 - 16<i16>:word16] = 1<16>
+	Mem1084[ss:bp_1097 - 2<i16>:word16] = 1<16>
+l0FDC_0AE7:
+	branch Mem1086[Mem1086[ds_1025:0x547A<16>:selector]:0x14A<16>:word16] != 0<16> l0FDC_0AF6
+l0FDC_0AF3:
+	goto l0FDC_089E
+l0FDC_0AF6:
+	branch Mem1086[Mem1086[ds_1025:0x546E<16>:selector]:0xA44D<16>:word16] == 0x702D<16> l0FDC_0B06
+l0FDC_0B03:
+	goto l0FDC_089E
+l0FDC_0B06:
+	Mem1095[ss:bp_1097 - 28<i16>:word16] = 0<16>
+	goto l0FDC_0B33
+l0FDC_0B0D:
+	bp_1097 = fn11B8_16B2(si_1251, di_1247, ds_1248, out si_1336, out di_1332, out ds_1333)
+	sp_1337 = <invalid>
+	Mem1345[ss:sp_1337 - 2<i16>:word16] = 6<16>
+	si_1353 = fn1E56_0281(si_1336, di_1332, ds_1333, Mem1345[ss:sp_1337 - 2<i16>:word16], out di_1349, out ds_1350)
+	Mem1363[ss:sp_1337 - 2<i16>:word16] = ds_1350
+	Mem1365[ss:sp_1337 - 4<i16>:word16] = 0x1611<16>
+	si_1317 = fn1CD3_17EA(si_1353, di_1349, ds_1350, Mem1365[ss:sp_1337 - 4<i16>:word16], Mem1365[ss:sp_1337 - 2<i16>:word16], out di_1313, out ds_1314)
+	sp_1010 = sp_1337
+l0FDC_0B2B:
+	fn1F3D_0259(si_1317, di_1313, ds_1314, out si_1028, out di_1024, out ds_1025)
+l0FDC_0B30:
+	Mem1405[ss:bp_1097 - 28<i16>:word16] = Mem1402[ss:bp_1097 - 28<i16>:word16] + 1<16>
+l0FDC_0B33:
+	branch Mem1098[ss:bp_1097 - 28<i16>:word16] < 4<16> l0FDC_0B3C
+l0FDC_0B39:
+	goto l0FDC_089E
+l0FDC_0B3C:
+	branch (Mem1098[ss:bp_1097 - 28<i16>:word16] << 2<16>) + 0xD14<16> != Mem1098[Mem1098[ds_1025:0x546C<16>:selector]:0xA44B<16>:word16] l0FDC_0B30
+l0FDC_0B51:
+	si_1109 = Mem1098[ss:bp_1097 - 28<i16>:word16]
+	si_1028 = si_1109 << 1<16>
+	branch Mem1098[ss:bp_1097 - 12<i16> + (si_1109 << 1<16>):word16] != 0<16> l0FDC_0B30
+l0FDC_0B5C:
+	si_1113 = Mem1098[ss:bp_1097 - 28<i16>:word16]
+	Mem1116[ss:bp_1097 - 12<i16> + (si_1113 << 1<16>):word16] = 1<16>
+	sp_1119 = sp_1010 - 2<i16>
+	Mem1120[ss:sp_1119:word16] = 6<16>
+	si_1145 = fn1E56_0388(bp_1097, fn1E56_0281(si_1113 << 1<16>, di_1024, ds_1025, Mem1120[ss:sp_1119:word16], out di_1126, out ds_1127), di_1126, ds_1127, out di_1141, out ds_1142)
+	sp_1146 = <invalid>
+	Mem1155[ss:sp_1146 - 2<i16>:word16] = 0<16>
+	si_1163 = fn1E56_0004(si_1145, di_1141, ds_1142, Mem1155[ss:sp_1146 - 2<i16>:word16], out di_1159, out ds_1160)
+	Mem1174[ss:sp_1146 - 2<i16>:word16] = ds_1160
+	Mem1176[ss:sp_1146 - 4<i16>:word16] = 0x155D<16>
+	fn1E56_03F5(si_1163, di_1159, ds_1160, Mem1176[ss:sp_1146 - 4<i16>:segptr32], out si_1184, out di_1180, out ds_1181)
+	Mem1194[ss:sp_1146 - 2<i16>:word16] = ds_1181
+	Mem1196[ss:sp_1146 - 4<i16>:word16] = 0x159A<16>
+	fn1E56_03F5(si_1184, di_1180, ds_1181, Mem1196[ss:sp_1146 - 4<i16>:segptr32], out si_1204, out di_1200, out ds_1201)
+	fn1F3D_0259(fn1F3D_086A(bp_1097, si_1204, di_1200, ds_1201, out di_1215, out ds_1216), di_1215, ds_1216, out si_1233, out di_1229, out ds_1230)
+	sp_1220 = <invalid>
+	Mem1241[ss:sp_1220 - 2<i16>:word16] = ds_1230
+	Mem1243[ss:sp_1220 - 4<i16>:word16] = 0x15D4<16>
+	fn1E56_03F5(si_1233, di_1229, ds_1230, Mem1243[ss:sp_1220 - 4<i16>:segptr32], out si_1251, out di_1247, out ds_1248)
+	ax_1258 = Mem1243[ss:bp_1097 - 36<i16>:word16]
+	Mem1260[ss:bp_1097 - 36<i16>:word16] = Mem1243[ss:bp_1097 - 36<i16>:word16] + 1<16>
+	branch ax_1258 == 2<16> l0FDC_0BC1
+l0FDC_0BBE:
+	goto l0FDC_0B0D
+l0FDC_0BC1:
+	Mem1266[ss:sp_1220 - 2<i16>:word16] = 0<16>
+	Mem1268[ss:sp_1220 - 4<i16>:word16] = 0<16>
+	bp_1097 = fn0800_48B7(si_1251, di_1247, ds_1248, Mem1268[ss:sp_1220 - 4<i16>:word16], out si_1277, out di_1273, out ds_1274)
+	sp_1278 = <invalid>
+	Mem1289[ss:sp_1278 + 2<16>:word16] = 6<16>
+	si_1297 = fn1E56_0281(si_1277, di_1273, ds_1274, Mem1289[ss:sp_1278 + 2<16>:word16], out di_1293, out ds_1294)
+	Mem1307[ss:sp_1278 + 2<16>:word16] = ds_1294
+	Mem1309[ss:sp_1278:word16] = 0x15F8<16>
+	si_1317 = fn1CD3_17EA(si_1297, di_1293, ds_1294, Mem1309[ss:sp_1278:word16], Mem1309[ss:sp_1278 + 2<i16>:word16], out di_1313, out ds_1314)
+	Mem1326[ss:bp_1097 - 2<i16>:word16] = 1<16>
+	Mem1327[ss:bp_1097 - 16<i16>:word16] = 1<16>
+	sp_1010 = sp_1278 + 4<16>
+	goto l0FDC_0B2B
+l0FDC_0BF2:
+	es_1407 = Mem522[ds_1025:0x545C<16>:selector]
+	Mem1408[es_1407:0xD30D<16>:byte] = 0<8>
+	ax_1409 = Mem1408[ss:bp_1097 + 6<i16>:word16]
+	branch ax_1409 == 0<16> l0FDC_0C18
+l0FDC_0C03:
+	branch ax_1409 == 1<16> l0FDC_0C45
+l0FDC_0C08:
+	branch ax_1409 >= 2<16> l0FDC_0C10
+l0FDC_0C0D:
+	goto l0FDC_0D1D
+l0FDC_0C10:
+	branch ax_1409 <= 7<16> l0FDC_0C80
+l0FDC_0C15:
+	goto l0FDC_0D1D
+l0FDC_0C18:
+	branch Mem1408[es_1407:0xC724<16>:byte] != 0x4C<8> l0FDC_0C24
+l0FDC_0C20:
+	Mem1418[ss:bp_1097 - 20<i16>:word16] = Mem1408[ss:bp_1097 - 20<i16>:word16] - 0x32<16>
+l0FDC_0C24:
+	branch Mem1422[ss:bp_1097 - 2<i16>:word16] == 0<16> l0FDC_0C37
+l0FDC_0C2A:
+	branch Mem1422[ss:bp_1097 - 20<i16>:word16] >= 0xD7<16> l0FDC_0C37
+l0FDC_0C31:
+	Mem1428[es_1407:0xD30D<16>:byte] = 1<8>
+l0FDC_0C37:
+	Mem1436[Mem1431[ds_1025:0x5470<16>:selector]:0x200A<16>:byte] = Mem1431[ss:bp_1097 - 24<i16>:byte]
+	goto l0FDC_0D1D
+l0FDC_0C45:
+	Mem1442[Mem1408[ds_1025:0x5470<16>:selector]:Mem1408[ss:bp_1097 - 4<i16>:word16] + 0x101D<16>:byte] = Mem1408[ss:bp_1097 - 24<i16>:byte]
+	es_1443 = Mem1442[ds_1025:0x545C<16>:selector]
+	branch Mem1442[es_1443:0xC724<16>:byte] == 0x4C<8> l0FDC_0C66
+l0FDC_0C60:
+	Mem1446[es_1443:0xD30D<16>:byte] = 1<8>
+l0FDC_0C66:
+	ax_1450 = CONVERT(Mem1448[es_1443:0xC61C<16>:byte], int8, int16)
+	Mem1453[ss:bp_1097 - 20<i16>:word16] = ax_1450
+	branch ax_1450 >= 3<16> l0FDC_0C76
+l0FDC_0C73:
+	Mem1457[ss:bp_1097 - 20<i16>:word16] = Mem1453[ss:bp_1097 - 20<i16>:word16] + 1<16>
+l0FDC_0C76:
+	Mem1464[es_1443:0xC61C<16>:byte] = Mem1461[ss:bp_1097 - 20<i16>:byte]
+	goto l0FDC_0D1D
+l0FDC_0C80:
+	branch Mem1408[es_1407:0xC724<16>:byte] == 0xFF<8> l0FDC_0C9E
+l0FDC_0C88:
+	branch Mem1408[Mem1408[ds_1025:0x547C<16>:selector]:0x3992<16>:word16] != 0<16> l0FDC_0C9E
+l0FDC_0C94:
+	Mem1475[Mem1408[ds_1025:0x545C<16>:selector]:0xD30D<16>:byte] = 1<8>
+l0FDC_0C9E:
+	branch Mem1478[ss:bp_1097 + 6<i16>:word16] <= 4<16> l0FDC_0CEE
+l0FDC_0CA4:
+	ax_1484 = CONVERT(Mem1478[Mem1478[ds_1025:0x545C<16>:selector]:0xC61B<16>:byte], int8, int16)
+	Mem1485[ss:bp_1097 - 20<i16>:word16] = ax_1484
+	branch ax_1484 >= 4<16> l0FDC_0CC0
+l0FDC_0CB5:
+	Mem1495[ss:bp_1097 - 20<i16>:word16] = Mem1485[ss:bp_1097 - 20<i16>:word16] + (fn207F_0BC0() & 1<16>)
+l0FDC_0CC0:
+	es_1499 = Mem1498[ds_1025:0x545C<16>:selector]
+	Mem1503[es_1499:0xC61B<16>:byte] = Mem1498[ss:bp_1097 - 20<i16>:byte]
+	ax_1505 = CONVERT(Mem1503[es_1499:0xC61C<16>:byte], int8, int16)
+	Mem1506[ss:bp_1097 - 20<i16>:word16] = ax_1505
+	branch ax_1505 >= 4<16> l0FDC_0CE3
+l0FDC_0CD8:
+	Mem1516[ss:bp_1097 - 20<i16>:word16] = Mem1506[ss:bp_1097 - 20<i16>:word16] + (fn207F_0BC0() & 1<16>)
+l0FDC_0CE3:
+	Mem1524[Mem1519[ds_1025:0x545C<16>:selector]:0xC61C<16>:byte] = Mem1519[ss:bp_1097 - 20<i16>:byte]
+l0FDC_0CEE:
+	branch Mem1526[Mem1526[ds_1025:0x5474<16>:selector]:0x3772<16>:word16] == 0<16> l0FDC_0D12
+l0FDC_0CFA:
+	es_1530 = Mem1526[ds_1025:0x545C<16>:selector]
+	Mem1531[es_1530:0xD310<16>:byte] = 1<8>
+	branch Mem1531[es_1530:0xC724<16>:byte] == 0xFF<8> l0FDC_0D12
+l0FDC_0D0C:
+	Mem1534[es_1530:0xD311<16>:byte] = 1<8>
+l0FDC_0D12:
+	Mem1538[Mem1536[ds_1025:0x5474<16>:selector]:0x3772<16>:word16] = 0<16>
+l0FDC_0D1D:
+	Mem1544[Mem1542[ds_1025:0x5476<16>:selector]:0x398E<16>:word16] = 0<16>
+	branch Mem1544[Mem1544[ds_1025:0x547E<16>:selector]:0x4594<16>:word16] == 0<16> l0FDC_0D44
+l0FDC_0D34:
+	sp_1560 = sp_1010 - 2<i16>
+	Mem1564[ss:sp_1560:word16] = Mem1544[Mem1544[ds_1025:0x5480<16>:selector]:0x3FF8<16>:word16]
+	fn0FDC_1D30(si_1028, di_1024, ds_1025, Mem1564[ss:sp_1560:word16], out si_1898, out di_1899, out ds_1900)
+l0FDC_0D44:
+	return
+fn0FDC_0629_exit:
+
+
+word16 fn0FDC_0D49(word16 si, word16 di, selector ds, word16 wArg04, word16 wArg06, word16 & diOut, selector & dsOut)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0FDC_0629
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
+// LiveOut: di:[0..15]-fn0FDC_0629 ds:[0..15]-fn0FDC_0629 si:[0..15]-fn0FDC_0629
+// Trashed: SCZOP ax bx cx di ds dx es si Top
+// Preserved: bp sp
+fn0FDC_0D49_entry:
+	bArg06_879 = SLICE(wArg06, byte, 0) (alias)
+	bArg04 = SLICE(wArg04, byte, 0)
+l0FDC_0D49:
+	fn207F_2FDC(0x1A<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_19, out ds_1168)
+	sp_18 = <invalid>
+	Mem29[ss:sp_18 - 2<i16>:word16] = di_19
+	Mem31[ss:sp_18 - 4<i16>:word16] = si_22
+	Mem39[Mem33[ds_1168:0x5482<16>:selector]:0x3994<16>:byte] = 0<8>
+	sp_221 = sp_18 - 4<i16>
+	bLoc08_1046 = 0<8> (alias)
+	wLoc10_839 = 0<16>
+	ptrLoc06_1095 = 2FE8:02F0 (alias)
+l0FDC_0D70:
+	ax_48 = wLoc10_839 *s 0x1A<16> (alias)
+	Mem54[Mem43[ds_1168:0x545C<16>:selector]:wLoc10_839 *s 0x1A<16> + 0xD390<16>:word16] = Mem43[Mem43[ds_1168:0x5484<16>:selector]:(wLoc10_839 << 1<16>) + 0x4024<16>:word16]
+	Mem58[Mem54[ds_1168:0x545C<16>:selector]:wLoc10_839 *s 0x1A<16> + 0xD392<16>:word16] = Mem54[Mem54[ds_1168:0x5486<16>:selector]:(wLoc10_839 << 1<16>) + 0x4056<16>:word16]
+	v14_59 = wLoc10_839 + 1<16>
+	di_216 = ax_48
+	wLoc10_839 = v14_59
+	branch v14_59 < 8<16> l0FDC_0D70
+l0FDC_0DAA:
+	wLoc10_842 = 0<16>
+l0FDC_0DAF:
+	Mem73[Mem67[ds_1168:0x545C<16>:selector]:wLoc10_842 *s 0x7D<16> + 0xC918<16>:byte] = 0xFF<8>
+	v18_74 = wLoc10_842 + 1<16>
+	wLoc10_842 = v18_74
+	branch v18_74 < 4<16> l0FDC_0DAF
+l0FDC_0DCA:
+	wLoc10_845 = 8<16>
+l0FDC_0DCF:
+	Mem88[Mem82[ds_1168:0x545C<16>:selector]:wLoc10_845 *s 0x11<16> + 0xC614<16>:byte] = 0xFF<8>
+	v19_89 = wLoc10_845 + 1<16>
+	wLoc10_845 = v19_89
+	branch v19_89 < 0x10<16> l0FDC_0DCF
+l0FDC_0DEA:
+	wLoc10_848 = 0<16>
+l0FDC_0DEF:
+	Mem102[Mem96[ds_1168:0x5488<16>:selector]:(wLoc10_1265 << 1<16>) + 0x393C<16>:word16] = 0<16>
+	Mem104[Mem102[ds_1168:0x548A<16>:selector]:(wLoc10_1265 << 1<16>) + 0x406A<16>:word16] = 0<16>
+	Mem107[Mem104[ds_1168:0x5486<16>:selector]:(wLoc10_1265 << 1<16>) + 0x4036<16>:word16] = 0xFFFF<16>
+	Mem109[Mem107[ds_1168:0x5484<16>:selector]:(wLoc10_1265 << 1<16>) + 0x4004<16>:word16] = 0xFFFF<16>
+	v20_110 = wLoc10_1265 + 1<16>
+	wLoc10_848 = v20_110
+	wLoc10_1265 = wLoc10_848
+	branch v20_110 < 0x18<16> l0FDC_0DEF
+l0FDC_0E26:
+	branch wArg06 >= 0x80<16> l0FDC_0E3A
+l0FDC_0E2D:
+	Mem119[Mem111[ds_1168:0x548A<16>:selector]:0x406A<16>:word16] = 1<16>
+	goto l0FDC_0E45
+l0FDC_0E3A:
+	Mem117[Mem111[ds_1168:0x548A<16>:selector]:0x4072<16>:word16] = 1<16>
+l0FDC_0E45:
+	wArg04_867 = wArg04 (alias)
+	branch (bArg04 & 0x80<8>) != 0<8> l0FDC_0E4E
+l0FDC_0E4B:
+	goto l0FDC_0EF5
+l0FDC_0E4E:
+	wLoc12_1067 = (fn207F_0BC0() & 3<16>) + 0xA10<16>
+	branch (SLICE(fn207F_0BC0(), byte, 0) & 1<8>) == 0<8> l0FDC_0E73
+l0FDC_0E65:
+	wLoc12_1067 = (fn207F_0BC0() & 3<16>) + 0xA28<16>
+l0FDC_0E73:
+	wLoc16_1083 = (fn207F_0BC0() & 3<16>) + 0x806F<16>
+	branch Mem164[Mem164[ds_1168:0x548C<16>:selector]:0xE48E<16>:word16] == 0<16> l0FDC_0EAF
+l0FDC_0E8D:
+	wLoc10_865 = 0xD452<16>
+l0FDC_0E92:
+	branch Mem173[Mem173[ds_1168:0x545C<16>:selector]:wLoc10_865 + 0<16>:byte] != 0xFF<8> l0FDC_0EA6
+l0FDC_0EA1:
+	wArg04_867 = 2<16>
+l0FDC_0EA6:
+	v27_183 = wLoc10_865 + 1<16>
+	wLoc10_865 = v27_183
+	branch v27_183 < 0x2BB2<16> l0FDC_0E92
+l0FDC_0EAF:
+	wLoc0A_870 = fn0800_19DD(fp - 2<i16>, wLoc10_1265 << 1<16>, ax_48, ds_1168, out si_1263, out di_216, out ds_1168) - 2<16>
+	sp_221 = <invalid>
+	branch Mem229[Mem229[ds_1168:0x548C<16>:selector]:0xE48E<16>:word16] == 0<16> l0FDC_0ED3
+l0FDC_0EC5:
+	wLoc0A_870 = (fn207F_0BC0() & 3<16>) + 3<16>
+l0FDC_0ED3:
+	bLoc08_1046 = Mem253[ds_1168:wLoc0A_870 + 0x140E<16>:byte] (alias)
+	ptrLoc06_1095 = Mem244[ds_1168:(wLoc0A_870 << 2<16>) + 5090<i16>:word32] (alias)
+	goto l0FDC_0F32
+l0FDC_0EF5:
+	wLoc12_1067 = (fn207F_0BC0() & 7<16>) + 0xC65<16>
+	wLoc16_1083 = (fn207F_0BC0() & 7<16>) + 0xC059<16>
+	branch (bArg06_879 & 0x80<8>) == 0<8> l0FDC_0F21
+l0FDC_0F17:
+	wLoc12_1067 = 0xD10<16>
+	wLoc16_1083 = 0x7024<16>
+l0FDC_0F21:
+	branch Mem282[Mem282[ds_1168:0x545C<16>:selector]:0xD30C<16>:byte] != 2<8> l0FDC_0F32
+l0FDC_0F2D:
+	wLoc12_1067 = 0xC72<16>
+l0FDC_0F32:
+	wLoc0E_883 = 8<16>
+	wArg04_898 = wArg04_867 & 0x7F<16>
+	branch Mem293[Mem293[ds_1168:0x5474<16>:selector]:0x3772<16>:word16] == 0<16> l0FDC_0F4C
+l0FDC_0F47:
+	wArg04_898 = 4<16>
+l0FDC_0F4C:
+	branch wArg04_898 != 0<16> l0FDC_0F55
+l0FDC_0F52:
+	goto l0FDC_1208
+l0FDC_0F55:
+	wLoc10_901 = 0<16>
+	goto l0FDC_11D9
+l0FDC_0F5D:
+	ax_569 = SEQ(ah_570, Mem329[Mem329[ds_1168:0x548E<16>:selector]:wLoc14_907 + 0x561<16>:byte]) (alias)
+l0FDC_0F69:
+	dx_ax_578 = wLoc10_901 *s32 0x7D<16>
+	Mem585[Mem329[ds_1168:0x545C<16>:selector]:SLICE(dx_ax_578, word16, 0) + wLoc14_907 + 0xC918<16>:byte] = SLICE(ax_569, byte, 0)
+	ah_570 = SLICE(dx_ax_578, byte, 8) (alias)
+	branch Mem585[Mem585[ds_1168:0x548C<16>:selector]:0xE48E<16>:word16] == 0<16> l0FDC_0FA6
+l0FDC_0F8B:
+	branch wLoc10_901 == 0<16> l0FDC_0FA6
+l0FDC_0F91:
+	Mem595[Mem585[ds_1168:0x545C<16>:selector]:wLoc14_907 + 0xC995<16>:byte] = Mem585[Mem585[ds_1168:0x5490<16>:selector]:wLoc14_907 + 0x5DE<16>:byte]
+l0FDC_0FA6:
+	wLoc14_907 = wLoc14_907 + 1<16>
+l0FDC_0FA9:
+	branch wLoc14_907 >= 0x7D<16> l0FDC_0FC6
+l0FDC_0FAF:
+	branch Mem329[Mem329[ds_1168:0x5474<16>:selector]:0x3772<16>:word16] != 0<16> l0FDC_0F5D
+l0FDC_0FBB:
+	ax_569 = SEQ(ah_570, Mem329[CONVERT(wLoc14_907, word16, uipr32) + ptrLoc06_1095:byte]) (alias)
+	goto l0FDC_0F69
+l0FDC_0FC6:
+	branch Mem329[Mem329[ds_1168:0x5474<16>:selector]:0x3772<16>:word16] == 0<16> l0FDC_0FDC
+l0FDC_0FD2:
+	Mem337[Mem329[ds_1168:0x545C<16>:selector]:0xD30F<16>:byte] = 0<8>
+l0FDC_0FDC:
+	es_340 = Mem339[ds_1168:0x545C<16>:selector]
+	branch Mem339[es_340:0xD30F<16>:byte] <= 6<8> l0FDC_0FEE
+l0FDC_0FE8:
+	Mem343[es_340:0xD30F<16>:byte] = 6<8>
+l0FDC_0FEE:
+	wLoc14_909 = 0x11<16>
+	goto l0FDC_100D
+l0FDC_0FF5:
+	Mem548[Mem534[ds_1168:0x545C<16>:selector]:wLoc10_901 *s 0x7D<16> + wLoc14_909 + 0xC918<16>:byte] = 0<8>
+l0FDC_100A:
+	wLoc14_909 = wLoc14_909 + 1<16>
+l0FDC_100D:
+	branch wLoc14_909 > 0x1B<16> l0FDC_1049
+l0FDC_1013:
+	al_526 = Mem351[ds_1168:CONVERT(Mem351[Mem351[ds_1168:0x545C<16>:selector]:0xD30F<16>:byte], int8, int16) + 0x165A<16>:byte]
+	ptrLoc1C_940 = SEQ(0x3092<16>, wLoc10_901 *s 0x7D<16> + wLoc14_909 + 0xC918<16>) (alias)
+	branch Mem534[ptrLoc1C_940:byte] <=u al_526 l0FDC_0FF5
+l0FDC_1044:
+	Mem550[ptrLoc1C_940:byte] = Mem534[ptrLoc1C_940:byte] - al_526
+	goto l0FDC_100A
+l0FDC_1049:
+	branch Mem351[Mem351[ds_1168:0x545C<16>:selector]:0xD30F<16>:byte] > 4<8> l0FDC_1058
+l0FDC_1055:
+	goto l0FDC_10EF
+l0FDC_1058:
+	wLoc14_911 = 0<16>
+l0FDC_105D:
+	ptrLoc1C_916 = SEQ(0x3092<16>, wLoc10_901 *s 0x7D<16> + ((fn207F_0BC0() & 0x1F<16>) + 0x34<16>) + 0xC918<16>) (alias)
+	branch Mem375[ptrLoc1C_916:byte] == 0<8> l0FDC_108C
+l0FDC_1088:
+	Mem382[ptrLoc1C_916:byte] = Mem375[ptrLoc1C_916:byte] | 0x80<8>
+l0FDC_108C:
+	v46_389 = wLoc14_911 + 1<16>
+	wLoc14_911 = v46_389
+	branch v46_389 < 5<16> l0FDC_105D
+l0FDC_1095:
+	branch Mem390[Mem390[ds_1168:0x545C<16>:selector]:0xD30F<16>:byte] <= 5<8> l0FDC_10EF
+l0FDC_10A1:
+	Mem416[Mem390[ds_1168:0x545C<16>:selector]:wLoc10_901 *s 0x7D<16> + 0xC98D<16>:byte] = SLICE(fn207F_0BC0(), byte, 0) & 1<8>
+	Mem435[Mem416[ds_1168:0x545C<16>:selector]:wLoc10_901 *s 0x7D<16> + 0xC98F<16>:byte] = SLICE(fn207F_0BC0(), byte, 0) & 1<8>
+	Mem454[Mem435[ds_1168:0x545C<16>:selector]:wLoc10_901 *s 0x7D<16> + 0xC98E<16>:byte] = SLICE(fn207F_0BC0(), byte, 0) & 1<8>
+l0FDC_10EF:
+	Mem462[Mem457[ds_1168:0x5492<16>:selector]:wLoc10_901 + 0xD56A<16>:byte] = bLoc08_1046
+	Mem465[Mem462[ds_1168:0x5494<16>:selector]:wLoc10_901 + 0x40A6<16>:byte] = 0xC<8>
+	es_469 = Mem465[ds_1168:0x5496<16>:selector]
+	Mem470[es_469:(wLoc10_901 << 2<16>) + 0x226<16>:word16] = 0x2A0<16>
+	Mem471[es_469:(wLoc10_901 << 2<16>) + 0x228<16>:word16] = 0x2FE8<16>
+	Mem475[Mem471[ds_1168:0x5498<16>:selector]:wLoc10_901 + 0x392C<16>:byte] = 6<8>
+	Mem478[Mem475[ds_1168:0x549A<16>:selector]:wLoc10_901 + 0x3978<16>:byte] = 6<8>
+	Mem482[Mem478[ds_1168:0x548A<16>:selector]:(wLoc10_901 << 1<16>) + 0x4082<16>:word16] = 1<16>
+	Mem488[Mem482[ds_1168:0x5484<16>:selector]:(wLoc10_901 << 1<16>) + 0x401C<16>:word16] = CONVERT(Mem482[ds_1168:wLoc10_901 + 0x1642<16>:byte], int8, int16) + wLoc12_1067
+	Mem494[Mem488[ds_1168:0x5486<16>:selector]:(wLoc10_901 << 1<16>) + 0x404E<16>:word16] = CONVERT(Mem488[ds_1168:wLoc10_901 + 0x164E<16>:byte], int8, int16) + wLoc16_1083
+	branch Mem494[Mem494[ds_1168:0x548C<16>:selector]:0xE48E<16>:word16] == 0<16> l0FDC_11D6
+l0FDC_1182:
+	branch wLoc10_901 == 0<16> l0FDC_11D6
+l0FDC_1188:
+	Mem501[Mem494[ds_1168:0x5494<16>:selector]:0x40A7<16>:byte] = 0x10<8>
+	Mem503[Mem501[ds_1168:0x5492<16>:selector]:0xD56B<16>:byte] = 0<8>
+	es_504 = Mem503[ds_1168:0x5496<16>:selector]
+	Mem505[es_504:0x22A<16>:word16] = 0x4DD8<16>
+	Mem506[es_504:0x22C<16>:word16] = 0x3EDB<16>
+	Mem509[Mem506[ds_1168:0x5498<16>:selector]:0x392D<16>:byte] = 2<8>
+	Mem511[Mem509[ds_1168:0x549A<16>:selector]:0x3979<16>:byte] = 2<8>
+	Mem513[Mem511[ds_1168:0x5484<16>:selector]:0x401E<16>:word16] = 0xA06<16>
+	Mem515[Mem513[ds_1168:0x5486<16>:selector]:0x4050<16>:word16] = 0x8066<16>
+l0FDC_11D6:
+	wLoc10_901 = wLoc10_901 + 1<16>
+l0FDC_11D9:
+	bLoc10_905 = SLICE(wLoc10_901, byte, 0) (alias)
+	branch wLoc10_901 >= wArg04_898 l0FDC_1208
+l0FDC_11E1:
+	dx_ax_313 = wLoc0E_883 *s32 0x11<16>
+	ax_314 = SLICE(dx_ax_313, word16, 0) (alias)
+	es_317 = Mem308[ds_1168:0x545C<16>:selector]
+	Mem318[es_317:ax_314 + 0xC614<16>:byte] = 0<8>
+	Mem322[es_317:ax_314 + 0xC620<16>:byte] = bLoc10_905 + 4<8>
+	ah_570 = SLICE(dx_ax_313, byte, 8) (alias)
+	wLoc0E_883 = wLoc0E_883 + 1<16>
+	wLoc14_907 = 0<16>
+	goto l0FDC_0FA9
+l0FDC_1208:
+	branch wArg06 != 0<16> l0FDC_1211
+l0FDC_120E:
+	goto l0FDC_1345
+l0FDC_1211:
+	v31_611 = (wArg06 & 0x7F<16>) + wLoc0E_883
+	wArg06_1117 = v31_611
+	branch v31_611 <= 0x10<16> l0FDC_1226
+l0FDC_1221:
+	wArg06_1117 = 0x10<16>
+l0FDC_1226:
+	wLoc10_979 = wLoc0E_883
+	goto l0FDC_133A
+l0FDC_122F:
+	es_632 = Mem623[ds_1168:0x545C<16>:selector]
+	Mem633[es_632:wLoc10_979 *s 0x11<16> + 0xC614<16>:byte] = 0<8>
+	Mem634[es_632:wLoc10_979 *s 0x11<16> + 0xC620<16>:byte] = 8<8>
+	Mem637[Mem634[ds_1168:0x5492<16>:selector]:wLoc10_979 + 0xD566<16>:byte] = 0xFE<8>
+	Mem640[Mem637[ds_1168:0x5494<16>:selector]:wLoc10_979 + 0x40A2<16>:byte] = 0x1C<8>
+	es_644 = Mem640[ds_1168:0x5496<16>:selector]
+	Mem645[es_644:(wLoc10_979 << 2<16>) + 0x216<16>:word16] = 0x2E0<16>
+	Mem646[es_644:(wLoc10_979 << 2<16>) + 0x218<16>:word16] = 0x2FE8<16>
+	Mem650[Mem646[ds_1168:0x5498<16>:selector]:wLoc10_979 + 0x3928<16>:byte] = 6<8>
+	Mem653[Mem650[ds_1168:0x549A<16>:selector]:wLoc10_979 + 0x3974<16>:byte] = 6<8>
+	Mem657[Mem653[ds_1168:0x548A<16>:selector]:(wLoc10_979 << 1<16>) + 0x407A<16>:word16] = 1<16>
+	Mem663[Mem657[ds_1168:0x5484<16>:selector]:(wLoc10_979 << 1<16>) + 0x4014<16>:word16] = CONVERT(Mem657[ds_1168:wLoc10_979 + 0x1642<16>:byte], int8, int16) + wLoc12_1067
+	Mem670[Mem663[ds_1168:0x5486<16>:selector]:(wLoc10_979 << 1<16>) + 0x4046<16>:word16] = CONVERT(Mem663[ds_1168:wLoc10_979 + 0x164E<16>:byte], int8, int16) + wLoc16_1083
+	wLoc14_984 = 0<16>
+l0FDC_12D1:
+	Mem693[Mem685[ds_1168:0x545C<16>:selector]:wLoc10_979 *s 0x11<16> + wLoc14_984 + 0xC618<16>:byte] = SLICE(fn207F_0BC0(), byte, 0) & 1<8>
+	v36_694 = wLoc14_984 + 1<16>
+	wLoc14_984 = v36_694
+	branch v36_694 <= 5<16> l0FDC_12D1
+l0FDC_12F7:
+	cl_723 = SLICE(fn0800_19DD(fp - 2<i16>, wLoc10_979 << 1<16>, di_216, ds_1168, out si_1264, out di_216, out ds_1168), byte, 0) (alias)
+	es_722 = Mem695[ds_1168:0x545C<16>:selector]
+	Mem724[es_722:wLoc10_979 *s 0x11<16> + 0xC615<16>:byte] = cl_723
+	Mem733[es_722:wLoc10_979 *s 0x11<16> + 0xC623<16>:byte] = Mem724[es_722:wLoc10_979 *s 0x11<16> + 0xC615<16>:byte] *s 0xA<8>
+	Mem749[Mem733[ds_1168:0x545C<16>:selector]:wLoc10_979 *s 0x11<16> + 0xC61F<16>:byte] = SLICE(CONVERT(fn207F_0BC0(), int16, word32) %s 0xE<16>, byte, 0)
+	sp_221 = <invalid>
+	wLoc10_979 = wLoc10_979 + 1<16>
+l0FDC_133A:
+	branch wLoc10_979 >= wArg06_1117 l0FDC_1345
+l0FDC_1342:
+	goto l0FDC_122F
+l0FDC_1345:
+	si_780 = Mem779[ss:sp_221:word16]
+	diOut = Mem779[ss:sp_221 + 2<i16>:word16]
+	dsOut = ds_1168
+	return si_780
+fn0FDC_0D49_exit:
+
+
+word16 fn0FDC_134B(word16 si, word16 di, selector ds, word16 & diOut, selector & dsOut)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0FDC_0629
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15]
+// LiveOut: di:[0..15]-fn0FDC_0629 ds:[0..15]-fn0FDC_0629 si:[0..15]-fn0FDC_0629
+// Trashed: SCZDOP ax bx cx di ds dx es si Top
+// Preserved: bp sp
+fn0FDC_134B_entry:
+l0FDC_134B:
+	fn207F_2FDC(2<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_19, out ds_20)
+	sp_18 = <invalid>
+	branch Mem7[Mem7[ds_20:0x545C<16>:selector]:0xC620<16>:byte] == 8<8> l0FDC_1395
+l0FDC_1362:
+	Mem42[Mem7[ds_20:0x546C<16>:selector]:0xA44B<16>:word16] = Mem7[Mem7[ds_20:0x5484<16>:selector]:0x4004<16>:word16]
+	es_37 = Mem42[ds_20:0x546E<16>:selector]
+	Mem48[es_37:0xA44D<16>:word16] = Mem42[Mem42[ds_20:0x5486<16>:selector]:0x4036<16>:word16] + 2<16>
+	branch (Mem48[es_37:0xA44D<16>:byte] & 0x80<8>) == 0<8> l0FDC_13B5
+l0FDC_138C:
+	Mem54[es_37:0xA44D<16>:word16] = Mem48[es_37:0xA44D<16>:word16] + 0xF80<16>
+	goto l0FDC_13B5
+l0FDC_1395:
+	Mem34[Mem7[ds_20:0x546C<16>:selector]:0xA44B<16>:word16] = Mem7[Mem7[ds_20:0x5484<16>:selector]:0x400C<16>:word16]
+	es_37 = Mem34[ds_20:0x546E<16>:selector]
+	Mem38[es_37:0xA44D<16>:word16] = Mem34[Mem34[ds_20:0x5486<16>:selector]:0x403E<16>:word16]
+l0FDC_13B5:
+	Mem62[ss:sp_18 - 2<i16>:word16] = Mem57[es_37:0xA44D<16>:word16]
+	Mem67[ss:sp_18 - 4<i16>:word16] = Mem62[Mem62[ds_20:0x546C<16>:selector]:0xA44B<16>:word16]
+	fn207F_1314(Mem67[ss:sp_18 - 4<i16>:word16], Mem67[ss:sp_18 - 2<i16>:word16])
+	fn207F_18EF()
+	si_113 = fn1F3D_06C3(fp - 2<i16>, fn0800_051B(si_22, di_19, ds_20, out di_95, out ds_96), di_95, ds_96, out di_109, out ds_110)
+	diOut = di_109
+	dsOut = ds_110
+	return si_113
+fn0FDC_134B_exit:
+
+
+selector fn0FDC_13DE(word16 si, word16 di, selector ds, word16 wArg04, word16 wArg06)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn1CD3_0004
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
+// LiveOut: ds:[0..15]-fn1CD3_0004
+// Trashed: SCZOP ax bx cx di ds dx es si Top
+// Preserved: D bp sp
+fn0FDC_13DE_entry:
+l0FDC_13DE:
+	fn207F_2FDC(0x1C<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_19, out ds_20)
+	sp_18 = <invalid>
+	Mem29[ss:sp_18 - 2<i16>:word16] = di_19
+	Mem31[ss:sp_18 - 4<i16>:word16] = si_22
+	sp_242 = sp_18 - 4<i16>
+	wLoc18_466 = 0<16>
+l0FDC_13F0:
+	Mem38[ss:fp - 18<i16> + (wLoc18_466 << 1<16>):word16] = 0xFFFF<16>
+	v10_39 = wLoc18_466 + 1<16>
+	si_236 = wLoc18_466 << 1<16>
+	wLoc18_466 = v10_39
+	branch v10_39 < 8<16> l0FDC_13F0
+l0FDC_1403:
+	wLoc16_469 = 0<16>
+	wLoc18_470 = 0<16>
+	goto l0FDC_1432
+l0FDC_140D:
+	branch Mem49[Mem49[ds_20:0x545C<16>:selector]:wLoc18_470 *s 0x11<16> + 0xC614<16>:byte] == 0xFF<8> l0FDC_142F
+l0FDC_1421:
+	Mem66[ss:fp - 18<i16> + (wLoc16_469 << 1<16>):word16] = wLoc18_470
+	wLoc16_469 = wLoc16_469 + 1<16>
+	si_236 = wLoc16_469 << 1<16>
+l0FDC_142F:
+	wLoc18_470 = wLoc18_470 + 1<16>
+l0FDC_1432:
+	branch wLoc18_470 < 8<16> l0FDC_140D
+l0FDC_1438:
+	wArg06_590 = wArg06 (alias)
+	goto l0FDC_15D7
+l0FDC_143B:
+	branch wLoc16_469 > 1<16> l0FDC_1444
+l0FDC_1441:
+	goto l0FDC_1545
+l0FDC_1444:
+	si_98 = fn1E56_0388(fp - 2<i16>, si_236, di_19, ds_20, out di_94, out ds_95)
+	sp_99 = <invalid>
+	Mem107[ss:sp_99 - 2<i16>:word16] = ds_95
+	Mem109[ss:sp_99 - 4<i16>:word16] = 0x1661<16>
+	fn1E56_03F5(si_98, di_94, ds_95, Mem109[ss:sp_99 - 4<i16>:segptr32], out si_117, out di_113, out ds_114)
+	es_128 = Mem109[ds_114:0x549C<16>:selector]
+	Mem131[ss:sp_99 - 2<i16>:word16] = Mem109[es_128:(wArg04 << 2<16>) + 0x4E8C<16>:word16]
+	Mem134[ss:sp_99 - 4<i16>:word16] = Mem131[es_128:(wArg04 << 2<16>) + 0x4E8A<16>:word16]
+	fn1E56_03F5(si_117, di_113, ds_114, Mem134[ss:sp_99 - 4<i16>:segptr32], out si_142, out di_138, out ds_139)
+	Mem152[ss:sp_99 - 2<i16>:word16] = ds_139
+	Mem154[ss:sp_99 - 4<i16>:word16] = 0x1667<16>
+	fn1E56_03F5(si_142, di_138, ds_139, Mem154[ss:sp_99 - 4<i16>:segptr32], out si_162, out di_158, out ds_159)
+	sp_168 = sp_99
+	wLoc18_479 = 0<16>
+	goto l0FDC_1508
+l0FDC_1488:
+	si_162 = wLoc18_479 << 1<16>
+	al_251 = Mem173[Mem173[ds_159:0x545C<16>:selector]:Mem173[ss:fp - 18<i16> + (wLoc18_479 << 1<16>):word16] *s 0x11<16> + 0xC614<16>:byte]
+	branch al_251 == 0xFF<8> l0FDC_1505
+l0FDC_14A5:
+	ax_255 = CONVERT(al_251, int8, int16)
+	es_260 = Mem252[ds_159:0x549E<16>:selector]
+	sp_262 = sp_168 - 2<i16>
+	Mem263[ss:sp_262:word16] = Mem252[es_260:(ax_255 << 2<16>) + 0x1CC<16>:word16]
+	Mem266[ss:sp_262 - 2<i16>:word16] = Mem263[es_260:(ax_255 << 2<16>) + 0x1CA<16>:word16]
+	fn1E56_03F5(wLoc18_479 << 1<16>, di_158, ds_159, Mem266[ss:sp_262 - 2<i16>:segptr32], out si_595, out di_270, out ds_271)
+	Mem282[Mem266[ds_271:0x5468<16>:selector]:0x3748<16>:word16] = 0xA<16>
+	ax_291 = CONVERT(Mem282[Mem282[ds_271:0x545C<16>:selector]:Mem282[ss:fp - 18<i16> + (wLoc18_479 << 1<16>):word16] *s 0x11<16> + 0xC621<16>:byte], int8, int16)
+	es_296 = Mem282[ds_271:0x549C<16>:selector]
+	Mem299[ss:sp_262:word16] = Mem282[es_296:(ax_291 << 2<16>) + 0x4E8C<16>:word16]
+	Mem302[ss:sp_262 - 2<i16>:word16] = Mem299[es_296:(ax_291 << 2<16>) + 0x4E8A<16>:word16]
+	fn1E56_03F5(wLoc18_479 << 1<16>, di_270, ds_271, Mem302[ss:sp_262 - 2<i16>:segptr32], out si_310, out di_306, out ds_307)
+	si_162 = fn1CD3_181E(fp - 2<i16>, si_310, di_306, ds_307, out di_158, out ds_159)
+	sp_168 = <invalid>
+l0FDC_1505:
+	wLoc18_479 = wLoc18_479 + 1<16>
+l0FDC_1508:
+	branch wLoc18_479 >= wLoc16_469 l0FDC_1513
+l0FDC_1510:
+	goto l0FDC_1488
+l0FDC_1513:
+	sp_179 = sp_168 - 2<i16>
+	Mem181[ss:sp_179:word16] = ds_159
+	Mem183[ss:sp_179 - 2<i16>:word16] = 0x166D<16>
+	fn1E56_03F5(si_162, di_158, ds_159, Mem183[ss:sp_179 - 2<i16>:segptr32], out si_194, out di_190, out ds_191)
+	Mem204[ss:sp_179:word16] = wArg06_590
+	si_212 = fn1F3D_0053(si_194, di_190, ds_191, Mem204[ss:sp_179:word16], out di_208, out ds_209)
+	Mem225[Mem204[ds_209:0x54A0<16>:selector]:0xD6<16>:word16] = wLoc16_469 + 1<16>
+	Mem228[ss:sp_179:word16] = 4<16>
+	ax_229 = fn1E56_0B5E(si_212, di_208, ds_209, Mem228[ss:sp_179:word16], out si_236, out di_19, out ds_20)
+	sp_242 = sp_179 + 2<16>
+	goto l0FDC_155A
+l0FDC_1545:
+	es_338 = Mem75[ds_20:0x545C<16>:selector]
+	Mem340[es_338:0xC621<16>:byte] = bArg04_486
+	Mem342[es_338:0xC622<16>:byte] = bArg06_487
+	ax_229 = wLoc16_469
+l0FDC_155A:
+	branch ax_229 != wLoc16_469 l0FDC_156C
+l0FDC_1565:
+	wArg04 = 0<16>
+	goto l0FDC_15D7
+l0FDC_156C:
+	ax_353 = Mem347[ss:fp - 18<i16> + (ax_229 << 1<16>):word16]
+	es_360 = Mem354[ds_20:0x545C<16>:selector]
+	ax_362 = CONVERT(Mem354[es_360:ax_353 *s 0x11<16> + 0xC621<16>:byte], int8, int16)
+	al_364 = Mem363[es_360:ax_353 *s 0x11<16> + 0xC622<16>:byte]
+	Mem368[es_360:ax_353 *s 0x11<16> + 0xC621<16>:byte] = bArg04_486
+	Mem370[es_360:ax_353 *s 0x11<16> + 0xC622<16>:byte] = bArg06_487
+	di_19 = ax_229 << 1<16>
+	si_236 = ax_353 *s 0x11<16>
+	branch wArg04 != ax_362 l0FDC_15CB
+l0FDC_15AD:
+	sp_376 = sp_242 - 2<i16>
+	Mem377[ss:sp_376:word16] = 0x14<16>
+	Mem381[ss:sp_376 - 2<i16>:word16] = 0<16>
+	Mem384[ss:sp_376 - 4<i16>:word16] = ds_20
+	Mem386[ss:sp_376 - 6<i16>:word16] = 0x168B<16>
+	fn1F3D_0259(fn1F3D_086A(fp - 2<i16>, fn0800_2867(ax_353 *s 0x11<16>, ax_229 << 1<16>, ds_20, Mem386[ss:sp_376 - 6<i16>:word32], Mem386[ss:sp_376 - 2<i16>:word16], Mem386[ss:sp_376:word16], out di_391, out ds_392), di_391, ds_392, out di_406, out ds_407), di_406, ds_407, out si_236, out di_19, out ds_20)
+	sp_242 = <invalid>
+l0FDC_15CB:
+	wArg04 = ax_362
+	wArg06_590 = CONVERT(al_364, uint8, uint16) (alias)
+l0FDC_15D7:
+	bArg06_487 = SLICE(wArg06_590, byte, 0) (alias)
+	bArg04_486 = SLICE(wArg04, byte, 0) (alias)
+	branch wArg04 == 0<16> l0FDC_15E0
+l0FDC_15DD:
+	goto l0FDC_143B
+l0FDC_15E0:
+	return ds_20
+fn0FDC_13DE_exit:
+
+
+word16 fn0FDC_15E6(word16 si, word16 di, selector ds, word16 wArg04, word16 & diOut, selector & dsOut)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0DAB_094B
+//      fn1CD3_0004
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15] Stack +0004:[0..15]
+// LiveOut: di:[0..15]-fn0DAB_094B ds:[0..15]-fn0DAB_094B si:[0..15]-fn0DAB_094B
+// Trashed: SCZOP ax bx cx di ds dx es si Top
+// Preserved: bp sp
+fn0FDC_15E6_entry:
+l0FDC_15E6:
+	fn207F_2FDC(0x1E<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_19, out ds_20)
+	sp_18 = <invalid>
+	Mem29[ss:sp_18 - 2<i16>:word16] = si_22
+	sp_220 = sp_18 - 2<i16>
+	wLoc18_435 = 0<16>
+l0FDC_15F7:
+	Mem36[ss:fp - 18<i16> + (wLoc18_435 << 1<16>):word16] = 0xFFFF<16>
+	v9_37 = wLoc18_435 + 1<16>
+	si_214 = wLoc18_435 << 1<16>
+	wLoc18_435 = v9_37
+	branch v9_37 < 8<16> l0FDC_15F7
+l0FDC_160A:
+	wLoc16_438 = 0<16>
+	wLoc18_439 = 0<16>
+	goto l0FDC_1639
+l0FDC_1614:
+	branch Mem47[Mem47[ds_20:0x545C<16>:selector]:wLoc18_439 *s 0x11<16> + 0xC614<16>:byte] == 0xFF<8> l0FDC_1636
+l0FDC_1628:
+	Mem64[ss:fp - 18<i16> + (wLoc16_438 << 1<16>):word16] = wLoc18_439
+	wLoc16_438 = wLoc16_438 + 1<16>
+	si_214 = wLoc16_438 << 1<16>
+l0FDC_1636:
+	wLoc18_439 = wLoc18_439 + 1<16>
+l0FDC_1639:
+	branch wLoc18_439 < 8<16> l0FDC_1614
+l0FDC_163F:
+	goto l0FDC_17AB
+l0FDC_1642:
+	branch wLoc16_438 > 1<16> l0FDC_164B
+l0FDC_1648:
+	goto l0FDC_1734
+l0FDC_164B:
+	si_94 = fn1E56_0388(fp - 2<i16>, si_214, di_19, ds_20, out di_90, out ds_91)
+	sp_95 = <invalid>
+	Mem103[ss:sp_95 - 2<i16>:word16] = ds_91
+	Mem105[ss:sp_95 - 4<i16>:word16] = 0x16AE<16>
+	fn1E56_03F5(si_94, di_90, ds_91, Mem105[ss:sp_95 - 4<i16>:segptr32], out si_113, out di_109, out ds_110)
+	Mem129[ss:sp_95 - 2<i16>:word16] = 0x3EDB<16>
+	Mem131[ss:sp_95 - 4<i16>:word16] = wArg04 *s 0x11<16> + 0x2ED8<16>
+	fn1E56_03F5(si_113, di_109, ds_110, Mem131[ss:sp_95 - 4<i16>:segptr32], out si_139, out di_135, out ds_136)
+	Mem149[ss:sp_95 - 2<i16>:word16] = ds_136
+	Mem151[ss:sp_95 - 4<i16>:word16] = 0x16B4<16>
+	fn1E56_03F5(si_139, di_135, ds_136, Mem151[ss:sp_95 - 4<i16>:segptr32], out si_159, out di_155, out ds_156)
+	sp_165 = sp_95
+	wLoc18_448 = 0<16>
+	goto l0FDC_1702
+l0FDC_168A:
+	si_159 = wLoc18_448 << 1<16>
+	al_229 = Mem170[Mem170[ds_156:0x545C<16>:selector]:Mem170[ss:fp - 18<i16> + (wLoc18_448 << 1<16>):word16] *s 0x11<16> + 0xC614<16>:byte]
+	branch al_229 == 0xFF<8> l0FDC_16FF
+l0FDC_16A7:
+	ax_233 = CONVERT(al_229, int8, int16)
+	es_238 = Mem230[ds_156:0x549E<16>:selector]
+	sp_240 = sp_165 - 2<i16>
+	Mem241[ss:sp_240:word16] = Mem230[es_238:(ax_233 << 2<16>) + 0x1CC<16>:word16]
+	Mem244[ss:sp_240 - 2<i16>:word16] = Mem241[es_238:(ax_233 << 2<16>) + 0x1CA<16>:word16]
+	fn1E56_03F5(wLoc18_448 << 1<16>, di_155, ds_156, Mem244[ss:sp_240 - 2<i16>:segptr32], out si_539, out di_248, out ds_249)
+	Mem260[Mem244[ds_249:0x5468<16>:selector]:0x3748<16>:word16] = 0xA<16>
+	ax_269 = Mem260[Mem260[ds_249:0x545C<16>:selector]:Mem260[ss:fp - 18<i16> + (wLoc18_448 << 1<16>):word16] *s 0x11<16> + 0xC61F<16>:byte] *s16 0x11<8>
+	Mem275[ss:sp_240:word16] = 0x3EDB<16>
+	Mem277[ss:sp_240 - 2<i16>:word16] = ax_269 + 0x2ED8<16>
+	fn1E56_03F5(wLoc18_448 << 1<16>, di_248, ds_249, Mem277[ss:sp_240 - 2<i16>:segptr32], out si_285, out di_281, out ds_282)
+	si_159 = fn1CD3_181E(fp - 2<i16>, si_285, di_281, ds_282, out di_155, out ds_156)
+	sp_165 = <invalid>
+l0FDC_16FF:
+	wLoc18_448 = wLoc18_448 + 1<16>
+l0FDC_1702:
+	branch wLoc18_448 >= wLoc16_438 l0FDC_170D
+l0FDC_170A:
+	goto l0FDC_168A
+l0FDC_170D:
+	sp_176 = sp_165 - 2<i16>
+	Mem178[ss:sp_176:word16] = ds_156
+	Mem180[ss:sp_176 - 2<i16>:word16] = 0x16BA<16>
+	fn1E56_03F5(si_159, di_155, ds_156, Mem180[ss:sp_176 - 2<i16>:segptr32], out si_191, out di_187, out ds_188)
+	Mem203[Mem180[ds_188:0x54A0<16>:selector]:0xD6<16>:word16] = wLoc16_438 + 1<16>
+	Mem206[ss:sp_176:word16] = 4<16>
+	ax_207 = fn1E56_0B5E(si_191, di_187, ds_188, Mem206[ss:sp_176:word16], out si_214, out di_19, out ds_20)
+	sp_220 = sp_176 + 2<16>
+	goto l0FDC_1747
+l0FDC_1734:
+	Mem315[Mem73[ds_20:0x545C<16>:selector]:0xC61F<16>:byte] = bArg04_454
+	ax_207 = wLoc16_438
+	wArg04 = 0<16> (alias)
+l0FDC_1747:
+	bArg04_462 = SLICE(wArg04, byte, 0) (alias)
+	branch ax_207 != wLoc16_438 l0FDC_1759
+l0FDC_1752:
+	wArg04 = 0<16>
+	goto l0FDC_17AB
+l0FDC_1759:
+	ptrLoc20_460 = SEQ(0x3092<16>, Mem321[ss:fp - 18<i16> + (ax_207 << 1<16>):word16] *s 0x11<16> + 0xC61F<16>) (alias)
+	ax_337 = CONVERT(Mem332[ptrLoc20_460:byte], int8, int16)
+	Mem340[ptrLoc20_460:byte] = bArg04_462
+	si_214 = ax_207 << 1<16>
+	branch wArg04 != ax_337 l0FDC_17A5
+l0FDC_1787:
+	sp_346 = sp_220 - 2<i16>
+	Mem347[ss:sp_346:word16] = 0x14<16>
+	Mem351[ss:sp_346 - 2<i16>:word16] = 0<16>
+	Mem355[ss:sp_346 - 4<i16>:word16] = ds_20
+	Mem357[ss:sp_346 - 6<i16>:word16] = 0x16C2<16>
+	fn1F3D_0259(fn1F3D_086A(fp - 2<i16>, fn0800_2867(ax_207 << 1<16>, di_19, ds_20, Mem357[ss:sp_346 - 6<i16>:word32], Mem357[ss:sp_346 - 2<i16>:word16], Mem357[ss:sp_346:word16], out di_363, out ds_364), di_363, ds_364, out di_378, out ds_379), di_378, ds_379, out si_214, out di_19, out ds_20)
+	sp_220 = <invalid>
+l0FDC_17A5:
+	wArg04 = ax_337
+l0FDC_17AB:
+	bArg04_454 = SLICE(wArg04, byte, 0) (alias)
+	branch wArg04 == 0<16> l0FDC_17B4
+l0FDC_17B1:
+	goto l0FDC_1642
+l0FDC_17B4:
+	si_77 = Mem73[ss:sp_220:word16]
+	diOut = di_19
+	dsOut = ds_20
+	return si_77
+fn0FDC_15E6_exit:
+
+
+selector fn0FDC_17B9(word16 si, word16 di, selector ds)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn1CD3_0004
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15]
+// LiveOut: ds:[0..15]-fn1CD3_0004
+// Trashed: SCZOP ax bx cx di ds dx es si Top
+// Preserved: bp sp
+fn0FDC_17B9_entry:
+l0FDC_17B9:
+	fn207F_2FDC(0x12<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_19, out ds_20)
+	sp_18 = <invalid>
+	Mem29[ss:sp_18 - 2<i16>:word16] = di_19
+	Mem31[ss:sp_18 - 4<i16>:word16] = si_22
+	wLoc0C_517 = 0<16>
+	goto l0FDC_17D0
+l0FDC_17CD:
+	wLoc0C_517 = wLoc0C_517 + 1<16>
+l0FDC_17D0:
+	branch wLoc0C_517 >= 8<16> l0FDC_17EC
+l0FDC_17D6:
+	branch Mem35[Mem35[ds_20:0x5460<16>:selector]:wLoc0C_517 + 0x4602<16>:byte] != Mem35[Mem35[ds_20:0x545C<16>:selector]:0xD319<16>:byte] l0FDC_17CD
+l0FDC_17EC:
+	fn1E56_0388(fp - 2<i16>, si_22, di_19, ds_20, out di_619, out ds_267)
+	sp_65 = <invalid>
+	wLoc0E_520 = 0<16>
+	wLoc14_521 = 0<16>
+l0FDC_17FB:
+	Mem77[ss:fp - 10<i16> + wLoc14_625:byte] = 0<8>
+	ax_80 = wLoc14_625 *s 0x1A<16> (alias)
+	si_270 = ax_80
+	es_83 = Mem77[ds_267:0x545C<16>:selector]
+	branch Mem77[es_83:wLoc14_625 *s 0x1A<16> + 0xD399<16>:byte] == 0<8> l0FDC_183C
+l0FDC_1816:
+	ax_92 = CONVERT(Mem77[es_83:wLoc14_625 *s 0x1A<16> + 0xD398<16>:byte], uint8, uint16) >> 4<8> & 7<16>
+	wLoc10 = ax_92
+	branch ax_92 != wLoc0C_517 l0FDC_183C
+l0FDC_1832:
+	Mem98[ss:fp - 10<i16> + wLoc14_625:byte] = 1<8>
+	wLoc0E_520 = wLoc0E_520 + 1<16>
+l0FDC_183C:
+	v24_105 = wLoc14_625 + 1<16>
+	di_120 = wLoc14_625
+	wLoc14_521 = v24_105
+	wLoc14_625 = wLoc14_521
+	branch v24_105 < 8<16> l0FDC_17FB
+l0FDC_1845:
+	branch wLoc0E_520 != 0<16> l0FDC_1853
+l0FDC_184B:
+	Mem461[ss:sp_65 - 2<i16>:word16] = ds_267
+	Mem463[ss:sp_65 - 4<i16>:word16] = 0x16DE<16>
+	sp_455 = sp_65 - 4<i16>
+	goto l0FDC_19CE
+l0FDC_1853:
+	Mem116[ss:sp_65 - 2<i16>:word16] = ds_267
+	Mem118[ss:sp_65 - 4<i16>:word16] = 0x170E<16>
+	fn1E56_03F5(ax_80, wLoc14_625, ds_267, Mem118[ss:sp_65 - 4<i16>:segptr32], out si_620, out di_126, out ds_127)
+	sp_136 = sp_65
+	wLoc14_531 = 0<16>
+l0FDC_1865:
+	si_142 = wLoc14_531
+	branch Mem141[ss:fp - 10<i16> + wLoc14_531:byte] == 0<8> l0FDC_188A
+l0FDC_186E:
+	sp_152 = sp_136 - 2<i16>
+	Mem153[ss:sp_152:word16] = 0x246C<16>
+	Mem155[ss:sp_152 - 2<i16>:word16] = (wLoc14_531 << 4<8>) + 0xA461<16>
+	fn1E56_03F5(wLoc14_531, di_126, ds_127, Mem155[ss:sp_152 - 2<i16>:segptr32], out si_166, out di_162, out ds_163)
+	si_142 = fn1CD3_181E(fp - 2<i16>, si_166, di_162, ds_163, out di_126, out ds_127)
+	sp_136 = <invalid>
+l0FDC_188A:
+	v27_191 = wLoc14_531 + 1<16>
+	wLoc14_531 = v27_191
+	branch v27_191 < 8<16> l0FDC_1865
+l0FDC_1893:
+	sp_197 = sp_136 - 2<i16>
+	Mem199[ss:sp_197:word16] = ds_127
+	Mem201[ss:sp_197 - 2<i16>:word16] = 0x1728<16>
+	fn1E56_03F5(si_142, di_126, ds_127, Mem201[ss:sp_197 - 2<i16>:segptr32], out si_212, out di_208, out ds_209)
+	Mem224[Mem201[ds_209:0x54A0<16>:selector]:0x1D6<16>:word16] = wLoc0E_520 + 1<16>
+	Mem227[ss:sp_197:word16] = 0x14<16>
+	ax_228 = fn1E56_0B5E(si_212, di_208, ds_209, Mem227[ss:sp_197:word16], out si_235, out di_231, out ds_232)
+	wLoc12_537 = ax_228
+	branch ax_228 != wLoc0E_520 l0FDC_18C6
+l0FDC_18C3:
+	goto l0FDC_19DB
+l0FDC_18C6:
+	es_246 = Mem242[ds_232:0x545C<16>:selector]
+	branch Mem242[es_246:0xD339<16>:byte] == 0<8> l0FDC_18F3
+l0FDC_18D2:
+	branch wLoc10 != 7<16> l0FDC_18F3
+l0FDC_18D8:
+	branch ax_228 != 0<16> l0FDC_18F3
+l0FDC_18DE:
+	branch bLoc0A == 0<8> l0FDC_18F3
+l0FDC_18E4:
+	Mem457[es_246:0xD33A<16>:byte] = 1<8>
+	Mem458[es_246:0xD399<16>:byte] = 0<8>
+	goto l0FDC_19DB
+l0FDC_18F3:
+	Mem256[es_246:0xD33A<16>:byte] = 0<8>
+	si_270 = fn1E56_0388(fp - 2<i16>, si_235, di_231, ds_232, out di_120, out ds_267)
+	sp_271 = <invalid>
+	branch Mem256[Mem256[ds_267:0x545C<16>:selector]:0xD310<16>:byte] == 0<8> l0FDC_190D
+l0FDC_190A:
+	goto l0FDC_19B2
+l0FDC_190D:
+	Mem282[ss:sp_271 - 2<i16>:word16] = ds_267
+	Mem284[ss:sp_271 - 4<i16>:word16] = 0x172D<16>
+	fn1E56_03F5(si_270, di_120, ds_267, Mem284[ss:sp_271 - 4<i16>:segptr32], out si_292, out di_288, out ds_289)
+	ax_301 = CONVERT(Mem284[Mem284[ds_289:0x545C<16>:selector]:0xD319<16>:byte], int8, int16)
+	es_306 = Mem284[ds_289:0x54A2<16>:selector]
+	Mem309[ss:sp_271 - 2<i16>:word16] = Mem284[es_306:(ax_301 << 2<16>) + 0x4E34<16>:word16]
+	Mem312[ss:sp_271 - 4<i16>:word16] = Mem309[es_306:(ax_301 << 2<16>) + 0x4E32<16>:word16]
+	fn1E56_03F5(si_292, di_288, ds_289, Mem312[ss:sp_271 - 4<i16>:segptr32], out si_320, out di_316, out ds_317)
+	Mem330[ss:sp_271 - 2<i16>:word16] = ds_317
+	Mem332[ss:sp_271 - 4<i16>:word16] = 0x1761<16>
+	fn1E56_03F5(si_320, di_316, ds_317, Mem332[ss:sp_271 - 4<i16>:segptr32], out si_623, out di_336, out ds_232)
+	wLoc14_552 = 0<16>
+	goto l0FDC_1956
+l0FDC_1953:
+	wLoc14_552 = wLoc14_552 + 1<16>
+l0FDC_1956:
+	branch wLoc14_552 >= 8<16> l0FDC_19DB
+l0FDC_195C:
+	branch Mem351[ss:fp - 10<i16> + wLoc14_552:byte] == 0<8> l0FDC_1953
+l0FDC_1965:
+	v32_357 = wLoc12_537 - 1<16>
+	wLoc12_537 = v32_357
+	branch v32_357 >= 0<16> l0FDC_1953
+l0FDC_196A:
+	bx_374 = (CONVERT(Mem358[Mem358[ds_232:0x545C<16>:selector]:wLoc14_552 *s 0x1A<16> + 0xD398<16>:byte], uint8, uint16) & 7<16>) << 4<8>
+	Mem380[ss:sp_271 - 2<i16>:word16] = 0x246C<16>
+	Mem382[ss:sp_271 - 4<i16>:word16] = bx_374 + 0xA561<16>
+	fn1E56_03F5(wLoc14_552, di_336, ds_232, Mem382[ss:sp_271 - 4<i16>:segptr32], out si_392, out di_388, out ds_389)
+	Mem402[ss:sp_271 - 2<i16>:word16] = ds_389
+	Mem404[ss:sp_271 - 4<i16>:word16] = 0x178F<16>
+	fn1E56_03F5(si_392, di_388, ds_389, Mem404[ss:sp_271 - 4<i16>:segptr32], out si_412, out di_408, out ds_409)
+	fn1F3D_0259(si_412, di_408, ds_409, out si_624, out di_336, out ds_232)
+	wLoc14_552 = 8<16>
+	goto l0FDC_1953
+l0FDC_19B2:
+	bx_447 = (fn207F_0BC0() & 7<16>) << 1<16>
+	es_450 = Mem256[ds_267:0x54A4<16>:selector]
+	Mem453[ss:sp_271 - 2<i16>:word16] = Mem256[es_450:(bx_447 << 1<16>) + 0x4E60<16>:word16]
+	Mem456[ss:sp_271 - 4<i16>:word16] = Mem453[es_450:(bx_447 << 1<16>) + 0x4E5E<16>:word16]
+	sp_455 = sp_271 - 4<i16>
+l0FDC_19CE:
+	fn1E56_03F5(si_270, di_120, ds_267, Mem470[ss:sp_455:segptr32], out si_478, out di_474, out ds_475)
+	fn1F3D_0259(si_478, di_474, ds_475, out si_621, out di_622, out ds_232)
+l0FDC_19DB:
+	return ds_232
+fn0FDC_17B9_exit:
+
+
+selector fn0FDC_19E1(word16 bp, word16 si, word16 di, selector ds)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn1CD3_0004
+// MayUse:  bp:[0..15] cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15]
+// LiveOut: ds:[0..15]-fn1CD3_0004 sp:[0..15]-fn1CD3_0004
+// Trashed: SCZOP ax bx cx di ds dx es si sp Top
+// Preserved:
+fn0FDC_19E1_entry:
+l0FDC_19E1:
+	fn207F_2FDC(0<16>, bp, si, di, ds, wLoc04, wLoc02, out si_23, out di_20, out ds_21)
+	sp_19 = <invalid>
+	Mem31[ss:sp_19 - 2<i16>:word16] = ds_21
+	Mem33[ss:sp_19 - 4<i16>:word16] = 0x1791<16>
+	fn1E56_03F5(si_23, di_20, ds_21, Mem33[ss:sp_19 - 4<i16>:segptr32], out si_55, out di_56, out ds_38)
+	return ds_38
+fn0FDC_19E1_exit:
+
+
+word16 fn0FDC_19F6(word16 si, word16 di, selector ds, segptr32 ptrArg04, word16 & siOut, word16 & diOut, selector & dsOut)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0FDC_01C0
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15] Stack +0004:[0..31]
+// LiveOut: ax:[0..15]-fn0FDC_01C0 di:[0..15]-fn0FDC_01C0 ds:[0..15]-fn0FDC_01C0 si:[0..15]-fn0FDC_01C0
+// Trashed: SCZOP ax bx cx di ds dx es si Top
+// Preserved: bp sp
+fn0FDC_19F6_entry:
+l0FDC_19F6:
+	fn207F_2FDC(4<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_19, out ds_20)
+	ax_43 = CONVERT(Mem7[ptrArg04:byte], uint8, uint16) | SEQ(Mem33[ptrArg04 + 1<i16>:byte], 0<8>)
+	siOut = si_22
+	diOut = di_19
+	dsOut = ds_20
+	return ax_43
+fn0FDC_19F6_exit:
+
+
+selector fn0FDC_1A26(word16 si, word16 di, selector ds)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn1CD3_0004
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15]
+// LiveOut: ds:[0..15]-fn1CD3_0004
+// Trashed: SCZOP ax bx cx di ds dx es si Top
+// Preserved: bp sp
+fn0FDC_1A26_entry:
+l0FDC_1A26:
+	fn207F_2FDC(4<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_19, out ds_20)
+	sp_18 = <invalid>
+	Mem29[ss:sp_18 - 2<i16>:word16] = si_22
+	wLoc06_167 = 0<16>
+l0FDC_1A37:
+	ax_36 = wLoc06_167 *s 0x7D<16> (alias)
+	Mem43[Mem34[ds_20:0x54A6<16>:selector]:wLoc06_167 + 0x430E<16>:byte] = Mem34[Mem34[ds_20:0x545C<16>:selector]:wLoc06_167 *s 0x7D<16> + 0xC79D<16>:byte]
+	Mem48[Mem43[ds_20:0x54A8<16>:selector]:wLoc06_167 + 0x3FFA<16>:byte] = Mem43[Mem43[ds_20:0x545C<16>:selector]:wLoc06_167 *s 0x7D<16> + 0xC79E<16>:byte]
+	v14_49 = wLoc06_167 + 1<16>
+	wLoc06_167 = v14_49
+	branch v14_49 < 4<16> l0FDC_1A37
+l0FDC_1A72:
+	si_62 = fn1E56_0388(fp - 2<i16>, ax_36, di_19, ds_20, out di_58, out ds_59)
+	sp_63 = <invalid>
+	Mem71[ss:sp_63 - 2<i16>:word16] = ds_59
+	Mem73[ss:sp_63 - 4<i16>:word16] = 0x17A5<16>
+	fn1E56_03F5(si_62, di_58, ds_59, Mem73[ss:sp_63 - 4<i16>:segptr32], out si_81, out di_77, out ds_78)
+	fn1467_0B98(si_81, di_77, ds_78, out di_195, out ds_93)
+	wLoc06_170 = 0<16>
+l0FDC_1A8E:
+	Mem111[Mem105[ds_93:0x54AA<16>:selector]:wLoc06_170 + 0x3780<16>:byte] = Mem105[Mem105[ds_93:0x545C<16>:selector]:wLoc06_170 + 0xC724<16>:byte]
+	es_118 = Mem111[ds_93:0x545C<16>:selector]
+	Mem121[es_118:wLoc06_170 + 0xC724<16>:byte] = Mem111[es_118:Mem111[Mem111[ds_93:0x54AC<16>:selector]:0x68<16>:word16] *s 0x7D<16> + wLoc06_170 + 0xC724<16>:byte]
+	v17_122 = wLoc06_170 + 1<16>
+	wLoc06_170 = v17_122
+	branch v17_122 < 0x7D<16> l0FDC_1A8E
+l0FDC_1ACE:
+	es_128 = Mem123[ds_93:0x545C<16>:selector]
+	Mem130[es_128:0xC724<16>:byte] = Mem123[es_128:Mem123[Mem123[ds_93:0x54AC<16>:selector]:0x68<16>:word16] + 0xD452<16>:byte]
+	wLoc06_173 = 1<16>
+l0FDC_1AE9:
+	es_141 = Mem135[ds_93:0x545C<16>:selector]
+	Mem142[es_141:wLoc06_173 *s 0x11<16> + 0xC620<16>:byte] = 3<8>
+	Mem143[es_141:wLoc06_173 *s 0x11<16> + 0xC60F<16>:byte] = 3<8>
+	Mem147[Mem143[ds_93:0x54AE<16>:selector]:wLoc06_173 + 0x3FE9<16>:byte] = Mem143[es_141:wLoc06_173 *s 0x11<16> + 0xC614<16>:byte]
+	es_148 = Mem147[ds_93:0x545C<16>:selector]
+	Mem149[es_148:wLoc06_173 *s 0x11<16> + 0xC614<16>:byte] = 0xFF<8>
+	v18_150 = wLoc06_173 + 1<16>
+	wLoc06_173 = v18_150
+	branch v18_150 < 8<16> l0FDC_1AE9
+l0FDC_1B25:
+	Mem154[es_148:0xC79D<16>:byte] = 0<8>
+	Mem155[es_148:0xC79E<16>:byte] = 0xFF<8>
+	Mem157[Mem155[ds_93:0x548C<16>:selector]:0xE48E<16>:word16] = 0<16>
+	return ds_93
+fn0FDC_1A26_exit:
+
+
+selector fn0FDC_1B41(word16 si, word16 di, selector ds)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn1CD3_0004
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15]
+// LiveOut: ds:[0..15]-fn1CD3_0004
+// Trashed: SCZOP ax bx cx di ds dx es si Top
+// Preserved: bp sp
+fn0FDC_1B41_entry:
+l0FDC_1B41:
+	fn207F_2FDC(2<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_235, out ds_20)
+	sp_18 = <invalid>
+	Mem29[ss:sp_18 - 2<i16>:word16] = si_22
+	branch Mem29[Mem29[ds_20:0x548C<16>:selector]:0xE48E<16>:word16] == 0<16> l0FDC_1B83
+l0FDC_1B59:
+	wLoc04_183 = 0<16>
+	goto l0FDC_1B63
+l0FDC_1B60:
+	wLoc04_183 = wLoc04_183 + 1<16>
+l0FDC_1B63:
+	branch wLoc04_183 < 0x7D<16> l0FDC_1B6C
+l0FDC_1B69:
+	goto l0FDC_1C5B
+l0FDC_1B6C:
+	Mem127[Mem119[ds_20:0x545C<16>:selector]:wLoc04_183 + 0xC724<16>:byte] = Mem119[Mem119[ds_20:0x54AA<16>:selector]:wLoc04_183 + 0x3780<16>:byte]
+	goto l0FDC_1B60
+l0FDC_1B83:
+	wLoc04_174 = 0<16>
+l0FDC_1B88:
+	es_50 = Mem36[ds_20:0x545C<16>:selector]
+	Mem52[es_50:Mem36[Mem36[ds_20:0x54AC<16>:selector]:0x68<16>:word16] *s 0x7D<16> + wLoc04_174 + 0xC724<16>:byte] = Mem36[Mem36[ds_20:0x545C<16>:selector]:wLoc04_174 + 0xC724<16>:byte]
+	v17_53 = wLoc04_174 + 1<16>
+	wLoc04_174 = v17_53
+	branch v17_53 < 0x7D<16> l0FDC_1B88
+l0FDC_1BB9:
+	branch Mem54[es_50:0xC724<16>:byte] != 0xFF<8> l0FDC_1BD4
+l0FDC_1BC1:
+	Mem62[Mem54[ds_20:0x545C<16>:selector]:Mem54[Mem54[ds_20:0x54AC<16>:selector]:0x68<16>:word16] + 0xD452<16>:byte] = 0xFF<8>
+l0FDC_1BD4:
+	Mem71[Mem64[ds_20:0x545C<16>:selector]:Mem64[Mem64[ds_20:0x54AC<16>:selector]:0x68<16>:word16] *s 0x7D<16> + 0xC724<16>:byte] = 0xFF<8>
+	branch Mem71[Mem71[ds_20:0x54AC<16>:selector]:0x68<16>:word16] == 0<16> l0FDC_1C1B
+l0FDC_1BF8:
+	wLoc04_177 = 0<16>
+l0FDC_1BFD:
+	Mem86[Mem80[ds_20:0x545C<16>:selector]:wLoc04_177 + 0xC724<16>:byte] = Mem80[Mem80[ds_20:0x54AA<16>:selector]:wLoc04_177 + 0x3780<16>:byte]
+	v20_87 = wLoc04_177 + 1<16>
+	wLoc04_177 = v20_87
+	branch v20_87 < 0x7D<16> l0FDC_1BFD
+l0FDC_1C1B:
+	wLoc04_180 = 0<16>
+l0FDC_1C20:
+	Mem106[Mem97[ds_20:0x545C<16>:selector]:wLoc04_180 *s 0x7D<16> + 0xC79D<16>:byte] = Mem97[Mem97[ds_20:0x54A6<16>:selector]:wLoc04_180 + 0x430E<16>:byte]
+	Mem111[Mem106[ds_20:0x545C<16>:selector]:wLoc04_180 *s 0x7D<16> + 0xC79E<16>:byte] = Mem106[Mem106[ds_20:0x54A8<16>:selector]:wLoc04_180 + 0x3FFA<16>:byte]
+	v21_112 = wLoc04_180 + 1<16>
+	wLoc04_180 = v21_112
+	branch v21_112 < 4<16> l0FDC_1C20
+l0FDC_1C5B:
+	wLoc04_186 = 1<16>
+l0FDC_1C60:
+	es_143 = Mem137[ds_20:0x545C<16>:selector]
+	Mem144[es_143:wLoc04_186 *s 0x11<16> + 0xC620<16>:byte] = 8<8>
+	Mem145[es_143:wLoc04_186 *s 0x11<16> + 0xC60F<16>:byte] = 8<8>
+	Mem150[Mem145[ds_20:0x545C<16>:selector]:wLoc04_186 *s 0x11<16> + 0xC614<16>:byte] = Mem145[Mem145[ds_20:0x54AE<16>:selector]:wLoc04_186 + 0x3FE9<16>:byte]
+	v22_151 = wLoc04_186 + 1<16>
+	wLoc04_186 = v22_151
+	branch v22_151 < 8<16> l0FDC_1C60
+l0FDC_1C96:
+	return ds_20
+fn0FDC_1B41_exit:
+
+
+selector fn0FDC_1C9B(word16 si, word16 di, selector ds)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn1CD3_0004
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15]
+// LiveOut: ds:[0..15]-fn1CD3_0004
+// Trashed: SCZOP ax bx cx di ds dx es si Top
+// Preserved: bp sp
+fn0FDC_1C9B_entry:
+l0FDC_1C9B:
+	fn207F_2FDC(2<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_106, out ds_20)
+	sp_18 = <invalid>
+	Mem29[ss:sp_18 - 2<i16>:word16] = si_22
+	wLoc04_83 = 0<16>
+l0FDC_1CAC:
+	Mem39[Mem33[ds_20:0x54AA<16>:selector]:wLoc04_83 + 0x3780<16>:byte] = Mem33[Mem33[ds_20:0x545C<16>:selector]:wLoc04_83 + 0xC724<16>:byte]
+	Mem44[Mem39[ds_20:0x545C<16>:selector]:wLoc04_83 + 0xC724<16>:byte] = Mem39[Mem39[ds_20:0x54B0<16>:selector]:wLoc04_83 + 0x2F0<16>:byte]
+	v12_45 = wLoc04_83 + 1<16>
+	wLoc04_83 = v12_45
+	branch v12_45 < 0x7D<16> l0FDC_1CAC
+l0FDC_1CDF:
+	wLoc04_86 = 1<16>
+l0FDC_1CE4:
+	es_59 = Mem53[ds_20:0x545C<16>:selector]
+	Mem60[es_59:wLoc04_86 *s 0x11<16> + 0xC620<16>:byte] = 3<8>
+	Mem61[es_59:wLoc04_86 *s 0x11<16> + 0xC60F<16>:byte] = 3<8>
+	Mem65[Mem61[ds_20:0x54AE<16>:selector]:wLoc04_86 + 0x3FE9<16>:byte] = Mem61[es_59:wLoc04_86 *s 0x11<16> + 0xC614<16>:byte]
+	Mem67[Mem65[ds_20:0x545C<16>:selector]:wLoc04_86 *s 0x11<16> + 0xC614<16>:byte] = 0xFF<8>
+	v17_68 = wLoc04_86 + 1<16>
+	wLoc04_86 = v17_68
+	branch v17_68 < 8<16> l0FDC_1CE4
+l0FDC_1D20:
+	Mem73[Mem69[ds_20:0x548C<16>:selector]:0xE48E<16>:word16] = 1<16>
+	return ds_20
+fn0FDC_1C9B_exit:
+
+
+word16 fn0FDC_1D30(word16 si, word16 di, selector ds, word16 wArg04, word16 & siOut, word16 & diOut, selector & dsOut)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// Called from:
+//      fn0FDC_0008
+//      fn0FDC_0629
+// MayUse:  cs:[0..15] di:[0..15] ds:[0..15] si:[0..15] ss:[0..15] Stack +0004:[0..15]
+// LiveOut: bp:[0..15]-fn0FDC_0008 di:[0..15]-fn0FDC_0008 ds:[0..15]-fn0FDC_0008 si:[0..15]-fn0FDC_0008 sp:[0..15]-fn0FDC_0008
+// Trashed: SCZOP ax bp bx cx di ds dx es si sp Top
+// Preserved:
+fn0FDC_1D30_entry:
+l0FDC_1D30:
+	fn207F_2FDC(2<16>, fp - 2<i16>, si, di, ds, wLoc06, wLoc04, out si_22, out di_19, out ds_20)
+	sp_18 = <invalid>
+	Mem30[ss:sp_18 - 2<i16>:word16] = 1<16>
+	si_38 = fn0800_28CC(si_22, di_19, ds_20, Mem30[ss:sp_18 - 2<i16>:word16], out di_100, out ds_35)
+	branch wArg04 < 2<16> l0FDC_1D53
+l0FDC_1D4D:
+	branch wArg04 < 0x11<16> l0FDC_1D5F
+l0FDC_1D53:
+	Mem53[ss:sp_18 - 2<i16>:word16] = 2<16>
+	si_38 = fn0800_28CC(si_38, di_100, ds_35, Mem53[ss:sp_18 - 2<i16>:word16], out di_100, out ds_35)
+l0FDC_1D5F:
+	Mem80[Mem74[ds_35:0x5480<16>:selector]:0x3FF8<16>:word16] = wArg04
+	Mem85[ss:sp_18 - 2<i16>:word16] = 0x3092<16>
+	Mem87[ss:sp_18 - 4<i16>:word16] = 0xA0<16>
+	es_92 = Mem87[ds_35:0x54B2<16>:selector]
+	Mem95[ss:sp_18 - 6<i16>:word16] = Mem87[es_92:(wArg04 << 2<16>) + 0x4EC4<16>:word16]
+	Mem98[ss:sp_18 - 8<i16>:word16] = Mem95[es_92:(wArg04 << 2<16>) + 0x4EC2<16>:word16]
+	bp_103 = fn1F3D_063B(si_38, di_100, ds_35, out si_110, out di_106, out ds_107)
+	Mem119[ss:bp_103 - 2<i16>:word16] = 0<16>
+l0FDC_1D94:
+	bx_123 = Mem122[ss:bp_103 - 2<i16>:word16]
+	es_125 = Mem122[ds_107:0x54B4<16>:selector]
+	Mem129[es_125:bx_123 + 0xA0<16>:byte] = Mem122[es_125:bx_123 + 0xA0<16>:byte] + 0x29<8> ^ 0xE9<8>
+	Mem131[ss:bp_103 - 2<i16>:word16] = Mem129[ss:bp_103 - 2<i16>:word16] + 1<16>
+	branch Mem131[ss:bp_103 - 2<i16>:word16] < 0x2328<16> l0FDC_1D94
+l0FDC_1DB3:
+	Mem135[Mem131[ds_107:0x547E<16>:selector]:0x4594<16>:word16] = 0<16>
+	bp_137 = Mem135[ss:bp_103:word16]
+	siOut = si_110
+	diOut = di_106
+	dsOut = ds_107
+	return bp_137
+fn0FDC_1D30_exit:
+
+
