@@ -513,7 +513,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_A8C6_1A8C6(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1A8CA: goto label_19EF_09DA_1A8CA;break; // Target of external jump from 0x1A8BC
+      case 0x1A8CA: goto label_1000_A8CA_1A8CA; // was label_19EF_09DA_1A8CA;break; // Target of external jump from 0x1A8BC
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
@@ -1562,10 +1562,10 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AL = Alu8.Shr(AL, 0x1);
     CheckExternalEvents(cs12, 0xBE1);
     // RCL byte ptr ES:[SI + 0x2],0x1 (19EF_0BDD / 0x1AACD)
-    UInt8[ES, (ushort)(SI + 0x2)] = Alu.Rcl8(UInt8[ES, (ushort)(SI + 0x2)], 0x1);
+    UInt8[ES, (ushort)(SI + 0x2)] = Alu8.Rcl(UInt8[ES, (ushort)(SI + 0x2)], 0x1);
     CheckExternalEvents(cs12, 0xBE5);
     // RCL byte ptr ES:[SI + 0x1],0x1 (19EF_0BE1 / 0x1AAD1)
-    UInt8[ES, (ushort)(SI + 0x1)] = Alu.Rcl8(UInt8[ES, (ushort)(SI + 0x1)], 0x1);
+    UInt8[ES, (ushort)(SI + 0x1)] = Alu8.Rcl(UInt8[ES, (ushort)(SI + 0x1)], 0x1);
     CheckExternalEvents(cs12, 0xBE6);
     // CMC  (19EF_0BE5 / 0x1AAD5)
     CarryFlag = !CarryFlag;
@@ -1578,7 +1578,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AL = Alu8.Shr(AL, 0x1);
     CheckExternalEvents(cs12, 0xBEE);
     // RCR byte ptr ES:[SI],0x1 (19EF_0BEB / 0x1AADB)
-    UInt8[ES, (ushort)(SI)] = Alu.Rcr8(UInt8[ES, (ushort)(SI)], 0x1);
+    UInt8[ES, (ushort)(SI)] = Alu8.Rcr(UInt8[ES, (ushort)(SI)], 0x1);
     CheckExternalEvents(cs12, 0xBF1);
     // MOV AL,byte ptr ES:[SI] (19EF_0BEE / 0x1AADE)
     AL = UInt8[ES, (ushort)(SI)];
@@ -3864,7 +3864,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_B122_1B122(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1B141: goto label_19EF_1251_1B141;break; // Target of external jump from 0x1B13D, 0x1B11F
+      case 0x1B141: goto label_1000_B141_1B141; // was label_19EF_1251_1B141;break; // Target of external jump from 0x1B13D, 0x1B11F
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }

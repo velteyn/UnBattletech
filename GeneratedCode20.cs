@@ -5,7 +5,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_CB38_1CB38(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1CB6B: goto label_19EF_2C7B_1CB6B;break; // Target of external jump from 0x1CB35
+      case 0x1CB6B: goto label_1000_CB6B_1CB6B; break; //was label_19EF_2C7B_1CB6B;break; // Target of external jump from 0x1CB35
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
@@ -416,7 +416,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_CC29_1CC29(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1CC4E: goto label_19EF_2D5E_1CC4E;break; // Target of external jump from 0x1CBFD
+      case 0x1CC4E: goto label_1000_CC4E_1CC4E; break;// was label_19EF_2D5E_1CC4E;break; // Target of external jump from 0x1CBFD
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
@@ -1877,8 +1877,8 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_D031_1D031(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1D0AE: goto label_19EF_31BE_1D0AE;break; // Target of external jump from 0x1D027
-      case 0: break; // 0 is the entry point ghidra detected, just after this switch
+        case 0x1D0AE: goto label_1000_D0AE_1D0AE;break; //was label_19EF_31BE_1D0AE - Target of external jump from 0x1D027
+            case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
     label_1000_D031_1D031:
@@ -3590,8 +3590,8 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_D3A9_1D3A9(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1D416: goto label_19EF_3526_1D416;break; // Target of external jump from 0x1D366
-      case 0: break; // 0 is the entry point ghidra detected, just after this switch
+        case 0x1D416: goto label_1000_D416_1D416;break; // was label_19EF_3526_1D416 - Target of external jump from 0x1D366
+        case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
     label_1000_D3A9_1D3A9:

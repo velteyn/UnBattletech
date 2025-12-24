@@ -486,7 +486,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AX = 0x34DE;
     CheckExternalEvents(cs11, 0xD9);
     // DIV CX (19BB_00D7 / 0x19C87)
-    uint op1Div19BB_00D7 = (DX << 16 | AX);
+    uint op1Div19BB_00D7 = (uint)(DX << 16 | AX);
     ushort op2Div19BB_00D7 = CX;
     ushort? resDiv19BB_00D7 = Alu16.Div(op1Div19BB_00D7, op2Div19BB_00D7);
     if(resDiv19BB_00D7 == null) {
@@ -1222,7 +1222,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     CL = 0x3;
     CheckExternalEvents(cs7, 0x9F90);
     // ROR DX,CL (1000_9F8E / 0x19F8E)
-    DX = Alu.Ror16(DX, CL);
+    DX = Alu16.Ror(DX, CL);
     CheckExternalEvents(cs7, 0x9F94);
     // MOV word ptr [0x252],DX (1000_9F90 / 0x19F90)
     UInt16[DS, 0x252] = DX;
@@ -3557,28 +3557,28 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     AL = Alu8.Shl(AL, 0x1);
     CheckExternalEvents(cs7, 0xA4B3);
     // RCL DH,0x1 (1000_A4B1 / 0x1A4B1)
-    DH = Alu.Rcl8(DH, 0x1);
+    DH = Alu8.Rcl(DH, 0x1);
     CheckExternalEvents(cs7, 0xA4B5);
     // SHL AL,0x1 (1000_A4B3 / 0x1A4B3)
     // AL <<= 0x1;
     AL = Alu8.Shl(AL, 0x1);
     CheckExternalEvents(cs7, 0xA4B7);
     // RCL DL,0x1 (1000_A4B5 / 0x1A4B5)
-    DL = Alu.Rcl8(DL, 0x1);
+    DL = Alu8.Rcl(DL, 0x1);
     CheckExternalEvents(cs7, 0xA4B9);
     // SHL AL,0x1 (1000_A4B7 / 0x1A4B7)
     // AL <<= 0x1;
     AL = Alu8.Shl(AL, 0x1);
     CheckExternalEvents(cs7, 0xA4BB);
     // RCL BH,0x1 (1000_A4B9 / 0x1A4B9)
-    BH = Alu.Rcl8(BH, 0x1);
+    BH = Alu8.Rcl(BH, 0x1);
     CheckExternalEvents(cs7, 0xA4BD);
     // SHL AL,0x1 (1000_A4BB / 0x1A4BB)
     // AL <<= 0x1;
     AL = Alu8.Shl(AL, 0x1);
     CheckExternalEvents(cs7, 0xA4BF);
     // RCL BL,0x1 (1000_A4BD / 0x1A4BD)
-    BL = Alu.Rcl8(BL, 0x1);
+    BL = Alu8.Rcl(BL, 0x1);
     CheckExternalEvents(cs7, 0xA4C0);
     // RET  (1000_A4BF / 0x1A4BF)
     return NearRet();
@@ -4007,7 +4007,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_A5E1_1A5E1(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1A5E7: goto label_19EF_06F7_1A5E7;break; // Target of external jump from 0x1A51D
+      case 0x1A5E7: goto label_1000_A5E7_1A5E7; break; //was label_19EF_06F7_1A5E7;break; // Target of external jump from 0x1A51D
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
@@ -4475,7 +4475,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_A6FE_1A6FE(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1A73E: goto label_19EF_084E_1A73E;break; // Target of external jump from 0x1A6C5
+      case 0x1A73E: goto label_1000_A73E_1A73E; break;//was label_19EF_084E_1A73E;break; // Target of external jump from 0x1A6C5
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }

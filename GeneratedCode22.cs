@@ -1,5 +1,7 @@
 namespace generated;
 
+using Spice86.Core.Emulator.CPU.InstructionsImpl;
+
 public partial class GeneratedOverrides : CSharpOverrideHelper {
 
   public virtual Action split_2000_4E82_24E82(int loadOffset) {
@@ -363,7 +365,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     UInt8[DS, (ushort)(BX + SI + 0xA207)] = CL;
     CheckExternalEvents(cs13, 0x4F5D);
     // DAS  (2000_4F5C / 0x24F5C)
-    Cpu.Das();
+    new Instructions8(Cpu.State, Cpu, Memory, new(Memory, Cpu, Cpu.State)).Das();
     label_2000_4F5D_24F5D:
     CheckExternalEvents(cs13, 0x4F5F);
     // AND CH,byte ptr [BX] (2000_4F5D / 0x24F5D)
@@ -771,7 +773,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     (CX, AX) = (AX, CX);
     CheckExternalEvents(cs13, 0x5042);
     // AAA  (2000_5041 / 0x25041)
-    Cpu.Aaa();
+    new Instructions8(Cpu.State, Cpu, Memory, new(Memory, Cpu, Cpu.State)).Aaa();
     CheckExternalEvents(cs13, 0x5044);
     // MOV GS,SI (2000_5042 / 0x25042)
     GS = SI;
@@ -881,55 +883,55 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     label_2000_BD61_2BD61:
     CheckExternalEvents(cs13, 0xBD64);
     // ROL AL,0xc0 (2000_BD61 / 0x2BD61)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD67);
     // ROL AL,0xc0 (2000_BD64 / 0x2BD64)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD6A);
     // ROL AL,0xc0 (2000_BD67 / 0x2BD67)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD6D);
     // ROL AL,0xc0 (2000_BD6A / 0x2BD6A)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD70);
     // ROL AL,0xc0 (2000_BD6D / 0x2BD6D)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD73);
     // ROL AL,0xc0 (2000_BD70 / 0x2BD70)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD76);
     // ROL AL,0xc0 (2000_BD73 / 0x2BD73)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD79);
     // ROL AL,0xc0 (2000_BD76 / 0x2BD76)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD7C);
     // ROL AL,0xc0 (2000_BD79 / 0x2BD79)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD7F);
     // ROL AL,0xc0 (2000_BD7C / 0x2BD7C)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD82);
     // ROL AL,0xc0 (2000_BD7F / 0x2BD7F)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD85);
     // ROL AL,0xc0 (2000_BD82 / 0x2BD82)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD88);
     // ROL AL,0xc0 (2000_BD85 / 0x2BD85)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD8B);
     // ROL AL,0xc0 (2000_BD88 / 0x2BD88)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD8E);
     // ROL AL,0xc0 (2000_BD8B / 0x2BD8B)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD91);
     // ROL AL,0xc0 (2000_BD8E / 0x2BD8E)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     CheckExternalEvents(cs13, 0xBD94);
     // ROL AL,0xc0 (2000_BD91 / 0x2BD91)
-    AL = Alu.Rol8(AL, 0xC0);
+    AL = Alu8.Rol(AL, 0xC0);
     throw FailAsUntested("Function does not end with return and no instruction after the body ...");
   }
   

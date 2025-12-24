@@ -5,7 +5,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_BFC5_1BFC5(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1C011: goto label_19EF_2121_1C011;break; // Target of external jump from 0x1BF77
+      case 0x1C011: goto label_1000_C011_1C011; //was label_19EF_2121_1C011;break; // Target of external jump from 0x1BF77
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
@@ -853,7 +853,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_C1D3_1C1D3(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1C1D9: goto label_19EF_22E9_1C1D9;break; // Target of external jump from 0x1C1D0
+      case 0x1C1D9: goto label_1000_C1D9_1C1D9; break; //label_19EF_22E9_1C1D9;break; // Target of external jump from 0x1C1D0
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
@@ -1021,7 +1021,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_C226_1C226(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1C237: goto label_19EF_2347_1C237;break; // Target of external jump from 0x1C223
+      case 0x1C237: goto label_1000_C237_1C237; // was label_19EF_2347_1C237;break; // Target of external jump from 0x1C223
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
@@ -1254,7 +1254,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_C296_1C296(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1C2A9: goto label_19EF_23B9_1C2A9;break; // Target of external jump from 0x1C293
+      case 0x1C2A9: goto label_1000_C2A9_1C2A9; break; // was label_19EF_23B9_1C2A9;break; // Target of external jump from 0x1C293
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }
@@ -2942,7 +2942,7 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   public virtual Action split_1000_C6CE_1C6CE(int loadOffset) {
     entrydispatcher:
     switch(loadOffset) {
-      case 0x1C709: goto label_19EF_2819_1C709;break; // Target of external jump from 0x1C6CB
+      case 0x1C709: goto label_1000_C709_1C709; break; //was label_19EF_2819_1C709;break; // Target of external jump from 0x1C6CB
       case 0: break; // 0 is the entry point ghidra detected, just after this switch
       default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
     }

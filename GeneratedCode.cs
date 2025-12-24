@@ -1,4 +1,6 @@
+using Spice86.Core.CLI;
 using Spice86.Shared.Emulator.Memory;
+using Spice86.Shared.Interfaces;
 
 namespace generated;
 
@@ -21,7 +23,10 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
   protected ushort cs8; // 0x1643
   protected ushort cs9; // 0x17C6
   
-  public GeneratedOverrides(Dictionary<SegmentedAddress, FunctionInformation> functionInformations, Machine machine, ushort entrySegment = 0x0) : base(functionInformations, machine) {
+  public GeneratedOverrides(Configuration configuration,
+      Dictionary<SegmentedAddress, FunctionInformation> functionInformations,
+      Machine machine, ILoggerService loggerService, ushort entrySegment = 0x0)
+        : base(functionInformations, machine, loggerService, configuration) {
     // Observed cs1 address at generation time is 0x0. Do not set entrySegment to something else if the program is not relocatable.
     this.cs1 = (ushort)(entrySegment + 0x0);
     this.cs10 = (ushort)(entrySegment + 0x18AD);
