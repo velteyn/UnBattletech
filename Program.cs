@@ -5,7 +5,9 @@
 using UNBATTLETECH;
 
 // Put the SHA256 checksum of your target DOS program here. (BTECH.EXE)
-Spice86.Program.RunWithOverrides<MyOverrideSupplier>(args, "15a1712682cf1fe50ca9e6a68a4b31d3bef7912401915edf7bb6242be193562a");
+Spice86.Program.RunWithOverrides<MyOverrideSupplier>(args, "e29007761fadd8679521d1fb1dc6b488f87c718ed8a4636cb4ffbe4bc4ed5306"); 
+                                                            
+ 
 
 public partial class Program
 {

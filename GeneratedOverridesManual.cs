@@ -8,8 +8,9 @@ public partial class GeneratedOverrides
 {
     public void RegisterOneFunction()
     {
-        // Registering a single function as a starting point.
-        // 0xC is likely a small helper function.
-        DefineFunction(cs1, 0xC, ghidra_guess_0000_000C_0000C, false);
+        // Registering MainGameLoop (1000:1ABA)
+        // Correct segment calculation is handled in MyOverrideSupplier
+        // cs7 is defined as entrySegment + 0x1000
+        DefineFunction(cs7, 0x1ABA, ghidra_guess_1000_1ABA_11ABA, false);
     }
 }

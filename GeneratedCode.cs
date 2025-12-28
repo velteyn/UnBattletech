@@ -45,8 +45,8 @@ public partial class GeneratedOverrides : CSharpOverrideHelper {
     this.cs8 = (ushort)(entrySegment + 0x1643);
     this.cs9 = (ushort)(entrySegment + 0x17C6);
     
-    DefineGeneratedCodeOverrides();
-    SetProvidedInterruptHandlersAsOverridden();
+    // DefineGeneratedCodeOverrides();
+    // SetProvidedInterruptHandlersAsOverridden();
   }
   
     public void DefineGeneratedCodeOverrides() {

@@ -1,7 +1,7 @@
 namespace generated;
 
 public partial class GeneratedOverrides : CSharpOverrideHelper {
-
+    //game main loop ?
   public virtual Action split_1000_1005_11005(int loadOffset) {
     entrydispatcher:
     if(loadOffset != 0) {
