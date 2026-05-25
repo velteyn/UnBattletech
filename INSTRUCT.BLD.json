@@ -1,0 +1,609 @@
+{
+  "filename": "INSTRUCT.BLD",
+  "size": 565,
+  "header": {
+    "file_type": 51,
+    "paragraphs": 2,
+    "signature": "eec6ebea",
+    "content_type": "c0ec",
+    "content_type_name": "dialogue/story",
+    "subtype": 127
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "3302eec6ebeac0ec",
+      "type": "header",
+      "annotation": "type=33 paragraphs=2 sig=eec6ebea content=dialogue/story subtype=7f"
+    },
+    {
+      "offset": 8,
+      "size": 22,
+      "bytes": "7f71a0675d73a0635e746372a0745863a0615f615863",
+      "type": "text",
+      "decoded": "As you enter the cache"
+    },
+    {
+      "offset": 30,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 31,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 32,
+      "size": 33,
+      "bytes": "675d73a0716363a05fa05e5d7463a070575e5e6364a0745da0745863a0755f5c5c",
+      "type": "text",
+      "decoded": "you see a note pinned to the wall"
+    },
+    {
+      "offset": 65,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 66,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 67,
+      "size": 16,
+      "bytes": "5f6464726371716364a0745da0675d73",
+      "type": "text",
+      "decoded": "addressed to you"
+    },
+    {
+      "offset": 83,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 84,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 85,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 86,
+      "size": 5,
+      "bytes": "7a5f715d5e",
+      "type": "text",
+      "decoded": "Jason"
+    },
+    {
+      "offset": 91,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 92,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 93,
+      "size": 90,
+      "bytes": "745863a0596367a0745da065637474575e65a0745da0745863a0615f615863a05771a0745da0737163a0745863a0615d6463a0596367a05f5e64a0575b7072575e74a0745863a07257655874a0615d646371a05d5e745da05774",
+      "type": "text",
+      "decoded": "the key to getting to the cache is to use the code key and imprint the right codes onto it"
+    },
+    {
+      "offset": 183,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 184,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 185,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 186,
+      "size": 21,
+      "bytes": "835f6158a0645d5d72a05e63636471a05fa0726364",
+      "type": "text",
+      "decoded": "Each door needs a red"
+    },
+    {
+      "offset": 207,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 208,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 209,
+      "size": 4,
+      "bytes": "625c7363",
+      "type": "text",
+      "decoded": "blue"
+    },
+    {
+      "offset": 213,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 214,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 215,
+      "size": 15,
+      "bytes": "5f5e64a067635c5c5d75a0615d6463",
+      "type": "text",
+      "decoded": "and yellow code"
+    },
+    {
+      "offset": 230,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 231,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 232,
+      "size": 40,
+      "bytes": "5f5e64a0635f6158a07463725b575e5f5ca0575b7072575e7471a05fa071575e655c63a0615d6463",
+      "type": "text",
+      "decoded": "and each terminal imprints a single code"
+    },
+    {
+      "offset": 272,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 273,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 274,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 275,
+      "size": 13,
+      "bytes": "7e5da0615d6463a05771a07263",
+      "type": "text",
+      "decoded": "No code is re"
+    },
+    {
+      "offset": 288,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 289,
+      "size": 4,
+      "bytes": "73716364",
+      "type": "text",
+      "decoded": "used"
+    },
+    {
+      "offset": 293,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 294,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 295,
+      "size": 34,
+      "bytes": "5f5e64a0745863a0615f7264a0615f5ea05d5e5c67a0585d5c64a05d5e63a0726364",
+      "type": "text",
+      "decoded": "and the card can only hold one red"
+    },
+    {
+      "offset": 329,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 330,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 331,
+      "size": 8,
+      "bytes": "5d5e63a0625c7363",
+      "type": "text",
+      "decoded": "one blue"
+    },
+    {
+      "offset": 339,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 340,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 341,
+      "size": 29,
+      "bytes": "5f5e64a05d5e63a067635c5c5d75a0615d6463a05f74a05fa074575b63",
+      "type": "text",
+      "decoded": "and one yellow code at a time"
+    },
+    {
+      "offset": 370,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 371,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 372,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 373,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 375,
+      "size": 3,
+      "bytes": "ec9558",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5895]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22677
+      ]
+    },
+    {
+      "offset": 378,
+      "size": 26,
+      "bytes": "635ea0675d73a0656374a0745da0745863a05b5f70a0725d5d5b",
+      "type": "text",
+      "decoded": "en you get to the map room"
+    },
+    {
+      "offset": 404,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 405,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 406,
+      "size": 22,
+      "bytes": "737163a0745863a05b5f70a077a0655f7663a0675d73",
+      "type": "text",
+      "decoded": "use the map I gave you"
+    },
+    {
+      "offset": 428,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 429,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 430,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 431,
+      "size": 16,
+      "bytes": "7774a075575c5ca058635c70a0675d73",
+      "type": "text",
+      "decoded": "It will help you"
+    },
+    {
+      "offset": 447,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 448,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 449,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 450,
+      "size": 9,
+      "bytes": "855d5d64a05c736159",
+      "type": "text",
+      "decoded": "Good luck"
+    },
+    {
+      "offset": 459,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 460,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 461,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 462,
+      "size": 4,
+      "bytes": "7c5d7663",
+      "type": "text",
+      "decoded": "Love"
+    },
+    {
+      "offset": 466,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 467,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 468,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 469,
+      "size": 3,
+      "bytes": "845f64",
+      "type": "text",
+      "decoded": "Dad"
+    },
+    {
+      "offset": 472,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 473,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 474,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 475,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 476,
+      "size": 34,
+      "bytes": "875d73a0745f5963a0745863a0615d6463a0596367a05d5ea0745863a0745f625c63",
+      "type": "text",
+      "decoded": "You take the code key on the table"
+    },
+    {
+      "offset": 510,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 511,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 512,
+      "size": 46,
+      "bytes": "5f5e64a070725d61636364a0575e745da0745863a05f5e6157635e74a091745f72a07c635f657363a0615f615863",
+      "type": "text",
+      "decoded": "and proceed into the ancient Star League cache"
+    },
+    {
+      "offset": 558,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 559,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 560,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 561,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 563,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 564,
+      "size": 1,
+      "bytes": "ed",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP"
+    }
+  ]
+}

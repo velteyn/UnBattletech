@@ -40,10 +40,30 @@ public class StartupSequence extends JPanel {
         this.onComplete = onComplete;
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
-        this.setFocusable(true); // For key listener if we wanted to skip
+        this.setFocusable(true);
+        
+        // Allow skipping with SPACE or ENTER
+        this.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_SPACE || 
+                    e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+                    finishSequence();
+                }
+            }
+        });
         
         loadAssets();
         startBootSequence();
+    }
+    
+    private void finishSequence() {
+        if (textTimer != null) textTimer.stop();
+        if (splashTimer != null) splashTimer.stop();
+        currentState = State.FINISHED;
+        if (onComplete != null) {
+            onComplete.run();
+        }
     }
 
     private void loadAssets() {
@@ -88,14 +108,14 @@ public class StartupSequence extends JPanel {
         textLines.add("Loading BATTLETECH.EXE...");
         
         // Timer to add lines one by one
-        textTimer = new Timer(300, e -> {
+        textTimer = new Timer(50, e -> {
             currentLineIndex++;
             repaint();
             
             if (currentLineIndex >= textLines.size()) {
                 textTimer.stop();
                 // Delay before switching to splash
-                Timer delay = new Timer(1500, evt -> {
+                Timer delay = new Timer(500, evt -> {
                     currentState = State.SPLASH_INFOCOM;
                     repaint();
                     startSplashTimer();
@@ -108,20 +128,17 @@ public class StartupSequence extends JPanel {
     }
     
     private void startSplashTimer() {
-        // Show INFOCOM for 3 seconds
-        splashTimer = new Timer(3000, e -> {
+        // Show INFOCOM for 1.5 seconds
+        splashTimer = new Timer(1500, e -> {
             if (currentState == State.SPLASH_INFOCOM) {
                 currentState = State.SPLASH_TITLE;
                 repaint();
-                // Reset timer for Title screen (4 seconds)
-                splashTimer.setInitialDelay(4000);
+                // Reset timer for Title screen (2 seconds)
+                splashTimer.setInitialDelay(2000);
                 splashTimer.restart();
             } else if (currentState == State.SPLASH_TITLE) {
                 splashTimer.stop();
-                currentState = State.FINISHED;
-                if (onComplete != null) {
-                    onComplete.run();
-                }
+                finishSequence();
             }
         });
         splashTimer.setRepeats(false);

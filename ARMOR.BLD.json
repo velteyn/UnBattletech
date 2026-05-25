@@ -1,0 +1,3532 @@
+{
+  "filename": "ARMOR.BLD",
+  "size": 3388,
+  "header": {
+    "file_type": 58,
+    "paragraphs": 13,
+    "signature": "eec6ebea",
+    "content_type": "c0f5",
+    "content_type_name": "shop/service",
+    "subtype": 165
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "3a0deec6ebeac0f5",
+      "type": "header",
+      "annotation": "type=3a paragraphs=13 sig=eec6ebea content=shop/service subtype=a5"
+    },
+    {
+      "offset": 8,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 9,
+      "size": 1,
+      "bytes": "4c",
+      "type": "transparent",
+      "annotation": "byte_4c"
+    },
+    {
+      "offset": 10,
+      "size": 1,
+      "bytes": "ba",
+      "type": "marker",
+      "annotation": "rparen"
+    },
+    {
+      "offset": 11,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 14,
+      "size": 43,
+      "bytes": "63a070725d70725763746372a075635c615d5b6371a0675d73a0745da0585771a05f725b5d72a071585d70",
+      "type": "text",
+      "decoded": "e proprieter welcomes you to his armor shop"
+    },
+    {
+      "offset": 57,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 58,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 59,
+      "size": 73,
+      "bytes": "755f76575e65a0585771a05f725b71a065725f5e645c67a0575ea05f5ea05f7474635b7074a0745da0635e615d5b705f7171a0745863a075585d5c63a05d66a0585771a071745d7263",
+      "type": "text",
+      "decoded": "waving his arms grandly in an attempt to encompass the whole of his store"
+    },
+    {
+      "offset": 132,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 133,
+      "size": 44,
+      "bytes": "71a071745d6159a05f5e64a0665d617371a05774a05f5c5ca0575e745da0675d7372a05f7474635e74575d5e",
+      "type": "text",
+      "decoded": "s stock and focus it all into your attention"
+    },
+    {
+      "offset": 177,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 178,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 179,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 180,
+      "size": 8,
+      "bytes": "95575c5ca0675d73",
+      "type": "text",
+      "decoded": "Will you"
+    },
+    {
+      "offset": 188,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 189,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 190,
+      "size": 6,
+      "bytes": "82725d757163",
+      "type": "text",
+      "decoded": "Browse"
+    },
+    {
+      "offset": 196,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 197,
+      "size": 12,
+      "bytes": "9263705f5772a05f725b5d72",
+      "type": "text",
+      "decoded": "Repair armor"
+    },
+    {
+      "offset": 209,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 210,
+      "size": 14,
+      "bytes": "945f5c59a0745da05d7458637271",
+      "type": "text",
+      "decoded": "Talk to others"
+    },
+    {
+      "offset": 224,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 225,
+      "size": 5,
+      "bytes": "7c635f7663",
+      "type": "text",
+      "decoded": "Leave"
+    },
+    {
+      "offset": 230,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 231,
+      "size": 5,
+      "bytes": "e7bcddc01a",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=-8772 jump\u2192[1AC0]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        -8772,
+        6848
+      ]
+    },
+    {
+      "offset": 236,
+      "size": 1,
+      "bytes": "b9",
+      "type": "marker",
+      "annotation": "lparen"
+    },
+    {
+      "offset": 237,
+      "size": 1,
+      "bytes": "54",
+      "type": "transparent",
+      "annotation": "byte_54"
+    },
+    {
+      "offset": 238,
+      "size": 1,
+      "bytes": "ba",
+      "type": "marker",
+      "annotation": "rparen"
+    },
+    {
+      "offset": 239,
+      "size": 1,
+      "bytes": "b5",
+      "type": "marker",
+      "annotation": "price:107"
+    },
+    {
+      "offset": 240,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 241,
+      "size": 3,
+      "bytes": "ebec93",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [93EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        37868
+      ]
+    },
+    {
+      "offset": 244,
+      "size": 39,
+      "bytes": "705d5ea071585d75575e65a0575e746372637174a0575ea0585771a05b637261585f5e64577163",
+      "type": "text",
+      "decoded": "pon showing interest in his merchandise"
+    },
+    {
+      "offset": 283,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 284,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 285,
+      "size": 96,
+      "bytes": "745863a071585d705d755e6372a072736271a0585771a0585f5e6471a0745d656374586372a0575ea0655c6363a05f5e64a0626365575e71a0745da06368745d5ca0745863a076577274736371a05d66a0585771a05b637261585f5e64577163",
+      "type": "text",
+      "decoded": "the shopowner rubs his hands together in glee and begins to extol the virtues of his merchandise"
+    },
+    {
+      "offset": 381,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 382,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 383,
+      "size": 4,
+      "bytes": "e898c2eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=98 jump\u2192[EBC2]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        152,
+        60354
+      ]
+    },
+    {
+      "offset": 387,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 390,
+      "size": 37,
+      "bytes": "63a071585d70596363706372a05c5d5d5971a0715c576558745c67a0646370726371716364",
+      "type": "text",
+      "decoded": "e shopkeeper looks slightly depressed"
+    },
+    {
+      "offset": 427,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 428,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 429,
+      "size": 18,
+      "bytes": "5f71a05766a05b5f676263a05863a0755d5e",
+      "type": "text",
+      "decoded": "as if maybe he won"
+    },
+    {
+      "offset": 447,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 448,
+      "size": 47,
+      "bytes": "74a0656374a0745da0635f74a0745d5e57655874a06263615f737163a05d66a0675d7372a07174575e65575e637171",
+      "type": "text",
+      "decoded": "t get to eat tonight because of your stinginess"
+    },
+    {
+      "offset": 495,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 496,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 497,
+      "size": 55,
+      "bytes": "627374a05863a070737471a0745863a071735774a05f755f67a05f5e64a071585d7571a0675d73a0585771a05d74586372a071745d6159",
+      "type": "text",
+      "decoded": "but he puts the suit away and shows you his other stock"
+    },
+    {
+      "offset": 552,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 553,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 554,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 557,
+      "size": 18,
+      "bytes": "865d617371a05f7474635e74575d5ea0745d",
+      "type": "text",
+      "decoded": "Focus attention to"
+    },
+    {
+      "offset": 575,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 576,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 577,
+      "size": 7,
+      "bytes": "7c635f76575e65",
+      "type": "text",
+      "decoded": "Leaving"
+    },
+    {
+      "offset": 584,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 585,
+      "size": 9,
+      "bytes": "865c5f59a076637174",
+      "type": "text",
+      "decoded": "Flak vest"
+    },
+    {
+      "offset": 594,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 595,
+      "size": 9,
+      "bytes": "865c5f59a071735774",
+      "type": "text",
+      "decoded": "Flak suit"
+    },
+    {
+      "offset": 604,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 605,
+      "size": 9,
+      "bytes": "7c57655874a0635e76",
+      "type": "text",
+      "decoded": "Light env"
+    },
+    {
+      "offset": 614,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 615,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 616,
+      "size": 4,
+      "bytes": "71735774",
+      "type": "text",
+      "decoded": "suit"
+    },
+    {
+      "offset": 620,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 621,
+      "size": 9,
+      "bytes": "78635f7667a0635e76",
+      "type": "text",
+      "decoded": "Heavy env"
+    },
+    {
+      "offset": 630,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 631,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 632,
+      "size": 4,
+      "bytes": "71735774",
+      "type": "text",
+      "decoded": "suit"
+    },
+    {
+      "offset": 636,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 637,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 638,
+      "size": 3,
+      "bytes": "f0c0d6",
+      "type": "opcode",
+      "annotation": "SET_TEXT_MARGINS c0 d6",
+      "opcode": 240,
+      "opcode_name": "SET_TEXT_MARGINS",
+      "operands": [
+        192,
+        214
+      ]
+    },
+    {
+      "offset": 641,
+      "size": 3,
+      "bytes": "ec819b",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [9B81]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        39809
+      ]
+    },
+    {
+      "offset": 644,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 649,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 650,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 651,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 652,
+      "size": 2,
+      "bytes": "f3ba",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=ba",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        186
+      ]
+    },
+    {
+      "offset": 654,
+      "size": 2,
+      "bytes": "f5ba",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=ba",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        186
+      ]
+    },
+    {
+      "offset": 656,
+      "size": 1,
+      "bytes": "51",
+      "type": "transparent",
+      "annotation": "byte_51"
+    },
+    {
+      "offset": 657,
+      "size": 1,
+      "bytes": "c2",
+      "type": "marker",
+      "annotation": "noop_c2"
+    },
+    {
+      "offset": 658,
+      "size": 4,
+      "bytes": "e834c2f0",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=34 jump\u2192[F0C2]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        52,
+        61634
+      ]
+    },
+    {
+      "offset": 662,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 663,
+      "size": 1,
+      "bytes": "be",
+      "type": "marker",
+      "annotation": "price:125"
+    },
+    {
+      "offset": 664,
+      "size": 3,
+      "bytes": "ec7f62",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [627F]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25215
+      ]
+    },
+    {
+      "offset": 667,
+      "size": 12,
+      "bytes": "5c5f74577663a05f725b5d72",
+      "type": "text",
+      "decoded": "lative armor"
+    },
+    {
+      "offset": 679,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 680,
+      "size": 5,
+      "bytes": "e7bbb5bb00",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=-19013 jump\u2192[00BB]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        -19013,
+        187
+      ]
+    },
+    {
+      "offset": 685,
+      "size": 1,
+      "bytes": "c2",
+      "type": "marker",
+      "annotation": "noop_c2"
+    },
+    {
+      "offset": 686,
+      "size": 3,
+      "bytes": "f0c1cf",
+      "type": "opcode",
+      "annotation": "SET_TEXT_MARGINS c1 cf",
+      "opcode": 240,
+      "opcode_name": "SET_TEXT_MARGINS",
+      "operands": [
+        193,
+        207
+      ]
+    },
+    {
+      "offset": 689,
+      "size": 1,
+      "bytes": "c3",
+      "type": "marker",
+      "annotation": "noop_c3"
+    },
+    {
+      "offset": 690,
+      "size": 1,
+      "bytes": "71",
+      "type": "text",
+      "decoded": "s"
+    },
+    {
+      "offset": 691,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 692,
+      "size": 1,
+      "bytes": "03",
+      "type": "transparent",
+      "annotation": "byte_03"
+    },
+    {
+      "offset": 693,
+      "size": 1,
+      "bytes": "c5",
+      "type": "unknown",
+      "annotation": "u_c5"
+    },
+    {
+      "offset": 694,
+      "size": 5,
+      "bytes": "e7beb5bb00",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=-19010 jump\u2192[00BB]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        -19010,
+        187
+      ]
+    },
+    {
+      "offset": 699,
+      "size": 1,
+      "bytes": "c2",
+      "type": "marker",
+      "annotation": "noop_c2"
+    },
+    {
+      "offset": 700,
+      "size": 3,
+      "bytes": "f0c1cf",
+      "type": "opcode",
+      "annotation": "SET_TEXT_MARGINS c1 cf",
+      "opcode": 240,
+      "opcode_name": "SET_TEXT_MARGINS",
+      "operands": [
+        193,
+        207
+      ]
+    },
+    {
+      "offset": 703,
+      "size": 1,
+      "bytes": "c3",
+      "type": "marker",
+      "annotation": "noop_c3"
+    },
+    {
+      "offset": 704,
+      "size": 1,
+      "bytes": "71",
+      "type": "text",
+      "decoded": "s"
+    },
+    {
+      "offset": 705,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 706,
+      "size": 3,
+      "bytes": "ebec83",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [83EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        33772
+      ]
+    },
+    {
+      "offset": 709,
+      "size": 39,
+      "bytes": "6861635c5c635e74a061725f66745b5f5e71585770a05b5f725971a074585771a0747257705c63",
+      "type": "text",
+      "decoded": "xcellent craftmanship marks this triple"
+    },
+    {
+      "offset": 748,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 749,
+      "size": 4,
+      "bytes": "5b637158",
+      "type": "text",
+      "decoded": "mesh"
+    },
+    {
+      "offset": 753,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 754,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 755,
+      "size": 35,
+      "bytes": "615c5d7458a05f5e64a05b63745f5ca06657626372a071735774a05d66a05f725b5d72",
+      "type": "text",
+      "decoded": "cloth and metal fiber suit of armor"
+    },
+    {
+      "offset": 790,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 791,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 792,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 793,
+      "size": 2,
+      "bytes": "7774",
+      "type": "text",
+      "decoded": "It"
+    },
+    {
+      "offset": 795,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 796,
+      "size": 46,
+      "bytes": "71a064637157655e6364a0745da070725d74636174a05f655f575e7174a0715c736571a05f5e64a05f72725d7571",
+      "type": "text",
+      "decoded": "s designed to protect against slugs and arrows"
+    },
+    {
+      "offset": 842,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 843,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 844,
+      "size": 51,
+      "bytes": "5f5e64a0615f5ea06376635ea070725d74636174a05b5d646371745c67a05f655f575e7174a05c5f716372a075635f705d5e71",
+      "type": "text",
+      "decoded": "and can even protect modestly against laser weapons"
+    },
+    {
+      "offset": 895,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 896,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 897,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 898,
+      "size": 11,
+      "bytes": "7c57655874756357655874",
+      "type": "text",
+      "decoded": "Lightweight"
+    },
+    {
+      "offset": 909,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 910,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 911,
+      "size": 6,
+      "bytes": "5774a0755d5e",
+      "type": "text",
+      "decoded": "it won"
+    },
+    {
+      "offset": 917,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 918,
+      "size": 22,
+      "bytes": "74a058575e646372a0675d7372a05b5d62575c577467",
+      "type": "text",
+      "decoded": "t hinder your mobility"
+    },
+    {
+      "offset": 940,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 941,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 942,
+      "size": 19,
+      "bytes": "5f5e64a05774a0585f71a05fa0645f5b5f6563",
+      "type": "text",
+      "decoded": "and it has a damage"
+    },
+    {
+      "offset": 961,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 962,
+      "size": 21,
+      "bytes": "5f62715d727074577663a0725f74575e65a05d66a0",
+      "type": "text",
+      "decoded": "absorptive rating of "
+    },
+    {
+      "offset": 983,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 984,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 985,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 986,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 987,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 988,
+      "size": 5,
+      "bytes": "9072576163",
+      "type": "text",
+      "decoded": "Price"
+    },
+    {
+      "offset": 993,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 994,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 995,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 996,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 997,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 998,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 999,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1000,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1001,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1006,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1007,
+      "size": 4,
+      "bytes": "e8aeb7eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ae jump\u2192[EBB7]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        174,
+        60343
+      ]
+    },
+    {
+      "offset": 1011,
+      "size": 3,
+      "bytes": "ec7e5d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D7E]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23934
+      ]
+    },
+    {
+      "offset": 1014,
+      "size": 6,
+      "bytes": "75a058637263",
+      "type": "text",
+      "decoded": "w here"
+    },
+    {
+      "offset": 1020,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1021,
+      "size": 17,
+      "bytes": "71a06f735f5c577467a0665d72a0675d73",
+      "type": "text",
+      "decoded": "s ouality for you"
+    },
+    {
+      "offset": 1038,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 1039,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1040,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1041,
+      "size": 14,
+      "bytes": "74585771a066575e63a066735c5c",
+      "type": "text",
+      "decoded": "this fine full"
+    },
+    {
+      "offset": 1055,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1056,
+      "size": 65,
+      "bytes": "625d6467a071735774a05771a05b5f6463a05d66a0745863a0715f5b63a05b5f746372575f5ca05f71a05d7372a0636861635c5c635e74a0665c5f59a076637174",
+      "type": "text",
+      "decoded": "body suit is made of the same material as our excellent flak vest"
+    },
+    {
+      "offset": 1121,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1122,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1123,
+      "size": 31,
+      "bytes": "627374a05771a0636874635e646364a0745da070725d76576463a066735c5c",
+      "type": "text",
+      "decoded": "but is extended to provide full"
+    },
+    {
+      "offset": 1154,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1155,
+      "size": 13,
+      "bytes": "625d6467a0615d7663725f6563",
+      "type": "text",
+      "decoded": "body coverage"
+    },
+    {
+      "offset": 1168,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1169,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1170,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1171,
+      "size": 16,
+      "bytes": "7f5c74585d736558a0675d73a0755d5e",
+      "type": "text",
+      "decoded": "Although you won"
+    },
+    {
+      "offset": 1187,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1188,
+      "size": 20,
+      "bytes": "74a06263a05e635f725c67a05f71a05f65575c63",
+      "type": "text",
+      "decoded": "t be nearly as agile"
+    },
+    {
+      "offset": 1208,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1209,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1210,
+      "size": 8,
+      "bytes": "745863a071735774",
+      "type": "text",
+      "decoded": "the suit"
+    },
+    {
+      "offset": 1218,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1219,
+      "size": 30,
+      "bytes": "71a0636874725fa062735c59a0625d5d717471a0577471a0645f5b5f6563",
+      "type": "text",
+      "decoded": "s extra bulk boosts its damage"
+    },
+    {
+      "offset": 1249,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1250,
+      "size": 21,
+      "bytes": "5f62715d727074577663a0725f74575e65a0745da0",
+      "type": "text",
+      "decoded": "absorptive rating to "
+    },
+    {
+      "offset": 1271,
+      "size": 1,
+      "bytes": "b4",
+      "type": "marker",
+      "annotation": "price:105"
+    },
+    {
+      "offset": 1272,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1273,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1274,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1275,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1276,
+      "size": 5,
+      "bytes": "9072576163",
+      "type": "text",
+      "decoded": "Price"
+    },
+    {
+      "offset": 1281,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 1282,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1283,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1284,
+      "size": 1,
+      "bytes": "af",
+      "type": "marker",
+      "annotation": "price:40"
+    },
+    {
+      "offset": 1285,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 1286,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1287,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1288,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1289,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1290,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1295,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1296,
+      "size": 4,
+      "bytes": "e8aeb7eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ae jump\u2192[EBB7]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        174,
+        60343
+      ]
+    },
+    {
+      "offset": 1300,
+      "size": 3,
+      "bytes": "ec7863",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [6378]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25464
+      ]
+    },
+    {
+      "offset": 1303,
+      "size": 2,
+      "bytes": "7263",
+      "type": "text",
+      "decoded": "re"
+    },
+    {
+      "offset": 1305,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1306,
+      "size": 42,
+      "bytes": "71a05fa070725d64736174a075585d7163a071736161637171a05f5c755f6771a05f5b5f6a6371a05b63",
+      "type": "text",
+      "decoded": "s a product whose success always amazes me"
+    },
+    {
+      "offset": 1348,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1349,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1350,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1351,
+      "size": 12,
+      "bytes": "7d5ea05f5ea05d686765635e",
+      "type": "text",
+      "decoded": "On an oxygen"
+    },
+    {
+      "offset": 1363,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1364,
+      "size": 14,
+      "bytes": "71745f72766364a0705c5f5e6374",
+      "type": "text",
+      "decoded": "starved planet"
+    },
+    {
+      "offset": 1378,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1379,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1380,
+      "size": 30,
+      "bytes": "7458637163a071635c5ca05c575963a0585d74615f596371a0627374a077",
+      "type": "text",
+      "decoded": "these sell like hotcakes but I"
+    },
+    {
+      "offset": 1410,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1411,
+      "size": 79,
+      "bytes": "64a05e63766372a0585f7663a065736371716364a074586367a0755d735c64a071635c5ca0715da075635c5ca05d5ea05fa0585f6257745f625c63a0755d725c64a05c575963a0905f61576657615f",
+      "type": "text",
+      "decoded": "d never have guessed they would sell so well on a habitable world like Pacifica"
+    },
+    {
+      "offset": 1490,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1491,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1492,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1493,
+      "size": 29,
+      "bytes": "77a06573637171a05774a05b737174a06263a0745863a0645f5b5f6563",
+      "type": "text",
+      "decoded": "I guess it must be the damage"
+    },
+    {
+      "offset": 1522,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1523,
+      "size": 21,
+      "bytes": "5f62715d727074577663a0725f74575e65a05d66a0",
+      "type": "text",
+      "decoded": "absorptive rating of "
+    },
+    {
+      "offset": 1544,
+      "size": 1,
+      "bytes": "b1",
+      "type": "marker",
+      "annotation": "price:42"
+    },
+    {
+      "offset": 1545,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1546,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1547,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1548,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1549,
+      "size": 31,
+      "bytes": "9458637163a07173577471a05c575b5774a0675d7372a05b5d62575c577467",
+      "type": "text",
+      "decoded": "These suits limit your mobility"
+    },
+    {
+      "offset": 1580,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1581,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1582,
+      "size": 8,
+      "bytes": "627374a074586367",
+      "type": "text",
+      "decoded": "but they"
+    },
+    {
+      "offset": 1590,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1591,
+      "size": 36,
+      "bytes": "7263a06158635f706372a0745da07263705f5772a074585f5ea0665c5f59a07173577471",
+      "type": "text",
+      "decoded": "re cheaper to repair than flak suits"
+    },
+    {
+      "offset": 1627,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1628,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1629,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1630,
+      "size": 5,
+      "bytes": "9072576163",
+      "type": "text",
+      "decoded": "Price"
+    },
+    {
+      "offset": 1635,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 1636,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1637,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1638,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 1639,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1640,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1641,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1642,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1643,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1644,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1649,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1650,
+      "size": 4,
+      "bytes": "e8aeb7eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ae jump\u2192[EBB7]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        174,
+        60343
+      ]
+    },
+    {
+      "offset": 1654,
+      "size": 3,
+      "bytes": "ec77a0",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [A077]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        41079
+      ]
+    },
+    {
+      "offset": 1657,
+      "size": 48,
+      "bytes": "71635c5ca05fa05c5d74a05d66a07458637163a0745da0755f7272575d7271a071736158a05f71a0675d737271635c66",
+      "type": "text",
+      "decoded": "sell a lot of these to warriors such as yourself"
+    },
+    {
+      "offset": 1705,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1706,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1707,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1708,
+      "size": 8,
+      "bytes": "7d6666755d725c64",
+      "type": "text",
+      "decoded": "Offworld"
+    },
+    {
+      "offset": 1716,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1717,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1718,
+      "size": 53,
+      "bytes": "74586367a05f7263a0636861635c5c635e74a070725d74636174575d5ea05f655f575e7174a0745863a0635e7657725d5e5b635e74",
+      "type": "text",
+      "decoded": "they are excellent protection against the environment"
+    },
+    {
+      "offset": 1771,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1772,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1773,
+      "size": 8,
+      "bytes": "627374a058637263",
+      "type": "text",
+      "decoded": "but here"
+    },
+    {
+      "offset": 1781,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1782,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1783,
+      "size": 93,
+      "bytes": "77a07458575e59a074586367a05f7263a073716364a05b5f575e5c67a06263615f737163a074586367a0585f7663a0585765586372a0645f5b5f6563a05f62715d727074575d5ea074585f5ea06376635ea05fa0665c5f59a071735774",
+      "type": "text",
+      "decoded": "I think they are used mainly because they have higher damage absorption than even a flak suit"
+    },
+    {
+      "offset": 1876,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1877,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1878,
+      "size": 3,
+      "bytes": "5f74a0",
+      "type": "text",
+      "decoded": "at "
+    },
+    {
+      "offset": 1881,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 1882,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1883,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1884,
+      "size": 6,
+      "bytes": "705d575e7471",
+      "type": "text",
+      "decoded": "points"
+    },
+    {
+      "offset": 1890,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 1891,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1892,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1893,
+      "size": 30,
+      "bytes": "94586367a05f7263a0575e636870635e71577663a0745da07263705f5772",
+      "type": "text",
+      "decoded": "They are inexpensive to repair"
+    },
+    {
+      "offset": 1923,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1924,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1925,
+      "size": 36,
+      "bytes": "627374a05f7263a07263717472576174577663a0745da0675d7372a05b5d62575c577467",
+      "type": "text",
+      "decoded": "but are restrictive to your mobility"
+    },
+    {
+      "offset": 1961,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1962,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1963,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1964,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1965,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1966,
+      "size": 5,
+      "bytes": "9072576163",
+      "type": "text",
+      "decoded": "Price"
+    },
+    {
+      "offset": 1971,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 1972,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1973,
+      "size": 1,
+      "bytes": "af",
+      "type": "marker",
+      "annotation": "price:40"
+    },
+    {
+      "offset": 1974,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1975,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1976,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1977,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1978,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1979,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1980,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1981,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1982,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1987,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1988,
+      "size": 4,
+      "bytes": "e8aeb7eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ae jump\u2192[EBB7]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        174,
+        60343
+      ]
+    },
+    {
+      "offset": 1992,
+      "size": 3,
+      "bytes": "ec845d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D84]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23940
+      ]
+    },
+    {
+      "offset": 1995,
+      "size": 1,
+      "bytes": "5e",
+      "type": "text",
+      "decoded": "n"
+    },
+    {
+      "offset": 1996,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1997,
+      "size": 33,
+      "bytes": "74a074635c5ca05f5e67625d6467a07558637263a0675d73a0715f75a074585771",
+      "type": "text",
+      "decoded": "t tell anybody where you saw this"
+    },
+    {
+      "offset": 2030,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2031,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2032,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2033,
+      "size": 4,
+      "bytes": "94586367",
+      "type": "text",
+      "decoded": "They"
+    },
+    {
+      "offset": 2037,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 2038,
+      "size": 8,
+      "bytes": "7263a0625c5f6159",
+      "type": "text",
+      "decoded": "re black"
+    },
+    {
+      "offset": 2046,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 2047,
+      "size": 17,
+      "bytes": "5b5f72596374a05774635b71a05d5e5c67",
+      "type": "text",
+      "decoded": "market items only"
+    },
+    {
+      "offset": 2064,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2065,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2066,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2067,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2068,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2069,
+      "size": 60,
+      "bytes": "5f625c5f74577663a07173577471a05b5f6463a05d66a0745863a0715f5b63a05b5f746372575f5ca074586367a0737163a0745da0715857635c64a0",
+      "type": "text",
+      "decoded": "ablative suits made of the same material they use to shield "
+    },
+    {
+      "offset": 2129,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 2130,
+      "size": 43,
+      "bytes": "7b63615871a07558635ea074586367a05f7263a05b5f59575e65a05f71715f735c74a05c5f5e64575e6571",
+      "type": "text",
+      "decoded": "Mechs when they are making assault landings"
+    },
+    {
+      "offset": 2173,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2174,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2175,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2176,
+      "size": 45,
+      "bytes": "9458637163a07173577471a075575c5ca0615d5b705c6374635c67a071745d70a05c5f716372a062635f5b71a0",
+      "type": "text",
+      "decoded": "These suits will completely stop laser beams "
+    },
+    {
+      "offset": 2221,
+      "size": 1,
+      "bytes": "98",
+      "type": "marker",
+      "annotation": "noop_98"
+    },
+    {
+      "offset": 2222,
+      "size": 8,
+      "bytes": "627374a074586367",
+      "type": "text",
+      "decoded": "but they"
+    },
+    {
+      "offset": 2230,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 2231,
+      "size": 34,
+      "bytes": "7263a0755d7274585c637171a05f655f575e7174a05d74586372a075635f705d5e71",
+      "type": "text",
+      "decoded": "re worthless against other weapons"
+    },
+    {
+      "offset": 2265,
+      "size": 1,
+      "bytes": "97",
+      "type": "marker",
+      "annotation": "noop_97"
+    },
+    {
+      "offset": 2266,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2267,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2268,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2269,
+      "size": 8,
+      "bytes": "94586367a0645d5e",
+      "type": "text",
+      "decoded": "They don"
+    },
+    {
+      "offset": 2277,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 2278,
+      "size": 22,
+      "bytes": "74a058575e646372a0675d7372a05b5d76635b635e74",
+      "type": "text",
+      "decoded": "t hinder your movement"
+    },
+    {
+      "offset": 2300,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2301,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2302,
+      "size": 41,
+      "bytes": "627374a074586367a05f7263a0585d727257625c67a0636870635e71577663a0745da07263705f5772",
+      "type": "text",
+      "decoded": "but they are horribly expensive to repair"
+    },
+    {
+      "offset": 2343,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2344,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2345,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2346,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 2347,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 2348,
+      "size": 5,
+      "bytes": "9072576163",
+      "type": "text",
+      "decoded": "Price"
+    },
+    {
+      "offset": 2353,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 2354,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2355,
+      "size": 1,
+      "bytes": "af",
+      "type": "marker",
+      "annotation": "price:40"
+    },
+    {
+      "offset": 2356,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 2357,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 2358,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 2359,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2360,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 2361,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 2362,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 2367,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2368,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 2371,
+      "size": 23,
+      "bytes": "95575c5ca0675d73a0627367a074585771a05f725b5d72",
+      "type": "text",
+      "decoded": "Will you buy this armor"
+    },
+    {
+      "offset": 2394,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 2395,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 2396,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2397,
+      "size": 3,
+      "bytes": "f65fb7",
+      "type": "opcode",
+      "annotation": "CHECK_CONDITION \u2192 [B75F]",
+      "opcode": 246,
+      "opcode_name": "CHECK_CONDITION",
+      "operands": [
+        46943
+      ]
+    },
+    {
+      "offset": 2400,
+      "size": 4,
+      "bytes": "e840bff3",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=40 jump\u2192[F3BF]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        64,
+        62399
+      ]
+    },
+    {
+      "offset": 2404,
+      "size": 1,
+      "bytes": "b7",
+      "type": "marker",
+      "annotation": "price:111"
+    },
+    {
+      "offset": 2405,
+      "size": 3,
+      "bytes": "ebf5b9",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [B9F5]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        47605
+      ]
+    },
+    {
+      "offset": 2408,
+      "size": 1,
+      "bytes": "8a",
+      "type": "marker",
+      "annotation": "noop_8a"
+    },
+    {
+      "offset": 2409,
+      "size": 1,
+      "bytes": "bc",
+      "type": "marker",
+      "annotation": "lbracket"
+    },
+    {
+      "offset": 2410,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 2413,
+      "size": 65,
+      "bytes": "63a071585d70596363706372a0615d5e71735c7471a0585771a0625f5e59575e65a07463725b575e5f5ca05f5e64a0645771615d76637271a074585f74a0675d73",
+      "type": "text",
+      "decoded": "e shopkeeper consults his banking terminal and discovers that you"
+    },
+    {
+      "offset": 2478,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 2479,
+      "size": 20,
+      "bytes": "7263a05e5d74a06f73577463a05f71a075635c5c",
+      "type": "text",
+      "decoded": "re not ouite as well"
+    },
+    {
+      "offset": 2499,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 2500,
+      "size": 32,
+      "bytes": "5863635c6364a05f71a0675d73a05c6364a058575ba0745da062635c57637663",
+      "type": "text",
+      "decoded": "heeled as you led him to believe"
+    },
+    {
+      "offset": 2532,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2533,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2534,
+      "size": 39,
+      "bytes": "716363575e65a05f71a0675d7372a05f61615d735e74a0625f5c5f5e6163a05771a05d5e5c67a0",
+      "type": "text",
+      "decoded": "seeing as your account balance is only "
+    },
+    {
+      "offset": 2573,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2574,
+      "size": 2,
+      "bytes": "f3ba",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=ba",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        186
+      ]
+    },
+    {
+      "offset": 2576,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 2579,
+      "size": 72,
+      "bytes": "945863a071585d70596363706372a07173656563717471a074585f74a0675d73a0635774586372a0615f7158a0575ea0715d5b63a05d66a0675d7372a0575e766371745b635e7471",
+      "type": "text",
+      "decoded": "The shopkeeper suggests that you either cash in some of your investments"
+    },
+    {
+      "offset": 2651,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2652,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2653,
+      "size": 20,
+      "bytes": "635f725ea0715d5b63a05b5d7263a05b5d5e6367",
+      "type": "text",
+      "decoded": "earn some more money"
+    },
+    {
+      "offset": 2673,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2674,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2675,
+      "size": 15,
+      "bytes": "5d72a05c5d5d59a05f74a05c637171",
+      "type": "text",
+      "decoded": "or look at less"
+    },
+    {
+      "offset": 2690,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 2691,
+      "size": 15,
+      "bytes": "636870635e71577663a05f725b5d72",
+      "type": "text",
+      "decoded": "expensive armor"
+    },
+    {
+      "offset": 2706,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2707,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2708,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 2710,
+      "size": 3,
+      "bytes": "f4bbc4",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE bb c4",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        187,
+        196
+      ]
+    },
+    {
+      "offset": 2713,
+      "size": 2,
+      "bytes": "f3bc",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=bc",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        188
+      ]
+    },
+    {
+      "offset": 2715,
+      "size": 4,
+      "bytes": "e8c0c0ec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[ECC0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        60608
+      ]
+    },
+    {
+      "offset": 2719,
+      "size": 8,
+      "bytes": "7e5d725b5f5c5c67",
+      "type": "text",
+      "decoded": "Normally"
+    },
+    {
+      "offset": 2727,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2728,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2729,
+      "size": 67,
+      "bytes": "745863a071585d70596363706372a058637263a07163635b71a0585f707067a0665d72a0675d73a0745da06263a071585d7070575e65a0575ea0585771a071745d7263",
+      "type": "text",
+      "decoded": "the shopkeeper here seems happy for you to be shopping in his store"
+    },
+    {
+      "offset": 2796,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2797,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2798,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2799,
+      "size": 5,
+      "bytes": "945d645f67",
+      "type": "text",
+      "decoded": "Today"
+    },
+    {
+      "offset": 2804,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2805,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2806,
+      "size": 21,
+      "bytes": "5863a07163635b71a076637267a05a577474637267",
+      "type": "text",
+      "decoded": "he seems very jittery"
+    },
+    {
+      "offset": 2827,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2828,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2829,
+      "size": 39,
+      "bytes": "5f5e64a06376637267a074575b63a0675d73a05f7159a0745da0716363a0715d5b637458575e65",
+      "type": "text",
+      "decoded": "and every time you ask to see something"
+    },
+    {
+      "offset": 2868,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2869,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2870,
+      "size": 51,
+      "bytes": "5863a0617372745c67a0715f6771a074585f74a05863a05771a05d7374a05d66a071745d6159a05d5ea074585f74a05774635b",
+      "type": "text",
+      "decoded": "he curtly says that he is out of stock on that item"
+    },
+    {
+      "offset": 2921,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2922,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2923,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2924,
+      "size": 38,
+      "bytes": "875d73a0656374a0745863a06663635c575e65a0675d73a05f7263a05e5d74a0755f5e746364",
+      "type": "text",
+      "decoded": "You get the feeling you are not wanted"
+    },
+    {
+      "offset": 2962,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2963,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2964,
+      "size": 19,
+      "bytes": "5f5e64a05c635f7663a0745863a071745d7263",
+      "type": "text",
+      "decoded": "and leave the store"
+    },
+    {
+      "offset": 2983,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2984,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2985,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 2986,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 2988,
+      "size": 2,
+      "bytes": "f3be",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=be",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        190
+      ]
+    },
+    {
+      "offset": 2990,
+      "size": 2,
+      "bytes": "f5be",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=be",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        190
+      ]
+    },
+    {
+      "offset": 2992,
+      "size": 1,
+      "bytes": "9d",
+      "type": "marker",
+      "annotation": "count:1"
+    },
+    {
+      "offset": 2993,
+      "size": 1,
+      "bytes": "bc",
+      "type": "marker",
+      "annotation": "lbracket"
+    },
+    {
+      "offset": 2994,
+      "size": 3,
+      "bytes": "ebf3cd",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [CDF3]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        52723
+      ]
+    },
+    {
+      "offset": 2997,
+      "size": 2,
+      "bytes": "f5cd",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=cd",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        205
+      ]
+    },
+    {
+      "offset": 2999,
+      "size": 1,
+      "bytes": "9a",
+      "type": "marker",
+      "annotation": "comma"
+    },
+    {
+      "offset": 3000,
+      "size": 1,
+      "bytes": "bc",
+      "type": "marker",
+      "annotation": "lbracket"
+    },
+    {
+      "offset": 3001,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 3004,
+      "size": 12,
+      "bytes": "63a071585d70596363706372",
+      "type": "text",
+      "decoded": "e shopkeeper"
+    },
+    {
+      "offset": 3016,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3017,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3018,
+      "size": 24,
+      "bytes": "747267575e65a05e5d74a0745da05d6666635e64a0675d73",
+      "type": "text",
+      "decoded": "trying not to offend you"
+    },
+    {
+      "offset": 3042,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3043,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3044,
+      "size": 65,
+      "bytes": "615f726366735c5c67a0705d575e7471a05d7374a074585f74a0675d73a05f7263a05e5d74a061737272635e745c67a075635f72575e65a05f5e67a05f725b5d72",
+      "type": "text",
+      "decoded": "carefully points out that you are not currently wearing any armor"
+    },
+    {
+      "offset": 3109,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3110,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3111,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 3112,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 3114,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3115,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3116,
+      "size": 2,
+      "bytes": "f3a0",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=a0",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        160
+      ]
+    },
+    {
+      "offset": 3118,
+      "size": 4,
+      "bytes": "e8c0c0eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[EBC0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        60352
+      ]
+    },
+    {
+      "offset": 3122,
+      "size": 3,
+      "bytes": "ec9558",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5895]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22677
+      ]
+    },
+    {
+      "offset": 3125,
+      "size": 31,
+      "bytes": "5da071585f5c5ca0585f7663a0585771a05f725b5d72a07263705f57726364",
+      "type": "text",
+      "decoded": "o shall have his armor repaired"
+    },
+    {
+      "offset": 3156,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 3157,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 3158,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3159,
+      "size": 2,
+      "bytes": "f3bb",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=bb",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        187
+      ]
+    },
+    {
+      "offset": 3161,
+      "size": 4,
+      "bytes": "e830b9ec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=30 jump\u2192[ECB9]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        48,
+        60601
+      ]
+    },
+    {
+      "offset": 3165,
+      "size": 82,
+      "bytes": "945863a071585d70596363706372a05771a064635c576558746364a074585f74a0675d73a0585f7663a071635c6361746364a0585771a071745d7263a0745da05b5f5963a0675d7372a070737261585f7163",
+      "type": "text",
+      "decoded": "The shopkeeper is delighted that you have selected his store to make your purchase"
+    },
+    {
+      "offset": 3247,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3248,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3249,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3250,
+      "size": 53,
+      "bytes": "7863a065735f725f5e74636371a0745863a06f735f5c577467a05d66a05b5f746372575f5ca05f5e64a0755d72595b5f5e71585770",
+      "type": "text",
+      "decoded": "He guarantees the ouality of material and workmanship"
+    },
+    {
+      "offset": 3303,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3304,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3305,
+      "size": 26,
+      "bytes": "6557766371a0675d73a0675d7372a05b637261585f5e64577163",
+      "type": "text",
+      "decoded": "gives you your merchandise"
+    },
+    {
+      "offset": 3331,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3332,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3333,
+      "size": 45,
+      "bytes": "74585f5e5971a0675d73a05f5e64a0585d706371a0665d72a0675d7372a0667374737263a0627371575e637171",
+      "type": "text",
+      "decoded": "thanks you and hopes for your future business"
+    },
+    {
+      "offset": 3378,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3379,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3380,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 3381,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 3383,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3384,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3385,
+      "size": 1,
+      "bytes": "ed",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP"
+    },
+    {
+      "offset": 3386,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3387,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    }
+  ]
+}

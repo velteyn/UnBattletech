@@ -1,0 +1,321 @@
+{
+  "filename": "BARRACK2.BLD",
+  "size": 362,
+  "header": {
+    "file_type": 104,
+    "paragraphs": 1,
+    "signature": "eec6ebea",
+    "content_type": "c0ec",
+    "content_type_name": "dialogue/story",
+    "subtype": 135
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "6801eec6ebeac0ec",
+      "type": "header",
+      "annotation": "type=68 paragraphs=1 sig=eec6ebea content=dialogue/story subtype=87"
+    },
+    {
+      "offset": 8,
+      "size": 54,
+      "bytes": "875d73a071745f5e64a0575ea0745863a07273575e71a05d66a0675d7372a05d5c64a06f735f7274637271a05f74a0745863a05e5d75",
+      "type": "text",
+      "decoded": "You stand in the ruins of your old ouarters at the now"
+    },
+    {
+      "offset": 62,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 63,
+      "size": 17,
+      "bytes": "64637174725d676364a06157745f64635c",
+      "type": "text",
+      "decoded": "destroyed citadel"
+    },
+    {
+      "offset": 80,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 81,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 82,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 83,
+      "size": 38,
+      "bytes": "7b5d7174a05d66a075585f74a0675d73a05d755e6364a0585f71a06263635ea07273575e6364",
+      "type": "text",
+      "decoded": "Most of what you owned has been ruined"
+    },
+    {
+      "offset": 121,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 122,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 123,
+      "size": 54,
+      "bytes": "627374a0745863a0585d5c5d64577159a0705c5f676372a072635b5f575e71a05b57725f61735c5d73715c67a0735e745d7361586364",
+      "type": "text",
+      "decoded": "but the holodisk player remains miraculously untouched"
+    },
+    {
+      "offset": 177,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 178,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 179,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 180,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 181,
+      "size": 2,
+      "bytes": "f3be",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=be",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        190
+      ]
+    },
+    {
+      "offset": 183,
+      "size": 2,
+      "bytes": "f5be",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=be",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        190
+      ]
+    },
+    {
+      "offset": 185,
+      "size": 1,
+      "bytes": "99",
+      "type": "marker",
+      "annotation": "period"
+    },
+    {
+      "offset": 186,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 187,
+      "size": 3,
+      "bytes": "ec785d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D78]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23928
+      ]
+    },
+    {
+      "offset": 190,
+      "size": 5,
+      "bytes": "7563766372",
+      "type": "text",
+      "decoded": "wever"
+    },
+    {
+      "offset": 195,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 196,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 197,
+      "size": 51,
+      "bytes": "71575e6163a05f5c5ca0675d7372a0585d5c5d6457715971a075637263a064637174725d676364a0575ea0745863a0725f5764",
+      "type": "text",
+      "decoded": "since all your holodisks were destroyed in the raid"
+    },
+    {
+      "offset": 248,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 249,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 250,
+      "size": 46,
+      "bytes": "675d73a0585f7663a05e5d7458575e65a0745da0755f746158a0715da0675d73a07473725ea0745da05c635f7663",
+      "type": "text",
+      "decoded": "you have nothing to watch so you turn to leave"
+    },
+    {
+      "offset": 296,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 297,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 298,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 299,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 301,
+      "size": 3,
+      "bytes": "ec9263",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [6392]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25490
+      ]
+    },
+    {
+      "offset": 304,
+      "size": 51,
+      "bytes": "68a0755f577471a05d737471576463a0715da0675d73a0615f5ea076576375a0745863a064577159a0575ea0707257765f6167",
+      "type": "text",
+      "decoded": "x waits outside so you can view the disk in privacy"
+    },
+    {
+      "offset": 355,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 356,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 357,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 358,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 360,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 361,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    }
+  ]
+}

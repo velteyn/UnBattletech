@@ -1,0 +1,509 @@
+{
+  "filename": "FINDIT.BLD",
+  "size": 722,
+  "header": {
+    "file_type": 208,
+    "paragraphs": 2,
+    "signature": "eec6ebea",
+    "content_type": "c0ec",
+    "content_type_name": "dialogue/story",
+    "subtype": 135
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "d002eec6ebeac0ec",
+      "type": "header",
+      "annotation": "type=d0 paragraphs=2 sig=eec6ebea content=dialogue/story subtype=87"
+    },
+    {
+      "offset": 8,
+      "size": 49,
+      "bytes": "875d73a0585f7663a0665d735e64a05fa05c5f64646372a05c635f64575e65a0745da05fa07163615d5e64a05c6376635c",
+      "type": "text",
+      "decoded": "You have found a ladder leading to a second level"
+    },
+    {
+      "offset": 57,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 58,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 59,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 60,
+      "size": 24,
+      "bytes": "815c575b62575e65a0645d755ea0745863a05c5f64646372",
+      "type": "text",
+      "decoded": "Climbing down the ladder"
+    },
+    {
+      "offset": 84,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 85,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 86,
+      "size": 31,
+      "bytes": "675d73a05f7263a071585d61596364a06267a075585f74a0675d73a0716363",
+      "type": "text",
+      "decoded": "you are shocked by what you see"
+    },
+    {
+      "offset": 117,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 118,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 119,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 120,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 121,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 122,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 125,
+      "size": 37,
+      "bytes": "94585771a05771a05fa058736563a0717362746372725f5e635f5ea071745d7263725d5d5b",
+      "type": "text",
+      "decoded": "This is a huge subterranean storeroom"
+    },
+    {
+      "offset": 162,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 163,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 164,
+      "size": 26,
+      "bytes": "71745d61596364a075577458a074585d73715f5e6471a05d66a0",
+      "type": "text",
+      "decoded": "stocked with thousands of "
+    },
+    {
+      "offset": 190,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 191,
+      "size": 17,
+      "bytes": "7b636158a07263705f5772a0705f727471",
+      "type": "text",
+      "decoded": "Mech repair parts"
+    },
+    {
+      "offset": 208,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 209,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 210,
+      "size": 5,
+      "bytes": "745d5d5c71",
+      "type": "text",
+      "decoded": "tools"
+    },
+    {
+      "offset": 215,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 216,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 217,
+      "size": 16,
+      "bytes": "7263705f5772a0705c5f74665d725b71",
+      "type": "text",
+      "decoded": "repair platforms"
+    },
+    {
+      "offset": 233,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 234,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 235,
+      "size": 17,
+      "bytes": "5f5e64a071637663725f5ca066735c5c67",
+      "type": "text",
+      "decoded": "and several fully"
+    },
+    {
+      "offset": 252,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 253,
+      "size": 10,
+      "bytes": "5f7171635b625c6364a0",
+      "type": "text",
+      "decoded": "assembled "
+    },
+    {
+      "offset": 263,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 264,
+      "size": 27,
+      "bytes": "7b63615871a0575ea071705d745c637171a0615d5e645774575d5e",
+      "type": "text",
+      "decoded": "Mechs in spotless condition"
+    },
+    {
+      "offset": 291,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 292,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 293,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 294,
+      "size": 29,
+      "bytes": "7774a06557766371a0675d73a05f5ea06363725763a06663635c575e65",
+      "type": "text",
+      "decoded": "It gives you an eerie feeling"
+    },
+    {
+      "offset": 323,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 324,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 325,
+      "size": 99,
+      "bytes": "5c5d5d59575e65a05f74a05f5c5ca074585771a0575b7072637171577663a05b5f6158575e637267a05f5e64a0595e5d75575e65a074585f74a05774a0585f71a06263635ea0645d725b5f5e74a0665d72a058735e6472636471a05d66a067635f7271",
+      "type": "text",
+      "decoded": "looking at all this impressive machinery and knowing that it has been dormant for hundreds of years"
+    },
+    {
+      "offset": 424,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 425,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 426,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 427,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 429,
+      "size": 3,
+      "bytes": "ec815d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D81]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23937
+      ]
+    },
+    {
+      "offset": 432,
+      "size": 13,
+      "bytes": "5e65725f74735c5f74575d5e71",
+      "type": "text",
+      "decoded": "ngratulations"
+    },
+    {
+      "offset": 445,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 446,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 447,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 448,
+      "size": 47,
+      "bytes": "875d73a0585f7663a0665d735e64a0745863a058576464635ea091745f72a07c635f657363a0615f615863a05d66a0",
+      "type": "text",
+      "decoded": "You have found the hidden Star League cache of "
+    },
+    {
+      "offset": 495,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 496,
+      "size": 17,
+      "bytes": "7b636158a07263705f5772a0705f727471",
+      "type": "text",
+      "decoded": "Mech repair parts"
+    },
+    {
+      "offset": 513,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 514,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 515,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 516,
+      "size": 32,
+      "bytes": "875d7372a05b577171575d5ea05771a05e635f725c67a066735c66575c5c6364",
+      "type": "text",
+      "decoded": "Your mission is nearly fulfilled"
+    },
+    {
+      "offset": 548,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 549,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 550,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 551,
+      "size": 164,
+      "bytes": "5f5c5ca0675d73a05e636364a0745da0645da05e5d75a05771a0615d5e745f6174a0795f7472575e5fa05d5ea0745863a0786770637270735c7163a085635e63725f745d72a0715da074585f74a0745863a0815d5b5b5d5e75635f5c7458a0615f5ea071635e64a0575ea05fa05b575c57745f7267a06371615d7274a0745da0656374a0675d73a05f5e64a0745863a0615f615863a05d6666a0745863a0705c5f5e6374",
+      "type": "text",
+      "decoded": "all you need to do now is contact Katrina on the Hyperpulse Generator so that the Commonwealth can send in a military escort to get you and the cache off the planet"
+    },
+    {
+      "offset": 715,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 716,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 717,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 718,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 720,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 721,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    }
+  ]
+}

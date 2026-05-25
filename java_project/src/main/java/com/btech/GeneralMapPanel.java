@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import java.util.Random;
 
 public class GeneralMapPanel extends JPanel implements ActionListener {
@@ -54,6 +57,16 @@ public class GeneralMapPanel extends JPanel implements ActionListener {
         "Barracks", "Lounge"
     };
 
+    // Shop Logic
+    private enum ShopType { NONE, WEAPONS, ARMOR, LUBE }
+    private ShopType currentShop = ShopType.NONE;
+    private int shopSelection = 0;
+    // Strings from Memory Dump (Offset 0xA2E1)
+    private final String[] WEAPONS_OPTIONS = {"Bows and blades", "Slug-throwers", "Anti-'Mech weaponry", "Exit"};
+    // Mocked options for others as strings weren't explicitly found in menu format yet
+    private final String[] ARMOR_OPTIONS = {"Light Armor", "Medium Armor", "Heavy Armor", "Exit"}; 
+    private final String[] LUBE_OPTIONS = {"Repair 'Mech", "Reload Ammo", "Exit"};
+
     public GeneralMapPanel() {
         setFocusable(true);
         setBackground(Color.BLACK);
@@ -62,6 +75,11 @@ public class GeneralMapPanel extends JPanel implements ActionListener {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                if (currentShop != ShopType.NONE) {
+                    handleShopInput(e);
+                    return;
+                }
+                
                 if (showVillageMenu) {
                     handleMenuInput(e);
                     return;
@@ -78,6 +96,8 @@ public class GeneralMapPanel extends JPanel implements ActionListener {
                     case KeyEvent.VK_T -> handleTrainingCenter(); // Enter Training Center
                     case KeyEvent.VK_C -> toggleCache(); // Debug: Find Cache
                     case KeyEvent.VK_V -> toggleVillageMenu(); // Village Menu
+                    case KeyEvent.VK_P -> saveScreenshot(); // Screenshot
+                    case KeyEvent.VK_Q -> System.exit(0); // Quit
                 }
                 updateDirection();
             }
@@ -108,6 +128,41 @@ public class GeneralMapPanel extends JPanel implements ActionListener {
         repaint();
     }
 
+    private void handleShopInput(KeyEvent e) {
+        int key = e.getKeyCode();
+        String[] options = getShopOptions(currentShop);
+        
+        if (key == KeyEvent.VK_UP) {
+            shopSelection--;
+            if (shopSelection < 0) shopSelection = options.length - 1;
+        } else if (key == KeyEvent.VK_DOWN) {
+            shopSelection++;
+            if (shopSelection >= options.length) shopSelection = 0;
+        } else if (key == KeyEvent.VK_ENTER || key == KeyEvent.VK_SPACE) {
+            String selected = options[shopSelection];
+            if (selected.equals("Exit")) {
+                currentShop = ShopType.NONE;
+                showMessage("Leaving shop...");
+            } else {
+                // Buy Logic (Mocked)
+                // Dump string 0xB451: "Will you buy it?"
+                showMessage("Shopkeeper: Will you buy " + selected + "? (Not implemented)");
+            }
+        } else if (key == KeyEvent.VK_ESCAPE) {
+            currentShop = ShopType.NONE;
+        }
+        repaint();
+    }
+    
+    private String[] getShopOptions(ShopType type) {
+        return switch (type) {
+            case WEAPONS -> WEAPONS_OPTIONS;
+            case ARMOR -> ARMOR_OPTIONS;
+            case LUBE -> LUBE_OPTIONS;
+            default -> new String[]{};
+        };
+    }
+
     private void handleMenuInput(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_V || key == KeyEvent.VK_ESCAPE) {
@@ -125,6 +180,16 @@ public class GeneralMapPanel extends JPanel implements ActionListener {
     private void enterLocation(String location) {
         if (location.equals("Training Center")) {
             handleTrainingCenter();
+        } else if (location.equals("Weapons Shop")) {
+            currentShop = ShopType.WEAPONS;
+            shopSelection = 0;
+            // 0x8351 "Weapons Shop"
+        } else if (location.equals("Armor Shop")) {
+            currentShop = ShopType.ARMOR;
+            shopSelection = 0;
+        } else if (location.equals("Mechit-Lube")) {
+            currentShop = ShopType.LUBE;
+            shopSelection = 0;
         } else {
             showMessage("Visited: " + location);
         }
@@ -316,7 +381,73 @@ public class GeneralMapPanel extends JPanel implements ActionListener {
         drawDebugOverlay(g2d);
         drawStoryOverlay(g2d);
         
+        if (showVillageMenu) {
+            drawVillageMenu(g2d);
+        }
+        
+        if (currentShop != ShopType.NONE) {
+            drawShopOverlay(g2d);
+        }
+        
         g2d.dispose();
+    }
+    
+    private void drawVillageMenu(Graphics2D g) {
+        // ... (Logic from before? No, I need to add this method too if it's not there)
+        // Wait, I never implemented drawVillageMenu in previous turns?
+        // Ah, I added toggleVillageMenu and handleMenuInput, but did I add drawing logic?
+        // Let's check the file content I read earlier.
+        // It had toggleVillageMenu, handleMenuInput, but NO drawVillageMenu in paintComponent or method def.
+        // So the menu was invisible! I need to add it.
+        
+        int w = 150;
+        int h = VILLAGE_LOCATIONS.length * 12 + 20;
+        int x = (VIEW_WIDTH - w) / 2;
+        int y = (VIEW_HEIGHT - h) / 2;
+        
+        g.setColor(Color.BLACK);
+        g.fillRect(x, y, w, h);
+        g.setColor(Color.WHITE);
+        g.drawRect(x, y, w, h);
+        
+        g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+        for (int i = 0; i < VILLAGE_LOCATIONS.length; i++) {
+            g.drawString((i+1) + ". " + VILLAGE_LOCATIONS[i], x + 10, y + 15 + i * 12);
+        }
+    }
+
+    private void drawShopOverlay(Graphics2D g) {
+        int w = 200;
+        int h = 100;
+        int x = (VIEW_WIDTH - w) / 2;
+        int y = (VIEW_HEIGHT - h) / 2;
+        
+        g.setColor(new Color(0, 0, 50));
+        g.fillRect(x, y, w, h);
+        g.setColor(Color.GREEN);
+        g.drawRect(x, y, w, h);
+        
+        String title = switch(currentShop) {
+            case WEAPONS -> "WEAPONS SHOP";
+            case ARMOR -> "ARMOR SHOP";
+            case LUBE -> "MECHIT-LUBE";
+            default -> "SHOP";
+        };
+        
+        g.setFont(new Font("Monospaced", Font.BOLD, 12));
+        g.drawString(title, x + 10, y + 15);
+        
+        String[] options = getShopOptions(currentShop);
+        g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+        for (int i = 0; i < options.length; i++) {
+            if (i == shopSelection) {
+                g.setColor(Color.YELLOW);
+                g.drawString("> " + options[i], x + 10, y + 30 + i * 12);
+            } else {
+                g.setColor(Color.GREEN);
+                g.drawString("  " + options[i], x + 10, y + 30 + i * 12);
+            }
+        }
     }
     
     private void drawStoryOverlay(Graphics2D g) {
@@ -371,5 +502,20 @@ public class GeneralMapPanel extends JPanel implements ActionListener {
         
         // Assembly 1000:065a: MOV AX, Max; SAR AX, 1; ADD AX, Min
         return (max / 2) + min;
+    }
+    
+    private void saveScreenshot() {
+        BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = image.createGraphics();
+        paint(g2d);
+        g2d.dispose();
+        try {
+            ImageIO.write(image, "png", new File("screenshot.png"));
+            System.out.println("Screenshot saved to screenshot.png");
+            showMessage("Screenshot saved!");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            showMessage("Screenshot failed!");
+        }
     }
 }

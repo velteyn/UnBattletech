@@ -1,0 +1,1964 @@
+{
+  "filename": "WINSCENE.BLD",
+  "size": 2995,
+  "header": {
+    "file_type": 177,
+    "paragraphs": 11,
+    "signature": "eec6ebea",
+    "content_type": "c0da",
+    "content_type_name": "endgame",
+    "subtype": 186
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "b10beec6ebeac0da",
+      "type": "header",
+      "annotation": "type=b1 paragraphs=11 sig=eec6ebea content=endgame subtype=ba"
+    },
+    {
+      "offset": 8,
+      "size": 1,
+      "bytes": "ba",
+      "type": "marker",
+      "annotation": "rparen"
+    },
+    {
+      "offset": 9,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 10,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 13,
+      "size": 88,
+      "bytes": "73a0737163a0745863a0786770637270735c7163a065635e63725f745d72a0745da071635e64a05fa07157655e5f5ca0745da0795f7472575e5fa074585f74a0675d73a0585f7663a0665d735e64a0745863a0615f615863",
+      "type": "text",
+      "decoded": "u use the Hyperpulse generator to send a signal to Katrina that you have found the cache"
+    },
+    {
+      "offset": 101,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 102,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 103,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 104,
+      "size": 51,
+      "bytes": "815d5e6657725b5f74575d5ea05d66a0726361635776575e65a0675d7372a05b6371715f6563a0615d5b6371a05f61725d7171",
+      "type": "text",
+      "decoded": "Confirmation of receiving your message comes across"
+    },
+    {
+      "offset": 155,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 156,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 157,
+      "size": 76,
+      "bytes": "5f5e64a0675d73a05f7263a0745d5c64a074585f74a05fa084725d7091585770a05771a05d5ea0577471a0755f67a0745da07263747257637663a0675d73a05f5e64a0745863a0705f727471",
+      "type": "text",
+      "decoded": "and you are told that a DropShip is on its way to retrieve you and the parts"
+    },
+    {
+      "offset": 233,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 234,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 235,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 236,
+      "size": 2,
+      "bytes": "e9da",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=da",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        218
+      ]
+    },
+    {
+      "offset": 238,
+      "size": 1,
+      "bytes": "b9",
+      "type": "marker",
+      "annotation": "lparen"
+    },
+    {
+      "offset": 239,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 240,
+      "size": 3,
+      "bytes": "eec6eb",
+      "type": "opcode",
+      "annotation": "SPEND_CREDITS c6 eb",
+      "opcode": 238,
+      "opcode_name": "SPEND_CREDITS",
+      "operands": [
+        198,
+        235
+      ]
+    },
+    {
+      "offset": 243,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 246,
+      "size": 57,
+      "bytes": "63a084725d7091585770a05f727257766371a05f5e64a05c5f5e6471a05a737174a075637174a05d66a0745863a0615f615863a0635e747267",
+      "type": "text",
+      "decoded": "e DropShip arrives and lands just west of the cache entry"
+    },
+    {
+      "offset": 303,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 304,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 305,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 306,
+      "size": 113,
+      "bytes": "777471a07472635b635e645d7371a066577263705d756372a075575c5ca0585d5c64a05d6666a0745863a079737257745f5ea05d616173705f74575d5e5f5ca0665d72616371a05c5d5e65a0635e5d736558a0665d72a0745863a0636f7357705b635e74a0745da06263a05c5d5f646364",
+      "type": "text",
+      "decoded": "Its tremendous firepower will hold off the Kuritan occupational forces long enough for the eouipment to be loaded"
+    },
+    {
+      "offset": 419,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 420,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 421,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 422,
+      "size": 2,
+      "bytes": "e9ec",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ec",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        236
+      ]
+    },
+    {
+      "offset": 424,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 425,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 426,
+      "size": 55,
+      "bytes": "875d73a071745f5e64a05f5e64a0755f746158a0745863a0955d72597b63615871a05c5d5f64575e65a0745863a0636f7357705b635e74",
+      "type": "text",
+      "decoded": "You stand and watch the WorkMechs loading the eouipment"
+    },
+    {
+      "offset": 481,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 482,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 483,
+      "size": 28,
+      "bytes": "5f5e64a0675d73a06663635ca05fa0625774a0646370726371716364",
+      "type": "text",
+      "decoded": "and you feel a bit depressed"
+    },
+    {
+      "offset": 511,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 512,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 513,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 514,
+      "size": 43,
+      "bytes": "945863a0705c5f5e6374a0675d73a0615f5c5ca0585d5b63a0585f71a06263635ea05d766372745f59635e",
+      "type": "text",
+      "decoded": "The planet you call home has been overtaken"
+    },
+    {
+      "offset": 557,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 558,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 559,
+      "size": 19,
+      "bytes": "675d7372a0665f74586372a05771a0655d5e63",
+      "type": "text",
+      "decoded": "your father is gone"
+    },
+    {
+      "offset": 578,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 579,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 580,
+      "size": 45,
+      "bytes": "5f5c5ca074585f74a0675d73a0595e5d75a0585f71a06263635ea07473725e6364a0737071576463a0645d755e",
+      "type": "text",
+      "decoded": "all that you know has been turned upside down"
+    },
+    {
+      "offset": 625,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 626,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 627,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 628,
+      "size": 20,
+      "bytes": "95585f74a075575c5ca0675d73a0645da05e5d75",
+      "type": "text",
+      "decoded": "What will you do now"
+    },
+    {
+      "offset": 648,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 649,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 650,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 651,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 653,
+      "size": 3,
+      "bytes": "ec7d5e",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5E7D]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        24189
+      ]
+    },
+    {
+      "offset": 656,
+      "size": 101,
+      "bytes": "63a05d66a0745863a05b637171635e65637271a0615d5b6371a0745da0675d73a05f5e64a074635c5c71a0675d73a074585f74a07458637263a05771a05f5ea0575e615d5b575e65a05b6371715f6563a0665d72a0675d73a066725d5ba0795f7472575e5f",
+      "type": "text",
+      "decoded": "e of the messengers comes to you and tells you that there is an incoming message for you from Katrina"
+    },
+    {
+      "offset": 757,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 758,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 759,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 760,
+      "size": 90,
+      "bytes": "875d73a072737158a0745da05d5e63a05d66a0745863a0585d5c5d74725f5e715b577474637271a05d5ea0745863a084725d7091585770a0745da058635f72a075585f74a0745863a07f7261585d5ea0585f71a0745da0715f67",
+      "type": "text",
+      "decoded": "You rush to one of the holotransmitters on the DropShip to hear what the Archon has to say"
+    },
+    {
+      "offset": 850,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 851,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 852,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 853,
+      "size": 2,
+      "bytes": "e9da",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=da",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        218
+      ]
+    },
+    {
+      "offset": 855,
+      "size": 1,
+      "bytes": "bc",
+      "type": "marker",
+      "annotation": "lbracket"
+    },
+    {
+      "offset": 856,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 857,
+      "size": 3,
+      "bytes": "eec6eb",
+      "type": "opcode",
+      "annotation": "SPEND_CREDITS c6 eb",
+      "opcode": 238,
+      "opcode_name": "SPEND_CREDITS",
+      "operands": [
+        198,
+        235
+      ]
+    },
+    {
+      "offset": 860,
+      "size": 3,
+      "bytes": "eca27a",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [7AA2]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        31394
+      ]
+    },
+    {
+      "offset": 863,
+      "size": 4,
+      "bytes": "5f715d5e",
+      "type": "text",
+      "decoded": "ason"
+    },
+    {
+      "offset": 867,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 868,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 869,
+      "size": 2,
+      "bytes": "7563",
+      "type": "text",
+      "decoded": "we"
+    },
+    {
+      "offset": 871,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 872,
+      "size": 71,
+      "bytes": "7263a05f5c5ca0715da076637267a070725d7364a05d66a0675d73a0665d72a0745863a0755f67a0675d73a0585f7663a066735c66575c5c6364a074585771a05b577171575d5e",
+      "type": "text",
+      "decoded": "re all so very proud of you for the way you have fulfilled this mission"
+    },
+    {
+      "offset": 943,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 944,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 945,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 946,
+      "size": 54,
+      "bytes": "875d73a0585f7663a05f61585763766364a05b5d7263a074585f5ea07563a0585f64a05fa07257655874a0745da0585d7063a0665d72",
+      "type": "text",
+      "decoded": "You have achieved more than we had a right to hope for"
+    },
+    {
+      "offset": 1000,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1001,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1002,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1003,
+      "size": 31,
+      "bytes": "775ea05f7070726361575f74575d5ea05d66a0675d7372a071637276576163",
+      "type": "text",
+      "decoded": "In appreciation of your service"
+    },
+    {
+      "offset": 1034,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1035,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1036,
+      "size": 119,
+      "bytes": "77a0755d735c64a05c575963a0745da0636874635e64a0745da0675d73a0745863a05d70705d7274735e577467a0745da07163727663a05f71a05fa05b635b626372a05d66a0745863a07c67725f5ea0815d5b5b5d5e75635f5c7458a07f725b6364a0865d72616371a05f71a05f5ea05d666657616372",
+      "type": "text",
+      "decoded": "I would like to extend to you the opportunity to serve as a member of the Lyran Commonwealth Armed Forces as an officer"
+    },
+    {
+      "offset": 1155,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1156,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1157,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1158,
+      "size": 13,
+      "bytes": "7766a0675d73a05f6161637074",
+      "type": "text",
+      "decoded": "If you accept"
+    },
+    {
+      "offset": 1171,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1172,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1173,
+      "size": 40,
+      "bytes": "675d73a075575c5ca06263a0615d5b5b577171575d5e6364a05f71a05fa07c57637374635e5f5e74",
+      "type": "text",
+      "decoded": "you will be commissioned as a Lieutenant"
+    },
+    {
+      "offset": 1213,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1214,
+      "size": 1,
+      "bytes": "a2",
+      "type": "marker",
+      "annotation": "noop_a2"
+    },
+    {
+      "offset": 1215,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1216,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1217,
+      "size": 2,
+      "bytes": "e9da",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=da",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        218
+      ]
+    },
+    {
+      "offset": 1219,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1220,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 1221,
+      "size": 3,
+      "bytes": "eec6eb",
+      "type": "opcode",
+      "annotation": "SPEND_CREDITS c6 eb",
+      "opcode": 238,
+      "opcode_name": "SPEND_CREDITS",
+      "operands": [
+        198,
+        235
+      ]
+    },
+    {
+      "offset": 1224,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 1227,
+      "size": 90,
+      "bytes": "73a07174735b625c63a05d766372a0745863a0755d726471a0575ea0675d7372a05873727267a0745da063687072637171a0675d7372a065725f745774736463a0665d72a071736158a05fa065635e63725d7371a05d66666372",
+      "type": "text",
+      "decoded": "u stumble over the words in your hurry to express your gratitude for such a generous offer"
+    },
+    {
+      "offset": 1317,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1318,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1319,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1320,
+      "size": 41,
+      "bytes": "875d73a0635e64a07370a05c5d5d59575e65a05f71a05e6372765d7371a05f71a0675d73a06663635c",
+      "type": "text",
+      "decoded": "You end up looking as nervous as you feel"
+    },
+    {
+      "offset": 1361,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1362,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1363,
+      "size": 35,
+      "bytes": "5f5e64a05f7263a0715d5b6375585f74a0635b625f72725f71716364a0665d72a05774",
+      "type": "text",
+      "decoded": "and are somewhat embarrassed for it"
+    },
+    {
+      "offset": 1398,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1399,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1400,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1401,
+      "size": 65,
+      "bytes": "8376635e74735f5c5c67a0675d73a05b5f5e5f6563a0745da074635c5ca0586372a074585f74a0675d73a05b737174a06463615c575e63a0586372a05d66666372",
+      "type": "text",
+      "decoded": "Eventually you manage to tell her that you must decline her offer"
+    },
+    {
+      "offset": 1466,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1467,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1468,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1469,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 1471,
+      "size": 3,
+      "bytes": "ec9158",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5891]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22673
+      ]
+    },
+    {
+      "offset": 1474,
+      "size": 43,
+      "bytes": "63a0615c635f725c67a0755f71a05e5d74a0636870636174575e65a0675d73a0745da0715f67a074585f74",
+      "type": "text",
+      "decoded": "e clearly was not expecting you to say that"
+    },
+    {
+      "offset": 1517,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1518,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1519,
+      "size": 29,
+      "bytes": "5f5e64a05f715971a0675d73a0665d72a0675d7372a072635f715d5e71",
+      "type": "text",
+      "decoded": "and asks you for your reasons"
+    },
+    {
+      "offset": 1548,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1549,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1550,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1551,
+      "size": 16,
+      "bytes": "875d73a06368705c5f575ea074585f74",
+      "type": "text",
+      "decoded": "You explain that"
+    },
+    {
+      "offset": 1567,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1568,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1569,
+      "size": 44,
+      "bytes": "71575e6163a0675d73a07157655e5f5c5c6364a0665d72a0745863a084725d7091585770a0745da0615d5b63",
+      "type": "text",
+      "decoded": "since you signalled for the DropShip to come"
+    },
+    {
+      "offset": 1613,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1614,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1615,
+      "size": 56,
+      "bytes": "675d73a05f5e64a0926368a0585f7663a06263635ea0745f5c59575e65a06f73577463a05fa0625774a05f625d7374a07a6372635b575f58",
+      "type": "text",
+      "decoded": "you and Rex have been talking ouite a bit about Jeremiah"
+    },
+    {
+      "offset": 1671,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1672,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1673,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1674,
+      "size": 85,
+      "bytes": "875d73a074635c5ca0795f7472575e5fa074585f74a0675d73a0585f7663a0615d5b63a0745da0745863a06463615771575d5ea074585f74a05863a05b5f67a05e5d74a06263a064635f64a05f66746372a05f5c5c",
+      "type": "text",
+      "decoded": "You tell Katrina that you have come to the decision that he may not be dead after all"
+    },
+    {
+      "offset": 1759,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1760,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1761,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1762,
+      "size": 30,
+      "bytes": "915863a05771a076637267a0575e7463726371746364a0575ea074585771",
+      "type": "text",
+      "decoded": "She is very interested in this"
+    },
+    {
+      "offset": 1792,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1793,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1794,
+      "size": 28,
+      "bytes": "5f5e64a05f715971a0665d72a066737274586372a06463745f575c71",
+      "type": "text",
+      "decoded": "and asks for further details"
+    },
+    {
+      "offset": 1822,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1823,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1824,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1825,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 1827,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 1830,
+      "size": 39,
+      "bytes": "73a074635c5ca0586372a075585f74a05863a0715f5764a0575ea0745863a0585d5c5d64577159",
+      "type": "text",
+      "decoded": "u tell her what he said in the holodisk"
+    },
+    {
+      "offset": 1869,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1870,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1871,
+      "size": 40,
+      "bytes": "5f625d7374a05fa076635e646374745fa05f655f575e7174a0745863a079635c5ca0785d735e6471",
+      "type": "text",
+      "decoded": "about a vendetta against the Kell Hounds"
+    },
+    {
+      "offset": 1911,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1912,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1913,
+      "size": 30,
+      "bytes": "5d66a07558576158a07a6372635b575f58a0755f71a05fa05b635b626372",
+      "type": "text",
+      "decoded": "of which Jeremiah was a member"
+    },
+    {
+      "offset": 1943,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1944,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1945,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1946,
+      "size": 3,
+      "bytes": "926368",
+      "type": "text",
+      "decoded": "Rex"
+    },
+    {
+      "offset": 1949,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1950,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1951,
+      "size": 25,
+      "bytes": "75585da0755f71a05f5c715da05fa079635c5ca0785d735e64",
+      "type": "text",
+      "decoded": "who was also a Kell Hound"
+    },
+    {
+      "offset": 1976,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1977,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1978,
+      "size": 124,
+      "bytes": "7173717063617471a074585f74a0745863a079737257745fa0615d6463a05d66a0585d5e5d72a05f5e64a0725774735f5ca05b57655874a0635e615d73725f6563a0745863a084725f615d5e575f5e71a0745da0615f7074737263a0745863a079635c5ca0785d735e6471a05f5e64a0585d5c64a05fa07472575f5c",
+      "type": "text",
+      "decoded": "suspects that the Kurita code of honor and ritual might encourage the Draconians to capture the Kell Hounds and hold a trial"
+    },
+    {
+      "offset": 2102,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2103,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2104,
+      "size": 50,
+      "bytes": "725f74586372a074585f5ea05f71715f7171575e5f74575e65a0745863a05b635b62637271a0575e6457765764735f5c5c67",
+      "type": "text",
+      "decoded": "rather than assassinating the members individually"
+    },
+    {
+      "offset": 2154,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2155,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2156,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 2157,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 2159,
+      "size": 2,
+      "bytes": "f5ad",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=ad",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        173
+      ]
+    },
+    {
+      "offset": 2161,
+      "size": 1,
+      "bytes": "74",
+      "type": "text",
+      "decoded": "t"
+    },
+    {
+      "offset": 2162,
+      "size": 1,
+      "bytes": "b8",
+      "type": "marker",
+      "annotation": "price:113"
+    },
+    {
+      "offset": 2163,
+      "size": 4,
+      "bytes": "e847b7ec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=47 jump\u2192[ECB7]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        71,
+        60599
+      ]
+    },
+    {
+      "offset": 2167,
+      "size": 52,
+      "bytes": "875d73a07458635ea074635c5ca0586372a0745863a066575e5f5ca0625774a05d66a063765764635e6163a0675d73a0585f7663",
+      "type": "text",
+      "decoded": "You then tell her the final bit of evidence you have"
+    },
+    {
+      "offset": 2219,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 2220,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2221,
+      "size": 67,
+      "bytes": "745863a0665f6174a074585f74a0675d73a0665d735e64a0585771a090585d635e5768a0785f7559a07c7f7ba0575e745f6174a05f5e64a058576464635ea058637263",
+      "type": "text",
+      "decoded": "the fact that you found his Phoenix Hawk LAM intact and hidden here"
+    },
+    {
+      "offset": 2288,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2289,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2290,
+      "size": 73,
+      "bytes": "5f5e64a0745863a0665f6174a074585f74a05774a0755f71a070725d65725f5b5b6364a0745da0615d5e74575e7363a05fa05b577171575d5ea05f74a05fa05c5f746372a0645f7463",
+      "type": "text",
+      "decoded": "and the fact that it was programmed to continue a mission at a later date"
+    },
+    {
+      "offset": 2363,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2364,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2365,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2366,
+      "size": 36,
+      "bytes": "7766a074586367a075637263a0747267575e65a0745da059575c5ca07a6372635b575f58",
+      "type": "text",
+      "decoded": "If they were trying to kill Jeremiah"
+    },
+    {
+      "offset": 2402,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2403,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2404,
+      "size": 3,
+      "bytes": "675d73",
+      "type": "text",
+      "decoded": "you"
+    },
+    {
+      "offset": 2407,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 2408,
+      "size": 46,
+      "bytes": "7263a06f73577463a071737263a05863a0755d735c64a0585f7663a0655d5e63a0645d755ea06657655874575e65",
+      "type": "text",
+      "decoded": "re ouite sure he would have gone down fighting"
+    },
+    {
+      "offset": 2454,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2455,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2456,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 2457,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 2459,
+      "size": 3,
+      "bytes": "ec795f",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5F79]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        24441
+      ]
+    },
+    {
+      "offset": 2462,
+      "size": 53,
+      "bytes": "7472575e5fa05771a05e5d74a05e63616371715f72575c67a0615d5e76575e616364a074585f74a0675d73a05f7263a07257655874",
+      "type": "text",
+      "decoded": "trina is not necessarily convinced that you are right"
+    },
+    {
+      "offset": 2515,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2516,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2517,
+      "size": 62,
+      "bytes": "627374a0715863a05771a0575b70726371716364a0635e5d736558a0745da065577663a0675d73a0745863a061585f5e6163a0745da066575e64a05d7374",
+      "type": "text",
+      "decoded": "but she is impressed enough to give you the chance to find out"
+    },
+    {
+      "offset": 2579,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2580,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2581,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2582,
+      "size": 21,
+      "bytes": "915863a06463615c5f726371a074585f74a0675d73",
+      "type": "text",
+      "decoded": "She declares that you"
+    },
+    {
+      "offset": 2603,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2604,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2605,
+      "size": 51,
+      "bytes": "926368a05f5e64a0745863a072637174a0615f5ea05d7063725f7463a05f71a05f5ea0575e646370635e64635e74a0735e5774",
+      "type": "text",
+      "decoded": "Rex and the rest can operate as an independent unit"
+    },
+    {
+      "offset": 2656,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2657,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2658,
+      "size": 33,
+      "bytes": "745da06263a0595e5d755ea05f71a0745863a08172637161635e74a0785f755971",
+      "type": "text",
+      "decoded": "to be known as the Crescent Hawks"
+    },
+    {
+      "offset": 2691,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2692,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2693,
+      "size": 32,
+      "bytes": "5f5e64a0715863a0755771586371a0675d73a0745863a076637267a062637174",
+      "type": "text",
+      "decoded": "and she wishes you the very best"
+    },
+    {
+      "offset": 2725,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2726,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 2727,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 2728,
+      "size": 1,
+      "bytes": "a2",
+      "type": "marker",
+      "annotation": "noop_a2"
+    },
+    {
+      "offset": 2729,
+      "size": 25,
+      "bytes": "77a0585d7063a0675d73a066575e64a058575ba05f5c577663",
+      "type": "text",
+      "decoded": "I hope you find him alive"
+    },
+    {
+      "offset": 2754,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2755,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2756,
+      "size": 5,
+      "bytes": "7a5f715d5e",
+      "type": "text",
+      "decoded": "Jason"
+    },
+    {
+      "offset": 2761,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2762,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2763,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2764,
+      "size": 11,
+      "bytes": "77a072635f5c5c67a0645d",
+      "type": "text",
+      "decoded": "I really do"
+    },
+    {
+      "offset": 2775,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2776,
+      "size": 1,
+      "bytes": "a2",
+      "type": "marker",
+      "annotation": "noop_a2"
+    },
+    {
+      "offset": 2777,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2778,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 2779,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 2781,
+      "size": 3,
+      "bytes": "ec9557",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5795]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22421
+      ]
+    },
+    {
+      "offset": 2784,
+      "size": 7,
+      "bytes": "7458a074585f74",
+      "type": "text",
+      "decoded": "th that"
+    },
+    {
+      "offset": 2791,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2792,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2793,
+      "size": 32,
+      "bytes": "715863a07463725b575e5f746371a0745863a0615d5b5b735e57615f74575d5e",
+      "type": "text",
+      "decoded": "she terminates the communication"
+    },
+    {
+      "offset": 2825,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2826,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2827,
+      "size": 70,
+      "bytes": "5f5e64a0675d73a05d72646372a0745863a072637174a05d66a0745863a05e6375a08172637161635e74a0785f755971a0745da0625d5f7264a0745863a084725d7091585770",
+      "type": "text",
+      "decoded": "and you order the rest of the new Crescent Hawks to board the DropShip"
+    },
+    {
+      "offset": 2897,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2898,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2899,
+      "size": 50,
+      "bytes": "745da0626365575ea0675d7372a071635f726158a05f5e64a0745da0655da05d5ea0745da06572635f746372a0655c5d7267",
+      "type": "text",
+      "decoded": "to begin your search and to go on to greater glory"
+    },
+    {
+      "offset": 2949,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2950,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2951,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 2952,
+      "size": 2,
+      "bytes": "e9da",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=da",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        218
+      ]
+    },
+    {
+      "offset": 2954,
+      "size": 1,
+      "bytes": "be",
+      "type": "marker",
+      "annotation": "price:125"
+    },
+    {
+      "offset": 2955,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 2956,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 2959,
+      "size": 29,
+      "bytes": "9072637171a05f5e67a0596367a0745da0635e64a0745863a0655f5b63",
+      "type": "text",
+      "decoded": "Press any key to end the game"
+    },
+    {
+      "offset": 2988,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2989,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2990,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 2991,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 2993,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2994,
+      "size": 1,
+      "bytes": "ed",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP"
+    }
+  ]
+}

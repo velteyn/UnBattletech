@@ -1,5009 +1,4626 @@
 namespace generated;
 
+using Spice86.Core.CLI;
+using Spice86.Core.Emulator.CPU.InstructionsImpl;
+using Spice86.Shared.Emulator.Memory;
+using Spice86.Shared.Interfaces;
+
 public partial class GeneratedOverrides : CSharpOverrideHelper {
 
-  public virtual Action ghidra_guess_1000_A791_1A791(int loadOffset) {
+  public virtual Action ghidra_guess_1000_98EA_198EA(int loadOffset) {
     entrydispatcher:
     if(loadOffset != 0) {
       throw FailAsUntested("External goto not supported for this function.");
     }
-    label_1000_A791_1A791:
-    CheckExternalEvents(cs7, 0xA792);
-    // PUSH BP (1000_A791 / 0x1A791)
+    label_1000_98EA_198EA:
+    CheckExternalEvents(cs8, 0x98EB);
+    // PUSH BP (1000_98EA / 0x198EA)
     Stack.Push16(BP);
-    CheckExternalEvents(cs7, 0xA794);
-    // MOV BP,SP (1000_A792 / 0x1A792)
+    CheckExternalEvents(cs8, 0x98ED);
+    // MOV BP,SP (1000_98EB / 0x198EB)
     BP = SP;
-    CheckExternalEvents(cs7, 0xA795);
-    // PUSH DI (1000_A794 / 0x1A794)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs7, 0xA796);
-    // PUSH SI (1000_A795 / 0x1A795)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs7, 0xA797);
-    // PUSH DS (1000_A796 / 0x1A796)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs7, 0xA79A);
-    // MOV AX,0x1ddc (1000_A797 / 0x1A797)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs7, 0xA79C);
-    // MOV DS,AX (1000_A79A / 0x1A79A)
-    DS = AX;
-    CheckExternalEvents(cs7, 0xA79D);
-    // PUSH ES (1000_A79C / 0x1A79C)
-    Stack.Push16(ES);
-    CheckExternalEvents(cs7, 0xA7A0);
-    // MOV AX,word ptr [BP + 0x6] (1000_A79D / 0x1A79D)
+    CheckExternalEvents(cs8, 0x98F0);
+    // MOV AX,0x4 (1000_98ED / 0x198ED)
+    AX = 0x4;
+    CheckExternalEvents(cs8, 0x98F5);
+    // CALLF 0x1000:cecc (1000_98F0 / 0x198F0)
+    FarCall(cs8, 0x98F5, unknown_19EF_2FDC_1CECC);
+    CheckExternalEvents(cs8, 0x98F9);
+    // MOV ES,word ptr [0x5704] (1000_98F5 / 0x198F5)
+    ES = UInt16[DS, 0x5704];
+    CheckExternalEvents(cs8, 0x98FC);
+    // MOV AX,word ptr [BP + 0x6] (1000_98F9 / 0x198F9)
     AX = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs7, 0xA7A2);
-    // SHR AX,0x1 (1000_A7A0 / 0x1A7A0)
-    // AX >>= 0x1;
-    AX = Alu.Shr16(AX, 0x1);
-    CheckExternalEvents(cs7, 0xA7A5);
-    // MOV [0x220],AX (1000_A7A2 / 0x1A7A2)
-    UInt16[DS, 0x220] = AX;
-    CheckExternalEvents(cs7, 0xA7A8);
-    // MOV AX,word ptr [BP + 0x8] (1000_A7A5 / 0x1A7A5)
+    CheckExternalEvents(cs8, 0x9900);
+    // MOV ES:[0x6c],AX (1000_98FC / 0x198FC)
+    UInt16[ES, 0x6C] = AX;
+    CheckExternalEvents(cs8, 0x9904);
+    // MOV ES,word ptr [0x5706] (1000_9900 / 0x19900)
+    ES = UInt16[DS, 0x5706];
+    CheckExternalEvents(cs8, 0x9907);
+    // MOV AX,word ptr [BP + 0x8] (1000_9904 / 0x19904)
     AX = UInt16[SS, (ushort)(BP + 0x8)];
-    CheckExternalEvents(cs7, 0xA7AB);
-    // MOV [0x234],AX (1000_A7A8 / 0x1A7A8)
-    UInt16[DS, 0x234] = AX;
-    CheckExternalEvents(cs7, 0xA7AE);
-    // MOV AX,word ptr [BP + 0xa] (1000_A7AB / 0x1A7AB)
+    CheckExternalEvents(cs8, 0x990B);
+    // MOV ES:[0x3776],AX (1000_9907 / 0x19907)
+    UInt16[ES, 0x3776] = AX;
+    CheckExternalEvents(cs8, 0x990F);
+    // MOV ES,word ptr [0x5708] (1000_990B / 0x1990B)
+    ES = UInt16[DS, 0x5708];
+    CheckExternalEvents(cs8, 0x9912);
+    // MOV AX,word ptr [BP + 0xa] (1000_990F / 0x1990F)
     AX = UInt16[SS, (ushort)(BP + 0xA)];
-    CheckExternalEvents(cs7, 0xA7B1);
-    // ADD AX,0x1 (1000_A7AE / 0x1A7AE)
-    // AX += 0x1;
-    AX = Alu.Add16(AX, 0x1);
-    CheckExternalEvents(cs7, 0xA7B4);
-    // MOV [0x230],AX (1000_A7B1 / 0x1A7B1)
-    UInt16[DS, 0x230] = AX;
-    CheckExternalEvents(cs7, 0xA7B7);
-    // MOV AX,word ptr [BP + 0xc] (1000_A7B4 / 0x1A7B4)
+    CheckExternalEvents(cs8, 0x9916);
+    // MOV ES:[0x4312],AX (1000_9912 / 0x19912)
+    UInt16[ES, 0x4312] = AX;
+    CheckExternalEvents(cs8, 0x991A);
+    // MOV ES,word ptr [0x570a] (1000_9916 / 0x19916)
+    ES = UInt16[DS, 0x570A];
+    CheckExternalEvents(cs8, 0x991D);
+    // MOV AX,word ptr [BP + 0xc] (1000_991A / 0x1991A)
     AX = UInt16[SS, (ushort)(BP + 0xC)];
-    CheckExternalEvents(cs7, 0xA7BA);
-    // MOV [0x236],AX (1000_A7B7 / 0x1A7B7)
-    UInt16[DS, 0x236] = AX;
-    CheckExternalEvents(cs7, 0xA7BD);
-    // MOV AX,word ptr [BP + 0xe] (1000_A7BA / 0x1A7BA)
+    CheckExternalEvents(cs8, 0x9921);
+    // MOV ES:[0x398a],AX (1000_991D / 0x1991D)
+    UInt16[ES, 0x398A] = AX;
+    CheckExternalEvents(cs8, 0x9926);
+    // CALLF 0x1000:9f57 (1000_9921 / 0x19921)
+    FarCall(cs8, 0x9926, unknown_19EF_0067_19F57);
+    CheckExternalEvents(cs8, 0x992B);
+    // MOV word ptr [BP + -0x2],0x1 (1000_9926 / 0x19926)
+    UInt16[SS, (ushort)(BP - 0x2)] = 0x1;
+    CheckExternalEvents(cs8, 0x992D);
+    // JMP 0x1000:9930 (1000_992B / 0x1992B)
+    goto label_1000_9930_19930;
+    label_1000_992D_1992D:
+    CheckExternalEvents(cs8, 0x9930);
+    // INC word ptr [BP + -0x2] (1000_992D / 0x1992D)
+    UInt16[SS, (ushort)(BP - 0x2)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x2)]);
+    label_1000_9930_19930:
+    CheckExternalEvents(cs8, 0x9933);
+    // MOV AX,[0x5006] (1000_9930 / 0x19930)
+    AX = UInt16[DS, 0x5006];
+    CheckExternalEvents(cs8, 0x9936);
+    // CMP word ptr [BP + -0x2],AX (1000_9933 / 0x19933)
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x2)], AX);
+    CheckExternalEvents(cs8, 0x9938);
+    // JL 0x1000:992d (1000_9936 / 0x19936)
+    if(SignFlag != OverflowFlag) {
+      goto label_1000_992D_1992D;
+    }
+    CheckExternalEvents(cs8, 0x993D);
+    // MOV word ptr [BP + -0x2],0x0 (1000_9938 / 0x19938)
+    UInt16[SS, (ushort)(BP - 0x2)] = 0x0;
+    CheckExternalEvents(cs8, 0x993F);
+    // JMP 0x1000:9969 (1000_993D / 0x1993D)
+    goto label_1000_9969_19969;
+    label_1000_993F_1993F:
+    CheckExternalEvents(cs8, 0x9942);
+    // INC word ptr [BP + -0x4] (1000_993F / 0x1993F)
+    UInt16[SS, (ushort)(BP - 0x4)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x4)]);
+    label_1000_9942_19942:
+    CheckExternalEvents(cs8, 0x9945);
+    // MOV AX,[0x5006] (1000_9942 / 0x19942)
+    AX = UInt16[DS, 0x5006];
+    CheckExternalEvents(cs8, 0x9948);
+    // CMP word ptr [BP + -0x4],AX (1000_9945 / 0x19945)
+    Alu16.Sub(UInt16[SS, (ushort)(BP - 0x4)], AX);
+    CheckExternalEvents(cs8, 0x994A);
+    // JGE 0x1000:9966 (1000_9948 / 0x19948)
+    if(SignFlag == OverflowFlag) {
+      goto label_1000_9966_19966;
+    }
+    CheckExternalEvents(cs8, 0x994E);
+    // MOV ES,word ptr [0x5706] (1000_994A / 0x1994A)
+    ES = UInt16[DS, 0x5706];
+    CheckExternalEvents(cs8, 0x9953);
+    // PUSH word ptr ES:[0x3776] (1000_994E / 0x1994E)
+    Stack.Push16(UInt16[ES, 0x3776]);
+    CheckExternalEvents(cs8, 0x9957);
+    // MOV ES,word ptr [0x5704] (1000_9953 / 0x19953)
+    ES = UInt16[DS, 0x5704];
+    CheckExternalEvents(cs8, 0x995C);
+    // PUSH word ptr ES:[0x6c] (1000_9957 / 0x19957)
+    Stack.Push16(UInt16[ES, 0x6C]);
+    CheckExternalEvents(cs8, 0x9961);
+    // CALLF 0x1000:9f99 (1000_995C / 0x1995C)
+    FarCall(cs8, 0x9961, unknown_19EF_00A9_19F99);
+    CheckExternalEvents(cs8, 0x9964);
+    // ADD SP,0x4 (1000_9961 / 0x19961)
+    // SP += 0x4;
+    SP = Alu16.Add(SP, 0x4);
+    CheckExternalEvents(cs8, 0x9966);
+    // JMP 0x1000:993f (1000_9964 / 0x19964)
+    goto label_1000_993F_1993F;
+    label_1000_9966_19966:
+    CheckExternalEvents(cs8, 0x9969);
+    // INC word ptr [BP + -0x2] (1000_9966 / 0x19966)
+    UInt16[SS, (ushort)(BP - 0x2)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x2)]);
+    label_1000_9969_19969:
+    CheckExternalEvents(cs8, 0x996D);
+    // MOV ES,word ptr [0x5708] (1000_9969 / 0x19969)
+    ES = UInt16[DS, 0x5708];
+    CheckExternalEvents(cs8, 0x9970);
+    // MOV AX,word ptr [BP + -0x2] (1000_996D / 0x1996D)
+    AX = UInt16[SS, (ushort)(BP - 0x2)];
+    CheckExternalEvents(cs8, 0x9975);
+    // CMP word ptr ES:[0x4312],AX (1000_9970 / 0x19970)
+    Alu16.Sub(UInt16[ES, 0x4312], AX);
+    CheckExternalEvents(cs8, 0x9977);
+    // JLE 0x1000:998f (1000_9975 / 0x19975)
+    if(ZeroFlag || SignFlag != OverflowFlag) {
+      goto label_1000_998F_1998F;
+    }
+    CheckExternalEvents(cs8, 0x997B);
+    // MOV ES,word ptr [0x570a] (1000_9977 / 0x19977)
+    ES = UInt16[DS, 0x570A];
+    CheckExternalEvents(cs8, 0x9980);
+    // PUSH word ptr ES:[0x398a] (1000_997B / 0x1997B)
+    Stack.Push16(UInt16[ES, 0x398A]);
+    CheckExternalEvents(cs8, 0x9985);
+    // CALLF 0x1000:9f6d (1000_9980 / 0x19980)
+    FarCall(cs8, 0x9985, unknown_19EF_007D_19F6D);
+    CheckExternalEvents(cs8, 0x9988);
+    // ADD SP,0x2 (1000_9985 / 0x19985)
+    // SP += 0x2;
+    SP = Alu16.Add(SP, 0x2);
+    CheckExternalEvents(cs8, 0x998D);
+    // MOV word ptr [BP + -0x4],0x0 (1000_9988 / 0x19988)
+    UInt16[SS, (ushort)(BP - 0x4)] = 0x0;
+    CheckExternalEvents(cs8, 0x998F);
+    // JMP 0x1000:9942 (1000_998D / 0x1998D)
+    goto label_1000_9942_19942;
+    label_1000_998F_1998F:
+    CheckExternalEvents(cs8, 0x9991);
+    // MOV SP,BP (1000_998F / 0x1998F)
+    SP = BP;
+    CheckExternalEvents(cs8, 0x9992);
+    // POP BP (1000_9991 / 0x19991)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0x9993);
+    // RETF  (1000_9992 / 0x19992)
+    return FarRet();
+  }
+  
+  public virtual Action ghidra_guess_1000_9993_19993(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_9993_19993:
+    CheckExternalEvents(cs8, 0x9994);
+    // PUSH BP (1000_9993 / 0x19993)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs8, 0x9996);
+    // MOV BP,SP (1000_9994 / 0x19994)
+    BP = SP;
+    CheckExternalEvents(cs8, 0x9999);
+    // MOV AX,0x4 (1000_9996 / 0x19996)
+    AX = 0x4;
+    CheckExternalEvents(cs8, 0x999E);
+    // CALLF 0x1000:cecc (1000_9999 / 0x19999)
+    FarCall(cs8, 0x999E, unknown_19EF_2FDC_1CECC);
+    CheckExternalEvents(cs8, 0x999F);
+    // PUSH SI (1000_999E / 0x1999E)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs8, 0x99A3);
+    // MOV ES,word ptr [0x570c] (1000_999F / 0x1999F)
+    ES = UInt16[DS, 0x570C];
+    CheckExternalEvents(cs8, 0x99A6);
+    // MOV AX,word ptr [BP + 0x6] (1000_99A3 / 0x199A3)
+    AX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs8, 0x99AA);
+    // MOV ES:[0x0],AX (1000_99A6 / 0x199A6)
+    UInt16[ES, 0x0] = AX;
+    CheckExternalEvents(cs8, 0x99AE);
+    // MOV ES,word ptr [0x570e] (1000_99AA / 0x199AA)
+    ES = UInt16[DS, 0x570E];
+    CheckExternalEvents(cs8, 0x99B1);
+    // MOV AX,word ptr [BP + 0x8] (1000_99AE / 0x199AE)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs8, 0x99B5);
+    // MOV ES:[0x39f4],AX (1000_99B1 / 0x199B1)
+    UInt16[ES, 0x39F4] = AX;
+    CheckExternalEvents(cs8, 0x99B9);
+    // MOV ES,word ptr [0x5710] (1000_99B5 / 0x199B5)
+    ES = UInt16[DS, 0x5710];
+    CheckExternalEvents(cs8, 0x99BC);
+    // MOV AX,word ptr [BP + 0xa] (1000_99B9 / 0x199B9)
+    AX = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs8, 0x99C0);
+    // MOV ES:[0x4000],AX (1000_99BC / 0x199BC)
+    UInt16[ES, 0x4000] = AX;
+    CheckExternalEvents(cs8, 0x99C4);
+    // MOV ES,word ptr [0x5712] (1000_99C0 / 0x199C0)
+    ES = UInt16[DS, 0x5712];
+    CheckExternalEvents(cs8, 0x99C7);
+    // MOV AX,word ptr [BP + 0xc] (1000_99C4 / 0x199C4)
+    AX = UInt16[SS, (ushort)(BP + 0xC)];
+    CheckExternalEvents(cs8, 0x99CB);
+    // MOV ES:[0x4034],AX (1000_99C7 / 0x199C7)
+    UInt16[ES, 0x4034] = AX;
+    CheckExternalEvents(cs8, 0x99CF);
+    // MOV ES,word ptr [0x5714] (1000_99CB / 0x199CB)
+    ES = UInt16[DS, 0x5714];
+    CheckExternalEvents(cs8, 0x99D2);
+    // MOV AX,word ptr [BP + 0xe] (1000_99CF / 0x199CF)
     AX = UInt16[SS, (ushort)(BP + 0xE)];
-    CheckExternalEvents(cs7, 0xA7C0);
-    // MOV [0x224],AX (1000_A7BD / 0x1A7BD)
-    UInt16[DS, 0x224] = AX;
-    CheckExternalEvents(cs7, 0xA7C3);
-    // MOV CX,0x4 (1000_A7C0 / 0x1A7C0)
-    CX = 0x4;
-    CheckExternalEvents(cs7, 0xA7C5);
-    // SHL AL,CL (1000_A7C3 / 0x1A7C3)
-    // AL <<= CL;
-    AL = Alu.Shl8(AL, CL);
-    CheckExternalEvents(cs7, 0xA7C9);
-    // OR AX,word ptr [0x224] (1000_A7C5 / 0x1A7C5)
-    // AX |= UInt16[DS, 0x224];
-    AX = Alu.Or16(AX, UInt16[DS, 0x224]);
-    CheckExternalEvents(cs7, 0xA7CB);
-    // MOV AH,AL (1000_A7C9 / 0x1A7C9)
-    AH = AL;
-    CheckExternalEvents(cs7, 0xA7CE);
-    // MOV [0x224],AX (1000_A7CB / 0x1A7CB)
-    UInt16[DS, 0x224] = AX;
-    CheckExternalEvents(cs7, 0xA7D1);
-    // MOV AX,0xb800 (1000_A7CE / 0x1A7CE)
-    AX = 0xB800;
-    CheckExternalEvents(cs7, 0xA7D3);
-    // MOV ES,AX (1000_A7D1 / 0x1A7D1)
-    ES = AX;
-    CheckExternalEvents(cs7, 0xA7D6);
-    // MOV AX,[0x234] (1000_A7D3 / 0x1A7D3)
-    AX = UInt16[DS, 0x234];
-    CheckExternalEvents(cs7, 0xA7D8);
-    // AND AL,0xfc (1000_A7D6 / 0x1A7D6)
-    // AL &= 0xFC;
-    AL = Alu.And8(AL, 0xFC);
-    CheckExternalEvents(cs7, 0xA7DB);
-    // MOV DX,0x28 (1000_A7D8 / 0x1A7D8)
-    DX = 0x28;
-    CheckExternalEvents(cs7, 0xA7DD);
-    // MUL DL (1000_A7DB / 0x1A7DB)
-    ushort resMul1000_A7DB = Alu.Mul8(AL, DL);
-    AL = (byte)(resMul1000_A7DB);
-    AH = (byte)(resMul1000_A7DB >> 8);
-    CheckExternalEvents(cs7, 0xA7E1);
-    // ADD AX,word ptr [0x220] (1000_A7DD / 0x1A7DD)
-    // AX += UInt16[DS, 0x220];
-    AX = Alu.Add16(AX, UInt16[DS, 0x220]);
-    CheckExternalEvents(cs7, 0xA7E5);
-    // MOV DX,word ptr [0x234] (1000_A7E1 / 0x1A7E1)
-    DX = UInt16[DS, 0x234];
-    CheckExternalEvents(cs7, 0xA7E8);
-    // AND DX,0x3 (1000_A7E5 / 0x1A7E5)
-    // DX &= 0x3;
-    DX = Alu.And16(DX, 0x3);
-    CheckExternalEvents(cs7, 0xA7EA);
-    // JZ 0x1000:a7f1 (1000_A7E8 / 0x1A7E8)
-    if(ZeroFlag) {
-      goto label_1000_A7F1_1A7F1;
+    CheckExternalEvents(cs8, 0x99D6);
+    // MOV ES:[0x62],AX (1000_99D2 / 0x199D2)
+    UInt16[ES, 0x62] = AX;
+    CheckExternalEvents(cs8, 0x99D7);
+    // PUSH CS (1000_99D6 / 0x199D6)
+    Stack.Push16(cs8);
+    CheckExternalEvents(cs8, 0x99DA);
+    // CALL 0x1000:97be (1000_99D7 / 0x199D7)
+    NearCall(cs8, 0x99DA, unknown_1935_046E_197BE);
+    CheckExternalEvents(cs8, 0x99DF);
+    // MOV word ptr [BP + -0x4],0x0 (1000_99DA / 0x199DA)
+    UInt16[SS, (ushort)(BP - 0x4)] = 0x0;
+    CheckExternalEvents(cs8, 0x99E1);
+    // JMP 0x1000:9a28 (1000_99DF / 0x199DF)
+    goto label_1000_9A28_19A28;
+    label_1000_99E1_199E1:
+    CheckExternalEvents(cs8, 0x99E4);
+    // INC word ptr [BP + -0x2] (1000_99E1 / 0x199E1)
+    UInt16[SS, (ushort)(BP - 0x2)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x2)]);
+    label_1000_99E4_199E4:
+    CheckExternalEvents(cs8, 0x99E8);
+    // MOV ES,word ptr [0x5714] (1000_99E4 / 0x199E4)
+    ES = UInt16[DS, 0x5714];
+    CheckExternalEvents(cs8, 0x99EC);
+    // MOV AX,ES:[0x62] (1000_99E8 / 0x199E8)
+    AX = UInt16[ES, 0x62];
+    CheckExternalEvents(cs8, 0x99EF);
+    // IMUL word ptr [BP + -0x2] (1000_99EC / 0x199EC)
+    int resImul1000_99EC = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP - 0x2)]);
+    AX = (ushort)(resImul1000_99EC);
+    DX = (ushort)(resImul1000_99EC >> 16);
+    CheckExternalEvents(cs8, 0x99F1);
+    // MOV SI,AX (1000_99EF / 0x199EF)
+    SI = AX;
+    CheckExternalEvents(cs8, 0x99F5);
+    // MOV ES,word ptr [0x570e] (1000_99F1 / 0x199F1)
+    ES = UInt16[DS, 0x570E];
+    CheckExternalEvents(cs8, 0x99F9);
+    // MOV AX,ES:[0x39f4] (1000_99F5 / 0x199F5)
+    AX = UInt16[ES, 0x39F4];
+    CheckExternalEvents(cs8, 0x99FB);
+    // SHL AX,0x1 (1000_99F9 / 0x199F9)
+    AX <<= 0x1;
+    CheckExternalEvents(cs8, 0x99FD);
+    // CMP AX,SI (1000_99FB / 0x199FB)
+    Alu16.Sub(AX, SI);
+    CheckExternalEvents(cs8, 0x99FF);
+    // JLE 0x1000:9a25 (1000_99FD / 0x199FD)
+    if(ZeroFlag || SignFlag != OverflowFlag) {
+      goto label_1000_9A25_19A25;
     }
-    CheckExternalEvents(cs7, 0xA7EC);
-    // MOV CX,DX (1000_A7EA / 0x1A7EA)
-    CX = DX;
-    label_1000_A7EC_1A7EC:
-    CheckExternalEvents(cs7, 0xA7EF);
-    // ADD AH,0x20 (1000_A7EC / 0x1A7EC)
-    // AH += 0x20;
-    AH = Alu.Add8(AH, 0x20);
-    CheckExternalEvents(cs7, 0xA7F1);
-    // LOOP 0x1000:a7ec (1000_A7EF / 0x1A7EF)
-    if(--CX != 0) {
-      goto label_1000_A7EC_1A7EC;
+    CheckExternalEvents(cs8, 0x9A03);
+    // MOV ES,word ptr [0x5710] (1000_99FF / 0x199FF)
+    ES = UInt16[DS, 0x5710];
+    CheckExternalEvents(cs8, 0x9A08);
+    // PUSH word ptr ES:[0x4000] (1000_9A03 / 0x19A03)
+    Stack.Push16(UInt16[ES, 0x4000]);
+    CheckExternalEvents(cs8, 0x9A0C);
+    // MOV ES,word ptr [0x570c] (1000_9A08 / 0x19A08)
+    ES = UInt16[DS, 0x570C];
+    CheckExternalEvents(cs8, 0x9A10);
+    // MOV AX,ES:[0x0] (1000_9A0C / 0x19A0C)
+    AX = UInt16[ES, 0x0];
+    CheckExternalEvents(cs8, 0x9A14);
+    // MOV ES,word ptr [0x570e] (1000_9A10 / 0x19A10)
+    ES = UInt16[DS, 0x570E];
+    CheckExternalEvents(cs8, 0x9A19);
+    // SUB AX,word ptr ES:[0x39f4] (1000_9A14 / 0x19A14)
+    AX -= UInt16[ES, 0x39F4];
+    CheckExternalEvents(cs8, 0x9A1B);
+    // ADD AX,SI (1000_9A19 / 0x19A19)
+    // AX += SI;
+    AX = Alu16.Add(AX, SI);
+    CheckExternalEvents(cs8, 0x9A1C);
+    // PUSH AX (1000_9A1B / 0x19A1B)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs8, 0x9A1D);
+    // PUSH CS (1000_9A1C / 0x19A1C)
+    Stack.Push16(cs8);
+    CheckExternalEvents(cs8, 0x9A20);
+    // CALL 0x1000:9a46 (1000_9A1D / 0x19A1D)
+    NearCall(cs8, 0x9A20, ghidra_guess_1000_9A46_19A46);
+    CheckExternalEvents(cs8, 0x9A23);
+    // ADD SP,0x4 (1000_9A20 / 0x19A20)
+    // SP += 0x4;
+    SP = Alu16.Add(SP, 0x4);
+    CheckExternalEvents(cs8, 0x9A25);
+    // JMP 0x1000:99e1 (1000_9A23 / 0x19A23)
+    goto label_1000_99E1_199E1;
+    label_1000_9A25_19A25:
+    CheckExternalEvents(cs8, 0x9A28);
+    // INC word ptr [BP + -0x4] (1000_9A25 / 0x19A25)
+    UInt16[SS, (ushort)(BP - 0x4)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x4)]);
+    label_1000_9A28_19A28:
+    CheckExternalEvents(cs8, 0x9A2C);
+    // MOV ES,word ptr [0x5712] (1000_9A28 / 0x19A28)
+    ES = UInt16[DS, 0x5712];
+    CheckExternalEvents(cs8, 0x9A2F);
+    // MOV AX,word ptr [BP + -0x4] (1000_9A2C / 0x19A2C)
+    AX = UInt16[SS, (ushort)(BP - 0x4)];
+    CheckExternalEvents(cs8, 0x9A34);
+    // CMP word ptr ES:[0x4034],AX (1000_9A2F / 0x19A2F)
+    Alu16.Sub(UInt16[ES, 0x4034], AX);
+    CheckExternalEvents(cs8, 0x9A36);
+    // JLE 0x1000:9a3d (1000_9A34 / 0x19A34)
+    if(ZeroFlag || SignFlag != OverflowFlag) {
+      goto label_1000_9A3D_19A3D;
     }
-    label_1000_A7F1_1A7F1:
-    CheckExternalEvents(cs7, 0xA7F3);
-    // MOV DI,AX (1000_A7F1 / 0x1A7F1)
-    DI = AX;
-    CheckExternalEvents(cs7, 0xA7F7);
-    // MOV BX,word ptr [0x236] (1000_A7F3 / 0x1A7F3)
-    BX = UInt16[DS, 0x236];
-    CheckExternalEvents(cs7, 0xA7FA);
-    // MOV AX,[0x224] (1000_A7F7 / 0x1A7F7)
-    AX = UInt16[DS, 0x224];
-    label_1000_A7FA_1A7FA:
-    CheckExternalEvents(cs7, 0xA7FE);
-    // MOV CX,word ptr [0x230] (1000_A7FA / 0x1A7FA)
-    CX = UInt16[DS, 0x230];
-    CheckExternalEvents(cs7, 0xA800);
-    // REP
-    while (CX != 0) {
-      CX--;
-      // STOSB ES:DI (1000_A7FE / 0x1A7FE)
-      UInt8[ES, (ushort)(DI)] = AL;
-      DI = (ushort)(DI + Direction8);
-    }
-    CheckExternalEvents(cs7, 0xA804);
-    // SUB DI,word ptr [0x230] (1000_A800 / 0x1A800)
-    DI -= UInt16[DS, 0x230];
-    CheckExternalEvents(cs7, 0xA806);
-    // INC DL (1000_A804 / 0x1A804)
-    DL++;
-    CheckExternalEvents(cs7, 0xA809);
-    // AND DL,0x3 (1000_A806 / 0x1A806)
-    // DL &= 0x3;
-    DL = Alu.And8(DL, 0x3);
-    CheckExternalEvents(cs7, 0xA80B);
-    // JZ 0x1000:a814 (1000_A809 / 0x1A809)
-    if(ZeroFlag) {
-      goto label_1000_A814_1A814;
-    }
-    CheckExternalEvents(cs7, 0xA80F);
-    // ADD DI,0x2000 (1000_A80B / 0x1A80B)
-    DI += 0x2000;
-    CheckExternalEvents(cs7, 0xA810);
-    // DEC BX (1000_A80F / 0x1A80F)
-    BX = Alu.Dec16(BX);
-    CheckExternalEvents(cs7, 0xA812);
-    // JNS 0x1000:a7fa (1000_A810 / 0x1A810)
-    if(!SignFlag) {
-      goto label_1000_A7FA_1A7FA;
-    }
-    CheckExternalEvents(cs7, 0xA814);
-    // JS 0x1000:a81b (1000_A812 / 0x1A812)
-    if(SignFlag) {
-      goto label_1000_A81B_1A81B;
-    }
-    label_1000_A814_1A814:
-    CheckExternalEvents(cs7, 0xA818);
-    // SUB DI,0x5f60 (1000_A814 / 0x1A814)
-    DI -= 0x5F60;
-    CheckExternalEvents(cs7, 0xA819);
-    // DEC BX (1000_A818 / 0x1A818)
-    BX = Alu.Dec16(BX);
-    CheckExternalEvents(cs7, 0xA81B);
-    // JNS 0x1000:a7fa (1000_A819 / 0x1A819)
-    if(!SignFlag) {
-      goto label_1000_A7FA_1A7FA;
-    }
-    label_1000_A81B_1A81B:
-    CheckExternalEvents(cs7, 0xA81C);
-    // POP ES (1000_A81B / 0x1A81B)
-    ES = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA81D);
-    // POP DS (1000_A81C / 0x1A81C)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA81E);
-    // POP SI (1000_A81D / 0x1A81D)
+    CheckExternalEvents(cs8, 0x9A3B);
+    // MOV word ptr [BP + -0x2],0x0 (1000_9A36 / 0x19A36)
+    UInt16[SS, (ushort)(BP - 0x2)] = 0x0;
+    CheckExternalEvents(cs8, 0x9A3D);
+    // JMP 0x1000:99e4 (1000_9A3B / 0x19A3B)
+    goto label_1000_99E4_199E4;
+    label_1000_9A3D_19A3D:
+    CheckExternalEvents(cs8, 0x9A3E);
+    // PUSH CS (1000_9A3D / 0x19A3D)
+    Stack.Push16(cs8);
+    CheckExternalEvents(cs8, 0x9A41);
+    // CALL 0x1000:9834 (1000_9A3E / 0x19A3E)
+    NearCall(cs8, 0x9A41, unknown_1935_04E4_19834);
+    CheckExternalEvents(cs8, 0x9A42);
+    // POP SI (1000_9A41 / 0x19A41)
     SI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA81F);
-    // POP DI (1000_A81E / 0x1A81E)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA820);
-    // POP BP (1000_A81F / 0x1A81F)
+    CheckExternalEvents(cs8, 0x9A44);
+    // MOV SP,BP (1000_9A42 / 0x19A42)
+    SP = BP;
+    CheckExternalEvents(cs8, 0x9A45);
+    // POP BP (1000_9A44 / 0x19A44)
     BP = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA821);
-    // RETF  (1000_A820 / 0x1A820)
+    CheckExternalEvents(cs8, 0x9A46);
+    // RETF  (1000_9A45 / 0x19A45)
     return FarRet();
   }
   
-  public virtual Action unknown_19EF_0931_1A821(int loadOffset) {
+  public virtual Action ghidra_guess_1000_9A46_19A46(int loadOffset) {
     entrydispatcher:
     if(loadOffset != 0) {
       throw FailAsUntested("External goto not supported for this function.");
     }
-    label_19EF_0931_1A821:
-    CheckExternalEvents(cs12, 0x932);
-    // PUSH BP (19EF_0931 / 0x1A821)
+    label_1000_9A46_19A46:
+    CheckExternalEvents(cs8, 0x9A47);
+    // PUSH BP (1000_9A46 / 0x19A46)
     Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0x934);
-    // MOV BP,SP (19EF_0932 / 0x1A822)
+    CheckExternalEvents(cs8, 0x9A49);
+    // MOV BP,SP (1000_9A47 / 0x19A47)
     BP = SP;
-    CheckExternalEvents(cs12, 0x935);
-    // PUSH DI (19EF_0934 / 0x1A824)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0x936);
-    // PUSH SI (19EF_0935 / 0x1A825)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0x937);
-    // PUSH DS (19EF_0936 / 0x1A826)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0x93A);
-    // MOV AX,0x1ddc (19EF_0937 / 0x1A827)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0x93C);
-    // MOV DS,AX (19EF_093A / 0x1A82A)
-    DS = AX;
-    CheckExternalEvents(cs12, 0x93D);
-    // PUSH ES (19EF_093C / 0x1A82C)
-    Stack.Push16(ES);
-    CheckExternalEvents(cs12, 0x940);
-    // MOV SI,word ptr [BP + 0x6] (19EF_093D / 0x1A82D)
-    SI = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs12, 0x943);
-    // MOV AX,word ptr [BP + 0x8] (19EF_0940 / 0x1A830)
-    AX = UInt16[SS, (ushort)(BP + 0x8)];
-    CheckExternalEvents(cs12, 0x946);
-    // MOV [0x25a],AX (19EF_0943 / 0x1A833)
-    UInt16[DS, 0x25A] = AX;
-    CheckExternalEvents(cs12, 0x949);
-    // MOV DI,word ptr [BP + 0xa] (19EF_0946 / 0x1A836)
-    DI = UInt16[SS, (ushort)(BP + 0xA)];
-    CheckExternalEvents(cs12, 0x94C);
-    // MOV AX,word ptr [BP + 0xc] (19EF_0949 / 0x1A839)
-    AX = UInt16[SS, (ushort)(BP + 0xC)];
-    CheckExternalEvents(cs12, 0x94E);
-    // MOV ES,AX (19EF_094C / 0x1A83C)
-    ES = AX;
-    CheckExternalEvents(cs12, 0x951);
-    // MOV DX,word ptr [BP + 0xe] (19EF_094E / 0x1A83E)
-    DX = UInt16[SS, (ushort)(BP + 0xE)];
-    CheckExternalEvents(cs12, 0x954);
-    // MOV AX,word ptr [BP + 0x10] (19EF_0951 / 0x1A841)
-    AX = UInt16[SS, (ushort)(BP + 0x10)];
-    CheckExternalEvents(cs12, 0x956);
-    // MOV DH,AL (19EF_0954 / 0x1A844)
-    DH = AL;
-    CheckExternalEvents(cs12, 0x959);
-    // MOV BX,word ptr [BP + 0x12] (19EF_0956 / 0x1A846)
-    BX = UInt16[SS, (ushort)(BP + 0x12)];
-    CheckExternalEvents(cs12, 0x95A);
-    // PUSH DS (19EF_0959 / 0x1A849)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0x95E);
-    // MOV DS,word ptr [0x25a] (19EF_095A / 0x1A84A)
-    DS = UInt16[DS, 0x25A];
-    label_19EF_095E_1A84E:
-    CheckExternalEvents(cs12, 0x960);
-    // MOV CL,DL (19EF_095E / 0x1A84E)
-    CL = DL;
-    CheckExternalEvents(cs12, 0x962);
-    // XOR CH,CH (19EF_0960 / 0x1A850)
-    // CH ^= CH;
-    CH = Alu.Xor8(CH, CH);
-    CheckExternalEvents(cs12, 0x964);
-    // REP
-    while (CX != 0) {
-      CX--;
-      // MOVSW ES:DI,SI (19EF_0962 / 0x1A852)
-      UInt16[ES, (ushort)(DI)] = UInt16[DS, (ushort)(SI)];
-      SI = (ushort)(SI + Direction16);
-      DI = (ushort)(DI + Direction16);
-    }
-    CheckExternalEvents(cs12, 0x966);
-    // ADD SI,BX (19EF_0964 / 0x1A854)
-    SI += BX;
-    CheckExternalEvents(cs12, 0x968);
-    // DEC DH (19EF_0966 / 0x1A856)
-    DH = Alu.Dec8(DH);
-    CheckExternalEvents(cs12, 0x96A);
-    // JNZ 0x1000:a84e (19EF_0968 / 0x1A858)
-    if(!ZeroFlag) {
-      goto label_19EF_095E_1A84E;
-    }
-    CheckExternalEvents(cs12, 0x96B);
-    // POP DS (19EF_096A / 0x1A85A)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x96C);
-    // POP ES (19EF_096B / 0x1A85B)
-    ES = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x96D);
-    // POP DS (19EF_096C / 0x1A85C)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x96E);
-    // POP SI (19EF_096D / 0x1A85D)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x96F);
-    // POP DI (19EF_096E / 0x1A85E)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x970);
-    // POP BP (19EF_096F / 0x1A85F)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x971);
-    // RETF  (19EF_0970 / 0x1A860)
-    return FarRet();
-  }
-  
-  public virtual Action unknown_19EF_0971_1A861(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0971_1A861:
-    CheckExternalEvents(cs12, 0x972);
-    // PUSH BP (19EF_0971 / 0x1A861)
-    Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0x974);
-    // MOV BP,SP (19EF_0972 / 0x1A862)
-    BP = SP;
-    CheckExternalEvents(cs12, 0x975);
-    // PUSH DI (19EF_0974 / 0x1A864)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0x976);
-    // PUSH SI (19EF_0975 / 0x1A865)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0x977);
-    // PUSH DS (19EF_0976 / 0x1A866)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0x97A);
-    // MOV AX,0x1ddc (19EF_0977 / 0x1A867)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0x97C);
-    // MOV DS,AX (19EF_097A / 0x1A86A)
-    DS = AX;
-    CheckExternalEvents(cs12, 0x97F);
-    // MOV AX,word ptr [BP + 0x6] (19EF_097C / 0x1A86C)
+    CheckExternalEvents(cs8, 0x9A4C);
+    // MOV AX,0x4 (1000_9A49 / 0x19A49)
+    AX = 0x4;
+    CheckExternalEvents(cs8, 0x9A51);
+    // CALLF 0x1000:cecc (1000_9A4C / 0x19A4C)
+    FarCall(cs8, 0x9A51, unknown_19EF_2FDC_1CECC);
+    CheckExternalEvents(cs8, 0x9A55);
+    // MOV ES,word ptr [0x5720] (1000_9A51 / 0x19A51)
+    ES = UInt16[DS, 0x5720];
+    CheckExternalEvents(cs8, 0x9A58);
+    // MOV AX,word ptr [BP + 0x6] (1000_9A55 / 0x19A55)
     AX = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs12, 0x982);
-    // MOV [0x238],AX (19EF_097F / 0x1A86F)
-    UInt16[DS, 0x238] = AX;
-    CheckExternalEvents(cs12, 0x985);
-    // MOV AX,word ptr [BP + 0x8] (19EF_0982 / 0x1A872)
+    CheckExternalEvents(cs8, 0x9A5C);
+    // MOV ES:[0x3ff6],AX (1000_9A58 / 0x19A58)
+    UInt16[ES, 0x3FF6] = AX;
+    CheckExternalEvents(cs8, 0x9A60);
+    // MOV ES,word ptr [0x5722] (1000_9A5C / 0x19A5C)
+    ES = UInt16[DS, 0x5722];
+    CheckExternalEvents(cs8, 0x9A63);
+    // MOV AX,word ptr [BP + 0x8] (1000_9A60 / 0x19A60)
     AX = UInt16[SS, (ushort)(BP + 0x8)];
-    CheckExternalEvents(cs12, 0x988);
-    // MOV [0x23a],AX (19EF_0985 / 0x1A875)
-    UInt16[DS, 0x23A] = AX;
-    CheckExternalEvents(cs12, 0x98B);
-    // MOV AX,word ptr [BP + 0xa] (19EF_0988 / 0x1A878)
-    AX = UInt16[SS, (ushort)(BP + 0xA)];
-    CheckExternalEvents(cs12, 0x98E);
-    // MOV [0x23c],AX (19EF_098B / 0x1A87B)
-    UInt16[DS, 0x23C] = AX;
-    CheckExternalEvents(cs12, 0x991);
-    // MOV AX,word ptr [BP + 0xc] (19EF_098E / 0x1A87E)
-    AX = UInt16[SS, (ushort)(BP + 0xC)];
-    CheckExternalEvents(cs12, 0x994);
-    // MOV [0x23e],AX (19EF_0991 / 0x1A881)
-    UInt16[DS, 0x23E] = AX;
-    CheckExternalEvents(cs12, 0x997);
-    // MOV AX,[0x23a] (19EF_0994 / 0x1A884)
-    AX = UInt16[DS, 0x23A];
-    CheckExternalEvents(cs12, 0x99B);
-    // MOV BX,word ptr [0x23e] (19EF_0997 / 0x1A887)
-    BX = UInt16[DS, 0x23E];
-    CheckExternalEvents(cs12, 0x99D);
-    // SUB AL,BL (19EF_099B / 0x1A88B)
-    AL -= BL;
-    CheckExternalEvents(cs12, 0x99F);
-    // XOR DX,DX (19EF_099D / 0x1A88D)
-    // DX ^= DX;
-    DX = Alu.Xor16(DX, DX);
-    CheckExternalEvents(cs12, 0x9A1);
-    // MOV DL,AL (19EF_099F / 0x1A88F)
-    DL = AL;
-    CheckExternalEvents(cs12, 0x9A3);
-    // OR DL,DL (19EF_09A1 / 0x1A891)
-    // DL |= DL;
-    DL = Alu.Or8(DL, DL);
-    CheckExternalEvents(cs12, 0x9A5);
-    // JNS 0x1000:a897 (19EF_09A3 / 0x1A893)
-    if(!SignFlag) {
-      goto label_19EF_09A7_1A897;
+    CheckExternalEvents(cs8, 0x9A67);
+    // MOV ES:[0x3246],AX (1000_9A63 / 0x19A63)
+    UInt16[ES, 0x3246] = AX;
+    CheckExternalEvents(cs8, 0x9A6B);
+    // MOV ES,word ptr [0x5720] (1000_9A67 / 0x19A67)
+    ES = UInt16[DS, 0x5720];
+    CheckExternalEvents(cs8, 0x9A70);
+    // PUSH word ptr ES:[0x3ff6] (1000_9A6B / 0x19A6B)
+    Stack.Push16(UInt16[ES, 0x3FF6]);
+    CheckExternalEvents(cs8, 0x9A75);
+    // CALLF 0x1000:9f20 (1000_9A70 / 0x19A70)
+    FarCall(cs8, 0x9A75, ghidra_guess_1000_9F20_19F20);
+    CheckExternalEvents(cs8, 0x9A78);
+    // ADD SP,0x2 (1000_9A75 / 0x19A75)
+    // SP += 0x2;
+    SP = Alu16.Add(SP, 0x2);
+    CheckExternalEvents(cs8, 0x9A7D);
+    // MOV word ptr [BP + -0x2],0x0 (1000_9A78 / 0x19A78)
+    UInt16[SS, (ushort)(BP - 0x2)] = 0x0;
+    CheckExternalEvents(cs8, 0x9A7F);
+    // JMP 0x1000:9a82 (1000_9A7D / 0x19A7D)
+    goto label_1000_9A82_19A82;
+    label_1000_9A7F_19A7F:
+    CheckExternalEvents(cs8, 0x9A82);
+    // INC word ptr [BP + -0x2] (1000_9A7F / 0x19A7F)
+    UInt16[SS, (ushort)(BP - 0x2)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x2)]);
+    label_1000_9A82_19A82:
+    CheckExternalEvents(cs8, 0x9A86);
+    // MOV ES,word ptr [0x5722] (1000_9A82 / 0x19A82)
+    ES = UInt16[DS, 0x5722];
+    CheckExternalEvents(cs8, 0x9A8A);
+    // MOV AX,ES:[0x3246] (1000_9A86 / 0x19A86)
+    AX = UInt16[ES, 0x3246];
+    CheckExternalEvents(cs8, 0x9A8E);
+    // IMUL word ptr [0x5006] (1000_9A8A / 0x19A8A)
+    int resImul1000_9A8A = Alu16.Imul((short)AX, (short)UInt16[DS, 0x5006]);
+    AX = (ushort)(resImul1000_9A8A);
+    DX = (ushort)(resImul1000_9A8A >> 16);
+    CheckExternalEvents(cs8, 0x9A91);
+    // CMP AX,word ptr [BP + -0x2] (1000_9A8E / 0x19A8E)
+    Alu16.Sub(AX, UInt16[SS, (ushort)(BP - 0x2)]);
+    CheckExternalEvents(cs8, 0x9A93);
+    // JG 0x1000:9a7f (1000_9A91 / 0x19A91)
+    if(!ZeroFlag && SignFlag == OverflowFlag) {
+      goto label_1000_9A7F_19A7F;
     }
-    CheckExternalEvents(cs12, 0x9A7);
-    // DEC DH (19EF_09A5 / 0x1A895)
-    DH--;
-    label_19EF_09A7_1A897:
-    CheckExternalEvents(cs12, 0x9AA);
-    // AND AH,0xf0 (19EF_09A7 / 0x1A897)
-    AH &= 0xF0;
-    CheckExternalEvents(cs12, 0x9AD);
-    // AND BH,0xf0 (19EF_09AA / 0x1A89A)
-    BH &= 0xF0;
-    CheckExternalEvents(cs12, 0x9AF);
-    // CMP BH,AH (19EF_09AD / 0x1A89D)
-    Alu.Sub8(BH, AH);
-    CheckExternalEvents(cs12, 0x9B1);
-    // JZ 0x1000:a8ab (19EF_09AF / 0x1A89F)
-    if(ZeroFlag) {
-      goto label_19EF_09BB_1A8AB;
-    }
-    CheckExternalEvents(cs12, 0x9B3);
-    // JC 0x1000:a8a8 (19EF_09B1 / 0x1A8A1)
-    if(CarryFlag) {
-      goto label_19EF_09B8_1A8A8;
-    }
-    CheckExternalEvents(cs12, 0x9B6);
-    // OR DX,0xff80 (19EF_09B3 / 0x1A8A3)
-    // DX |= 0xFF80;
-    DX = Alu.Or16(DX, 0xFF80);
-    CheckExternalEvents(cs12, 0x9B8);
-    // JNZ 0x1000:a8ab (19EF_09B6 / 0x1A8A6)
-    if(!ZeroFlag) {
-      goto label_19EF_09BB_1A8AB;
-    }
-    label_19EF_09B8_1A8A8:
-    CheckExternalEvents(cs12, 0x9BB);
-    // AND DX,0x7f (19EF_09B8 / 0x1A8A8)
-    // DX &= 0x7F;
-    DX = Alu.And16(DX, 0x7F);
-    label_19EF_09BB_1A8AB:
-    CheckExternalEvents(cs12, 0x9BD);
-    // MOV DI,DX (19EF_09BB / 0x1A8AB)
-    DI = DX;
-    CheckExternalEvents(cs12, 0x9BF);
-    // XOR DX,DX (19EF_09BD / 0x1A8AD)
-    // DX ^= DX;
-    DX = Alu.Xor16(DX, DX);
-    CheckExternalEvents(cs12, 0x9C2);
-    // MOV AX,[0x238] (19EF_09BF / 0x1A8AF)
-    AX = UInt16[DS, 0x238];
-    CheckExternalEvents(cs12, 0x9C6);
-    // MOV BX,word ptr [0x23c] (19EF_09C2 / 0x1A8B2)
-    BX = UInt16[DS, 0x23C];
-    CheckExternalEvents(cs12, 0x9C8);
-    // MOV CX,BX (19EF_09C6 / 0x1A8B6)
-    CX = BX;
-    CheckExternalEvents(cs12, 0x9CA);
-    // SUB CX,AX (19EF_09C8 / 0x1A8B8)
-    CX -= AX;
-    CheckExternalEvents(cs12, 0x9CC);
-    // CMP BH,AH (19EF_09CA / 0x1A8BA)
-    Alu.Sub8(BH, AH);
-    CheckExternalEvents(cs12, 0x9CE);
-    // JZ 0x1000:a8ca (19EF_09CC / 0x1A8BC)
-    if(ZeroFlag) {
-      // Jump converted to non entry function call
-      if(JumpDispatcher.Jump(split_1000_A8C6_1A8C6, 0x1A8CA - cs1 * 0x10)) {
-        loadOffset = JumpDispatcher.NextEntryAddress;
-        goto entrydispatcher;
-      }
-      return JumpDispatcher.JumpAsmReturn!;
-    }
-    CheckExternalEvents(cs12, 0x9D0);
-    // JC 0x1000:a8c6 (19EF_09CE / 0x1A8BE)
-    if(CarryFlag) {
-      // Jump converted to entry function call
-      if(JumpDispatcher.Jump(split_1000_A8C6_1A8C6, 0)) {
-        loadOffset = JumpDispatcher.NextEntryAddress;
-        goto entrydispatcher;
-      }
-      return JumpDispatcher.JumpAsmReturn!;
-    }
-    CheckExternalEvents(cs12, 0x9D3);
-    // AND CX,0x7f (19EF_09D0 / 0x1A8C0)
-    // CX &= 0x7F;
-    CX = Alu.And16(CX, 0x7F);
-    CheckExternalEvents(cs12, 0x9D5);
-    // JMP 0x1000:a8ca (19EF_09D3 / 0x1A8C3)
-    // Jump converted to non entry function call
-    if(JumpDispatcher.Jump(split_1000_A8C6_1A8C6, 0x1A8CA - cs1 * 0x10)) {
-      loadOffset = JumpDispatcher.NextEntryAddress;
-      goto entrydispatcher;
-    }
-    return JumpDispatcher.JumpAsmReturn!;
-  }
-  
-  public virtual Action split_1000_A8C6_1A8C6(int loadOffset) {
-    entrydispatcher:
-    switch(loadOffset) {
-      case 0x1A8CA: goto label_19EF_09DA_1A8CA;break; // Target of external jump from 0x1A8BC
-      case 0: break; // 0 is the entry point ghidra detected, just after this switch
-      default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
-    }
-    label_1000_A8C6_1A8C6:
-    CheckExternalEvents(cs7, 0xA8CA);
-    // OR CX,0x80 (1000_A8C6 / 0x1A8C6)
-    // CX |= 0x80;
-    CX = Alu.Or16(CX, 0x80);
-    label_1000_A8CA_1A8CA:
-    CheckExternalEvents(cs7, 0xA8CC);
-    // MOV BX,CX (1000_A8CA / 0x1A8CA)
-    BX = CX;
-    CheckExternalEvents(cs7, 0xA8CE);
-    // OR BX,BX (1000_A8CC / 0x1A8CC)
-    // BX |= BX;
-    BX = Alu.Or16(BX, BX);
-    CheckExternalEvents(cs7, 0xA8D0);
-    // JNS 0x1000:a8d2 (1000_A8CE / 0x1A8CE)
-    if(!SignFlag) {
-      goto label_1000_A8D2_1A8D2;
-    }
-    CheckExternalEvents(cs7, 0xA8D2);
-    // NEG BX (1000_A8D0 / 0x1A8D0)
-    BX = Alu.Sub16(0, BX);
-    label_1000_A8D2_1A8D2:
-    CheckExternalEvents(cs7, 0xA8D4);
-    // MOV AX,DI (1000_A8D2 / 0x1A8D2)
-    AX = DI;
-    CheckExternalEvents(cs7, 0xA8D6);
-    // SHL AX,0x1 (1000_A8D4 / 0x1A8D4)
-    AX <<= 0x1;
-    CheckExternalEvents(cs7, 0xA8D8);
-    // CMP AX,BX (1000_A8D6 / 0x1A8D6)
-    Alu.Sub16(AX, BX);
-    CheckExternalEvents(cs7, 0xA8DA);
-    // JL 0x1000:a8dd (1000_A8D8 / 0x1A8D8)
-    if(SignFlag != OverflowFlag) {
-      goto label_1000_A8DD_1A8DD;
-    }
-    CheckExternalEvents(cs7, 0xA8DD);
-    // OR DX,0x8 (1000_A8DA / 0x1A8DA)
-    // DX |= 0x8;
-    DX = Alu.Or16(DX, 0x8);
-    label_1000_A8DD_1A8DD:
-    CheckExternalEvents(cs7, 0xA8DF);
-    // MOV AX,DI (1000_A8DD / 0x1A8DD)
-    AX = DI;
-    CheckExternalEvents(cs7, 0xA8E1);
-    // NEG AX (1000_A8DF / 0x1A8DF)
-    AX = Alu.Sub16(0, AX);
-    CheckExternalEvents(cs7, 0xA8E3);
-    // SHL AX,0x1 (1000_A8E1 / 0x1A8E1)
-    AX <<= 0x1;
-    CheckExternalEvents(cs7, 0xA8E5);
-    // CMP AX,BX (1000_A8E3 / 0x1A8E3)
-    Alu.Sub16(AX, BX);
-    CheckExternalEvents(cs7, 0xA8E7);
-    // JL 0x1000:a8ea (1000_A8E5 / 0x1A8E5)
-    if(SignFlag != OverflowFlag) {
-      goto label_1000_A8EA_1A8EA;
-    }
-    CheckExternalEvents(cs7, 0xA8EA);
-    // OR DX,0x4 (1000_A8E7 / 0x1A8E7)
-    // DX |= 0x4;
-    DX = Alu.Or16(DX, 0x4);
-    label_1000_A8EA_1A8EA:
-    CheckExternalEvents(cs7, 0xA8EC);
-    // MOV BX,DI (1000_A8EA / 0x1A8EA)
-    BX = DI;
-    CheckExternalEvents(cs7, 0xA8EE);
-    // OR BX,BX (1000_A8EC / 0x1A8EC)
-    // BX |= BX;
-    BX = Alu.Or16(BX, BX);
-    CheckExternalEvents(cs7, 0xA8F0);
-    // JNS 0x1000:a8f2 (1000_A8EE / 0x1A8EE)
-    if(!SignFlag) {
-      goto label_1000_A8F2_1A8F2;
-    }
-    CheckExternalEvents(cs7, 0xA8F2);
-    // NEG BX (1000_A8F0 / 0x1A8F0)
-    BX = Alu.Sub16(0, BX);
-    label_1000_A8F2_1A8F2:
-    CheckExternalEvents(cs7, 0xA8F4);
-    // MOV AX,CX (1000_A8F2 / 0x1A8F2)
-    AX = CX;
-    CheckExternalEvents(cs7, 0xA8F6);
-    // SHL AX,0x1 (1000_A8F4 / 0x1A8F4)
-    AX <<= 0x1;
-    CheckExternalEvents(cs7, 0xA8F8);
-    // CMP AX,BX (1000_A8F6 / 0x1A8F6)
-    Alu.Sub16(AX, BX);
-    CheckExternalEvents(cs7, 0xA8FA);
-    // JL 0x1000:a8fd (1000_A8F8 / 0x1A8F8)
-    if(SignFlag != OverflowFlag) {
-      goto label_1000_A8FD_1A8FD;
-    }
-    CheckExternalEvents(cs7, 0xA8FD);
-    // OR DX,0x2 (1000_A8FA / 0x1A8FA)
-    // DX |= 0x2;
-    DX = Alu.Or16(DX, 0x2);
-    label_1000_A8FD_1A8FD:
-    CheckExternalEvents(cs7, 0xA8FF);
-    // MOV AX,CX (1000_A8FD / 0x1A8FD)
-    AX = CX;
-    CheckExternalEvents(cs7, 0xA901);
-    // NEG AX (1000_A8FF / 0x1A8FF)
-    AX = Alu.Sub16(0, AX);
-    CheckExternalEvents(cs7, 0xA903);
-    // SHL AX,0x1 (1000_A901 / 0x1A901)
-    AX <<= 0x1;
-    CheckExternalEvents(cs7, 0xA905);
-    // CMP AX,BX (1000_A903 / 0x1A903)
-    Alu.Sub16(AX, BX);
-    CheckExternalEvents(cs7, 0xA907);
-    // JL 0x1000:a90a (1000_A905 / 0x1A905)
-    if(SignFlag != OverflowFlag) {
-      goto label_1000_A90A_1A90A;
-    }
-    CheckExternalEvents(cs7, 0xA90A);
-    // OR DX,0x1 (1000_A907 / 0x1A907)
-    // DX |= 0x1;
-    DX = Alu.Or16(DX, 0x1);
-    label_1000_A90A_1A90A:
-    CheckExternalEvents(cs7, 0xA90C);
-    // MOV BX,DX (1000_A90A / 0x1A90A)
-    BX = DX;
-    CheckExternalEvents(cs7, 0xA910);
-    // MOV AL,byte ptr [BX + 0x240] (1000_A90C / 0x1A90C)
-    AL = UInt8[DS, (ushort)(BX + 0x240)];
-    CheckExternalEvents(cs7, 0xA911);
-    // CBW  (1000_A910 / 0x1A910)
-    AX = (ushort)((short)((sbyte)AL));
-    CheckExternalEvents(cs7, 0xA912);
-    // POP DS (1000_A911 / 0x1A911)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA913);
-    // POP SI (1000_A912 / 0x1A912)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA914);
-    // POP DI (1000_A913 / 0x1A913)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA915);
-    // POP BP (1000_A914 / 0x1A914)
+    CheckExternalEvents(cs8, 0x9A95);
+    // MOV SP,BP (1000_9A93 / 0x19A93)
+    SP = BP;
+    CheckExternalEvents(cs8, 0x9A96);
+    // POP BP (1000_9A95 / 0x19A95)
     BP = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA916);
-    // RETF  (1000_A915 / 0x1A915)
+    CheckExternalEvents(cs8, 0x9A97);
+    // RETF  (1000_9A96 / 0x19A96)
     return FarRet();
   }
   
-  public virtual Action ghidra_guess_1000_A916_1A916(int loadOffset) {
+  public virtual Action unknown_1935_0747_19A97(int loadOffset) {
     entrydispatcher:
     if(loadOffset != 0) {
       throw FailAsUntested("External goto not supported for this function.");
     }
-    label_1000_A916_1A916:
-    CheckExternalEvents(cs7, 0xA917);
-    // PUSH BP (1000_A916 / 0x1A916)
+    label_1935_0747_19A97:
+    CheckExternalEvents(cs12, 0x748);
+    // PUSH BP (1935_0747 / 0x19A97)
     Stack.Push16(BP);
-    CheckExternalEvents(cs7, 0xA919);
-    // MOV BP,SP (1000_A917 / 0x1A917)
+    CheckExternalEvents(cs12, 0x74A);
+    // MOV BP,SP (1935_0748 / 0x19A98)
     BP = SP;
-    CheckExternalEvents(cs7, 0xA91A);
-    // PUSH DI (1000_A919 / 0x1A919)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs7, 0xA91B);
-    // PUSH SI (1000_A91A / 0x1A91A)
+    CheckExternalEvents(cs12, 0x74D);
+    // MOV AX,0x4 (1935_074A / 0x19A9A)
+    AX = 0x4;
+    CheckExternalEvents(cs12, 0x752);
+    // CALLF 0x1000:cecc (1935_074D / 0x19A9D)
+    FarCall(cs12, 0x752, unknown_19EF_2FDC_1CECC);
+    CheckExternalEvents(cs12, 0x753);
+    // PUSH SI (1935_0752 / 0x19AA2)
     Stack.Push16(SI);
-    CheckExternalEvents(cs7, 0xA91C);
-    // PUSH DS (1000_A91B / 0x1A91B)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs7, 0xA91F);
-    // MOV AX,0x1ddc (1000_A91C / 0x1A91C)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs7, 0xA921);
-    // MOV DS,AX (1000_A91F / 0x1A91F)
-    DS = AX;
-    CheckExternalEvents(cs7, 0xA924);
-    // MOV SI,word ptr [BP + 0x6] (1000_A921 / 0x1A921)
-    SI = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs7, 0xA927);
-    // MOV DX,word ptr [BP + 0x8] (1000_A924 / 0x1A924)
-    DX = UInt16[SS, (ushort)(BP + 0x8)];
-    CheckExternalEvents(cs7, 0xA92A);
-    // MOV DI,word ptr [BP + 0xa] (1000_A927 / 0x1A927)
-    DI = UInt16[SS, (ushort)(BP + 0xA)];
-    CheckExternalEvents(cs7, 0xA92D);
-    // MOV AX,word ptr [BP + 0xc] (1000_A92A / 0x1A92A)
+    CheckExternalEvents(cs12, 0x757);
+    // MOV ES,word ptr [0x5716] (1935_0753 / 0x19AA3)
+    ES = UInt16[DS, 0x5716];
+    CheckExternalEvents(cs12, 0x75A);
+    // MOV AX,word ptr [BP + 0x6] (1935_0757 / 0x19AA7)
+    AX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs12, 0x75E);
+    // MOV ES:[0x398c],AX (1935_075A / 0x19AAA)
+    UInt16[ES, 0x398C] = AX;
+    CheckExternalEvents(cs12, 0x762);
+    // MOV ES,word ptr [0x5718] (1935_075E / 0x19AAE)
+    ES = UInt16[DS, 0x5718];
+    CheckExternalEvents(cs12, 0x765);
+    // MOV AX,word ptr [BP + 0x8] (1935_0762 / 0x19AB2)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs12, 0x769);
+    // MOV ES:[0x39a2],AX (1935_0765 / 0x19AB5)
+    UInt16[ES, 0x39A2] = AX;
+    CheckExternalEvents(cs12, 0x76D);
+    // MOV ES,word ptr [0x571a] (1935_0769 / 0x19AB9)
+    ES = UInt16[DS, 0x571A];
+    CheckExternalEvents(cs12, 0x770);
+    // MOV AX,word ptr [BP + 0xa] (1935_076D / 0x19ABD)
+    AX = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs12, 0x774);
+    // MOV ES:[0x39f6],AX (1935_0770 / 0x19AC0)
+    UInt16[ES, 0x39F6] = AX;
+    CheckExternalEvents(cs12, 0x778);
+    // MOV ES,word ptr [0x571c] (1935_0774 / 0x19AC4)
+    ES = UInt16[DS, 0x571C];
+    CheckExternalEvents(cs12, 0x77B);
+    // MOV AX,word ptr [BP + 0xc] (1935_0778 / 0x19AC8)
     AX = UInt16[SS, (ushort)(BP + 0xC)];
-    CheckExternalEvents(cs7, 0xA92E);
-    // PUSH ES (1000_A92D / 0x1A92D)
-    Stack.Push16(ES);
-    CheckExternalEvents(cs7, 0xA930);
-    // MOV ES,AX (1000_A92E / 0x1A92E)
-    ES = AX;
-    CheckExternalEvents(cs7, 0xA933);
-    // MOV CX,0x3e80 (1000_A930 / 0x1A930)
-    CX = 0x3E80;
-    CheckExternalEvents(cs7, 0xA934);
-    // PUSH DS (1000_A933 / 0x1A933)
+    CheckExternalEvents(cs12, 0x77F);
+    // MOV ES:[0x3ff2],AX (1935_077B / 0x19ACB)
+    UInt16[ES, 0x3FF2] = AX;
+    CheckExternalEvents(cs12, 0x783);
+    // MOV ES,word ptr [0x571e] (1935_077F / 0x19ACF)
+    ES = UInt16[DS, 0x571E];
+    CheckExternalEvents(cs12, 0x786);
+    // MOV AX,word ptr [BP + 0xe] (1935_0783 / 0x19AD3)
+    AX = UInt16[SS, (ushort)(BP + 0xE)];
+    CheckExternalEvents(cs12, 0x78A);
+    // MOV ES:[0x9c],AX (1935_0786 / 0x19AD6)
+    UInt16[ES, 0x9C] = AX;
+    CheckExternalEvents(cs12, 0x78F);
+    // MOV word ptr [BP + -0x4],0x0 (1935_078A / 0x19ADA)
+    UInt16[SS, (ushort)(BP - 0x4)] = 0x0;
+    CheckExternalEvents(cs12, 0x791);
+    // JMP 0x1000:9b04 (1935_078F / 0x19ADF)
+    goto label_1935_07B4_19B04;
+    label_1935_0791_19AE1:
+    CheckExternalEvents(cs12, 0x794);
+    // MOV word ptr [BP + -0x2],SI (1935_0791 / 0x19AE1)
+    UInt16[SS, (ushort)(BP - 0x2)] = SI;
+    CheckExternalEvents(cs12, 0x798);
+    // MOV ES,word ptr [0x571c] (1935_0794 / 0x19AE4)
+    ES = UInt16[DS, 0x571C];
+    CheckExternalEvents(cs12, 0x79D);
+    // PUSH word ptr ES:[0x3ff2] (1935_0798 / 0x19AE8)
+    Stack.Push16(UInt16[ES, 0x3FF2]);
+    CheckExternalEvents(cs12, 0x79F);
+    // MOV AX,SI (1935_079D / 0x19AED)
+    AX = SI;
+    CheckExternalEvents(cs12, 0x7A3);
+    // MOV ES,word ptr [0x571a] (1935_079F / 0x19AEF)
+    ES = UInt16[DS, 0x571A];
+    CheckExternalEvents(cs12, 0x7A8);
+    // SUB AX,word ptr ES:[0x39f6] (1935_07A3 / 0x19AF3)
+    // AX -= UInt16[ES, 0x39F6];
+    AX = Alu16.Sub(AX, UInt16[ES, 0x39F6]);
+    CheckExternalEvents(cs12, 0x7A9);
+    // PUSH AX (1935_07A8 / 0x19AF8)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs12, 0x7AA);
+    // PUSH SI (1935_07A9 / 0x19AF9)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs12, 0x7AB);
+    // PUSH CS (1935_07AA / 0x19AFA)
+    Stack.Push16(cs12);
+    CheckExternalEvents(cs12, 0x7AE);
+    // CALL 0x1000:9841 (1935_07AB / 0x19AFB)
+    NearCall(cs12, 0x7AE, unknown_1935_04F1_19841);
+    CheckExternalEvents(cs12, 0x7B1);
+    // ADD SP,0x6 (1935_07AE / 0x19AFE)
+    SP += 0x6;
+    CheckExternalEvents(cs12, 0x7B4);
+    // INC word ptr [BP + -0x4] (1935_07B1 / 0x19B01)
+    UInt16[SS, (ushort)(BP - 0x4)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x4)]);
+    label_1935_07B4_19B04:
+    CheckExternalEvents(cs12, 0x7B8);
+    // MOV ES,word ptr [0x5716] (1935_07B4 / 0x19B04)
+    ES = UInt16[DS, 0x5716];
+    CheckExternalEvents(cs12, 0x7BD);
+    // MOV SI,word ptr ES:[0x398c] (1935_07B8 / 0x19B08)
+    SI = UInt16[ES, 0x398C];
+    CheckExternalEvents(cs12, 0x7C1);
+    // MOV ES,word ptr [0x571e] (1935_07BD / 0x19B0D)
+    ES = UInt16[DS, 0x571E];
+    CheckExternalEvents(cs12, 0x7C5);
+    // MOV AX,ES:[0x9c] (1935_07C1 / 0x19B11)
+    AX = UInt16[ES, 0x9C];
+    CheckExternalEvents(cs12, 0x7C8);
+    // IMUL word ptr [BP + -0x4] (1935_07C5 / 0x19B15)
+    int resImul1935_07C5 = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP - 0x4)]);
+    AX = (ushort)(resImul1935_07C5);
+    DX = (ushort)(resImul1935_07C5 >> 16);
+    CheckExternalEvents(cs12, 0x7CA);
+    // SUB SI,AX (1935_07C8 / 0x19B18)
+    // SI -= AX;
+    SI = Alu16.Sub(SI, AX);
+    CheckExternalEvents(cs12, 0x7CE);
+    // MOV ES,word ptr [0x5718] (1935_07CA / 0x19B1A)
+    ES = UInt16[DS, 0x5718];
+    CheckExternalEvents(cs12, 0x7D3);
+    // CMP word ptr ES:[0x39a2],SI (1935_07CE / 0x19B1E)
+    Alu16.Sub(UInt16[ES, 0x39A2], SI);
+    CheckExternalEvents(cs12, 0x7D5);
+    // JL 0x1000:9ae1 (1935_07D3 / 0x19B23)
+    if(SignFlag != OverflowFlag) {
+      goto label_1935_0791_19AE1;
+    }
+    CheckExternalEvents(cs12, 0x7D6);
+    // POP SI (1935_07D5 / 0x19B25)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs12, 0x7D8);
+    // MOV SP,BP (1935_07D6 / 0x19B26)
+    SP = BP;
+    CheckExternalEvents(cs12, 0x7D9);
+    // POP BP (1935_07D8 / 0x19B28)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs12, 0x7DA);
+    // RETF  (1935_07D9 / 0x19B29)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_1935_07DA_19B2A(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1935_07DA_19B2A:
+    CheckExternalEvents(cs12, 0x7DB);
+    // PUSH BP (1935_07DA / 0x19B2A)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs12, 0x7DD);
+    // MOV BP,SP (1935_07DB / 0x19B2B)
+    BP = SP;
+    CheckExternalEvents(cs12, 0x7E0);
+    // MOV AX,0x4 (1935_07DD / 0x19B2D)
+    AX = 0x4;
+    CheckExternalEvents(cs12, 0x7E5);
+    // CALLF 0x1000:cecc (1935_07E0 / 0x19B30)
+    FarCall(cs12, 0x7E5, unknown_19EF_2FDC_1CECC);
+    CheckExternalEvents(cs12, 0x7E6);
+    // PUSH SI (1935_07E5 / 0x19B35)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs12, 0x7EA);
+    // MOV ES,word ptr [0x5716] (1935_07E6 / 0x19B36)
+    ES = UInt16[DS, 0x5716];
+    CheckExternalEvents(cs12, 0x7ED);
+    // MOV AX,word ptr [BP + 0x6] (1935_07EA / 0x19B3A)
+    AX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs12, 0x7F1);
+    // MOV ES:[0x398c],AX (1935_07ED / 0x19B3D)
+    UInt16[ES, 0x398C] = AX;
+    CheckExternalEvents(cs12, 0x7F5);
+    // MOV ES,word ptr [0x5718] (1935_07F1 / 0x19B41)
+    ES = UInt16[DS, 0x5718];
+    CheckExternalEvents(cs12, 0x7F8);
+    // MOV AX,word ptr [BP + 0x8] (1935_07F5 / 0x19B45)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs12, 0x7FC);
+    // MOV ES:[0x39a2],AX (1935_07F8 / 0x19B48)
+    UInt16[ES, 0x39A2] = AX;
+    CheckExternalEvents(cs12, 0x800);
+    // MOV ES,word ptr [0x571a] (1935_07FC / 0x19B4C)
+    ES = UInt16[DS, 0x571A];
+    CheckExternalEvents(cs12, 0x803);
+    // MOV AX,word ptr [BP + 0xa] (1935_0800 / 0x19B50)
+    AX = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs12, 0x807);
+    // MOV ES:[0x39f6],AX (1935_0803 / 0x19B53)
+    UInt16[ES, 0x39F6] = AX;
+    CheckExternalEvents(cs12, 0x80B);
+    // MOV ES,word ptr [0x571c] (1935_0807 / 0x19B57)
+    ES = UInt16[DS, 0x571C];
+    CheckExternalEvents(cs12, 0x80E);
+    // MOV AX,word ptr [BP + 0xc] (1935_080B / 0x19B5B)
+    AX = UInt16[SS, (ushort)(BP + 0xC)];
+    CheckExternalEvents(cs12, 0x812);
+    // MOV ES:[0x3ff2],AX (1935_080E / 0x19B5E)
+    UInt16[ES, 0x3FF2] = AX;
+    CheckExternalEvents(cs12, 0x816);
+    // MOV ES,word ptr [0x571e] (1935_0812 / 0x19B62)
+    ES = UInt16[DS, 0x571E];
+    CheckExternalEvents(cs12, 0x819);
+    // MOV AX,word ptr [BP + 0xe] (1935_0816 / 0x19B66)
+    AX = UInt16[SS, (ushort)(BP + 0xE)];
+    CheckExternalEvents(cs12, 0x81D);
+    // MOV ES:[0x9c],AX (1935_0819 / 0x19B69)
+    UInt16[ES, 0x9C] = AX;
+    CheckExternalEvents(cs12, 0x822);
+    // MOV word ptr [BP + -0x4],0x0 (1935_081D / 0x19B6D)
+    UInt16[SS, (ushort)(BP - 0x4)] = 0x0;
+    CheckExternalEvents(cs12, 0x824);
+    // JMP 0x1000:9b97 (1935_0822 / 0x19B72)
+    goto label_1935_0847_19B97;
+    label_1935_0824_19B74:
+    CheckExternalEvents(cs12, 0x827);
+    // MOV word ptr [BP + -0x2],SI (1935_0824 / 0x19B74)
+    UInt16[SS, (ushort)(BP - 0x2)] = SI;
+    CheckExternalEvents(cs12, 0x82B);
+    // MOV ES,word ptr [0x571c] (1935_0827 / 0x19B77)
+    ES = UInt16[DS, 0x571C];
+    CheckExternalEvents(cs12, 0x830);
+    // PUSH word ptr ES:[0x3ff2] (1935_082B / 0x19B7B)
+    Stack.Push16(UInt16[ES, 0x3FF2]);
+    CheckExternalEvents(cs12, 0x832);
+    // MOV AX,SI (1935_0830 / 0x19B80)
+    AX = SI;
+    CheckExternalEvents(cs12, 0x836);
+    // MOV ES,word ptr [0x571a] (1935_0832 / 0x19B82)
+    ES = UInt16[DS, 0x571A];
+    CheckExternalEvents(cs12, 0x83B);
+    // SUB AX,word ptr ES:[0x39f6] (1935_0836 / 0x19B86)
+    // AX -= UInt16[ES, 0x39F6];
+    AX = Alu16.Sub(AX, UInt16[ES, 0x39F6]);
+    CheckExternalEvents(cs12, 0x83C);
+    // PUSH AX (1935_083B / 0x19B8B)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs12, 0x83D);
+    // PUSH SI (1935_083C / 0x19B8C)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs12, 0x83E);
+    // PUSH CS (1935_083D / 0x19B8D)
+    Stack.Push16(cs12);
+    CheckExternalEvents(cs12, 0x841);
+    // CALL 0x1000:9841 (1935_083E / 0x19B8E)
+    NearCall(cs12, 0x841, unknown_1935_04F1_19841);
+    CheckExternalEvents(cs12, 0x844);
+    // ADD SP,0x6 (1935_0841 / 0x19B91)
+    SP += 0x6;
+    CheckExternalEvents(cs12, 0x847);
+    // INC word ptr [BP + -0x4] (1935_0844 / 0x19B94)
+    UInt16[SS, (ushort)(BP - 0x4)] = Alu16.Inc(UInt16[SS, (ushort)(BP - 0x4)]);
+    label_1935_0847_19B97:
+    CheckExternalEvents(cs12, 0x84B);
+    // MOV ES,word ptr [0x571e] (1935_0847 / 0x19B97)
+    ES = UInt16[DS, 0x571E];
+    CheckExternalEvents(cs12, 0x84F);
+    // MOV AX,ES:[0x9c] (1935_084B / 0x19B9B)
+    AX = UInt16[ES, 0x9C];
+    CheckExternalEvents(cs12, 0x852);
+    // IMUL word ptr [BP + -0x4] (1935_084F / 0x19B9F)
+    int resImul1935_084F = Alu16.Imul((short)AX, (short)UInt16[SS, (ushort)(BP - 0x4)]);
+    AX = (ushort)(resImul1935_084F);
+    DX = (ushort)(resImul1935_084F >> 16);
+    CheckExternalEvents(cs12, 0x854);
+    // MOV SI,AX (1935_0852 / 0x19BA2)
+    SI = AX;
+    CheckExternalEvents(cs12, 0x858);
+    // MOV ES,word ptr [0x5716] (1935_0854 / 0x19BA4)
+    ES = UInt16[DS, 0x5716];
+    CheckExternalEvents(cs12, 0x85D);
+    // ADD SI,word ptr ES:[0x398c] (1935_0858 / 0x19BA8)
+    // SI += UInt16[ES, 0x398C];
+    SI = Alu16.Add(SI, UInt16[ES, 0x398C]);
+    CheckExternalEvents(cs12, 0x861);
+    // MOV ES,word ptr [0x5718] (1935_085D / 0x19BAD)
+    ES = UInt16[DS, 0x5718];
+    CheckExternalEvents(cs12, 0x866);
+    // CMP word ptr ES:[0x39a2],SI (1935_0861 / 0x19BB1)
+    Alu16.Sub(UInt16[ES, 0x39A2], SI);
+    CheckExternalEvents(cs12, 0x868);
+    // JG 0x1000:9b74 (1935_0866 / 0x19BB6)
+    if(!ZeroFlag && SignFlag == OverflowFlag) {
+      goto label_1935_0824_19B74;
+    }
+    CheckExternalEvents(cs12, 0x869);
+    // POP SI (1935_0868 / 0x19BB8)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs12, 0x86B);
+    // MOV SP,BP (1935_0869 / 0x19BB9)
+    SP = BP;
+    CheckExternalEvents(cs12, 0x86C);
+    // POP BP (1935_086B / 0x19BBB)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs12, 0x86D);
+    // RETF  (1935_086C / 0x19BBC)
+    return FarRet();
+  }
+  
+  public virtual Action interrupt_handler_0x8_19BB_0020_19BD0(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_0020_19BD0:
+    CheckExternalEvents(cs13, 0x25);
+    // CALLF [0x16] (19BB_0020 / 0x19BD0)
+    // Indirect call to [0x16], generating possible targets from emulator records
+    uint targetAddress_19BB_0020 = (uint)(UInt16[cs13, 0x18] * 0x10 + UInt16[cs13, 0x16] - cs1 * 0x10);
+    switch(targetAddress_19BB_0020) {
+      case 0x19E48 : FarCall(cs13, 0x25, unknown_19BB_0298_19E48); break;
+      case 0x19D36 : FarCall(cs13, 0x25, unknown_19BB_0186_19D36); break;
+      default: throw FailAsUntested("Error: Function not registered at address " + ConvertUtils.ToHex32WithoutX(targetAddress_19BB_0020));
+        break;
+    }
+    CheckExternalEvents(cs13, 0x26);
+    // PUSH AX (19BB_0025 / 0x19BD5)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs13, 0x2A);
+    // MOV AX,CS:[0xe] (19BB_0026 / 0x19BD6)
+    AX = UInt16[cs13, 0xE];
+    CheckExternalEvents(cs13, 0x2C);
+    // CMP AL,0x0 (19BB_002A / 0x19BDA)
+    Alu8.Sub(AL, 0x0);
+    CheckExternalEvents(cs13, 0x2E);
+    // JNZ 0x1000:9bec (19BB_002C / 0x19BDC)
+    if(!ZeroFlag) {
+      goto label_19BB_003C_19BEC;
+    }
+    CheckExternalEvents(cs13, 0x32);
+    // MOV AX,CS:[0x10] (19BB_002E / 0x19BDE)
+    AX = UInt16[cs13, 0x10];
+    CheckExternalEvents(cs13, 0x36);
+    // MOV CS:[0xe],AX (19BB_0032 / 0x19BE2)
+    UInt16[cs13, 0xE] = AX;
+    CheckExternalEvents(cs13, 0x37);
+    // POP AX (19BB_0036 / 0x19BE6)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x3C);
+    // JMPF CS:[0x12] (19BB_0037 / 0x19BE7)
+    // Indirect jump to CS:[0x12], generating possible targets from emulator records
+    uint targetAddress_19BB_0037 = (uint)(UInt16[cs13, 0x14] * 0x10 + UInt16[cs13, 0x12] - cs1 * 0x10);
+    switch(targetAddress_19BB_0037) {
+      case 0xF0006 : {
+        // Jump converted to entry function call
+        if(JumpDispatcher.Jump(provided_interrupt_handler_8_F000_0006_F0006, 0)) {
+          loadOffset = JumpDispatcher.NextEntryAddress;
+          goto entrydispatcher;
+        }
+        return JumpDispatcher.JumpAsmReturn!;
+      }
+      default: throw FailAsUntested("Error: Jump not registered at address " + ConvertUtils.ToHex32WithoutX(targetAddress_19BB_0037));
+        break;
+    }
+    label_19BB_003C_19BEC:
+    CheckExternalEvents(cs13, 0x3E);
+    // DEC AL (19BB_003C / 0x19BEC)
+    AL = Alu8.Dec(AL);
+    CheckExternalEvents(cs13, 0x42);
+    // MOV CS:[0xe],AX (19BB_003E / 0x19BEE)
+    UInt16[cs13, 0xE] = AX;
+    CheckExternalEvents(cs13, 0x44);
+    // MOV AL,0x20 (19BB_0042 / 0x19BF2)
+    AL = 0x20;
+    CheckExternalEvents(cs13, 0x46);
+    // OUT 0x20,AL (19BB_0044 / 0x19BF4)
+    Cpu.Out8(0x20, AL);
+    CheckExternalEvents(cs13, 0x47);
+    // POP AX (19BB_0046 / 0x19BF6)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x48);
+    // IRET  (19BB_0047 / 0x19BF7)
+    return InterruptRet();
+  }
+  
+  public virtual Action unknown_19BB_0048_19BF8(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_0048_19BF8:
+    CheckExternalEvents(cs13, 0x49);
+    // PUSH DS (19BB_0048 / 0x19BF8)
     Stack.Push16(DS);
-    CheckExternalEvents(cs7, 0xA936);
-    // MOV DS,DX (1000_A934 / 0x1A934)
-    DS = DX;
-    CheckExternalEvents(cs7, 0xA939);
-    // MOV DX,0xf00f (1000_A936 / 0x1A936)
-    DX = 0xF00F;
-    label_1000_A939_1A939:
-    CheckExternalEvents(cs7, 0xA93A);
-    // LODSW SI (1000_A939 / 0x1A939)
-    AX = UInt16[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction16);
-    CheckExternalEvents(cs7, 0xA93C);
-    // XOR BL,BL (1000_A93A / 0x1A93A)
-    BL = 0;
-    CheckExternalEvents(cs7, 0xA93E);
-    // TEST DH,AL (1000_A93C / 0x1A93C)
-    Alu.And8(DH, AL);
-    CheckExternalEvents(cs7, 0xA940);
-    // JZ 0x1000:a943 (1000_A93E / 0x1A93E)
-    if(ZeroFlag) {
-      goto label_1000_A943_1A943;
+    CheckExternalEvents(cs13, 0x4C);
+    // MOV AX,0x0 (19BB_0049 / 0x19BF9)
+    AX = 0x0;
+    CheckExternalEvents(cs13, 0x4E);
+    // MOV DS,AX (19BB_004C / 0x19BFC)
+    DS = AX;
+    CheckExternalEvents(cs13, 0x51);
+    // MOV AX,[0x20] (19BB_004E / 0x19BFE)
+    AX = UInt16[DS, 0x20];
+    CheckExternalEvents(cs13, 0x55);
+    // MOV CS:[0x12],AX (19BB_0051 / 0x19C01)
+    UInt16[cs13, 0x12] = AX;
+    CheckExternalEvents(cs13, 0x58);
+    // MOV AX,[0x22] (19BB_0055 / 0x19C05)
+    AX = UInt16[DS, 0x22];
+    CheckExternalEvents(cs13, 0x5C);
+    // MOV CS:[0x14],AX (19BB_0058 / 0x19C08)
+    UInt16[cs13, 0x14] = AX;
+    CheckExternalEvents(cs13, 0x63);
+    // MOV word ptr CS:[0x10],0x10 (19BB_005C / 0x19C0C)
+    UInt16[cs13, 0x10] = 0x10;
+    CheckExternalEvents(cs13, 0x6A);
+    // MOV word ptr CS:[0xe],0x0 (19BB_0063 / 0x19C13)
+    UInt16[cs13, 0xE] = 0x0;
+    CheckExternalEvents(cs13, 0x6D);
+    // MOV AX,0x186 (19BB_006A / 0x19C1A)
+    AX = 0x186;
+    CheckExternalEvents(cs13, 0x71);
+    // MOV CS:[0x16],AX (19BB_006D / 0x19C1D)
+    UInt16[cs13, 0x16] = AX;
+    CheckExternalEvents(cs13, 0x72);
+    // PUSH CS (19BB_0071 / 0x19C21)
+    Stack.Push16(cs13);
+    CheckExternalEvents(cs13, 0x73);
+    // POP AX (19BB_0072 / 0x19C22)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x77);
+    // MOV CS:[0x18],AX (19BB_0073 / 0x19C23)
+    UInt16[cs13, 0x18] = AX;
+    CheckExternalEvents(cs13, 0x7A);
+    // MOV DX,0x20 (19BB_0077 / 0x19C27)
+    DX = 0x20;
+    CheckExternalEvents(cs13, 0x7B);
+    // PUSH CS (19BB_007A / 0x19C2A)
+    Stack.Push16(cs13);
+    CheckExternalEvents(cs13, 0x7C);
+    // POP DS (19BB_007B / 0x19C2B)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x7E);
+    // MOV AH,0x25 (19BB_007C / 0x19C2C)
+    AH = 0x25;
+    CheckExternalEvents(cs13, 0x80);
+    // MOV AL,0x8 (19BB_007E / 0x19C2E)
+    AL = 0x8;
+    CheckExternalEvents(cs13, 0x82);
+    // INT 0x21 (19BB_0080 / 0x19C30)
+    Interrupt(0x21);
+    CheckExternalEvents(cs13, 0x84);
+    // MOV AL,0x36 (19BB_0082 / 0x19C32)
+    AL = 0x36;
+    CheckExternalEvents(cs13, 0x86);
+    // OUT 0x43,AL (19BB_0084 / 0x19C34)
+    Cpu.Out8(0x43, AL);
+    CheckExternalEvents(cs13, 0x89);
+    // MOV AX,0xfff (19BB_0086 / 0x19C36)
+    AX = 0xFFF;
+    CheckExternalEvents(cs13, 0x8B);
+    // OUT 0x40,AL (19BB_0089 / 0x19C39)
+    Cpu.Out8(0x40, AL);
+    CheckExternalEvents(cs13, 0x8D);
+    // MOV AL,AH (19BB_008B / 0x19C3B)
+    AL = AH;
+    CheckExternalEvents(cs13, 0x8F);
+    // OUT 0x40,AL (19BB_008D / 0x19C3D)
+    Cpu.Out8(0x40, AL);
+    CheckExternalEvents(cs13, 0x90);
+    // POP DS (19BB_008F / 0x19C3F)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x91);
+    // RETF  (19BB_0090 / 0x19C40)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19BB_0091_19C41(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
     }
-    CheckExternalEvents(cs7, 0xA943);
-    // OR BL,0xc0 (1000_A940 / 0x1A940)
-    BL |= 0xC0;
-    label_1000_A943_1A943:
-    CheckExternalEvents(cs7, 0xA945);
-    // TEST DL,AL (1000_A943 / 0x1A943)
-    Alu.And8(DL, AL);
-    CheckExternalEvents(cs7, 0xA947);
-    // JZ 0x1000:a94a (1000_A945 / 0x1A945)
-    if(ZeroFlag) {
-      goto label_1000_A94A_1A94A;
+    label_19BB_0091_19C41:
+    CheckExternalEvents(cs13, 0x92);
+    // PUSH DS (19BB_0091 / 0x19C41)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs13, 0x97);
+    // MOV DX,word ptr CS:[0x12] (19BB_0092 / 0x19C42)
+    DX = UInt16[cs13, 0x12];
+    CheckExternalEvents(cs13, 0x9B);
+    // MOV AX,CS:[0x14] (19BB_0097 / 0x19C47)
+    AX = UInt16[cs13, 0x14];
+    CheckExternalEvents(cs13, 0x9C);
+    // PUSH AX (19BB_009B / 0x19C4B)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs13, 0x9D);
+    // POP DS (19BB_009C / 0x19C4C)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x9F);
+    // MOV AH,0x25 (19BB_009D / 0x19C4D)
+    AH = 0x25;
+    CheckExternalEvents(cs13, 0xA1);
+    // MOV AL,0x8 (19BB_009F / 0x19C4F)
+    AL = 0x8;
+    CheckExternalEvents(cs13, 0xA3);
+    // INT 0x21 (19BB_00A1 / 0x19C51)
+    Interrupt(0x21);
+    CheckExternalEvents(cs13, 0xA5);
+    // MOV AL,0x36 (19BB_00A3 / 0x19C53)
+    AL = 0x36;
+    CheckExternalEvents(cs13, 0xA7);
+    // OUT 0x43,AL (19BB_00A5 / 0x19C55)
+    Cpu.Out8(0x43, AL);
+    CheckExternalEvents(cs13, 0xAA);
+    // MOV AX,0xffff (19BB_00A7 / 0x19C57)
+    AX = 0xFFFF;
+    CheckExternalEvents(cs13, 0xAC);
+    // OUT 0x40,AL (19BB_00AA / 0x19C5A)
+    Cpu.Out8(0x40, AL);
+    CheckExternalEvents(cs13, 0xAE);
+    // MOV AL,AH (19BB_00AC / 0x19C5C)
+    AL = AH;
+    CheckExternalEvents(cs13, 0xB0);
+    // OUT 0x40,AL (19BB_00AE / 0x19C5E)
+    Cpu.Out8(0x40, AL);
+    CheckExternalEvents(cs13, 0xB1);
+    // POP DS (19BB_00B0 / 0x19C60)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0xB2);
+    // RETF  (19BB_00B1 / 0x19C61)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19BB_00B2_19C62(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
     }
-    CheckExternalEvents(cs7, 0xA94A);
-    // OR BL,0x30 (1000_A947 / 0x1A947)
-    BL |= 0x30;
-    label_1000_A94A_1A94A:
-    CheckExternalEvents(cs7, 0xA94C);
-    // TEST DH,AH (1000_A94A / 0x1A94A)
-    Alu.And8(DH, AH);
-    CheckExternalEvents(cs7, 0xA94E);
-    // JZ 0x1000:a951 (1000_A94C / 0x1A94C)
-    if(ZeroFlag) {
-      goto label_1000_A951_1A951;
+    label_19BB_00B2_19C62:
+    CheckExternalEvents(cs13, 0xB3);
+    // PUSH AX (19BB_00B2 / 0x19C62)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs13, 0xB5);
+    // MOV AL,CL (19BB_00B3 / 0x19C63)
+    AL = CL;
+    CheckExternalEvents(cs13, 0xB7);
+    // OUT 0x42,AL (19BB_00B5 / 0x19C65)
+    Cpu.Out8(0x42, AL);
+    CheckExternalEvents(cs13, 0xB9);
+    // MOV AL,CH (19BB_00B7 / 0x19C67)
+    AL = CH;
+    CheckExternalEvents(cs13, 0xBB);
+    // OUT 0x42,AL (19BB_00B9 / 0x19C69)
+    Cpu.Out8(0x42, AL);
+    CheckExternalEvents(cs13, 0xBC);
+    // POP AX (19BB_00BB / 0x19C6B)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0xBD);
+    // RET  (19BB_00BC / 0x19C6C)
+    return NearRet();
+  }
+  
+  public virtual Action unknown_19BB_00BD_19C6D(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
     }
-    CheckExternalEvents(cs7, 0xA951);
-    // OR BL,0xc (1000_A94E / 0x1A94E)
-    BL |= 0xC;
-    label_1000_A951_1A951:
-    CheckExternalEvents(cs7, 0xA953);
-    // TEST DL,AH (1000_A951 / 0x1A951)
-    Alu.And8(DL, AH);
-    CheckExternalEvents(cs7, 0xA955);
-    // JZ 0x1000:a958 (1000_A953 / 0x1A953)
-    if(ZeroFlag) {
-      goto label_1000_A958_1A958;
+    label_19BB_00BD_19C6D:
+    CheckExternalEvents(cs13, 0xBE);
+    // PUSH AX (19BB_00BD / 0x19C6D)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs13, 0xC0);
+    // IN AL,0x61 (19BB_00BE / 0x19C6E)
+    AL = Cpu.In8(0x61);
+    CheckExternalEvents(cs13, 0xC2);
+    // OR AL,0x3 (19BB_00C0 / 0x19C70)
+    // AL |= 0x3;
+    AL = Alu8.Or(AL, 0x3);
+    CheckExternalEvents(cs13, 0xC4);
+    // OUT 0x61,AL (19BB_00C2 / 0x19C72)
+    Cpu.Out8(0x61, AL);
+    CheckExternalEvents(cs13, 0xC5);
+    // POP AX (19BB_00C4 / 0x19C74)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0xC6);
+    // RET  (19BB_00C5 / 0x19C75)
+    return NearRet();
+  }
+  
+  public virtual Action unknown_19BB_00C6_19C76(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
     }
-    CheckExternalEvents(cs7, 0xA958);
-    // OR BL,0x3 (1000_A955 / 0x1A955)
-    // BL |= 0x3;
-    BL = Alu.Or8(BL, 0x3);
-    label_1000_A958_1A958:
-    CheckExternalEvents(cs7, 0xA95A);
-    // MOV AL,BL (1000_A958 / 0x1A958)
-    AL = BL;
-    CheckExternalEvents(cs7, 0xA95C);
-    // NOT AL (1000_A95A / 0x1A95A)
-    AL = (byte)(~AL);
-    CheckExternalEvents(cs7, 0xA95D);
-    // STOSB ES:DI (1000_A95C / 0x1A95C)
+    label_19BB_00C6_19C76:
+    CheckExternalEvents(cs13, 0xC7);
+    // PUSH AX (19BB_00C6 / 0x19C76)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs13, 0xC9);
+    // IN AL,0x61 (19BB_00C7 / 0x19C77)
+    AL = Cpu.In8(0x61);
+    CheckExternalEvents(cs13, 0xCB);
+    // AND AL,0xfc (19BB_00C9 / 0x19C79)
+    // AL &= 0xFC;
+    AL = Alu8.And(AL, 0xFC);
+    CheckExternalEvents(cs13, 0xCD);
+    // OUT 0x61,AL (19BB_00CB / 0x19C7B)
+    Cpu.Out8(0x61, AL);
+    CheckExternalEvents(cs13, 0xCE);
+    // POP AX (19BB_00CD / 0x19C7D)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0xCF);
+    // RET  (19BB_00CE / 0x19C7E)
+    return NearRet();
+  }
+  
+  public virtual Action unknown_19BB_00CF_19C7F(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_00CF_19C7F:
+    CheckExternalEvents(cs13, 0xD0);
+    // PUSH DX (19BB_00CF / 0x19C7F)
+    Stack.Push16(DX);
+    CheckExternalEvents(cs13, 0xD1);
+    // PUSH AX (19BB_00D0 / 0x19C80)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs13, 0xD4);
+    // MOV DX,0x12 (19BB_00D1 / 0x19C81)
+    DX = 0x12;
+    CheckExternalEvents(cs13, 0xD7);
+    // MOV AX,0x34de (19BB_00D4 / 0x19C84)
+    AX = 0x34DE;
+    CheckExternalEvents(cs13, 0xD9);
+    // DIV CX (19BB_00D7 / 0x19C87)
+    uint op1Div19BB_00D7 = (uint)(DX << 16 | AX);
+    ushort op2Div19BB_00D7 = CX;
+    ushort? resDiv19BB_00D7 = Alu16.Div(op1Div19BB_00D7, op2Div19BB_00D7);
+    if(resDiv19BB_00D7 == null) {
+      throw FailAsUntested("Division by 0!");
+    }
+    AX = resDiv19BB_00D7.Value;
+    DX = (ushort)(op1Div19BB_00D7 % op2Div19BB_00D7);
+    CheckExternalEvents(cs13, 0xDB);
+    // MOV CX,AX (19BB_00D9 / 0x19C89)
+    CX = AX;
+    CheckExternalEvents(cs13, 0xDC);
+    // POP AX (19BB_00DB / 0x19C8B)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0xDD);
+    // POP DX (19BB_00DC / 0x19C8C)
+    DX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0xDE);
+    // RET  (19BB_00DD / 0x19C8D)
+    return NearRet();
+  }
+  
+  public virtual Action unknown_19BB_0139_19CE9(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_0139_19CE9:
+    CheckExternalEvents(cs13, 0x13A);
+    // PUSH CX (19BB_0139 / 0x19CE9)
+    Stack.Push16(CX);
+    CheckExternalEvents(cs13, 0x13B);
+    // PUSH BX (19BB_013A / 0x19CEA)
+    Stack.Push16(BX);
+    CheckExternalEvents(cs13, 0x13C);
+    // PUSH AX (19BB_013B / 0x19CEB)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs13, 0x13E);
+    // MOV AH,0x0 (19BB_013C / 0x19CEC)
+    AH = 0x0;
+    CheckExternalEvents(cs13, 0x140);
+    // MOV CL,0xc (19BB_013E / 0x19CEE)
+    CL = 0xC;
+    CheckExternalEvents(cs13, 0x142);
+    // DIV CL (19BB_0140 / 0x19CF0)
+    ushort op1Div19BB_0140 = (ushort)AX;
+    byte op2Div19BB_0140 = CL;
+    byte? resDiv19BB_0140 = Alu8.Div(op1Div19BB_0140, op2Div19BB_0140);
+    if(resDiv19BB_0140 == null) {
+      throw FailAsUntested("Division by 0!");
+    }
+    AL = resDiv19BB_0140.Value;
+    AH = (byte)(op1Div19BB_0140 % op2Div19BB_0140);
+    CheckExternalEvents(cs13, 0x144);
+    // MOV DL,AL (19BB_0142 / 0x19CF2)
+    DL = AL;
+    CheckExternalEvents(cs13, 0x146);
+    // MOV AL,AH (19BB_0144 / 0x19CF4)
+    AL = AH;
+    CheckExternalEvents(cs13, 0x147);
+    // CBW  (19BB_0146 / 0x19CF6)
+    AX = (ushort)((short)((sbyte)AL));
+    CheckExternalEvents(cs13, 0x149);
+    // SHL AX,0x1 (19BB_0147 / 0x19CF7)
+    // AX <<= 0x1;
+    AX = Alu16.Shl(AX, 0x1);
+    CheckExternalEvents(cs13, 0x14B);
+    // MOV BX,AX (19BB_0149 / 0x19CF9)
+    BX = AX;
+    CheckExternalEvents(cs13, 0x150);
+    // MOV CX,word ptr CS:[BX + 0x121] (19BB_014B / 0x19CFB)
+    CX = UInt16[cs13, (ushort)(BX + 0x121)];
+    CheckExternalEvents(cs13, 0x153);
+    // CALL 0x1000:9c7f (19BB_0150 / 0x19D00)
+    NearCall(cs13, 0x153, unknown_19BB_00CF_19C7F);
+    CheckExternalEvents(cs13, 0x155);
+    // XCHG DX,CX (19BB_0153 / 0x19D03)
+    (CX, DX) = (DX, CX);
+    CheckExternalEvents(cs13, 0x157);
+    // NEG CL (19BB_0155 / 0x19D05)
+    CL = Alu8.Sub(0, CL);
+    CheckExternalEvents(cs13, 0x15A);
+    // ADD CL,0x8 (19BB_0157 / 0x19D07)
+    CL += 0x8;
+    CheckExternalEvents(cs13, 0x15C);
+    // SHL DX,CL (19BB_015A / 0x19D0A)
+    // DX <<= CL;
+    DX = Alu16.Shl(DX, CL);
+    CheckExternalEvents(cs13, 0x15D);
+    // POP AX (19BB_015C / 0x19D0C)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x15E);
+    // POP BX (19BB_015D / 0x19D0D)
+    BX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x15F);
+    // POP CX (19BB_015E / 0x19D0E)
+    CX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x160);
+    // RET  (19BB_015F / 0x19D0F)
+    return NearRet();
+  }
+  
+  public virtual Action unknown_19BB_0179_19D29(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_0179_19D29:
+    CheckExternalEvents(cs13, 0x17A);
+    // PUSH AX (19BB_0179 / 0x19D29)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs13, 0x17D);
+    // MOV AX,0x186 (19BB_017A / 0x19D2A)
+    AX = 0x186;
+    CheckExternalEvents(cs13, 0x181);
+    // MOV CS:[0x16],AX (19BB_017D / 0x19D2D)
+    UInt16[cs13, 0x16] = AX;
+    CheckExternalEvents(cs13, 0x184);
+    // CALL 0x1000:9c76 (19BB_0181 / 0x19D31)
+    NearCall(cs13, 0x184, unknown_19BB_00C6_19C76);
+    CheckExternalEvents(cs13, 0x185);
+    // POP AX (19BB_0184 / 0x19D34)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x186);
+    // RET  (19BB_0185 / 0x19D35)
+    return NearRet();
+  }
+  
+  public virtual Action unknown_19BB_0186_19D36(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_0186_19D36:
+    CheckExternalEvents(cs13, 0x187);
+    // RETF  (19BB_0186 / 0x19D36)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19BB_0233_19DE3(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_0233_19DE3:
+    CheckExternalEvents(cs13, 0x236);
+    // MOV AX,word ptr [BP + 0x8] (19BB_0233 / 0x19DE3)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs13, 0x23A);
+    // MOV CS:[0x205],AX (19BB_0236 / 0x19DE6)
+    UInt16[cs13, 0x205] = AX;
+    CheckExternalEvents(cs13, 0x23D);
+    // MOV AX,word ptr [BP + 0xa] (19BB_023A / 0x19DEA)
+    AX = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs13, 0x241);
+    // MOV CS:[0x207],AX (19BB_023D / 0x19DED)
+    UInt16[cs13, 0x207] = AX;
+    CheckExternalEvents(cs13, 0x244);
+    // MOV AX,word ptr [BP + 0xc] (19BB_0241 / 0x19DF1)
+    AX = UInt16[SS, (ushort)(BP + 0xC)];
+    CheckExternalEvents(cs13, 0x248);
+    // MOV CS:[0x20a],AL (19BB_0244 / 0x19DF4)
+    UInt8[cs13, 0x20A] = AL;
+    CheckExternalEvents(cs13, 0x24E);
+    // MOV byte ptr CS:[0x209],0x1 (19BB_0248 / 0x19DF8)
+    UInt8[cs13, 0x209] = 0x1;
+    CheckExternalEvents(cs13, 0x24F);
+    // RET  (19BB_024E / 0x19DFE)
+    return NearRet();
+  }
+  
+  public virtual Action unknown_19BB_0298_19E48(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_0298_19E48:
+    CheckExternalEvents(cs13, 0x29D);
+    // DEC byte ptr CS:[0x209] (19BB_0298 / 0x19E48)
+    UInt8[cs13, 0x209]--;
+    CheckExternalEvents(cs13, 0x2A3);
+    // CMP byte ptr CS:[0x209],0x0 (19BB_029D / 0x19E4D)
+    Alu8.Sub(UInt8[cs13, 0x209], 0x0);
+    CheckExternalEvents(cs13, 0x2A5);
+    // JNZ 0x1000:9e8c (19BB_02A3 / 0x19E53)
+    if(!ZeroFlag) {
+      // JNZ target is RETF, inlining.
+      CheckExternalEvents(cs13, 0x2DD);
+      // RETF  (19BB_02DC / 0x19E8C)
+      return FarRet();
+    }
+    CheckExternalEvents(cs13, 0x2A6);
+    // PUSH AX (19BB_02A5 / 0x19E55)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs13, 0x2AA);
+    // MOV AL,CS:[0x20a] (19BB_02A6 / 0x19E56)
+    AL = UInt8[cs13, 0x20A];
+    CheckExternalEvents(cs13, 0x2AE);
+    // MOV CS:[0x209],AL (19BB_02AA / 0x19E5A)
+    UInt8[cs13, 0x209] = AL;
+    CheckExternalEvents(cs13, 0x2AF);
+    // PUSH DS (19BB_02AE / 0x19E5E)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs13, 0x2B0);
+    // PUSH SI (19BB_02AF / 0x19E5F)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs13, 0x2B5);
+    // LDS SI,CS:[0x205] (19BB_02B0 / 0x19E60)
+    SI = UInt16[cs13, 0x205];
+    DS = UInt16[cs13, 0x207];
+    CheckExternalEvents(cs13, 0x2B6);
+    // LODSB SI (19BB_02B5 / 0x19E65)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs13, 0x2B8);
+    // CMP AL,0x0 (19BB_02B6 / 0x19E66)
+    Alu8.Sub(AL, 0x0);
+    CheckExternalEvents(cs13, 0x2BA);
+    // JNZ 0x1000:9e6f (19BB_02B8 / 0x19E68)
+    if(!ZeroFlag) {
+      goto label_19BB_02BF_19E6F;
+    }
+    CheckExternalEvents(cs13, 0x2BB);
+    // LODSB SI (19BB_02BA / 0x19E6A)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs13, 0x2BD);
+    // CMP AL,0x0 (19BB_02BB / 0x19E6B)
+    Alu8.Sub(AL, 0x0);
+    CheckExternalEvents(cs13, 0x2BF);
+    // JZ 0x1000:9e8d (19BB_02BD / 0x19E6D)
+    if(ZeroFlag) {
+      goto label_19BB_02DD_19E8D;
+    }
+    label_19BB_02BF_19E6F:
+    CheckExternalEvents(cs13, 0x2C4);
+    // MOV word ptr CS:[0x205],SI (19BB_02BF / 0x19E6F)
+    UInt16[cs13, 0x205] = SI;
+    CheckExternalEvents(cs13, 0x2C5);
+    // POP SI (19BB_02C4 / 0x19E74)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x2C6);
+    // POP DS (19BB_02C5 / 0x19E75)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x2C7);
+    // PUSH DX (19BB_02C6 / 0x19E76)
+    Stack.Push16(DX);
+    CheckExternalEvents(cs13, 0x2C8);
+    // PUSH CX (19BB_02C7 / 0x19E77)
+    Stack.Push16(CX);
+    CheckExternalEvents(cs13, 0x2CA);
+    // TEST AL,0x80 (19BB_02C8 / 0x19E78)
+    Alu8.And(AL, 0x80);
+    CheckExternalEvents(cs13, 0x2CC);
+    // JZ 0x1000:9e81 (19BB_02CA / 0x19E7A)
+    if(ZeroFlag) {
+      goto label_19BB_02D1_19E81;
+    }
+    CheckExternalEvents(cs13, 0x2CF);
+    // MOV CX,0xe (19BB_02CC / 0x19E7C)
+    CX = 0xE;
+    CheckExternalEvents(cs13, 0x2D1);
+    // JMP 0x1000:9e86 (19BB_02CF / 0x19E7F)
+    goto label_19BB_02D6_19E86;
+    label_19BB_02D1_19E81:
+    CheckExternalEvents(cs13, 0x2D4);
+    // CALL 0x1000:9ce9 (19BB_02D1 / 0x19E81)
+    NearCall(cs13, 0x2D4, unknown_19BB_0139_19CE9);
+    CheckExternalEvents(cs13, 0x2D6);
+    // MOV CX,DX (19BB_02D4 / 0x19E84)
+    CX = DX;
+    label_19BB_02D6_19E86:
+    CheckExternalEvents(cs13, 0x2D9);
+    // CALL 0x1000:9c62 (19BB_02D6 / 0x19E86)
+    NearCall(cs13, 0x2D9, unknown_19BB_00B2_19C62);
+    CheckExternalEvents(cs13, 0x2DA);
+    // POP CX (19BB_02D9 / 0x19E89)
+    CX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x2DB);
+    // POP DX (19BB_02DA / 0x19E8A)
+    DX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x2DC);
+    // POP AX (19BB_02DB / 0x19E8B)
+    AX = Stack.Pop16();;
+    label_19BB_02DC_19E8C:
+    CheckExternalEvents(cs13, 0x2DD);
+    // RETF  (19BB_02DC / 0x19E8C)
+    return FarRet();
+    label_19BB_02DD_19E8D:
+    CheckExternalEvents(cs13, 0x2DE);
+    // POP SI (19BB_02DD / 0x19E8D)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x2DF);
+    // POP DS (19BB_02DE / 0x19E8E)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x2E0);
+    // POP AX (19BB_02DF / 0x19E8F)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x2E3);
+    // CALL 0x1000:9d29 (19BB_02E0 / 0x19E90)
+    NearCall(cs13, 0x2E3, unknown_19BB_0179_19D29);
+    CheckExternalEvents(cs13, 0x2E4);
+    // RETF  (19BB_02E3 / 0x19E93)
+    return FarRet();
+  }
+  
+  public virtual Action ghidra_guess_1000_9E94_19E94(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_9E94_19E94:
+    CheckExternalEvents(cs8, 0x9E95);
+    // PUSH BP (1000_9E94 / 0x19E94)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs8, 0x9E97);
+    // MOV BP,SP (1000_9E95 / 0x19E95)
+    BP = SP;
+    CheckExternalEvents(cs8, 0x9E9A);
+    // MOV BX,word ptr [BP + 0x6] (1000_9E97 / 0x19E97)
+    BX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs8, 0x9E9D);
+    // CMP BX,0xd (1000_9E9A / 0x19E9A)
+    Alu16.Sub(BX, 0xD);
+    CheckExternalEvents(cs8, 0x9E9F);
+    // JGE 0x1000:9eb4 (1000_9E9D / 0x19E9D)
+    if(SignFlag == OverflowFlag) {
+      goto label_1000_9EB4_19EB4;
+    }
+    CheckExternalEvents(cs8, 0x9EA1);
+    // ADD BX,BX (1000_9E9F / 0x19E9F)
+    BX += BX;
+    CheckExternalEvents(cs8, 0x9EA3);
+    // ADD BX,BX (1000_9EA1 / 0x19EA1)
+    // BX += BX;
+    BX = Alu16.Add(BX, BX);
+    CheckExternalEvents(cs8, 0x9EA6);
+    // CALL 0x1000:9c6d (1000_9EA3 / 0x19EA3)
+    NearCall(cs8, 0x9EA6, unknown_19BB_00BD_19C6D);
+    CheckExternalEvents(cs8, 0x9EAB);
+    // CALL word ptr CS:[BX + 0x328] (1000_9EA6 / 0x19EA6)
+    // Indirect call to word ptr CS:[BX + 0x328], generating possible targets from emulator records
+    uint targetAddress_1000_9EA6 = (uint)(cs8 * 0x10 + UInt16[cs8, (ushort)(BX + 0x328)] - cs1 * 0x10);
+    switch(targetAddress_1000_9EA6) {
+      default: throw FailAsUntested("Error: Function not registered at address " + ConvertUtils.ToHex32WithoutX(targetAddress_1000_9EA6));
+        break;
+    }
+    CheckExternalEvents(cs8, 0x9EB0);
+    // MOV AX,word ptr CS:[BX + 0x32a] (1000_9EAB / 0x19EAB)
+    AX = UInt16[cs8, (ushort)(BX + 0x32A)];
+    CheckExternalEvents(cs8, 0x9EB4);
+    // MOV CS:[0x16],AX (1000_9EB0 / 0x19EB0)
+    UInt16[cs8, 0x16] = AX;
+    label_1000_9EB4_19EB4:
+    CheckExternalEvents(cs8, 0x9EB5);
+    // POP BP (1000_9EB4 / 0x19EB4)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0x9EB6);
+    // RETF  (1000_9EB5 / 0x19EB5)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19BB_0306_19EB6(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_0306_19EB6:
+    CheckExternalEvents(cs13, 0x307);
+    // PUSH BP (19BB_0306 / 0x19EB6)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs13, 0x309);
+    // MOV BP,SP (19BB_0307 / 0x19EB7)
+    BP = SP;
+    CheckExternalEvents(cs13, 0x30C);
+    // MOV BX,word ptr [BP + 0x6] (19BB_0309 / 0x19EB9)
+    BX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs13, 0x30F);
+    // CMP BX,0xd (19BB_030C / 0x19EBC)
+    Alu16.Sub(BX, 0xD);
+    CheckExternalEvents(cs13, 0x311);
+    // JGE 0x1000:9ed6 (19BB_030F / 0x19EBF)
+    if(SignFlag == OverflowFlag) {
+      goto label_19BB_0326_19ED6;
+    }
+    CheckExternalEvents(cs13, 0x313);
+    // ADD BX,BX (19BB_0311 / 0x19EC1)
+    BX += BX;
+    CheckExternalEvents(cs13, 0x315);
+    // ADD BX,BX (19BB_0313 / 0x19EC3)
+    // BX += BX;
+    BX = Alu16.Add(BX, BX);
+    CheckExternalEvents(cs13, 0x318);
+    // CALL 0x1000:9c6d (19BB_0315 / 0x19EC5)
+    NearCall(cs13, 0x318, unknown_19BB_00BD_19C6D);
+    CheckExternalEvents(cs13, 0x31D);
+    // CALL word ptr CS:[BX + 0x332] (19BB_0318 / 0x19EC8)
+    // Indirect call to word ptr CS:[BX + 0x332], generating possible targets from emulator records
+    uint targetAddress_19BB_0318 = (uint)(cs13 * 0x10 + UInt16[cs13, (ushort)(BX + 0x332)] - cs1 * 0x10);
+    switch(targetAddress_19BB_0318) {
+      case 0x19D29 : NearCall(cs13, 0x31D, unknown_19BB_0179_19D29); break;
+      case 0x19DE3 : NearCall(cs13, 0x31D, unknown_19BB_0233_19DE3); break;
+      default: throw FailAsUntested("Error: Function not registered at address " + ConvertUtils.ToHex32WithoutX(targetAddress_19BB_0318));
+        break;
+    }
+    CheckExternalEvents(cs13, 0x322);
+    // MOV AX,word ptr CS:[BX + 0x334] (19BB_031D / 0x19ECD)
+    AX = UInt16[cs13, (ushort)(BX + 0x334)];
+    CheckExternalEvents(cs13, 0x326);
+    // MOV CS:[0x16],AX (19BB_0322 / 0x19ED2)
+    UInt16[cs13, 0x16] = AX;
+    label_19BB_0326_19ED6:
+    CheckExternalEvents(cs13, 0x327);
+    // POP BP (19BB_0326 / 0x19ED6)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs13, 0x328);
+    // RETF  (19BB_0327 / 0x19ED7)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19BB_033C_19EEC(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19BB_033C_19EEC:
+    CheckExternalEvents(cs13, 0x340);
+    // MOV AX,CS:[0x16] (19BB_033C / 0x19EEC)
+    AX = UInt16[cs13, 0x16];
+    CheckExternalEvents(cs13, 0x343);
+    // XOR AX,0x186 (19BB_0340 / 0x19EF0)
+    // AX ^= 0x186;
+    AX = Alu16.Xor(AX, 0x186);
+    CheckExternalEvents(cs13, 0x345);
+    // JZ 0x1000:9ef8 (19BB_0343 / 0x19EF3)
+    if(ZeroFlag) {
+      goto label_19BB_0348_19EF8;
+    }
+    CheckExternalEvents(cs13, 0x347);
+    // XOR AX,AX (19BB_0345 / 0x19EF5)
+    // AX ^= AX;
+    AX = Alu16.Xor(AX, AX);
+    CheckExternalEvents(cs13, 0x348);
+    // RETF  (19BB_0347 / 0x19EF7)
+    return FarRet();
+    label_19BB_0348_19EF8:
+    CheckExternalEvents(cs13, 0x34B);
+    // MOV AX,0x1 (19BB_0348 / 0x19EF8)
+    AX = 0x1;
+    CheckExternalEvents(cs13, 0x34C);
+    // RETF  (19BB_034B / 0x19EFB)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_001C_19F0C(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_001C_19F0C:
+    CheckExternalEvents(cs14, 0x1D);
+    // PUSH BP (19EF_001C / 0x19F0C)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0x1F);
+    // MOV BP,SP (19EF_001D / 0x19F0D)
+    BP = SP;
+    CheckExternalEvents(cs14, 0x20);
+    // PUSH DI (19EF_001F / 0x19F0F)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0x21);
+    // PUSH SI (19EF_0020 / 0x19F10)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0x22);
+    // PUSH DS (19EF_0021 / 0x19F11)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x25);
+    // MOV AX,0x1ddc (19EF_0022 / 0x19F12)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0x27);
+    // MOV DS,AX (19EF_0025 / 0x19F15)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x29);
+    // MOV AL,0xb6 (19EF_0027 / 0x19F17)
+    AL = 0xB6;
+    CheckExternalEvents(cs14, 0x2B);
+    // OUT 0x43,AL (19EF_0029 / 0x19F19)
+    Cpu.Out8(0x43, AL);
+    CheckExternalEvents(cs14, 0x2C);
+    // POP DS (19EF_002B / 0x19F1B)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x2D);
+    // POP SI (19EF_002C / 0x19F1C)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x2E);
+    // POP DI (19EF_002D / 0x19F1D)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x2F);
+    // POP BP (19EF_002E / 0x19F1E)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x30);
+    // RETF  (19EF_002F / 0x19F1F)
+    return FarRet();
+  }
+  
+  public virtual Action ghidra_guess_1000_9F20_19F20(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_9F20_19F20:
+    CheckExternalEvents(cs8, 0x9F21);
+    // PUSH BP (1000_9F20 / 0x19F20)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs8, 0x9F23);
+    // MOV BP,SP (1000_9F21 / 0x19F21)
+    BP = SP;
+    CheckExternalEvents(cs8, 0x9F24);
+    // PUSH DI (1000_9F23 / 0x19F23)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs8, 0x9F25);
+    // PUSH SI (1000_9F24 / 0x19F24)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs8, 0x9F26);
+    // PUSH DS (1000_9F25 / 0x19F25)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs8, 0x9F29);
+    // MOV AX,0x1ddc (1000_9F26 / 0x19F26)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs8, 0x9F2B);
+    // MOV DS,AX (1000_9F29 / 0x19F29)
+    DS = AX;
+    CheckExternalEvents(cs8, 0x9F2E);
+    // MOV BX,word ptr [BP + 0x6] (1000_9F2B / 0x19F2B)
+    BX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs8, 0x9F30);
+    // MOV AX,BX (1000_9F2E / 0x19F2E)
+    AX = BX;
+    CheckExternalEvents(cs8, 0x9F32);
+    // OUT 0x42,AL (1000_9F30 / 0x19F30)
+    Cpu.Out8(0x42, AL);
+    CheckExternalEvents(cs8, 0x9F34);
+    // MOV AL,AH (1000_9F32 / 0x19F32)
+    AL = AH;
+    CheckExternalEvents(cs8, 0x9F36);
+    // OUT 0x42,AL (1000_9F34 / 0x19F34)
+    Cpu.Out8(0x42, AL);
+    CheckExternalEvents(cs8, 0x9F38);
+    // IN AL,0x61 (1000_9F36 / 0x19F36)
+    AL = Cpu.In8(0x61);
+    CheckExternalEvents(cs8, 0x9F3A);
+    // OR AL,0x3 (1000_9F38 / 0x19F38)
+    // AL |= 0x3;
+    AL = Alu8.Or(AL, 0x3);
+    CheckExternalEvents(cs8, 0x9F3C);
+    // OUT 0x61,AL (1000_9F3A / 0x19F3A)
+    Cpu.Out8(0x61, AL);
+    CheckExternalEvents(cs8, 0x9F3D);
+    // POP DS (1000_9F3C / 0x19F3C)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0x9F3E);
+    // POP SI (1000_9F3D / 0x19F3D)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0x9F3F);
+    // POP DI (1000_9F3E / 0x19F3E)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0x9F40);
+    // POP BP (1000_9F3F / 0x19F3F)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0x9F41);
+    // RETF  (1000_9F40 / 0x19F40)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_0051_19F41(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_0051_19F41:
+    CheckExternalEvents(cs14, 0x52);
+    // PUSH BP (19EF_0051 / 0x19F41)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0x54);
+    // MOV BP,SP (19EF_0052 / 0x19F42)
+    BP = SP;
+    CheckExternalEvents(cs14, 0x55);
+    // PUSH DI (19EF_0054 / 0x19F44)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0x56);
+    // PUSH SI (19EF_0055 / 0x19F45)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0x57);
+    // PUSH DS (19EF_0056 / 0x19F46)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x5A);
+    // MOV AX,0x1ddc (19EF_0057 / 0x19F47)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0x5C);
+    // MOV DS,AX (19EF_005A / 0x19F4A)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x5E);
+    // IN AL,0x61 (19EF_005C / 0x19F4C)
+    AL = Cpu.In8(0x61);
+    CheckExternalEvents(cs14, 0x60);
+    // AND AL,0xfc (19EF_005E / 0x19F4E)
+    // AL &= 0xFC;
+    AL = Alu8.And(AL, 0xFC);
+    CheckExternalEvents(cs14, 0x62);
+    // OUT 0x61,AL (19EF_0060 / 0x19F50)
+    Cpu.Out8(0x61, AL);
+    CheckExternalEvents(cs14, 0x63);
+    // POP DS (19EF_0062 / 0x19F52)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x64);
+    // POP SI (19EF_0063 / 0x19F53)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x65);
+    // POP DI (19EF_0064 / 0x19F54)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x66);
+    // POP BP (19EF_0065 / 0x19F55)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x67);
+    // RETF  (19EF_0066 / 0x19F56)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_0067_19F57(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_0067_19F57:
+    CheckExternalEvents(cs14, 0x68);
+    // PUSH BP (19EF_0067 / 0x19F57)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0x6A);
+    // MOV BP,SP (19EF_0068 / 0x19F58)
+    BP = SP;
+    CheckExternalEvents(cs14, 0x6B);
+    // PUSH DI (19EF_006A / 0x19F5A)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0x6C);
+    // PUSH SI (19EF_006B / 0x19F5B)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0x6D);
+    // PUSH DS (19EF_006C / 0x19F5C)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x70);
+    // MOV AX,0x1ddc (19EF_006D / 0x19F5D)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0x72);
+    // MOV DS,AX (19EF_0070 / 0x19F60)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x74);
+    // IN AL,0x61 (19EF_0072 / 0x19F62)
+    AL = Cpu.In8(0x61);
+    CheckExternalEvents(cs14, 0x76);
+    // AND AL,0xfc (19EF_0074 / 0x19F64)
+    // AL &= 0xFC;
+    AL = Alu8.And(AL, 0xFC);
+    CheckExternalEvents(cs14, 0x78);
+    // OUT 0x61,AL (19EF_0076 / 0x19F66)
+    Cpu.Out8(0x61, AL);
+    CheckExternalEvents(cs14, 0x79);
+    // POP DS (19EF_0078 / 0x19F68)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x7A);
+    // POP SI (19EF_0079 / 0x19F69)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x7B);
+    // POP DI (19EF_007A / 0x19F6A)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x7C);
+    // POP BP (19EF_007B / 0x19F6B)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x7D);
+    // RETF  (19EF_007C / 0x19F6C)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_007D_19F6D(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_007D_19F6D:
+    CheckExternalEvents(cs14, 0x7E);
+    // PUSH BP (19EF_007D / 0x19F6D)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0x80);
+    // MOV BP,SP (19EF_007E / 0x19F6E)
+    BP = SP;
+    CheckExternalEvents(cs14, 0x81);
+    // PUSH DI (19EF_0080 / 0x19F70)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0x82);
+    // PUSH SI (19EF_0081 / 0x19F71)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0x83);
+    // PUSH DS (19EF_0082 / 0x19F72)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x86);
+    // MOV AX,0x1ddc (19EF_0083 / 0x19F73)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0x88);
+    // MOV DS,AX (19EF_0086 / 0x19F76)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x8B);
+    // MOV AX,word ptr [BP + 0x6] (19EF_0088 / 0x19F78)
+    AX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs14, 0x8E);
+    // MOV [0x252],AX (19EF_008B / 0x19F7B)
+    UInt16[DS, 0x252] = AX;
+    CheckExternalEvents(cs14, 0x90);
+    // IN AL,0x61 (19EF_008E / 0x19F7E)
+    AL = Cpu.In8(0x61);
+    CheckExternalEvents(cs14, 0x92);
+    // XOR AL,0x2 (19EF_0090 / 0x19F80)
+    // AL ^= 0x2;
+    AL = Alu8.Xor(AL, 0x2);
+    CheckExternalEvents(cs14, 0x94);
+    // OUT 0x61,AL (19EF_0092 / 0x19F82)
+    Cpu.Out8(0x61, AL);
+    CheckExternalEvents(cs14, 0x98);
+    // MOV DX,word ptr [0x252] (19EF_0094 / 0x19F84)
+    DX = UInt16[DS, 0x252];
+    CheckExternalEvents(cs14, 0x9C);
+    // ADD DX,0x9248 (19EF_0098 / 0x19F88)
+    // DX += 0x9248;
+    DX = Alu16.Add(DX, 0x9248);
+    CheckExternalEvents(cs14, 0x9E);
+    // MOV CL,0x3 (19EF_009C / 0x19F8C)
+    CL = 0x3;
+    CheckExternalEvents(cs14, 0xA0);
+    // ROR DX,CL (19EF_009E / 0x19F8E)
+    DX = Alu16.Ror(DX, CL);
+    CheckExternalEvents(cs14, 0xA4);
+    // MOV word ptr [0x252],DX (19EF_00A0 / 0x19F90)
+    UInt16[DS, 0x252] = DX;
+    CheckExternalEvents(cs14, 0xA5);
+    // POP DS (19EF_00A4 / 0x19F94)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0xA6);
+    // POP SI (19EF_00A5 / 0x19F95)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0xA7);
+    // POP DI (19EF_00A6 / 0x19F96)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0xA8);
+    // POP BP (19EF_00A7 / 0x19F97)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0xA9);
+    // RETF  (19EF_00A8 / 0x19F98)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_00A9_19F99(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_00A9_19F99:
+    CheckExternalEvents(cs14, 0xAA);
+    // PUSH BP (19EF_00A9 / 0x19F99)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0xAC);
+    // MOV BP,SP (19EF_00AA / 0x19F9A)
+    BP = SP;
+    CheckExternalEvents(cs14, 0xAD);
+    // PUSH DI (19EF_00AC / 0x19F9C)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0xAE);
+    // PUSH SI (19EF_00AD / 0x19F9D)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0xAF);
+    // PUSH DS (19EF_00AE / 0x19F9E)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0xB2);
+    // MOV AX,0x1ddc (19EF_00AF / 0x19F9F)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0xB4);
+    // MOV DS,AX (19EF_00B2 / 0x19FA2)
+    DS = AX;
+    CheckExternalEvents(cs14, 0xB7);
+    // MOV AX,word ptr [BP + 0x6] (19EF_00B4 / 0x19FA4)
+    AX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs14, 0xBA);
+    // MOV [0x254],AX (19EF_00B7 / 0x19FA7)
+    UInt16[DS, 0x254] = AX;
+    CheckExternalEvents(cs14, 0xBD);
+    // MOV AX,word ptr [BP + 0x8] (19EF_00BA / 0x19FAA)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs14, 0xC0);
+    // MOV [0x256],AX (19EF_00BD / 0x19FAD)
+    UInt16[DS, 0x256] = AX;
+    CheckExternalEvents(cs14, 0xC2);
+    // MOV CX,DX (19EF_00C0 / 0x19FB0)
+    CX = DX;
+    CheckExternalEvents(cs14, 0xC6);
+    // AND CX,word ptr [0x254] (19EF_00C2 / 0x19FB2)
+    // CX &= UInt16[DS, 0x254];
+    CX = Alu16.And(CX, UInt16[DS, 0x254]);
+    CheckExternalEvents(cs14, 0xCA);
+    // OR CX,word ptr [0x256] (19EF_00C6 / 0x19FB6)
+    // CX |= UInt16[DS, 0x256];
+    CX = Alu16.Or(CX, UInt16[DS, 0x256]);
+    label_19EF_00CA_19FBA:
+    CheckExternalEvents(cs14, 0xCC);
+    // LOOP 0x1000:9fba (19EF_00CA / 0x19FBA)
+    if(--CX != 0) {
+      goto label_19EF_00CA_19FBA;
+    }
+    CheckExternalEvents(cs14, 0xCD);
+    // POP DS (19EF_00CC / 0x19FBC)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0xCE);
+    // POP SI (19EF_00CD / 0x19FBD)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0xCF);
+    // POP DI (19EF_00CE / 0x19FBE)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0xD0);
+    // POP BP (19EF_00CF / 0x19FBF)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0xD1);
+    // RETF  (19EF_00D0 / 0x19FC0)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_00D1_19FC1(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_00D1_19FC1:
+    CheckExternalEvents(cs14, 0xD2);
+    // PUSH BP (19EF_00D1 / 0x19FC1)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0xD4);
+    // MOV BP,SP (19EF_00D2 / 0x19FC2)
+    BP = SP;
+    CheckExternalEvents(cs14, 0xD5);
+    // PUSH DI (19EF_00D4 / 0x19FC4)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0xD6);
+    // PUSH SI (19EF_00D5 / 0x19FC5)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0xD7);
+    // PUSH DS (19EF_00D6 / 0x19FC6)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0xDA);
+    // MOV AX,0x1ddc (19EF_00D7 / 0x19FC7)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0xDC);
+    // MOV DS,AX (19EF_00DA / 0x19FCA)
+    DS = AX;
+    CheckExternalEvents(cs14, 0xE1);
+    // CMP word ptr [0xb764],0x0 (19EF_00DC / 0x19FCC)
+    Alu16.Sub(UInt16[DS, 0xB764], 0x0);
+    CheckExternalEvents(cs14, 0xE3);
+    // JNZ 0x1000:a037 (19EF_00E1 / 0x19FD1)
+    if(!ZeroFlag) {
+      goto label_19EF_0147_1A037;
+    }
+    CheckExternalEvents(cs14, 0xE6);
+    // MOV AX,word ptr [BP + 0x6] (19EF_00E3 / 0x19FD3)
+    AX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs14, 0xE8);
+    // MOV SI,AX (19EF_00E6 / 0x19FD6)
+    SI = AX;
+    CheckExternalEvents(cs14, 0xEB);
+    // MOV AX,word ptr [BP + 0x8] (19EF_00E8 / 0x19FD8)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs14, 0xEC);
+    // PUSH ES (19EF_00EB / 0x19FDB)
+    Stack.Push16(ES);
+    CheckExternalEvents(cs14, 0xEE);
+    // MOV ES,AX (19EF_00EC / 0x19FDC)
+    ES = AX;
+    CheckExternalEvents(cs14, 0xF1);
+    // MOV DI,0x200 (19EF_00EE / 0x19FDE)
+    DI = 0x200;
+    CheckExternalEvents(cs14, 0xF4);
+    // MOV CX,0x20 (19EF_00F1 / 0x19FE1)
+    CX = 0x20;
+    label_19EF_00F4_19FE4:
+    CheckExternalEvents(cs14, 0xF7);
+    // MOV AL,byte ptr ES:[SI] (19EF_00F4 / 0x19FE4)
+    AL = UInt8[ES, (ushort)(SI)];
+    CheckExternalEvents(cs14, 0xF9);
+    // MOV byte ptr [DI],AL (19EF_00F7 / 0x19FE7)
+    UInt8[DS, (ushort)(DI)] = AL;
+    CheckExternalEvents(cs14, 0xFA);
+    // INC SI (19EF_00F9 / 0x19FE9)
+    SI++;
+    CheckExternalEvents(cs14, 0xFB);
+    // INC DI (19EF_00FA / 0x19FEA)
+    DI = Alu16.Inc(DI);
+    CheckExternalEvents(cs14, 0xFD);
+    // LOOP 0x1000:9fe4 (19EF_00FB / 0x19FEB)
+    if(--CX != 0) {
+      goto label_19EF_00F4_19FE4;
+    }
+    CheckExternalEvents(cs14, 0x100);
+    // MOV SI,0x0 (19EF_00FD / 0x19FED)
+    SI = 0x0;
+    CheckExternalEvents(cs14, 0x103);
+    // MOV DI,0x100 (19EF_0100 / 0x19FF0)
+    DI = 0x100;
+    CheckExternalEvents(cs14, 0x105);
+    // XOR CL,CL (19EF_0103 / 0x19FF3)
+    CL = 0;
+    CheckExternalEvents(cs14, 0x107);
+    // XOR DX,DX (19EF_0105 / 0x19FF5)
+    DX = 0;
+    label_19EF_0107_19FF7:
+    CheckExternalEvents(cs14, 0x109);
+    // XOR AH,AH (19EF_0107 / 0x19FF7)
+    // AH ^= AH;
+    AH = Alu8.Xor(AH, AH);
+    CheckExternalEvents(cs14, 0x10B);
+    // MOV AL,CL (19EF_0109 / 0x19FF9)
+    AL = CL;
+    CheckExternalEvents(cs14, 0x10D);
+    // SHR AL,0x1 (19EF_010B / 0x19FFB)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x10F);
+    // SHR AL,0x1 (19EF_010D / 0x19FFD)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x111);
+    // SHR AL,0x1 (19EF_010F / 0x19FFF)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x113);
+    // SHR AL,0x1 (19EF_0111 / 0x1A001)
+    // AL >>= 0x1;
+    AL = Alu8.Shr(AL, 0x1);
+    CheckExternalEvents(cs14, 0x115);
+    // MOV DL,AL (19EF_0113 / 0x1A003)
+    DL = AL;
+    CheckExternalEvents(cs14, 0x117);
+    // MOV AL,CL (19EF_0115 / 0x1A005)
+    AL = CL;
+    CheckExternalEvents(cs14, 0x119);
+    // AND AL,0xf (19EF_0117 / 0x1A007)
+    // AL &= 0xF;
+    AL = Alu8.And(AL, 0xF);
+    CheckExternalEvents(cs14, 0x11C);
+    // MOV BX,0x200 (19EF_0119 / 0x1A009)
+    BX = 0x200;
+    CheckExternalEvents(cs14, 0x11E);
+    // ADD BX,DX (19EF_011C / 0x1A00C)
+    // BX += DX;
+    BX = Alu16.Add(BX, DX);
+    CheckExternalEvents(cs14, 0x120);
+    // MOV CH,byte ptr [BX] (19EF_011E / 0x1A00E)
+    CH = UInt8[DS, (ushort)(BX)];
+    CheckExternalEvents(cs14, 0x122);
+    // SUB BX,DX (19EF_0120 / 0x1A010)
+    BX -= DX;
+    CheckExternalEvents(cs14, 0x124);
+    // SHL CH,0x1 (19EF_0122 / 0x1A012)
+    CH <<= 0x1;
+    CheckExternalEvents(cs14, 0x126);
+    // SHL CH,0x1 (19EF_0124 / 0x1A014)
+    CH <<= 0x1;
+    CheckExternalEvents(cs14, 0x128);
+    // ADD BX,AX (19EF_0126 / 0x1A016)
+    // BX += AX;
+    BX = Alu16.Add(BX, AX);
+    CheckExternalEvents(cs14, 0x12B);
+    // OR CH,byte ptr [BX + 0x10] (19EF_0128 / 0x1A018)
+    CH |= UInt8[DS, (ushort)(BX + 0x10)];
+    CheckExternalEvents(cs14, 0x12D);
+    // SUB BX,AX (19EF_012B / 0x1A01B)
+    // BX -= AX;
+    BX = Alu16.Sub(BX, AX);
+    CheckExternalEvents(cs14, 0x12F);
+    // MOV byte ptr [SI],CH (19EF_012D / 0x1A01D)
+    UInt8[DS, (ushort)(SI)] = CH;
+    CheckExternalEvents(cs14, 0x130);
+    // INC SI (19EF_012F / 0x1A01F)
+    SI++;
+    CheckExternalEvents(cs14, 0x132);
+    // ADD BX,DX (19EF_0130 / 0x1A020)
+    // BX += DX;
+    BX = Alu16.Add(BX, DX);
+    CheckExternalEvents(cs14, 0x135);
+    // MOV CH,byte ptr [BX + 0x10] (19EF_0132 / 0x1A022)
+    CH = UInt8[DS, (ushort)(BX + 0x10)];
+    CheckExternalEvents(cs14, 0x137);
+    // SUB BX,DX (19EF_0135 / 0x1A025)
+    BX -= DX;
+    CheckExternalEvents(cs14, 0x139);
+    // SHL CH,0x1 (19EF_0137 / 0x1A027)
+    CH <<= 0x1;
+    CheckExternalEvents(cs14, 0x13B);
+    // SHL CH,0x1 (19EF_0139 / 0x1A029)
+    CH <<= 0x1;
+    CheckExternalEvents(cs14, 0x13D);
+    // ADD BX,AX (19EF_013B / 0x1A02B)
+    // BX += AX;
+    BX = Alu16.Add(BX, AX);
+    CheckExternalEvents(cs14, 0x13F);
+    // OR CH,byte ptr [BX] (19EF_013D / 0x1A02D)
+    // CH |= UInt8[DS, (ushort)(BX)];
+    CH = Alu8.Or(CH, UInt8[DS, (ushort)(BX)]);
+    CheckExternalEvents(cs14, 0x141);
+    // MOV byte ptr [DI],CH (19EF_013F / 0x1A02F)
+    UInt8[DS, (ushort)(DI)] = CH;
+    CheckExternalEvents(cs14, 0x142);
+    // INC DI (19EF_0141 / 0x1A031)
+    DI++;
+    CheckExternalEvents(cs14, 0x144);
+    // INC CL (19EF_0142 / 0x1A032)
+    CL = Alu8.Inc(CL);
+    CheckExternalEvents(cs14, 0x146);
+    // JNZ 0x1000:9ff7 (19EF_0144 / 0x1A034)
+    if(!ZeroFlag) {
+      goto label_19EF_0107_19FF7;
+    }
+    CheckExternalEvents(cs14, 0x147);
+    // POP ES (19EF_0146 / 0x1A036)
+    ES = Stack.Pop16();;
+    label_19EF_0147_1A037:
+    CheckExternalEvents(cs14, 0x148);
+    // POP DS (19EF_0147 / 0x1A037)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x149);
+    // POP SI (19EF_0148 / 0x1A038)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x14A);
+    // POP DI (19EF_0149 / 0x1A039)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x14B);
+    // POP BP (19EF_014A / 0x1A03A)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x14C);
+    // RETF  (19EF_014B / 0x1A03B)
+    return FarRet();
+  }
+  
+  public virtual Action ghidra_guess_1000_A03C_1A03C(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_A03C_1A03C:
+    CheckExternalEvents(cs8, 0xA03D);
+    // PUSH BP (1000_A03C / 0x1A03C)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs8, 0xA03F);
+    // MOV BP,SP (1000_A03D / 0x1A03D)
+    BP = SP;
+    CheckExternalEvents(cs8, 0xA040);
+    // PUSH DI (1000_A03F / 0x1A03F)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs8, 0xA041);
+    // PUSH SI (1000_A040 / 0x1A040)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs8, 0xA042);
+    // PUSH DS (1000_A041 / 0x1A041)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs8, 0xA045);
+    // MOV AX,0x1ddc (1000_A042 / 0x1A042)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs8, 0xA047);
+    // MOV DS,AX (1000_A045 / 0x1A045)
+    DS = AX;
+    CheckExternalEvents(cs8, 0xA04A);
+    // MOV DX,word ptr [BP + 0x6] (1000_A047 / 0x1A047)
+    DX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs8, 0xA04C);
+    // MOV AH,0xe (1000_A04A / 0x1A04A)
+    AH = 0xE;
+    CheckExternalEvents(cs8, 0xA04E);
+    // INT 0x21 (1000_A04C / 0x1A04C)
+    Interrupt(0x21);
+    CheckExternalEvents(cs8, 0xA04F);
+    // POP DS (1000_A04E / 0x1A04E)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA050);
+    // POP SI (1000_A04F / 0x1A04F)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA051);
+    // POP DI (1000_A050 / 0x1A050)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA052);
+    // POP BP (1000_A051 / 0x1A051)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA053);
+    // RETF  (1000_A052 / 0x1A052)
+    return FarRet();
+  }
+  
+  public virtual Action ghidra_guess_1000_A053_1A053(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_A053_1A053:
+    CheckExternalEvents(cs8, 0xA054);
+    // PUSH BP (1000_A053 / 0x1A053)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs8, 0xA056);
+    // MOV BP,SP (1000_A054 / 0x1A054)
+    BP = SP;
+    CheckExternalEvents(cs8, 0xA057);
+    // PUSH DI (1000_A056 / 0x1A056)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs8, 0xA058);
+    // PUSH SI (1000_A057 / 0x1A057)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs8, 0xA059);
+    // PUSH DS (1000_A058 / 0x1A058)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs8, 0xA05C);
+    // MOV AX,0x1ddc (1000_A059 / 0x1A059)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs8, 0xA05E);
+    // MOV DS,AX (1000_A05C / 0x1A05C)
+    DS = AX;
+    CheckExternalEvents(cs8, 0xA061);
+    // MOV AX,word ptr [BP + 0x6] (1000_A05E / 0x1A05E)
+    AX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs8, 0xA063);
+    // MOV SI,AX (1000_A061 / 0x1A061)
+    SI = AX;
+    CheckExternalEvents(cs8, 0xA066);
+    // MOV AX,word ptr [BP + 0x8] (1000_A063 / 0x1A063)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs8, 0xA069);
+    // MOV [0xb78c],AX (1000_A066 / 0x1A066)
+    UInt16[DS, 0xB78C] = AX;
+    CheckExternalEvents(cs8, 0xA06C);
+    // MOV AX,word ptr [BP + 0xa] (1000_A069 / 0x1A069)
+    AX = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs8, 0xA06E);
+    // MOV DI,AX (1000_A06C / 0x1A06C)
+    DI = AX;
+    CheckExternalEvents(cs8, 0xA071);
+    // MOV AX,word ptr [BP + 0xc] (1000_A06E / 0x1A06E)
+    AX = UInt16[SS, (ushort)(BP + 0xC)];
+    CheckExternalEvents(cs8, 0xA074);
+    // MOV [0xb790],AX (1000_A071 / 0x1A071)
+    UInt16[DS, 0xB790] = AX;
+    CheckExternalEvents(cs8, 0xA077);
+    // MOV DX,word ptr [BP + 0xe] (1000_A074 / 0x1A074)
+    DX = UInt16[SS, (ushort)(BP + 0xE)];
+    CheckExternalEvents(cs8, 0xA07B);
+    // MOV byte ptr [0xb763],DL (1000_A077 / 0x1A077)
+    UInt8[DS, 0xB763] = DL;
+    CheckExternalEvents(cs8, 0xA07E);
+    // MOV CX,word ptr [BP + 0x10] (1000_A07B / 0x1A07B)
+    CX = UInt16[SS, (ushort)(BP + 0x10)];
+    CheckExternalEvents(cs8, 0xA082);
+    // MOV DX,word ptr [0xb790] (1000_A07E / 0x1A07E)
+    DX = UInt16[DS, 0xB790];
+    CheckExternalEvents(cs8, 0xA083);
+    // PUSH ES (1000_A082 / 0x1A082)
+    Stack.Push16(ES);
+    CheckExternalEvents(cs8, 0xA084);
+    // PUSH BP (1000_A083 / 0x1A083)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs8, 0xA086);
+    // MOV BP,DX (1000_A084 / 0x1A084)
+    BP = DX;
+    CheckExternalEvents(cs8, 0xA088);
+    // XOR DH,DH (1000_A086 / 0x1A086)
+    // DH ^= DH;
+    DH = Alu8.Xor(DH, DH);
+    label_1000_A088_1A088:
+    CheckExternalEvents(cs8, 0xA08B);
+    // MOV BX,0x0 (1000_A088 / 0x1A088)
+    BX = 0x0;
+    label_1000_A08B_1A08B:
+    CheckExternalEvents(cs8, 0xA08F);
+    // MOV DL,byte ptr [0xb763] (1000_A08B / 0x1A08B)
+    DL = UInt8[DS, 0xB763];
+    label_1000_A08F_1A08F:
+    CheckExternalEvents(cs8, 0xA092);
+    // MOV AX,[0xb78c] (1000_A08F / 0x1A08F)
+    AX = UInt16[DS, 0xB78C];
+    CheckExternalEvents(cs8, 0xA094);
+    // MOV ES,AX (1000_A092 / 0x1A092)
+    ES = AX;
+    CheckExternalEvents(cs8, 0xA097);
+    // MOV AL,byte ptr ES:[SI] (1000_A094 / 0x1A094)
+    AL = UInt8[ES, (ushort)(SI)];
+    CheckExternalEvents(cs8, 0xA098);
+    // INC SI (1000_A097 / 0x1A097)
+    SI = Alu16.Inc(SI);
+    CheckExternalEvents(cs8, 0xA099);
+    // XLAT BX (1000_A098 / 0x1A098)
+    AL = UInt8[DS, (ushort)(BX + AL)];
+    CheckExternalEvents(cs8, 0xA09B);
+    // SHL AL,0x1 (1000_A099 / 0x1A099)
+    AL <<= 0x1;
+    CheckExternalEvents(cs8, 0xA09D);
+    // SHL AL,0x1 (1000_A09B / 0x1A09B)
+    AL <<= 0x1;
+    CheckExternalEvents(cs8, 0xA09F);
+    // SHL AL,0x1 (1000_A09D / 0x1A09D)
+    AL <<= 0x1;
+    CheckExternalEvents(cs8, 0xA0A1);
+    // SHL AL,0x1 (1000_A09F / 0x1A09F)
+    // AL <<= 0x1;
+    AL = Alu8.Shl(AL, 0x1);
+    CheckExternalEvents(cs8, 0xA0A3);
+    // MOV AH,AL (1000_A0A1 / 0x1A0A1)
+    AH = AL;
+    CheckExternalEvents(cs8, 0xA0A6);
+    // MOV AL,byte ptr ES:[SI] (1000_A0A3 / 0x1A0A3)
+    AL = UInt8[ES, (ushort)(SI)];
+    CheckExternalEvents(cs8, 0xA0A7);
+    // XLAT BX (1000_A0A6 / 0x1A0A6)
+    AL = UInt8[DS, (ushort)(BX + AL)];
+    CheckExternalEvents(cs8, 0xA0A8);
+    // INC SI (1000_A0A7 / 0x1A0A7)
+    SI = Alu16.Inc(SI);
+    CheckExternalEvents(cs8, 0xA0AA);
+    // OR AL,AH (1000_A0A8 / 0x1A0A8)
+    // AL |= AH;
+    AL = Alu8.Or(AL, AH);
+    CheckExternalEvents(cs8, 0xA0AC);
+    // MOV ES,BP (1000_A0AA / 0x1A0AA)
+    ES = BP;
+    CheckExternalEvents(cs8, 0xA0AD);
+    // STOSB ES:DI (1000_A0AC / 0x1A0AC)
     UInt8[ES, (ushort)(DI)] = AL;
     DI = (ushort)(DI + Direction8);
-    CheckExternalEvents(cs7, 0xA95F);
-    // LOOP 0x1000:a939 (1000_A95D / 0x1A95D)
-    if(--CX != 0) {
-      goto label_1000_A939_1A939;
+    CheckExternalEvents(cs8, 0xA0AF);
+    // DEC DL (1000_A0AD / 0x1A0AD)
+    DL = Alu8.Dec(DL);
+    CheckExternalEvents(cs8, 0xA0B1);
+    // JZ 0x1000:a0b6 (1000_A0AF / 0x1A0AF)
+    if(ZeroFlag) {
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(split_1000_A0B6_1A0B6, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
     }
-    CheckExternalEvents(cs7, 0xA960);
-    // POP DS (1000_A95F / 0x1A95F)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA961);
-    // POP ES (1000_A960 / 0x1A960)
-    ES = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA962);
-    // POP DS (1000_A961 / 0x1A961)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA963);
-    // POP SI (1000_A962 / 0x1A962)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA964);
-    // POP DI (1000_A963 / 0x1A963)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA965);
-    // POP BP (1000_A964 / 0x1A964)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xA966);
-    // RETF  (1000_A965 / 0x1A965)
-    return FarRet();
+    CheckExternalEvents(cs8, 0xA0B3);
+    // LOOP 0x1000:a08f (1000_A0B1 / 0x1A0B1)
+    if(--CX != 0) {
+      goto label_1000_A08F_1A08F;
+    }
+    CheckExternalEvents(cs8, 0xA0B5);
+    // JMP 0x1000:a0c0 (1000_A0B3 / 0x1A0B3)
+    // Jump converted to entry function call
+    if(JumpDispatcher.Jump(ghidra_guess_1000_A0C0_1A0C0, 0)) {
+      loadOffset = JumpDispatcher.NextEntryAddress;
+      goto entrydispatcher;
+    }
+    return JumpDispatcher.JumpAsmReturn!;
   }
   
-  public virtual Action unknown_19EF_0A76_1A966(int loadOffset) {
+  public virtual Action split_1000_A0B6_1A0B6(int loadOffset) {
     entrydispatcher:
     if(loadOffset != 0) {
       throw FailAsUntested("External goto not supported for this function.");
     }
-    label_19EF_0A76_1A966:
-    CheckExternalEvents(cs12, 0xA77);
-    // PUSH BP (19EF_0A76 / 0x1A966)
+    label_1000_A0B6_1A0B6:
+    CheckExternalEvents(cs8, 0xA0B9);
+    // XOR DH,0x1 (1000_A0B6 / 0x1A0B6)
+    // DH ^= 0x1;
+    DH = Alu8.Xor(DH, 0x1);
+    CheckExternalEvents(cs8, 0xA0BB);
+    // JZ 0x1000:a088 (1000_A0B9 / 0x1A0B9)
+    if(ZeroFlag) {
+      // Jump converted to non entry function call
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A053_1A053, 0x1A088 - cs1 * 0x10)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs8, 0xA0BE);
+    // MOV BX,0x100 (1000_A0BB / 0x1A0BB)
+    BX = 0x100;
+    CheckExternalEvents(cs8, 0xA0C0);
+    // JMP 0x1000:a08b (1000_A0BE / 0x1A0BE)
+    // Jump converted to non entry function call
+    if(JumpDispatcher.Jump(ghidra_guess_1000_A053_1A053, 0x1A08B - cs1 * 0x10)) {
+      loadOffset = JumpDispatcher.NextEntryAddress;
+      goto entrydispatcher;
+    }
+    return JumpDispatcher.JumpAsmReturn!;
+  }
+  
+  public virtual Action ghidra_guess_1000_A0C0_1A0C0(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_A0C0_1A0C0:
+    CheckExternalEvents(cs8, 0xA0C1);
+    // POP BP (1000_A0C0 / 0x1A0C0)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA0C2);
+    // POP ES (1000_A0C1 / 0x1A0C1)
+    ES = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA0C3);
+    // POP DS (1000_A0C2 / 0x1A0C2)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA0C4);
+    // POP SI (1000_A0C3 / 0x1A0C3)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA0C5);
+    // POP DI (1000_A0C4 / 0x1A0C4)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA0C6);
+    // POP BP (1000_A0C5 / 0x1A0C5)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA0C7);
+    // RETF  (1000_A0C6 / 0x1A0C6)
+    return FarRet();
+  }
+  
+  public virtual Action ghidra_guess_1000_A0C7_1A0C7(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_A0C7_1A0C7:
+    CheckExternalEvents(cs8, 0xA0C8);
+    // PUSH BP (1000_A0C7 / 0x1A0C7)
     Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0xA79);
-    // MOV BP,SP (19EF_0A77 / 0x1A967)
+    CheckExternalEvents(cs8, 0xA0CA);
+    // MOV BP,SP (1000_A0C8 / 0x1A0C8)
     BP = SP;
-    CheckExternalEvents(cs12, 0xA7A);
-    // PUSH DI (19EF_0A79 / 0x1A969)
+    CheckExternalEvents(cs8, 0xA0CB);
+    // PUSH DI (1000_A0CA / 0x1A0CA)
     Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0xA7B);
-    // PUSH SI (19EF_0A7A / 0x1A96A)
+    CheckExternalEvents(cs8, 0xA0CC);
+    // PUSH SI (1000_A0CB / 0x1A0CB)
     Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0xA7C);
-    // PUSH DS (19EF_0A7B / 0x1A96B)
+    CheckExternalEvents(cs8, 0xA0CD);
+    // PUSH DS (1000_A0CC / 0x1A0CC)
     Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0xA7F);
-    // MOV AX,0x1ddc (19EF_0A7C / 0x1A96C)
+    CheckExternalEvents(cs8, 0xA0D0);
+    // MOV AX,0x1ddc (1000_A0CD / 0x1A0CD)
     AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0xA81);
-    // MOV DS,AX (19EF_0A7F / 0x1A96F)
+    CheckExternalEvents(cs8, 0xA0D2);
+    // MOV DS,AX (1000_A0D0 / 0x1A0D0)
     DS = AX;
-    CheckExternalEvents(cs12, 0xA84);
-    // MOV SI,word ptr [BP + 0x6] (19EF_0A81 / 0x1A971)
-    SI = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs12, 0xA87);
-    // MOV DX,word ptr [BP + 0x8] (19EF_0A84 / 0x1A974)
-    DX = UInt16[SS, (ushort)(BP + 0x8)];
-    CheckExternalEvents(cs12, 0xA8A);
-    // MOV DI,word ptr [BP + 0xa] (19EF_0A87 / 0x1A977)
-    DI = UInt16[SS, (ushort)(BP + 0xA)];
-    CheckExternalEvents(cs12, 0xA8D);
-    // MOV AX,word ptr [BP + 0xc] (19EF_0A8A / 0x1A97A)
-    AX = UInt16[SS, (ushort)(BP + 0xC)];
-    CheckExternalEvents(cs12, 0xA8E);
-    // PUSH ES (19EF_0A8D / 0x1A97D)
+    CheckExternalEvents(cs8, 0xA0D5);
+    // MOV BX,word ptr [BP + 0x6] (1000_A0D2 / 0x1A0D2)
+    BX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs8, 0xA0D7);
+    // MOV SI,BX (1000_A0D5 / 0x1A0D5)
+    SI = BX;
+    CheckExternalEvents(cs8, 0xA0D9);
+    // MOV DI,BX (1000_A0D7 / 0x1A0D7)
+    DI = BX;
+    CheckExternalEvents(cs8, 0xA0DC);
+    // MOV AX,word ptr [BP + 0x8] (1000_A0D9 / 0x1A0D9)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs8, 0xA0DD);
+    // PUSH ES (1000_A0DC / 0x1A0DC)
     Stack.Push16(ES);
-    CheckExternalEvents(cs12, 0xA90);
-    // MOV ES,AX (19EF_0A8E / 0x1A97E)
-    ES = AX;
-    CheckExternalEvents(cs12, 0xA93);
-    // MOV CX,word ptr [BP + 0xe] (19EF_0A90 / 0x1A980)
-    CX = UInt16[SS, (ushort)(BP + 0xE)];
-    CheckExternalEvents(cs12, 0xA94);
-    // PUSH DS (19EF_0A93 / 0x1A983)
+    CheckExternalEvents(cs8, 0xA0DE);
+    // PUSH DS (1000_A0DD / 0x1A0DD)
     Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0xA96);
-    // MOV DS,DX (19EF_0A94 / 0x1A984)
-    DS = DX;
-    CheckExternalEvents(cs12, 0xA98);
+    CheckExternalEvents(cs8, 0xA0E0);
+    // MOV ES,AX (1000_A0DE / 0x1A0DE)
+    ES = AX;
+    CheckExternalEvents(cs8, 0xA0E2);
+    // MOV DS,AX (1000_A0E0 / 0x1A0E0)
+    DS = AX;
+    CheckExternalEvents(cs8, 0xA0E6);
+    // ADD SI,0x3e40 (1000_A0E2 / 0x1A0E2)
+    SI += 0x3E40;
+    CheckExternalEvents(cs8, 0xA0EA);
+    // ADD DI,0x7c80 (1000_A0E6 / 0x1A0E6)
+    // DI += 0x7C80;
+    DI = Alu16.Add(DI, 0x7C80);
+    CheckExternalEvents(cs8, 0xA0EB);
+    // CLD  (1000_A0EA / 0x1A0EA)
+    DirectionFlag = false;
+    label_1000_A0EB_1A0EB:
+    CheckExternalEvents(cs8, 0xA0EE);
+    // MOV CX,0x20 (1000_A0EB / 0x1A0EB)
+    CX = 0x20;
+    CheckExternalEvents(cs8, 0xA0F0);
     // REP
     while (CX != 0) {
       CX--;
-      // MOVSW ES:DI,SI (19EF_0A96 / 0x1A986)
+      // MOVSW ES:DI,SI (1000_A0EE / 0x1A0EE)
       UInt16[ES, (ushort)(DI)] = UInt16[DS, (ushort)(SI)];
       SI = (ushort)(SI + Direction16);
       DI = (ushort)(DI + Direction16);
     }
-    CheckExternalEvents(cs12, 0xA99);
-    // POP DS (19EF_0A98 / 0x1A988)
+    CheckExternalEvents(cs8, 0xA0F4);
+    // SUB SI,0x80 (1000_A0F0 / 0x1A0F0)
+    SI -= 0x80;
+    CheckExternalEvents(cs8, 0xA0F8);
+    // SUB DI,0xc0 (1000_A0F4 / 0x1A0F4)
+    DI -= 0xC0;
+    CheckExternalEvents(cs8, 0xA0FA);
+    // CMP DI,BX (1000_A0F8 / 0x1A0F8)
+    Alu16.Sub(DI, BX);
+    CheckExternalEvents(cs8, 0xA0FC);
+    // JNZ 0x1000:a0eb (1000_A0FA / 0x1A0FA)
+    if(!ZeroFlag) {
+      goto label_1000_A0EB_1A0EB;
+    }
+    CheckExternalEvents(cs8, 0xA0FD);
+    // POP DS (1000_A0FC / 0x1A0FC)
     DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xA9A);
-    // POP ES (19EF_0A99 / 0x1A989)
+    CheckExternalEvents(cs8, 0xA0FE);
+    // POP ES (1000_A0FD / 0x1A0FD)
     ES = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xA9B);
-    // POP DS (19EF_0A9A / 0x1A98A)
+    CheckExternalEvents(cs8, 0xA0FF);
+    // POP DS (1000_A0FE / 0x1A0FE)
     DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xA9C);
-    // POP SI (19EF_0A9B / 0x1A98B)
+    CheckExternalEvents(cs8, 0xA100);
+    // POP SI (1000_A0FF / 0x1A0FF)
     SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xA9D);
-    // POP DI (19EF_0A9C / 0x1A98C)
+    CheckExternalEvents(cs8, 0xA101);
+    // POP DI (1000_A100 / 0x1A100)
     DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xA9E);
-    // POP BP (19EF_0A9D / 0x1A98D)
+    CheckExternalEvents(cs8, 0xA102);
+    // POP BP (1000_A101 / 0x1A101)
     BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xA9F);
-    // RETF  (19EF_0A9E / 0x1A98E)
+    CheckExternalEvents(cs8, 0xA103);
+    // RETF  (1000_A102 / 0x1A102)
     return FarRet();
   }
   
-  public virtual Action ghidra_guess_1000_A98F_1A98F(int loadOffset) {
+  public virtual Action unknown_19EF_0213_1A103(int loadOffset) {
     entrydispatcher:
     if(loadOffset != 0) {
       throw FailAsUntested("External goto not supported for this function.");
     }
-    label_1000_A98F_1A98F:
-    CheckExternalEvents(cs7, 0xA990);
-    // PUSH BP (1000_A98F / 0x1A98F)
+    label_19EF_0213_1A103:
+    CheckExternalEvents(cs14, 0x214);
+    // PUSH BP (19EF_0213 / 0x1A103)
     Stack.Push16(BP);
-    CheckExternalEvents(cs7, 0xA992);
-    // MOV BP,SP (1000_A990 / 0x1A990)
+    CheckExternalEvents(cs14, 0x216);
+    // MOV BP,SP (19EF_0214 / 0x1A104)
     BP = SP;
-    CheckExternalEvents(cs7, 0xA993);
-    // PUSH DI (1000_A992 / 0x1A992)
+    CheckExternalEvents(cs14, 0x217);
+    // PUSH DI (19EF_0216 / 0x1A106)
     Stack.Push16(DI);
-    CheckExternalEvents(cs7, 0xA994);
-    // PUSH SI (1000_A993 / 0x1A993)
+    CheckExternalEvents(cs14, 0x218);
+    // PUSH SI (19EF_0217 / 0x1A107)
     Stack.Push16(SI);
-    CheckExternalEvents(cs7, 0xA995);
-    // PUSH DS (1000_A994 / 0x1A994)
+    CheckExternalEvents(cs14, 0x219);
+    // PUSH DS (19EF_0218 / 0x1A108)
     Stack.Push16(DS);
-    CheckExternalEvents(cs7, 0xA998);
-    // MOV AX,0x1ddc (1000_A995 / 0x1A995)
+    CheckExternalEvents(cs14, 0x21C);
+    // MOV AX,0x1ddc (19EF_0219 / 0x1A109)
     AX = 0x1DDC;
-    CheckExternalEvents(cs7, 0xA99A);
-    // MOV DS,AX (1000_A998 / 0x1A998)
+    CheckExternalEvents(cs14, 0x21E);
+    // MOV DS,AX (19EF_021C / 0x1A10C)
     DS = AX;
-    CheckExternalEvents(cs7, 0xA99D);
-    // MOV DX,0x3ce (1000_A99A / 0x1A99A)
-    DX = 0x3CE;
-    CheckExternalEvents(cs7, 0xA9A0);
-    // MOV AX,0x5 (1000_A99D / 0x1A99D)
-    AX = 0x5;
-    CheckExternalEvents(cs7, 0xA9A1);
-    // OUT DX,AX (1000_A9A0 / 0x1A9A0)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9A4);
-    // MOV AX,0xff08 (1000_A9A1 / 0x1A9A1)
-    AX = 0xFF08;
-    CheckExternalEvents(cs7, 0xA9A5);
-    // OUT DX,AX (1000_A9A4 / 0x1A9A4)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9A8);
-    // MOV AX,0x1 (1000_A9A5 / 0x1A9A5)
-    AX = 0x1;
-    CheckExternalEvents(cs7, 0xA9A9);
-    // OUT DX,AX (1000_A9A8 / 0x1A9A8)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9AC);
-    // MOV AX,word ptr [BP + 0x6] (1000_A9A9 / 0x1A9A9)
+    CheckExternalEvents(cs14, 0x221);
+    // MOV DL,byte ptr [BP + 0x6] (19EF_021E / 0x1A10E)
+    DL = UInt8[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs14, 0x223);
+    // MOV AH,0x6 (19EF_0221 / 0x1A111)
+    AH = 0x6;
+    CheckExternalEvents(cs14, 0x225);
+    // INT 0x21 (19EF_0223 / 0x1A113)
+    Interrupt(0x21);
+    CheckExternalEvents(cs14, 0x226);
+    // POP DS (19EF_0225 / 0x1A115)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x227);
+    // POP SI (19EF_0226 / 0x1A116)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x228);
+    // POP DI (19EF_0227 / 0x1A117)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x229);
+    // POP BP (19EF_0228 / 0x1A118)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x22A);
+    // RETF  (19EF_0229 / 0x1A119)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_022A_1A11A(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_022A_1A11A:
+    CheckExternalEvents(cs14, 0x22B);
+    // PUSH BP (19EF_022A / 0x1A11A)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0x22D);
+    // MOV BP,SP (19EF_022B / 0x1A11B)
+    BP = SP;
+    CheckExternalEvents(cs14, 0x22E);
+    // PUSH DI (19EF_022D / 0x1A11D)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0x22F);
+    // PUSH SI (19EF_022E / 0x1A11E)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0x230);
+    // PUSH DS (19EF_022F / 0x1A11F)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x233);
+    // MOV AX,0x1ddc (19EF_0230 / 0x1A120)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0x235);
+    // MOV DS,AX (19EF_0233 / 0x1A123)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x238);
+    // MOV BX,word ptr [BP + 0x6] (19EF_0235 / 0x1A125)
+    BX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs14, 0x23B);
+    // MOV CX,word ptr [BP + 0x8] (19EF_0238 / 0x1A128)
+    CX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs14, 0x23E);
+    // MOV AX,0x40 (19EF_023B / 0x1A12B)
+    AX = 0x40;
+    CheckExternalEvents(cs14, 0x240);
+    // MOV ES,AX (19EF_023E / 0x1A12E)
+    ES = AX;
+    CheckExternalEvents(cs14, 0x245);
+    // MOV DX,word ptr ES:[0x63] (19EF_0240 / 0x1A130)
+    DX = UInt16[ES, 0x63];
+    CheckExternalEvents(cs14, 0x248);
+    // ADD DL,0x6 (19EF_0245 / 0x1A135)
+    // DL += 0x6;
+    DL = Alu8.Add(DL, 0x6);
+    CheckExternalEvents(cs14, 0x249);
+    // PUSH DX (19EF_0248 / 0x1A138)
+    Stack.Push16(DX);
+    CheckExternalEvents(cs14, 0x24A);
+    // CLI  (19EF_0249 / 0x1A139)
+    InterruptFlag = false;
+    CheckExternalEvents(cs14, 0x24B);
+    // IN AL,DX (19EF_024A / 0x1A13A)
+    AL = Cpu.In8(DX);
+    CheckExternalEvents(cs14, 0x24D);
+    // MOV DL,0xc0 (19EF_024B / 0x1A13B)
+    DL = 0xC0;
+    CheckExternalEvents(cs14, 0x24F);
+    // MOV AL,BL (19EF_024D / 0x1A13D)
+    AL = BL;
+    CheckExternalEvents(cs14, 0x250);
+    // OUT DX,AL (19EF_024F / 0x1A13F)
+    Cpu.Out8(DX, AL);
+    CheckExternalEvents(cs14, 0x252);
+    // MOV AL,CL (19EF_0250 / 0x1A140)
+    AL = CL;
+    CheckExternalEvents(cs14, 0x253);
+    // OUT DX,AL (19EF_0252 / 0x1A142)
+    Cpu.Out8(DX, AL);
+    CheckExternalEvents(cs14, 0x254);
+    // POP DX (19EF_0253 / 0x1A143)
+    DX = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x255);
+    // IN AL,DX (19EF_0254 / 0x1A144)
+    AL = Cpu.In8(DX);
+    CheckExternalEvents(cs14, 0x257);
+    // MOV DL,0xc0 (19EF_0255 / 0x1A145)
+    DL = 0xC0;
+    CheckExternalEvents(cs14, 0x259);
+    // MOV AL,0x20 (19EF_0257 / 0x1A147)
+    AL = 0x20;
+    CheckExternalEvents(cs14, 0x25A);
+    // OUT DX,AL (19EF_0259 / 0x1A149)
+    Cpu.Out8(DX, AL);
+    CheckExternalEvents(cs14, 0x25B);
+    // STI  (19EF_025A / 0x1A14A)
+    InterruptFlag = true;
+    CheckExternalEvents(cs14, 0x25C);
+    // POP DS (19EF_025B / 0x1A14B)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x25D);
+    // POP SI (19EF_025C / 0x1A14C)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x25E);
+    // POP DI (19EF_025D / 0x1A14D)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x25F);
+    // POP BP (19EF_025E / 0x1A14E)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x260);
+    // RETF  (19EF_025F / 0x1A14F)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_0260_1A150(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_0260_1A150:
+    CheckExternalEvents(cs14, 0x261);
+    // PUSH BP (19EF_0260 / 0x1A150)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0x263);
+    // MOV BP,SP (19EF_0261 / 0x1A151)
+    BP = SP;
+    CheckExternalEvents(cs14, 0x264);
+    // PUSH DI (19EF_0263 / 0x1A153)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0x265);
+    // PUSH SI (19EF_0264 / 0x1A154)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0x266);
+    // PUSH DS (19EF_0265 / 0x1A155)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x269);
+    // MOV AX,0x1ddc (19EF_0266 / 0x1A156)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0x26B);
+    // MOV DS,AX (19EF_0269 / 0x1A159)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x26E);
+    // MOV AX,word ptr [BP + 0x6] (19EF_026B / 0x1A15B)
     AX = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs7, 0xA9AE);
-    // MOV SI,AX (1000_A9AC / 0x1A9AC)
+    CheckExternalEvents(cs14, 0x270);
+    // MOV SI,AX (19EF_026E / 0x1A15E)
     SI = AX;
-    CheckExternalEvents(cs7, 0xA9B1);
-    // MOV AX,0xa400 (1000_A9AE / 0x1A9AE)
-    AX = 0xA400;
-    CheckExternalEvents(cs7, 0xA9B2);
-    // PUSH ES (1000_A9B1 / 0x1A9B1)
-    Stack.Push16(ES);
-    CheckExternalEvents(cs7, 0xA9B4);
-    // MOV ES,AX (1000_A9B2 / 0x1A9B2)
-    ES = AX;
-    CheckExternalEvents(cs7, 0xA9B7);
-    // MOV DI,word ptr [BP + 0xa] (1000_A9B4 / 0x1A9B4)
-    DI = UInt16[SS, (ushort)(BP + 0xA)];
-    CheckExternalEvents(cs7, 0xA9BA);
-    // MOV AX,word ptr [BP + 0x8] (1000_A9B7 / 0x1A9B7)
+    CheckExternalEvents(cs14, 0x273);
+    // MOV AX,word ptr [BP + 0x8] (19EF_0270 / 0x1A160)
     AX = UInt16[SS, (ushort)(BP + 0x8)];
-    CheckExternalEvents(cs7, 0xA9BB);
-    // PUSH DS (1000_A9BA / 0x1A9BA)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs7, 0xA9BD);
-    // MOV DS,AX (1000_A9BB / 0x1A9BB)
-    DS = AX;
-    CheckExternalEvents(cs7, 0xA9C0);
-    // MOV CX,0x10 (1000_A9BD / 0x1A9BD)
-    CX = 0x10;
-    CheckExternalEvents(cs7, 0xA9C3);
-    // MOV DX,0x3c4 (1000_A9C0 / 0x1A9C0)
-    DX = 0x3C4;
-    label_1000_A9C3_1A9C3:
-    CheckExternalEvents(cs7, 0xA9C6);
-    // MOV AX,0x102 (1000_A9C3 / 0x1A9C3)
-    AX = 0x102;
-    CheckExternalEvents(cs7, 0xA9C7);
-    // OUT DX,AX (1000_A9C6 / 0x1A9C6)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9CA);
-    // MOV AL,byte ptr ES:[DI] (1000_A9C7 / 0x1A9C7)
-    AL = UInt8[ES, (ushort)(DI)];
-    CheckExternalEvents(cs7, 0xA9CB);
-    // MOVSB ES:DI,SI (1000_A9CA / 0x1A9CA)
-    UInt8[ES, (ushort)(DI)] = UInt8[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction8);
-    DI = (ushort)(DI + Direction8);
-    CheckExternalEvents(cs7, 0xA9CC);
-    // DEC DI (1000_A9CB / 0x1A9CB)
-    DI = Alu.Dec16(DI);
-    CheckExternalEvents(cs7, 0xA9CF);
-    // MOV AX,0x202 (1000_A9CC / 0x1A9CC)
-    AX = 0x202;
-    CheckExternalEvents(cs7, 0xA9D0);
-    // OUT DX,AX (1000_A9CF / 0x1A9CF)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9D3);
-    // MOV AL,byte ptr ES:[DI] (1000_A9D0 / 0x1A9D0)
-    AL = UInt8[ES, (ushort)(DI)];
-    CheckExternalEvents(cs7, 0xA9D4);
-    // MOVSB ES:DI,SI (1000_A9D3 / 0x1A9D3)
-    UInt8[ES, (ushort)(DI)] = UInt8[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction8);
-    DI = (ushort)(DI + Direction8);
-    CheckExternalEvents(cs7, 0xA9D5);
-    // DEC DI (1000_A9D4 / 0x1A9D4)
-    DI = Alu.Dec16(DI);
-    CheckExternalEvents(cs7, 0xA9D8);
-    // MOV AX,0x402 (1000_A9D5 / 0x1A9D5)
-    AX = 0x402;
-    CheckExternalEvents(cs7, 0xA9D9);
-    // OUT DX,AX (1000_A9D8 / 0x1A9D8)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9DC);
-    // MOV AL,byte ptr ES:[DI] (1000_A9D9 / 0x1A9D9)
-    AL = UInt8[ES, (ushort)(DI)];
-    CheckExternalEvents(cs7, 0xA9DD);
-    // MOVSB ES:DI,SI (1000_A9DC / 0x1A9DC)
-    UInt8[ES, (ushort)(DI)] = UInt8[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction8);
-    DI = (ushort)(DI + Direction8);
-    CheckExternalEvents(cs7, 0xA9DE);
-    // DEC DI (1000_A9DD / 0x1A9DD)
-    DI = Alu.Dec16(DI);
-    CheckExternalEvents(cs7, 0xA9E1);
-    // MOV AX,0x802 (1000_A9DE / 0x1A9DE)
-    AX = 0x802;
-    CheckExternalEvents(cs7, 0xA9E2);
-    // OUT DX,AX (1000_A9E1 / 0x1A9E1)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9E5);
-    // MOV AL,byte ptr ES:[DI] (1000_A9E2 / 0x1A9E2)
-    AL = UInt8[ES, (ushort)(DI)];
-    CheckExternalEvents(cs7, 0xA9E6);
-    // MOVSB ES:DI,SI (1000_A9E5 / 0x1A9E5)
-    UInt8[ES, (ushort)(DI)] = UInt8[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction8);
-    DI = (ushort)(DI + Direction8);
-    CheckExternalEvents(cs7, 0xA9E9);
-    // MOV AX,0x102 (1000_A9E6 / 0x1A9E6)
-    AX = 0x102;
-    CheckExternalEvents(cs7, 0xA9EA);
-    // OUT DX,AX (1000_A9E9 / 0x1A9E9)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9ED);
-    // MOV AL,byte ptr ES:[DI] (1000_A9EA / 0x1A9EA)
-    AL = UInt8[ES, (ushort)(DI)];
-    CheckExternalEvents(cs7, 0xA9EE);
-    // MOVSB ES:DI,SI (1000_A9ED / 0x1A9ED)
-    UInt8[ES, (ushort)(DI)] = UInt8[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction8);
-    DI = (ushort)(DI + Direction8);
-    CheckExternalEvents(cs7, 0xA9EF);
-    // DEC DI (1000_A9EE / 0x1A9EE)
-    DI = Alu.Dec16(DI);
-    CheckExternalEvents(cs7, 0xA9F2);
-    // MOV AX,0x202 (1000_A9EF / 0x1A9EF)
-    AX = 0x202;
-    CheckExternalEvents(cs7, 0xA9F3);
-    // OUT DX,AX (1000_A9F2 / 0x1A9F2)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9F6);
-    // MOV AL,byte ptr ES:[DI] (1000_A9F3 / 0x1A9F3)
-    AL = UInt8[ES, (ushort)(DI)];
-    CheckExternalEvents(cs7, 0xA9F7);
-    // MOVSB ES:DI,SI (1000_A9F6 / 0x1A9F6)
-    UInt8[ES, (ushort)(DI)] = UInt8[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction8);
-    DI = (ushort)(DI + Direction8);
-    CheckExternalEvents(cs7, 0xA9F8);
-    // DEC DI (1000_A9F7 / 0x1A9F7)
-    DI = Alu.Dec16(DI);
-    CheckExternalEvents(cs7, 0xA9FB);
-    // MOV AX,0x402 (1000_A9F8 / 0x1A9F8)
-    AX = 0x402;
-    CheckExternalEvents(cs7, 0xA9FC);
-    // OUT DX,AX (1000_A9FB / 0x1A9FB)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xA9FF);
-    // MOV AL,byte ptr ES:[DI] (1000_A9FC / 0x1A9FC)
-    AL = UInt8[ES, (ushort)(DI)];
-    CheckExternalEvents(cs7, 0xAA00);
-    // MOVSB ES:DI,SI (1000_A9FF / 0x1A9FF)
-    UInt8[ES, (ushort)(DI)] = UInt8[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction8);
-    DI = (ushort)(DI + Direction8);
-    CheckExternalEvents(cs7, 0xAA01);
-    // DEC DI (1000_AA00 / 0x1AA00)
-    DI = Alu.Dec16(DI);
-    CheckExternalEvents(cs7, 0xAA04);
-    // MOV AX,0x802 (1000_AA01 / 0x1AA01)
-    AX = 0x802;
-    CheckExternalEvents(cs7, 0xAA05);
-    // OUT DX,AX (1000_AA04 / 0x1AA04)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xAA08);
-    // MOV AL,byte ptr ES:[DI] (1000_AA05 / 0x1AA05)
-    AL = UInt8[ES, (ushort)(DI)];
-    CheckExternalEvents(cs7, 0xAA09);
-    // MOVSB ES:DI,SI (1000_AA08 / 0x1AA08)
-    UInt8[ES, (ushort)(DI)] = UInt8[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction8);
-    DI = (ushort)(DI + Direction8);
-    CheckExternalEvents(cs7, 0xAA0B);
-    // LOOP 0x1000:a9c3 (1000_AA09 / 0x1AA09)
-    if(--CX != 0) {
-      goto label_1000_A9C3_1A9C3;
-    }
-    CheckExternalEvents(cs7, 0xAA0E);
-    // MOV AX,0xf02 (1000_AA0B / 0x1AA0B)
-    AX = 0xF02;
-    CheckExternalEvents(cs7, 0xAA0F);
-    // OUT DX,AX (1000_AA0E / 0x1AA0E)
-    Cpu.Out16(DX, AX);
-    CheckExternalEvents(cs7, 0xAA10);
-    // POP DS (1000_AA0F / 0x1AA0F)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAA11);
-    // POP ES (1000_AA10 / 0x1AA10)
-    ES = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAA12);
-    // POP DS (1000_AA11 / 0x1AA11)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAA13);
-    // POP SI (1000_AA12 / 0x1AA12)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAA14);
-    // POP DI (1000_AA13 / 0x1AA13)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAA15);
-    // POP BP (1000_AA14 / 0x1AA14)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAA16);
-    // RETF  (1000_AA15 / 0x1AA15)
-    return FarRet();
-  }
-  
-  public virtual Action unknown_19EF_0B26_1AA16(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0B26_1AA16:
-    CheckExternalEvents(cs12, 0xB27);
-    // PUSH BP (19EF_0B26 / 0x1AA16)
-    Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0xB29);
-    // MOV BP,SP (19EF_0B27 / 0x1AA17)
-    BP = SP;
-    CheckExternalEvents(cs12, 0xB2A);
-    // PUSH DI (19EF_0B29 / 0x1AA19)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0xB2B);
-    // PUSH SI (19EF_0B2A / 0x1AA1A)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0xB2C);
-    // PUSH DS (19EF_0B2B / 0x1AA1B)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0xB2F);
-    // MOV AX,0x1ddc (19EF_0B2C / 0x1AA1C)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0xB31);
-    // MOV DS,AX (19EF_0B2F / 0x1AA1F)
-    DS = AX;
-    CheckExternalEvents(cs12, 0xB32);
-    // PUSH DX (19EF_0B31 / 0x1AA21)
-    Stack.Push16(DX);
-    CheckExternalEvents(cs12, 0xB35);
-    // MOV DX,0x3da (19EF_0B32 / 0x1AA22)
-    DX = 0x3DA;
-    CheckExternalEvents(cs12, 0xB36);
-    // IN AL,DX (19EF_0B35 / 0x1AA25)
-    AL = Cpu.In8(DX);
-    CheckExternalEvents(cs12, 0xB38);
-    // AND AL,0x8 (19EF_0B36 / 0x1AA26)
-    AL &= 0x8;
-    CheckExternalEvents(cs12, 0xB3A);
-    // XOR AH,AH (19EF_0B38 / 0x1AA28)
-    // AH ^= AH;
-    AH = Alu.Xor8(AH, AH);
-    CheckExternalEvents(cs12, 0xB3B);
-    // POP DX (19EF_0B3A / 0x1AA2A)
-    DX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB3C);
-    // POP DS (19EF_0B3B / 0x1AA2B)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB3D);
-    // POP SI (19EF_0B3C / 0x1AA2C)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB3E);
-    // POP DI (19EF_0B3D / 0x1AA2D)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB3F);
-    // POP BP (19EF_0B3E / 0x1AA2E)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB40);
-    // RETF  (19EF_0B3F / 0x1AA2F)
-    return FarRet();
-  }
-  
-  public virtual Action unknown_19EF_0B40_1AA30(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0B40_1AA30:
-    CheckExternalEvents(cs12, 0xB41);
-    // PUSH BP (19EF_0B40 / 0x1AA30)
-    Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0xB43);
-    // MOV BP,SP (19EF_0B41 / 0x1AA31)
-    BP = SP;
-    CheckExternalEvents(cs12, 0xB44);
-    // PUSH DI (19EF_0B43 / 0x1AA33)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0xB45);
-    // PUSH SI (19EF_0B44 / 0x1AA34)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0xB46);
-    // PUSH DS (19EF_0B45 / 0x1AA35)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0xB49);
-    // MOV AX,0x1ddc (19EF_0B46 / 0x1AA36)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0xB4B);
-    // MOV DS,AX (19EF_0B49 / 0x1AA39)
-    DS = AX;
-    CheckExternalEvents(cs12, 0xB4E);
-    // MOV BL,byte ptr [BP + 0x6] (19EF_0B4B / 0x1AA3B)
-    BL = UInt8[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs12, 0xB4F);
-    // PUSH DX (19EF_0B4E / 0x1AA3E)
-    Stack.Push16(DX);
-    CheckExternalEvents(cs12, 0xB52);
-    // MOV DX,0x3da (19EF_0B4F / 0x1AA3F)
-    DX = 0x3DA;
-    CheckExternalEvents(cs12, 0xB55);
-    // CMP BL,0x1 (19EF_0B52 / 0x1AA42)
-    Alu.Sub8(BL, 0x1);
-    CheckExternalEvents(cs12, 0xB57);
-    // JZ 0x1000:aa53 (19EF_0B55 / 0x1AA45)
-    if(ZeroFlag) {
-      goto label_19EF_0B63_1AA53;
-    }
-    label_19EF_0B57_1AA47:
-    CheckExternalEvents(cs12, 0xB58);
-    // IN AL,DX (19EF_0B57 / 0x1AA47)
-    AL = Cpu.In8(DX);
-    CheckExternalEvents(cs12, 0xB5A);
-    // TEST AL,0x8 (19EF_0B58 / 0x1AA48)
-    Alu.And8(AL, 0x8);
-    CheckExternalEvents(cs12, 0xB5C);
-    // JZ 0x1000:aa47 (19EF_0B5A / 0x1AA4A)
-    if(ZeroFlag) {
-      goto label_19EF_0B57_1AA47;
-    }
-    label_19EF_0B5C_1AA4C:
-    CheckExternalEvents(cs12, 0xB5D);
-    // IN AL,DX (19EF_0B5C / 0x1AA4C)
-    AL = Cpu.In8(DX);
-    CheckExternalEvents(cs12, 0xB5F);
-    // TEST AL,0x8 (19EF_0B5D / 0x1AA4D)
-    Alu.And8(AL, 0x8);
-    CheckExternalEvents(cs12, 0xB61);
-    // JNZ 0x1000:aa4c (19EF_0B5F / 0x1AA4F)
-    if(!ZeroFlag) {
-      goto label_19EF_0B5C_1AA4C;
-    }
-    CheckExternalEvents(cs12, 0xB63);
-    // JZ 0x1000:aa5d (19EF_0B61 / 0x1AA51)
-    if(ZeroFlag) {
-      goto label_19EF_0B6D_1AA5D;
-    }
-    label_19EF_0B63_1AA53:
-    CheckExternalEvents(cs12, 0xB64);
-    // IN AL,DX (19EF_0B63 / 0x1AA53)
-    AL = Cpu.In8(DX);
-    CheckExternalEvents(cs12, 0xB66);
-    // TEST AL,0x8 (19EF_0B64 / 0x1AA54)
-    Alu.And8(AL, 0x8);
-    CheckExternalEvents(cs12, 0xB68);
-    // JNZ 0x1000:aa53 (19EF_0B66 / 0x1AA56)
-    if(!ZeroFlag) {
-      goto label_19EF_0B63_1AA53;
-    }
-    label_19EF_0B68_1AA58:
-    CheckExternalEvents(cs12, 0xB69);
-    // IN AL,DX (19EF_0B68 / 0x1AA58)
-    AL = Cpu.In8(DX);
-    CheckExternalEvents(cs12, 0xB6B);
-    // TEST AL,0x8 (19EF_0B69 / 0x1AA59)
-    Alu.And8(AL, 0x8);
-    CheckExternalEvents(cs12, 0xB6D);
-    // JZ 0x1000:aa58 (19EF_0B6B / 0x1AA5B)
-    if(ZeroFlag) {
-      goto label_19EF_0B68_1AA58;
-    }
-    label_19EF_0B6D_1AA5D:
-    CheckExternalEvents(cs12, 0xB6E);
-    // POP DX (19EF_0B6D / 0x1AA5D)
-    DX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB6F);
-    // POP DS (19EF_0B6E / 0x1AA5E)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB70);
-    // POP SI (19EF_0B6F / 0x1AA5F)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB71);
-    // POP DI (19EF_0B70 / 0x1AA60)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB72);
-    // POP BP (19EF_0B71 / 0x1AA61)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB73);
-    // RETF  (19EF_0B72 / 0x1AA62)
-    return FarRet();
-  }
-  
-  public virtual Action unknown_19EF_0B73_1AA63(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0B73_1AA63:
-    CheckExternalEvents(cs12, 0xB74);
-    // PUSH BP (19EF_0B73 / 0x1AA63)
-    Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0xB76);
-    // MOV BP,SP (19EF_0B74 / 0x1AA64)
-    BP = SP;
-    CheckExternalEvents(cs12, 0xB77);
-    // PUSH DI (19EF_0B76 / 0x1AA66)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0xB78);
-    // PUSH SI (19EF_0B77 / 0x1AA67)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0xB79);
-    // PUSH DS (19EF_0B78 / 0x1AA68)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0xB7C);
-    // MOV AX,0x1ddc (19EF_0B79 / 0x1AA69)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0xB7E);
-    // MOV DS,AX (19EF_0B7C / 0x1AA6C)
-    DS = AX;
-    CheckExternalEvents(cs12, 0xB81);
-    // MOV AX,word ptr [BP + 0x6] (19EF_0B7E / 0x1AA6E)
-    AX = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs12, 0xB83);
-    // XOR AH,AH (19EF_0B81 / 0x1AA71)
-    // AH ^= AH;
-    AH = Alu.Xor8(AH, AH);
-    CheckExternalEvents(cs12, 0xB85);
-    // INT 0x10 (19EF_0B83 / 0x1AA73)
-    Interrupt(0x10);
-    CheckExternalEvents(cs12, 0xB86);
-    // POP DS (19EF_0B85 / 0x1AA75)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB87);
-    // POP SI (19EF_0B86 / 0x1AA76)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB88);
-    // POP DI (19EF_0B87 / 0x1AA77)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB89);
-    // POP BP (19EF_0B88 / 0x1AA78)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xB8A);
-    // RETF  (19EF_0B89 / 0x1AA79)
-    return FarRet();
-  }
-  
-  public virtual Action unknown_19EF_0B8A_1AA7A(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0B8A_1AA7A:
-    CheckExternalEvents(cs12, 0xB8B);
-    // PUSH BP (19EF_0B8A / 0x1AA7A)
-    Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0xB8D);
-    // MOV BP,SP (19EF_0B8B / 0x1AA7B)
-    BP = SP;
-    CheckExternalEvents(cs12, 0xB8E);
-    // PUSH DI (19EF_0B8D / 0x1AA7D)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0xB8F);
-    // PUSH SI (19EF_0B8E / 0x1AA7E)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0xB90);
-    // PUSH DS (19EF_0B8F / 0x1AA7F)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0xB93);
-    // MOV AX,0x1ddc (19EF_0B90 / 0x1AA80)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0xB95);
-    // MOV DS,AX (19EF_0B93 / 0x1AA83)
-    DS = AX;
-    CheckExternalEvents(cs12, 0xB97);
-    // XOR AH,AH (19EF_0B95 / 0x1AA85)
-    // AH ^= AH;
-    AH = Alu.Xor8(AH, AH);
-    CheckExternalEvents(cs12, 0xB99);
-    // INT 0x16 (19EF_0B97 / 0x1AA87)
-    Interrupt(0x16);
-    CheckExternalEvents(cs12, 0xB9B);
-    // CMP AL,0x0 (19EF_0B99 / 0x1AA89)
-    Alu.Sub8(AL, 0x0);
-    CheckExternalEvents(cs12, 0xB9D);
-    // JNZ 0x1000:aa91 (19EF_0B9B / 0x1AA8B)
-    if(!ZeroFlag) {
-      goto label_19EF_0BA1_1AA91;
-    }
-    CheckExternalEvents(cs12, 0xB9F);
-    // MOV AL,AH (19EF_0B9D / 0x1AA8D)
-    AL = AH;
-    CheckExternalEvents(cs12, 0xBA1);
-    // NEG AL (19EF_0B9F / 0x1AA8F)
-    AL = Alu.Sub8(0, AL);
-    label_19EF_0BA1_1AA91:
-    CheckExternalEvents(cs12, 0xBA2);
-    // CBW  (19EF_0BA1 / 0x1AA91)
-    AX = (ushort)((short)((sbyte)AL));
-    CheckExternalEvents(cs12, 0xBA3);
-    // POP DS (19EF_0BA2 / 0x1AA92)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xBA4);
-    // POP SI (19EF_0BA3 / 0x1AA93)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xBA5);
-    // POP DI (19EF_0BA4 / 0x1AA94)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xBA6);
-    // POP BP (19EF_0BA5 / 0x1AA95)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xBA7);
-    // RETF  (19EF_0BA6 / 0x1AA96)
-    return FarRet();
-  }
-  
-  public virtual Action ghidra_guess_1000_AA97_1AA97(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_1000_AA97_1AA97:
-    CheckExternalEvents(cs7, 0xAA98);
-    // PUSH BP (1000_AA97 / 0x1AA97)
-    Stack.Push16(BP);
-    CheckExternalEvents(cs7, 0xAA9A);
-    // MOV BP,SP (1000_AA98 / 0x1AA98)
-    BP = SP;
-    CheckExternalEvents(cs7, 0xAA9B);
-    // PUSH DI (1000_AA9A / 0x1AA9A)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs7, 0xAA9C);
-    // PUSH SI (1000_AA9B / 0x1AA9B)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs7, 0xAA9D);
-    // PUSH DS (1000_AA9C / 0x1AA9C)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs7, 0xAAA0);
-    // MOV AX,0x1ddc (1000_AA9D / 0x1AA9D)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs7, 0xAAA2);
-    // MOV DS,AX (1000_AAA0 / 0x1AAA0)
-    DS = AX;
-    CheckExternalEvents(cs7, 0xAAA5);
-    // MOV BX,word ptr [BP + 0x6] (1000_AAA2 / 0x1AAA2)
-    BX = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs7, 0xAAA7);
-    // MOV BH,0x1 (1000_AAA5 / 0x1AAA5)
-    BH = 0x1;
-    CheckExternalEvents(cs7, 0xAAA9);
-    // MOV AH,0xb (1000_AAA7 / 0x1AAA7)
-    AH = 0xB;
-    CheckExternalEvents(cs7, 0xAAAB);
-    // INT 0x10 (1000_AAA9 / 0x1AAA9)
-    Interrupt(0x10);
-    CheckExternalEvents(cs7, 0xAAAC);
-    // POP DS (1000_AAAB / 0x1AAAB)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAAAD);
-    // POP SI (1000_AAAC / 0x1AAAC)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAAAE);
-    // POP DI (1000_AAAD / 0x1AAAD)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAAAF);
-    // POP BP (1000_AAAE / 0x1AAAE)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs7, 0xAAB0);
-    // RETF  (1000_AAAF / 0x1AAAF)
-    return FarRet();
-  }
-  
-  public virtual Action unknown_19EF_0BC0_1AAB0(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0BC0_1AAB0:
-    CheckExternalEvents(cs12, 0xBC1);
-    // PUSH BP (19EF_0BC0 / 0x1AAB0)
-    Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0xBC3);
-    // MOV BP,SP (19EF_0BC1 / 0x1AAB1)
-    BP = SP;
-    CheckExternalEvents(cs12, 0xBC4);
-    // PUSH DI (19EF_0BC3 / 0x1AAB3)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0xBC5);
-    // PUSH SI (19EF_0BC4 / 0x1AAB4)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0xBC6);
-    // PUSH DS (19EF_0BC5 / 0x1AAB5)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0xBC9);
-    // MOV AX,0x1ddc (19EF_0BC6 / 0x1AAB6)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0xBCB);
-    // MOV DS,AX (19EF_0BC9 / 0x1AAB9)
-    DS = AX;
-    CheckExternalEvents(cs12, 0xBCC);
-    // PUSH ES (19EF_0BCB / 0x1AABB)
+    CheckExternalEvents(cs14, 0x274);
+    // PUSH ES (19EF_0273 / 0x1A163)
     Stack.Push16(ES);
-    CheckExternalEvents(cs12, 0xBCF);
-    // MOV AX,0x384b (19EF_0BCC / 0x1AABC)
-    AX = 0x384B;
-    CheckExternalEvents(cs12, 0xBD1);
-    // MOV ES,AX (19EF_0BCF / 0x1AABF)
+    CheckExternalEvents(cs14, 0x276);
+    // MOV ES,AX (19EF_0274 / 0x1A164)
     ES = AX;
-    CheckExternalEvents(cs12, 0xBD4);
-    // MOV SI,0x4fc0 (19EF_0BD1 / 0x1AAC1)
-    SI = 0x4FC0;
-    CheckExternalEvents(cs12, 0xBD6);
-    // XOR AH,AH (19EF_0BD4 / 0x1AAC4)
-    // AH ^= AH;
-    AH = Alu.Xor8(AH, AH);
-    CheckExternalEvents(cs12, 0xBD9);
-    // MOV AL,byte ptr ES:[SI] (19EF_0BD6 / 0x1AAC6)
-    AL = UInt8[ES, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xBDB);
-    // SHR AL,0x1 (19EF_0BD9 / 0x1AAC9)
-    AL >>= 0x1;
-    CheckExternalEvents(cs12, 0xBDD);
-    // SHR AL,0x1 (19EF_0BDB / 0x1AACB)
-    // AL >>= 0x1;
-    AL = Alu.Shr8(AL, 0x1);
-    CheckExternalEvents(cs12, 0xBE1);
-    // RCL byte ptr ES:[SI + 0x2],0x1 (19EF_0BDD / 0x1AACD)
-    UInt8[ES, (ushort)(SI + 0x2)] = Alu.Rcl8(UInt8[ES, (ushort)(SI + 0x2)], 0x1);
-    CheckExternalEvents(cs12, 0xBE5);
-    // RCL byte ptr ES:[SI + 0x1],0x1 (19EF_0BE1 / 0x1AAD1)
-    UInt8[ES, (ushort)(SI + 0x1)] = Alu.Rcl8(UInt8[ES, (ushort)(SI + 0x1)], 0x1);
-    CheckExternalEvents(cs12, 0xBE6);
-    // CMC  (19EF_0BE5 / 0x1AAD5)
-    CarryFlag = !CarryFlag;
-    CheckExternalEvents(cs12, 0xBE9);
-    // SBB AL,byte ptr ES:[SI] (19EF_0BE6 / 0x1AAD6)
-    AL = Alu.Sbb8(AL, UInt8[ES, (ushort)(SI)]);
-    CheckExternalEvents(cs12, 0xBEB);
-    // SHR AL,0x1 (19EF_0BE9 / 0x1AAD9)
-    // AL >>= 0x1;
-    AL = Alu.Shr8(AL, 0x1);
-    CheckExternalEvents(cs12, 0xBEE);
-    // RCR byte ptr ES:[SI],0x1 (19EF_0BEB / 0x1AADB)
-    UInt8[ES, (ushort)(SI)] = Alu.Rcr8(UInt8[ES, (ushort)(SI)], 0x1);
-    CheckExternalEvents(cs12, 0xBF1);
-    // MOV AL,byte ptr ES:[SI] (19EF_0BEE / 0x1AADE)
-    AL = UInt8[ES, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xBF5);
-    // XOR AL,byte ptr ES:[SI + 0x1] (19EF_0BF1 / 0x1AAE1)
-    // AL ^= UInt8[ES, (ushort)(SI + 0x1)];
-    AL = Alu.Xor8(AL, UInt8[ES, (ushort)(SI + 0x1)]);
-    CheckExternalEvents(cs12, 0xBF6);
-    // POP ES (19EF_0BF5 / 0x1AAE5)
-    ES = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xBF7);
-    // POP DS (19EF_0BF6 / 0x1AAE6)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xBF8);
-    // POP SI (19EF_0BF7 / 0x1AAE7)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xBF9);
-    // POP DI (19EF_0BF8 / 0x1AAE8)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xBFA);
-    // POP BP (19EF_0BF9 / 0x1AAE9)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xBFB);
-    // RETF  (19EF_0BFA / 0x1AAEA)
-    return FarRet();
-  }
-  
-  public virtual Action unknown_19EF_0BFB_1AAEB(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0BFB_1AAEB:
-    CheckExternalEvents(cs12, 0xBFC);
-    // PUSH SI (19EF_0BFB / 0x1AAEB)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0xBFE);
-    // MOV SI,DI (19EF_0BFC / 0x1AAEC)
-    SI = DI;
-    CheckExternalEvents(cs12, 0xC00);
-    // MOV DH,byte ptr [DI] (19EF_0BFE / 0x1AAEE)
-    DH = UInt8[DS, (ushort)(DI)];
-    CheckExternalEvents(cs12, 0xC03);
-    // MOV DL,byte ptr [DI + 0x8] (19EF_0C00 / 0x1AAF0)
-    DL = UInt8[DS, (ushort)(DI + 0x8)];
-    CheckExternalEvents(cs12, 0xC06);
-    // MOV BH,byte ptr [DI + 0x48] (19EF_0C03 / 0x1AAF3)
-    BH = UInt8[DS, (ushort)(DI + 0x48)];
-    CheckExternalEvents(cs12, 0xC09);
-    // MOV BL,byte ptr [DI + 0x50] (19EF_0C06 / 0x1AAF6)
-    BL = UInt8[DS, (ushort)(DI + 0x50)];
-    CheckExternalEvents(cs12, 0xC0A);
-    // PUSH ES (19EF_0C09 / 0x1AAF9)
-    Stack.Push16(ES);
-    CheckExternalEvents(cs12, 0xC0C);
-    // MOV AX,DS (19EF_0C0A / 0x1AAFA)
-    AX = DS;
-    CheckExternalEvents(cs12, 0xC0E);
-    // MOV ES,AX (19EF_0C0C / 0x1AAFC)
-    ES = AX;
-    CheckExternalEvents(cs12, 0xC11);
-    // MOV CX,0x28 (19EF_0C0E / 0x1AAFE)
-    CX = 0x28;
-    CheckExternalEvents(cs12, 0xC14);
-    // MOV AX,0xffff (19EF_0C11 / 0x1AB01)
-    AX = 0xFFFF;
-    CheckExternalEvents(cs12, 0xC15);
-    // CLD  (19EF_0C14 / 0x1AB04)
-    DirectionFlag = false;
-    CheckExternalEvents(cs12, 0xC17);
-    // REP
-    while (CX != 0) {
-      CX--;
-      // STOSW ES:DI (19EF_0C15 / 0x1AB05)
-      UInt16[ES, (ushort)(DI)] = AX;
-      DI = (ushort)(DI + Direction16);
-    }
-    CheckExternalEvents(cs12, 0xC18);
-    // POP ES (19EF_0C17 / 0x1AB07)
-    ES = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xC1A);
-    // MOV DI,SI (19EF_0C18 / 0x1AB08)
-    DI = SI;
-    CheckExternalEvents(cs12, 0xC1C);
-    // MOV byte ptr [DI],DH (19EF_0C1A / 0x1AB0A)
-    UInt8[DS, (ushort)(DI)] = DH;
-    CheckExternalEvents(cs12, 0xC1F);
-    // MOV byte ptr [DI + 0x8],DL (19EF_0C1C / 0x1AB0C)
-    UInt8[DS, (ushort)(DI + 0x8)] = DL;
-    CheckExternalEvents(cs12, 0xC22);
-    // MOV byte ptr [DI + 0x48],BH (19EF_0C1F / 0x1AB0F)
-    UInt8[DS, (ushort)(DI + 0x48)] = BH;
-    CheckExternalEvents(cs12, 0xC25);
-    // MOV byte ptr [DI + 0x50],BL (19EF_0C22 / 0x1AB12)
-    UInt8[DS, (ushort)(DI + 0x50)] = BL;
-    CheckExternalEvents(cs12, 0xC27);
-    // ADD DL,DH (19EF_0C25 / 0x1AB15)
-    DL += DH;
-    CheckExternalEvents(cs12, 0xC29);
-    // XOR DH,DH (19EF_0C27 / 0x1AB17)
-    // DH ^= DH;
-    DH = Alu.Xor8(DH, DH);
-    CheckExternalEvents(cs12, 0xC2D);
-    // MOV word ptr [0x9f9],DX (19EF_0C29 / 0x1AB19)
-    UInt16[DS, 0x9F9] = DX;
-    CheckExternalEvents(cs12, 0xC30);
-    // MOV SI,0x279 (19EF_0C2D / 0x1AB1D)
-    SI = 0x279;
-    CheckExternalEvents(cs12, 0xC33);
-    // MOV byte ptr [SI],0x0 (19EF_0C30 / 0x1AB20)
-    UInt8[DS, (ushort)(SI)] = 0x0;
-    CheckExternalEvents(cs12, 0xC37);
-    // MOV byte ptr [SI + 0x1],0x8 (19EF_0C33 / 0x1AB23)
-    UInt8[DS, (ushort)(SI + 0x1)] = 0x8;
-    CheckExternalEvents(cs12, 0xC3A);
-    // ADD SI,0x2 (19EF_0C37 / 0x1AB27)
-    // SI += 0x2;
-    SI = Alu.Add16(SI, 0x2);
-    CheckExternalEvents(cs12, 0xC3D);
-    // CALL 0x1000:abf7 (19EF_0C3A / 0x1AB2A)
-    NearCall(cs12, 0xC3D, unknown_19EF_0D07_1ABF7);
-    CheckExternalEvents(cs12, 0xC40);
-    // MOV AL,byte ptr [DI + 0x48] (19EF_0C3D / 0x1AB2D)
-    AL = UInt8[DS, (ushort)(DI + 0x48)];
-    CheckExternalEvents(cs12, 0xC43);
-    // ADD AL,byte ptr [DI + 0x50] (19EF_0C40 / 0x1AB30)
-    AL += UInt8[DS, (ushort)(DI + 0x50)];
-    CheckExternalEvents(cs12, 0xC45);
-    // XOR AH,AH (19EF_0C43 / 0x1AB33)
-    // AH ^= AH;
-    AH = Alu.Xor8(AH, AH);
-    CheckExternalEvents(cs12, 0xC48);
-    // MOV [0x9f9],AX (19EF_0C45 / 0x1AB35)
-    UInt16[DS, 0x9F9] = AX;
-    CheckExternalEvents(cs12, 0xC4B);
-    // MOV SI,0x279 (19EF_0C48 / 0x1AB38)
-    SI = 0x279;
-    CheckExternalEvents(cs12, 0xC4E);
-    // MOV byte ptr [SI],0x48 (19EF_0C4B / 0x1AB3B)
-    UInt8[DS, (ushort)(SI)] = 0x48;
-    CheckExternalEvents(cs12, 0xC52);
-    // MOV byte ptr [SI + 0x1],0x50 (19EF_0C4E / 0x1AB3E)
-    UInt8[DS, (ushort)(SI + 0x1)] = 0x50;
-    CheckExternalEvents(cs12, 0xC55);
-    // ADD SI,0x2 (19EF_0C52 / 0x1AB42)
-    // SI += 0x2;
-    SI = Alu.Add16(SI, 0x2);
-    CheckExternalEvents(cs12, 0xC58);
-    // CALL 0x1000:abf7 (19EF_0C55 / 0x1AB45)
-    NearCall(cs12, 0xC58, unknown_19EF_0D07_1ABF7);
-    CheckExternalEvents(cs12, 0xC5A);
-    // MOV AL,byte ptr [DI] (19EF_0C58 / 0x1AB48)
+    CheckExternalEvents(cs14, 0x279);
+    // MOV AX,word ptr [BP + 0xa] (19EF_0276 / 0x1A166)
+    AX = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs14, 0x27C);
+    // MOV CX,0x1f40 (19EF_0279 / 0x1A169)
+    CX = 0x1F40;
+    CheckExternalEvents(cs14, 0x27D);
+    // PUSH DS (19EF_027C / 0x1A16C)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x27F);
+    // MOV DS,AX (19EF_027D / 0x1A16D)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x282);
+    // MOV DI,0x0 (19EF_027F / 0x1A16F)
+    DI = 0x0;
+    CheckExternalEvents(cs14, 0x285);
+    // MOV DX,0x3ce (19EF_0282 / 0x1A172)
+    DX = 0x3CE;
+    CheckExternalEvents(cs14, 0x288);
+    // MOV AX,0x205 (19EF_0285 / 0x1A175)
+    AX = 0x205;
+    CheckExternalEvents(cs14, 0x289);
+    // OUT DX,AX (19EF_0288 / 0x1A178)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x28B);
+    // MOV AL,0x3 (19EF_0289 / 0x1A179)
+    AL = 0x3;
+    CheckExternalEvents(cs14, 0x28D);
+    // MOV AH,0x18 (19EF_028B / 0x1A17B)
+    AH = 0x18;
+    label_19EF_028D_1A17D:
+    CheckExternalEvents(cs14, 0x290);
+    // MOV AX,0x8008 (19EF_028D / 0x1A17D)
+    AX = 0x8008;
+    CheckExternalEvents(cs14, 0x291);
+    // OUT DX,AX (19EF_0290 / 0x1A180)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x293);
+    // MOV AL,byte ptr [DI] (19EF_0291 / 0x1A181)
     AL = UInt8[DS, (ushort)(DI)];
-    CheckExternalEvents(cs12, 0xC5D);
-    // ADD AL,byte ptr [DI + 0x48] (19EF_0C5A / 0x1AB4A)
-    AL += UInt8[DS, (ushort)(DI + 0x48)];
-    CheckExternalEvents(cs12, 0xC5F);
-    // XOR AH,AH (19EF_0C5D / 0x1AB4D)
-    // AH ^= AH;
-    AH = Alu.Xor8(AH, AH);
-    CheckExternalEvents(cs12, 0xC62);
-    // MOV [0x9f9],AX (19EF_0C5F / 0x1AB4F)
-    UInt16[DS, 0x9F9] = AX;
-    CheckExternalEvents(cs12, 0xC65);
-    // MOV SI,0x279 (19EF_0C62 / 0x1AB52)
-    SI = 0x279;
-    CheckExternalEvents(cs12, 0xC68);
-    // MOV byte ptr [SI],0x0 (19EF_0C65 / 0x1AB55)
-    UInt8[DS, (ushort)(SI)] = 0x0;
-    CheckExternalEvents(cs12, 0xC6C);
-    // MOV byte ptr [SI + 0x1],0x48 (19EF_0C68 / 0x1AB58)
-    UInt8[DS, (ushort)(SI + 0x1)] = 0x48;
-    CheckExternalEvents(cs12, 0xC6F);
-    // ADD SI,0x2 (19EF_0C6C / 0x1AB5C)
-    // SI += 0x2;
-    SI = Alu.Add16(SI, 0x2);
-    CheckExternalEvents(cs12, 0xC72);
-    // CALL 0x1000:ac69 (19EF_0C6F / 0x1AB5F)
-    NearCall(cs12, 0xC72, unknown_19EF_0D79_1AC69);
-    CheckExternalEvents(cs12, 0xC75);
-    // MOV AL,byte ptr [DI + 0x8] (19EF_0C72 / 0x1AB62)
-    AL = UInt8[DS, (ushort)(DI + 0x8)];
-    CheckExternalEvents(cs12, 0xC78);
-    // ADD AL,byte ptr [DI + 0x50] (19EF_0C75 / 0x1AB65)
-    AL += UInt8[DS, (ushort)(DI + 0x50)];
-    CheckExternalEvents(cs12, 0xC7A);
-    // XOR AH,AH (19EF_0C78 / 0x1AB68)
-    // AH ^= AH;
-    AH = Alu.Xor8(AH, AH);
-    CheckExternalEvents(cs12, 0xC7D);
-    // MOV [0x9f9],AX (19EF_0C7A / 0x1AB6A)
-    UInt16[DS, 0x9F9] = AX;
-    CheckExternalEvents(cs12, 0xC80);
-    // MOV SI,0x279 (19EF_0C7D / 0x1AB6D)
-    SI = 0x279;
-    CheckExternalEvents(cs12, 0xC83);
-    // MOV byte ptr [SI],0x8 (19EF_0C80 / 0x1AB70)
-    UInt8[DS, (ushort)(SI)] = 0x8;
-    CheckExternalEvents(cs12, 0xC87);
-    // MOV byte ptr [SI + 0x1],0x50 (19EF_0C83 / 0x1AB73)
-    UInt8[DS, (ushort)(SI + 0x1)] = 0x50;
-    CheckExternalEvents(cs12, 0xC8A);
-    // ADD SI,0x2 (19EF_0C87 / 0x1AB77)
-    // SI += 0x2;
-    SI = Alu.Add16(SI, 0x2);
-    CheckExternalEvents(cs12, 0xC8D);
-    // CALL 0x1000:ac69 (19EF_0C8A / 0x1AB7A)
-    NearCall(cs12, 0xC8D, unknown_19EF_0D79_1AC69);
-    CheckExternalEvents(cs12, 0xC90);
-    // MOV SI,0x279 (19EF_0C8D / 0x1AB7D)
-    SI = 0x279;
-    CheckExternalEvents(cs12, 0xC93);
-    // MOV byte ptr [SI],0x0 (19EF_0C90 / 0x1AB80)
-    UInt8[DS, (ushort)(SI)] = 0x0;
-    CheckExternalEvents(cs12, 0xC97);
-    // MOV byte ptr [SI + 0x1],0x8 (19EF_0C93 / 0x1AB83)
-    UInt8[DS, (ushort)(SI + 0x1)] = 0x8;
-    CheckExternalEvents(cs12, 0xC9B);
-    // MOV byte ptr [SI + 0x2],0x48 (19EF_0C97 / 0x1AB87)
-    UInt8[DS, (ushort)(SI + 0x2)] = 0x48;
-    CheckExternalEvents(cs12, 0xC9F);
-    // MOV byte ptr [SI + 0x3],0x50 (19EF_0C9B / 0x1AB8B)
-    UInt8[DS, (ushort)(SI + 0x3)] = 0x50;
-    CheckExternalEvents(cs12, 0xCA2);
-    // ADD SI,0x4 (19EF_0C9F / 0x1AB8F)
-    // SI += 0x4;
-    SI = Alu.Add16(SI, 0x4);
-    CheckExternalEvents(cs12, 0xCA5);
-    // CALL 0x1000:ace8 (19EF_0CA2 / 0x1AB92)
-    NearCall(cs12, 0xCA5, unknown_19EF_0DF8_1ACE8);
-    CheckExternalEvents(cs12, 0xCA6);
-    // POP SI (19EF_0CA5 / 0x1AB95)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xCA8);
-    // XCHG DI,SI (19EF_0CA6 / 0x1AB96)
-    (SI, DI) = (DI, SI);
-    CheckExternalEvents(cs12, 0xCA9);
-    // PUSH ES (19EF_0CA8 / 0x1AB98)
-    Stack.Push16(ES);
-    CheckExternalEvents(cs12, 0xCAB);
-    // MOV AX,DS (19EF_0CA9 / 0x1AB99)
-    AX = DS;
-    CheckExternalEvents(cs12, 0xCAD);
-    // MOV ES,AX (19EF_0CAB / 0x1AB9B)
-    ES = AX;
-    CheckExternalEvents(cs12, 0xCAE);
-    // CLD  (19EF_0CAD / 0x1AB9D)
-    DirectionFlag = false;
-    CheckExternalEvents(cs12, 0xCB1);
-    // MOV CX,0x4 (19EF_0CAE / 0x1AB9E)
-    CX = 0x4;
-    label_19EF_0CB1_1ABA1:
-    CheckExternalEvents(cs12, 0xCB2);
-    // LODSW SI (19EF_0CB1 / 0x1ABA1)
-    AX = UInt16[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction16);
-    CheckExternalEvents(cs12, 0xCB5);
-    // AND AX,0xf0f0 (19EF_0CB2 / 0x1ABA2)
-    // AX &= 0xF0F0;
-    AX = Alu.And16(AX, 0xF0F0);
-    CheckExternalEvents(cs12, 0xCB6);
-    // STOSW ES:DI (19EF_0CB5 / 0x1ABA5)
-    UInt16[ES, (ushort)(DI)] = AX;
-    DI = (ushort)(DI + Direction16);
-    CheckExternalEvents(cs12, 0xCB8);
-    // LOOP 0x1000:aba1 (19EF_0CB6 / 0x1ABA6)
-    if(--CX != 0) {
-      goto label_19EF_0CB1_1ABA1;
-    }
-    CheckExternalEvents(cs12, 0xCB9);
-    // INC SI (19EF_0CB8 / 0x1ABA8)
-    SI = Alu.Inc16(SI);
-    CheckExternalEvents(cs12, 0xCBC);
-    // MOV CX,0x4 (19EF_0CB9 / 0x1ABA9)
-    CX = 0x4;
-    label_19EF_0CBC_1ABAC:
-    CheckExternalEvents(cs12, 0xCBD);
-    // LODSW SI (19EF_0CBC / 0x1ABAC)
-    AX = UInt16[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction16);
-    CheckExternalEvents(cs12, 0xCC0);
-    // AND AX,0xf0f0 (19EF_0CBD / 0x1ABAD)
-    // AX &= 0xF0F0;
-    AX = Alu.And16(AX, 0xF0F0);
-    CheckExternalEvents(cs12, 0xCC1);
-    // STOSW ES:DI (19EF_0CC0 / 0x1ABB0)
-    UInt16[ES, (ushort)(DI)] = AX;
-    DI = (ushort)(DI + Direction16);
-    CheckExternalEvents(cs12, 0xCC3);
-    // LOOP 0x1000:abac (19EF_0CC1 / 0x1ABB1)
-    if(--CX != 0) {
-      goto label_19EF_0CBC_1ABAC;
-    }
-    CheckExternalEvents(cs12, 0xCC4);
-    // INC SI (19EF_0CC3 / 0x1ABB3)
-    SI = Alu.Inc16(SI);
-    CheckExternalEvents(cs12, 0xCC7);
-    // MOV CX,0x4 (19EF_0CC4 / 0x1ABB4)
-    CX = 0x4;
-    label_19EF_0CC7_1ABB7:
-    CheckExternalEvents(cs12, 0xCC8);
-    // LODSW SI (19EF_0CC7 / 0x1ABB7)
-    AX = UInt16[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction16);
-    CheckExternalEvents(cs12, 0xCCB);
-    // AND AX,0xf0f0 (19EF_0CC8 / 0x1ABB8)
-    // AX &= 0xF0F0;
-    AX = Alu.And16(AX, 0xF0F0);
-    CheckExternalEvents(cs12, 0xCCC);
-    // STOSW ES:DI (19EF_0CCB / 0x1ABBB)
-    UInt16[ES, (ushort)(DI)] = AX;
-    DI = (ushort)(DI + Direction16);
-    CheckExternalEvents(cs12, 0xCCE);
-    // LOOP 0x1000:abb7 (19EF_0CCC / 0x1ABBC)
-    if(--CX != 0) {
-      goto label_19EF_0CC7_1ABB7;
-    }
-    CheckExternalEvents(cs12, 0xCCF);
-    // INC SI (19EF_0CCE / 0x1ABBE)
-    SI = Alu.Inc16(SI);
-    CheckExternalEvents(cs12, 0xCD2);
-    // MOV CX,0x4 (19EF_0CCF / 0x1ABBF)
-    CX = 0x4;
-    label_19EF_0CD2_1ABC2:
-    CheckExternalEvents(cs12, 0xCD3);
-    // LODSW SI (19EF_0CD2 / 0x1ABC2)
-    AX = UInt16[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction16);
-    CheckExternalEvents(cs12, 0xCD6);
-    // AND AX,0xf0f0 (19EF_0CD3 / 0x1ABC3)
-    // AX &= 0xF0F0;
-    AX = Alu.And16(AX, 0xF0F0);
-    CheckExternalEvents(cs12, 0xCD7);
-    // STOSW ES:DI (19EF_0CD6 / 0x1ABC6)
-    UInt16[ES, (ushort)(DI)] = AX;
-    DI = (ushort)(DI + Direction16);
-    CheckExternalEvents(cs12, 0xCD9);
-    // LOOP 0x1000:abc2 (19EF_0CD7 / 0x1ABC7)
-    if(--CX != 0) {
-      goto label_19EF_0CD2_1ABC2;
-    }
-    CheckExternalEvents(cs12, 0xCDA);
-    // INC SI (19EF_0CD9 / 0x1ABC9)
-    SI = Alu.Inc16(SI);
-    CheckExternalEvents(cs12, 0xCDD);
-    // MOV CX,0x4 (19EF_0CDA / 0x1ABCA)
-    CX = 0x4;
-    label_19EF_0CDD_1ABCD:
-    CheckExternalEvents(cs12, 0xCDE);
-    // LODSW SI (19EF_0CDD / 0x1ABCD)
-    AX = UInt16[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction16);
-    CheckExternalEvents(cs12, 0xCE1);
-    // AND AX,0xf0f0 (19EF_0CDE / 0x1ABCE)
-    // AX &= 0xF0F0;
-    AX = Alu.And16(AX, 0xF0F0);
-    CheckExternalEvents(cs12, 0xCE2);
-    // STOSW ES:DI (19EF_0CE1 / 0x1ABD1)
-    UInt16[ES, (ushort)(DI)] = AX;
-    DI = (ushort)(DI + Direction16);
-    CheckExternalEvents(cs12, 0xCE4);
-    // LOOP 0x1000:abcd (19EF_0CE2 / 0x1ABD2)
-    if(--CX != 0) {
-      goto label_19EF_0CDD_1ABCD;
-    }
-    CheckExternalEvents(cs12, 0xCE5);
-    // INC SI (19EF_0CE4 / 0x1ABD4)
-    SI = Alu.Inc16(SI);
-    CheckExternalEvents(cs12, 0xCE8);
-    // MOV CX,0x4 (19EF_0CE5 / 0x1ABD5)
-    CX = 0x4;
-    label_19EF_0CE8_1ABD8:
-    CheckExternalEvents(cs12, 0xCE9);
-    // LODSW SI (19EF_0CE8 / 0x1ABD8)
-    AX = UInt16[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction16);
-    CheckExternalEvents(cs12, 0xCEC);
-    // AND AX,0xf0f0 (19EF_0CE9 / 0x1ABD9)
-    // AX &= 0xF0F0;
-    AX = Alu.And16(AX, 0xF0F0);
-    CheckExternalEvents(cs12, 0xCED);
-    // STOSW ES:DI (19EF_0CEC / 0x1ABDC)
-    UInt16[ES, (ushort)(DI)] = AX;
-    DI = (ushort)(DI + Direction16);
-    CheckExternalEvents(cs12, 0xCEF);
-    // LOOP 0x1000:abd8 (19EF_0CED / 0x1ABDD)
-    if(--CX != 0) {
-      goto label_19EF_0CE8_1ABD8;
-    }
-    CheckExternalEvents(cs12, 0xCF0);
-    // INC SI (19EF_0CEF / 0x1ABDF)
-    SI = Alu.Inc16(SI);
-    CheckExternalEvents(cs12, 0xCF3);
-    // MOV CX,0x4 (19EF_0CF0 / 0x1ABE0)
-    CX = 0x4;
-    label_19EF_0CF3_1ABE3:
-    CheckExternalEvents(cs12, 0xCF4);
-    // LODSW SI (19EF_0CF3 / 0x1ABE3)
-    AX = UInt16[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction16);
-    CheckExternalEvents(cs12, 0xCF7);
-    // AND AX,0xf0f0 (19EF_0CF4 / 0x1ABE4)
-    // AX &= 0xF0F0;
-    AX = Alu.And16(AX, 0xF0F0);
-    CheckExternalEvents(cs12, 0xCF8);
-    // STOSW ES:DI (19EF_0CF7 / 0x1ABE7)
-    UInt16[ES, (ushort)(DI)] = AX;
-    DI = (ushort)(DI + Direction16);
-    CheckExternalEvents(cs12, 0xCFA);
-    // LOOP 0x1000:abe3 (19EF_0CF8 / 0x1ABE8)
-    if(--CX != 0) {
-      goto label_19EF_0CF3_1ABE3;
-    }
-    CheckExternalEvents(cs12, 0xCFB);
-    // INC SI (19EF_0CFA / 0x1ABEA)
-    SI = Alu.Inc16(SI);
-    CheckExternalEvents(cs12, 0xCFE);
-    // MOV CX,0x4 (19EF_0CFB / 0x1ABEB)
-    CX = 0x4;
-    label_19EF_0CFE_1ABEE:
-    CheckExternalEvents(cs12, 0xCFF);
-    // LODSW SI (19EF_0CFE / 0x1ABEE)
-    AX = UInt16[DS, (ushort)(SI)];
-    SI = (ushort)(SI + Direction16);
-    CheckExternalEvents(cs12, 0xD02);
-    // AND AX,0xf0f0 (19EF_0CFF / 0x1ABEF)
-    // AX &= 0xF0F0;
-    AX = Alu.And16(AX, 0xF0F0);
-    CheckExternalEvents(cs12, 0xD03);
-    // STOSW ES:DI (19EF_0D02 / 0x1ABF2)
-    UInt16[ES, (ushort)(DI)] = AX;
-    DI = (ushort)(DI + Direction16);
-    CheckExternalEvents(cs12, 0xD05);
-    // LOOP 0x1000:abee (19EF_0D03 / 0x1ABF3)
-    if(--CX != 0) {
-      goto label_19EF_0CFE_1ABEE;
-    }
-    CheckExternalEvents(cs12, 0xD06);
-    // POP ES (19EF_0D05 / 0x1ABF5)
-    ES = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0xD07);
-    // RET  (19EF_0D06 / 0x1ABF6)
-    return NearRet();
-  }
-  
-  public virtual Action unknown_19EF_0D07_1ABF7(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0D07_1ABF7:
-    CheckExternalEvents(cs12, 0xD0B);
-    // CMP SI,0x279 (19EF_0D07 / 0x1ABF7)
-    Alu.Sub16(SI, 0x279);
-    CheckExternalEvents(cs12, 0xD0D);
-    // JZ 0x1000:ac68 (19EF_0D0B / 0x1ABFB)
-    if(ZeroFlag) {
-      // JZ target is RET, inlining.
-      CheckExternalEvents(cs12, 0xD79);
-      // RET  (19EF_0D78 / 0x1AC68)
-      return NearRet();
-    }
-    CheckExternalEvents(cs12, 0xD10);
-    // SUB SI,0x2 (19EF_0D0D / 0x1ABFD)
-    // SI -= 0x2;
-    SI = Alu.Sub16(SI, 0x2);
-    CheckExternalEvents(cs12, 0xD12);
-    // MOV DH,byte ptr [SI] (19EF_0D10 / 0x1AC00)
-    DH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xD15);
-    // MOV DL,byte ptr [SI + 0x1] (19EF_0D12 / 0x1AC02)
-    DL = UInt8[DS, (ushort)(SI + 0x1)];
-    CheckExternalEvents(cs12, 0xD17);
-    // MOV AL,DL (19EF_0D15 / 0x1AC05)
-    AL = DL;
-    CheckExternalEvents(cs12, 0xD19);
-    // SUB AL,DH (19EF_0D17 / 0x1AC07)
-    AL -= DH;
-    CheckExternalEvents(cs12, 0xD1B);
-    // CMP AL,0x1 (19EF_0D19 / 0x1AC09)
-    Alu.Sub8(AL, 0x1);
-    CheckExternalEvents(cs12, 0xD1D);
-    // JZ 0x1000:abf7 (19EF_0D1B / 0x1AC0B)
-    if(ZeroFlag) {
-      goto label_19EF_0D07_1ABF7;
-    }
-    CheckExternalEvents(cs12, 0xD1F);
-    // XOR BH,BH (19EF_0D1D / 0x1AC0D)
-    // BH ^= BH;
-    BH = Alu.Xor8(BH, BH);
-    CheckExternalEvents(cs12, 0xD21);
-    // MOV BL,DH (19EF_0D1F / 0x1AC0F)
-    BL = DH;
-    CheckExternalEvents(cs12, 0xD23);
-    // MOV CH,byte ptr [BX + DI] (19EF_0D21 / 0x1AC11)
-    CH = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xD25);
-    // MOV BL,DL (19EF_0D23 / 0x1AC13)
-    BL = DL;
-    CheckExternalEvents(cs12, 0xD27);
-    // MOV CL,byte ptr [BX + DI] (19EF_0D25 / 0x1AC15)
-    CL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xD29);
-    // SHR AL,0x1 (19EF_0D27 / 0x1AC17)
-    // AL >>= 0x1;
-    AL = Alu.Shr8(AL, 0x1);
-    CheckExternalEvents(cs12, 0xD2B);
-    // MOV BL,AL (19EF_0D29 / 0x1AC19)
-    BL = AL;
-    CheckExternalEvents(cs12, 0xD2D);
-    // ADD BL,DH (19EF_0D2B / 0x1AC1B)
-    // BL += DH;
-    BL = Alu.Add8(BL, DH);
-    CheckExternalEvents(cs12, 0xD2F);
-    // MOV byte ptr [SI],DH (19EF_0D2D / 0x1AC1D)
-    UInt8[DS, (ushort)(SI)] = DH;
-    CheckExternalEvents(cs12, 0xD32);
-    // MOV byte ptr [SI + 0x1],BL (19EF_0D2F / 0x1AC1F)
-    UInt8[DS, (ushort)(SI + 0x1)] = BL;
-    CheckExternalEvents(cs12, 0xD35);
-    // MOV byte ptr [SI + 0x2],BL (19EF_0D32 / 0x1AC22)
-    UInt8[DS, (ushort)(SI + 0x2)] = BL;
-    CheckExternalEvents(cs12, 0xD38);
-    // MOV byte ptr [SI + 0x3],DL (19EF_0D35 / 0x1AC25)
-    UInt8[DS, (ushort)(SI + 0x3)] = DL;
-    CheckExternalEvents(cs12, 0xD3B);
-    // ADD SI,0x4 (19EF_0D38 / 0x1AC28)
-    // SI += 0x4;
-    SI = Alu.Add16(SI, 0x4);
-    CheckExternalEvents(cs12, 0xD3D);
-    // MOV AH,byte ptr [BX + DI] (19EF_0D3B / 0x1AC2B)
-    AH = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xD40);
-    // CMP AH,0xff (19EF_0D3D / 0x1AC2D)
-    Alu.Sub8(AH, 0xFF);
-    CheckExternalEvents(cs12, 0xD42);
-    // JNZ 0x1000:abf7 (19EF_0D40 / 0x1AC30)
-    if(!ZeroFlag) {
-      goto label_19EF_0D07_1ABF7;
-    }
-    CheckExternalEvents(cs12, 0xD44);
-    // MOV DL,CH (19EF_0D42 / 0x1AC32)
-    DL = CH;
-    CheckExternalEvents(cs12, 0xD46);
-    // XOR DH,DH (19EF_0D44 / 0x1AC34)
-    // DH ^= DH;
-    DH = Alu.Xor8(DH, DH);
-    CheckExternalEvents(cs12, 0xD48);
-    // MOV CH,DH (19EF_0D46 / 0x1AC36)
-    CH = DH;
-    CheckExternalEvents(cs12, 0xD4A);
-    // ADD DX,CX (19EF_0D48 / 0x1AC38)
-    DX += CX;
-    CheckExternalEvents(cs12, 0xD4C);
-    // SHR DX,0x1 (19EF_0D4A / 0x1AC3A)
-    // DX >>= 0x1;
-    DX = Alu.Shr16(DX, 0x1);
-    CheckExternalEvents(cs12, 0xD4E);
-    // MOV CX,SI (19EF_0D4C / 0x1AC3C)
-    CX = SI;
-    CheckExternalEvents(cs12, 0xD51);
-    // MOV SI,0x9fb (19EF_0D4E / 0x1AC3E)
-    SI = 0x9FB;
-    CheckExternalEvents(cs12, 0xD55);
-    // ADD SI,word ptr [0x9f9] (19EF_0D51 / 0x1AC41)
-    // SI += UInt16[DS, 0x9F9];
-    SI = Alu.Add16(SI, UInt16[DS, 0x9F9]);
-    CheckExternalEvents(cs12, 0xD57);
-    // MOV AH,byte ptr [SI] (19EF_0D55 / 0x1AC45)
-    AH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xD59);
-    // MOV SI,CX (19EF_0D57 / 0x1AC47)
-    SI = CX;
-    CheckExternalEvents(cs12, 0xD5B);
-    // MOV CL,AL (19EF_0D59 / 0x1AC49)
-    CL = AL;
-    CheckExternalEvents(cs12, 0xD5D);
-    // SHL CL,0x1 (19EF_0D5B / 0x1AC4B)
-    // CL <<= 0x1;
-    CL = Alu.Shl8(CL, 0x1);
-    CheckExternalEvents(cs12, 0xD5F);
-    // MOV CH,CL (19EF_0D5D / 0x1AC4D)
-    CH = CL;
-    CheckExternalEvents(cs12, 0xD61);
-    // SHL CL,0x1 (19EF_0D5F / 0x1AC4F)
-    CL <<= 0x1;
-    CheckExternalEvents(cs12, 0xD63);
-    // DEC CL (19EF_0D61 / 0x1AC51)
-    CL--;
-    CheckExternalEvents(cs12, 0xD65);
-    // AND CL,AH (19EF_0D63 / 0x1AC53)
-    CL &= AH;
-    CheckExternalEvents(cs12, 0xD67);
-    // SUB CL,CH (19EF_0D65 / 0x1AC55)
-    CL -= CH;
-    CheckExternalEvents(cs12, 0xD69);
-    // ADD DL,CL (19EF_0D67 / 0x1AC57)
-    DL += CL;
-    CheckExternalEvents(cs12, 0xD6C);
-    // CMP DL,0x80 (19EF_0D69 / 0x1AC59)
-    Alu.Sub8(DL, 0x80);
-    CheckExternalEvents(cs12, 0xD6E);
-    // JC 0x1000:ac60 (19EF_0D6C / 0x1AC5C)
-    if(CarryFlag) {
-      goto label_19EF_0D70_1AC60;
-    }
-    CheckExternalEvents(cs12, 0xD70);
-    // XOR DL,DL (19EF_0D6E / 0x1AC5E)
-    // DL ^= DL;
-    DL = Alu.Xor8(DL, DL);
-    label_19EF_0D70_1AC60:
-    CheckExternalEvents(cs12, 0xD72);
-    // MOV byte ptr [BX + DI],DL (19EF_0D70 / 0x1AC60)
-    UInt8[DS, (ushort)(BX + DI)] = DL;
-    CheckExternalEvents(cs12, 0xD76);
-    // INC byte ptr [0x9f9] (19EF_0D72 / 0x1AC62)
-    UInt8[DS, 0x9F9] = Alu.Inc8(UInt8[DS, 0x9F9]);
-    CheckExternalEvents(cs12, 0xD78);
-    // JMP 0x1000:abf7 (19EF_0D76 / 0x1AC66)
-    goto label_19EF_0D07_1ABF7;
-    label_19EF_0D78_1AC68:
-    CheckExternalEvents(cs12, 0xD79);
-    // RET  (19EF_0D78 / 0x1AC68)
-    return NearRet();
-  }
-  
-  public virtual Action unknown_19EF_0D79_1AC69(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0D79_1AC69:
-    CheckExternalEvents(cs12, 0xD7D);
-    // CMP SI,0x279 (19EF_0D79 / 0x1AC69)
-    Alu.Sub16(SI, 0x279);
-    CheckExternalEvents(cs12, 0xD7F);
-    // JZ 0x1000:ace7 (19EF_0D7D / 0x1AC6D)
-    if(ZeroFlag) {
-      // JZ target is RET, inlining.
-      CheckExternalEvents(cs12, 0xDF8);
-      // RET  (19EF_0DF7 / 0x1ACE7)
-      return NearRet();
-    }
-    CheckExternalEvents(cs12, 0xD82);
-    // SUB SI,0x2 (19EF_0D7F / 0x1AC6F)
-    // SI -= 0x2;
-    SI = Alu.Sub16(SI, 0x2);
-    CheckExternalEvents(cs12, 0xD84);
-    // MOV DH,byte ptr [SI] (19EF_0D82 / 0x1AC72)
-    DH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xD87);
-    // MOV DL,byte ptr [SI + 0x1] (19EF_0D84 / 0x1AC74)
-    DL = UInt8[DS, (ushort)(SI + 0x1)];
-    CheckExternalEvents(cs12, 0xD89);
-    // MOV AL,DL (19EF_0D87 / 0x1AC77)
-    AL = DL;
-    CheckExternalEvents(cs12, 0xD8B);
-    // SUB AL,DH (19EF_0D89 / 0x1AC79)
-    AL -= DH;
-    CheckExternalEvents(cs12, 0xD8D);
-    // CMP AL,0x9 (19EF_0D8B / 0x1AC7B)
-    Alu.Sub8(AL, 0x9);
-    CheckExternalEvents(cs12, 0xD8F);
-    // JZ 0x1000:ac69 (19EF_0D8D / 0x1AC7D)
-    if(ZeroFlag) {
-      goto label_19EF_0D79_1AC69;
-    }
-    CheckExternalEvents(cs12, 0xD91);
-    // XOR BH,BH (19EF_0D8F / 0x1AC7F)
-    // BH ^= BH;
-    BH = Alu.Xor8(BH, BH);
-    CheckExternalEvents(cs12, 0xD93);
-    // MOV BL,DH (19EF_0D91 / 0x1AC81)
-    BL = DH;
-    CheckExternalEvents(cs12, 0xD95);
-    // MOV CH,byte ptr [BX + DI] (19EF_0D93 / 0x1AC83)
-    CH = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xD97);
-    // MOV BL,DL (19EF_0D95 / 0x1AC85)
-    BL = DL;
-    CheckExternalEvents(cs12, 0xD99);
-    // MOV CL,byte ptr [BX + DI] (19EF_0D97 / 0x1AC87)
-    CL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xD9B);
-    // SHR AL,0x1 (19EF_0D99 / 0x1AC89)
-    // AL >>= 0x1;
-    AL = Alu.Shr8(AL, 0x1);
-    CheckExternalEvents(cs12, 0xD9D);
-    // MOV BL,AL (19EF_0D9B / 0x1AC8B)
-    BL = AL;
-    CheckExternalEvents(cs12, 0xD9F);
-    // ADD BL,DH (19EF_0D9D / 0x1AC8D)
-    // BL += DH;
-    BL = Alu.Add8(BL, DH);
-    CheckExternalEvents(cs12, 0xDA1);
-    // MOV byte ptr [SI],DH (19EF_0D9F / 0x1AC8F)
-    UInt8[DS, (ushort)(SI)] = DH;
-    CheckExternalEvents(cs12, 0xDA4);
-    // MOV byte ptr [SI + 0x1],BL (19EF_0DA1 / 0x1AC91)
-    UInt8[DS, (ushort)(SI + 0x1)] = BL;
-    CheckExternalEvents(cs12, 0xDA7);
-    // MOV byte ptr [SI + 0x2],BL (19EF_0DA4 / 0x1AC94)
-    UInt8[DS, (ushort)(SI + 0x2)] = BL;
-    CheckExternalEvents(cs12, 0xDAA);
-    // MOV byte ptr [SI + 0x3],DL (19EF_0DA7 / 0x1AC97)
-    UInt8[DS, (ushort)(SI + 0x3)] = DL;
-    CheckExternalEvents(cs12, 0xDAD);
-    // ADD SI,0x4 (19EF_0DAA / 0x1AC9A)
-    // SI += 0x4;
-    SI = Alu.Add16(SI, 0x4);
-    CheckExternalEvents(cs12, 0xDAF);
-    // MOV AH,byte ptr [BX + DI] (19EF_0DAD / 0x1AC9D)
-    AH = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xDB2);
-    // CMP AH,0xff (19EF_0DAF / 0x1AC9F)
-    Alu.Sub8(AH, 0xFF);
-    CheckExternalEvents(cs12, 0xDB4);
-    // JNZ 0x1000:ac69 (19EF_0DB2 / 0x1ACA2)
-    if(!ZeroFlag) {
-      goto label_19EF_0D79_1AC69;
-    }
-    CheckExternalEvents(cs12, 0xDB6);
-    // MOV DL,CH (19EF_0DB4 / 0x1ACA4)
-    DL = CH;
-    CheckExternalEvents(cs12, 0xDB8);
-    // XOR DH,DH (19EF_0DB6 / 0x1ACA6)
-    // DH ^= DH;
-    DH = Alu.Xor8(DH, DH);
-    CheckExternalEvents(cs12, 0xDBA);
-    // MOV CH,DH (19EF_0DB8 / 0x1ACA8)
-    CH = DH;
-    CheckExternalEvents(cs12, 0xDBC);
-    // ADD DX,CX (19EF_0DBA / 0x1ACAA)
-    DX += CX;
-    CheckExternalEvents(cs12, 0xDBE);
-    // SHR DX,0x1 (19EF_0DBC / 0x1ACAC)
-    // DX >>= 0x1;
-    DX = Alu.Shr16(DX, 0x1);
-    CheckExternalEvents(cs12, 0xDC0);
-    // MOV CX,SI (19EF_0DBE / 0x1ACAE)
-    CX = SI;
-    CheckExternalEvents(cs12, 0xDC3);
-    // MOV SI,0x9fb (19EF_0DC0 / 0x1ACB0)
-    SI = 0x9FB;
-    CheckExternalEvents(cs12, 0xDC7);
-    // ADD SI,word ptr [0x9f9] (19EF_0DC3 / 0x1ACB3)
-    // SI += UInt16[DS, 0x9F9];
-    SI = Alu.Add16(SI, UInt16[DS, 0x9F9]);
-    CheckExternalEvents(cs12, 0xDC9);
-    // MOV AH,byte ptr [SI] (19EF_0DC7 / 0x1ACB7)
-    AH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xDCB);
-    // MOV SI,CX (19EF_0DC9 / 0x1ACB9)
-    SI = CX;
-    CheckExternalEvents(cs12, 0xDCD);
-    // MOV DH,AL (19EF_0DCB / 0x1ACBB)
-    DH = AL;
-    CheckExternalEvents(cs12, 0xDCF);
-    // SHR DH,0x1 (19EF_0DCD / 0x1ACBD)
-    DH >>= 0x1;
-    CheckExternalEvents(cs12, 0xDD1);
-    // SHR DH,0x1 (19EF_0DCF / 0x1ACBF)
-    DH >>= 0x1;
-    CheckExternalEvents(cs12, 0xDD3);
-    // SHR DH,0x1 (19EF_0DD1 / 0x1ACC1)
-    DH >>= 0x1;
-    CheckExternalEvents(cs12, 0xDD6);
-    // CMP DH,0x9 (19EF_0DD3 / 0x1ACC3)
-    Alu.Sub8(DH, 0x9);
-    CheckExternalEvents(cs12, 0xDD8);
-    // JNZ 0x1000:acca (19EF_0DD6 / 0x1ACC6)
-    if(!ZeroFlag) {
-      goto label_19EF_0DDA_1ACCA;
-    }
-    CheckExternalEvents(cs12, 0xDDA);
-    // DEC DH (19EF_0DD8 / 0x1ACC8)
-    DH--;
-    label_19EF_0DDA_1ACCA:
-    CheckExternalEvents(cs12, 0xDDC);
-    // SHL DH,0x1 (19EF_0DDA / 0x1ACCA)
-    // DH <<= 0x1;
-    DH = Alu.Shl8(DH, 0x1);
-    CheckExternalEvents(cs12, 0xDDE);
-    // MOV CH,DH (19EF_0DDC / 0x1ACCC)
-    CH = DH;
-    CheckExternalEvents(cs12, 0xDE0);
-    // SHL DH,0x1 (19EF_0DDE / 0x1ACCE)
-    DH <<= 0x1;
-    CheckExternalEvents(cs12, 0xDE2);
-    // DEC DH (19EF_0DE0 / 0x1ACD0)
-    DH--;
-    CheckExternalEvents(cs12, 0xDE4);
-    // AND DH,AH (19EF_0DE2 / 0x1ACD2)
-    DH &= AH;
-    CheckExternalEvents(cs12, 0xDE6);
-    // SUB DH,CH (19EF_0DE4 / 0x1ACD4)
-    DH -= CH;
-    CheckExternalEvents(cs12, 0xDE8);
-    // ADD DL,DH (19EF_0DE6 / 0x1ACD6)
-    DL += DH;
-    CheckExternalEvents(cs12, 0xDEB);
-    // CMP DL,0x80 (19EF_0DE8 / 0x1ACD8)
-    Alu.Sub8(DL, 0x80);
-    CheckExternalEvents(cs12, 0xDED);
-    // JC 0x1000:acdf (19EF_0DEB / 0x1ACDB)
-    if(CarryFlag) {
-      goto label_19EF_0DEF_1ACDF;
-    }
-    CheckExternalEvents(cs12, 0xDEF);
-    // XOR DL,DL (19EF_0DED / 0x1ACDD)
-    // DL ^= DL;
-    DL = Alu.Xor8(DL, DL);
-    label_19EF_0DEF_1ACDF:
-    CheckExternalEvents(cs12, 0xDF1);
-    // MOV byte ptr [BX + DI],DL (19EF_0DEF / 0x1ACDF)
-    UInt8[DS, (ushort)(BX + DI)] = DL;
-    CheckExternalEvents(cs12, 0xDF5);
-    // INC byte ptr [0x9f9] (19EF_0DF1 / 0x1ACE1)
-    UInt8[DS, 0x9F9] = Alu.Inc8(UInt8[DS, 0x9F9]);
-    CheckExternalEvents(cs12, 0xDF7);
-    // JMP 0x1000:ac69 (19EF_0DF5 / 0x1ACE5)
-    goto label_19EF_0D79_1AC69;
-    label_19EF_0DF7_1ACE7:
-    CheckExternalEvents(cs12, 0xDF8);
-    // RET  (19EF_0DF7 / 0x1ACE7)
-    return NearRet();
-  }
-  
-  public virtual Action unknown_19EF_0DF8_1ACE8(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0DF8_1ACE8:
-    CheckExternalEvents(cs12, 0xDFC);
-    // CMP SI,0x279 (19EF_0DF8 / 0x1ACE8)
-    Alu.Sub16(SI, 0x279);
-    CheckExternalEvents(cs12, 0xDFE);
-    // JNZ 0x1000:acf1 (19EF_0DFC / 0x1ACEC)
-    if(!ZeroFlag) {
-      goto label_19EF_0E01_1ACF1;
-    }
-    CheckExternalEvents(cs12, 0xE01);
-    // JMP 0x1000:aedd (19EF_0DFE / 0x1ACEE)
-    // JMP target is RET, inlining.
-    CheckExternalEvents(cs12, 0xFEE);
-    // RET  (19EF_0FED / 0x1AEDD)
-    return NearRet();
-    label_19EF_0E01_1ACF1:
-    CheckExternalEvents(cs12, 0xE04);
-    // SUB SI,0x4 (19EF_0E01 / 0x1ACF1)
-    // SI -= 0x4;
-    SI = Alu.Sub16(SI, 0x4);
-    CheckExternalEvents(cs12, 0xE06);
-    // MOV DH,byte ptr [SI] (19EF_0E04 / 0x1ACF4)
-    DH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xE09);
-    // MOV DL,byte ptr [SI + 0x1] (19EF_0E06 / 0x1ACF6)
-    DL = UInt8[DS, (ushort)(SI + 0x1)];
-    CheckExternalEvents(cs12, 0xE0B);
-    // SUB DL,DH (19EF_0E09 / 0x1ACF9)
-    DL -= DH;
-    CheckExternalEvents(cs12, 0xE0E);
-    // CMP DL,0x1 (19EF_0E0B / 0x1ACFB)
-    Alu.Sub8(DL, 0x1);
-    CheckExternalEvents(cs12, 0xE10);
-    // JZ 0x1000:ace8 (19EF_0E0E / 0x1ACFE)
-    if(ZeroFlag) {
-      goto label_19EF_0DF8_1ACE8;
-    }
-    CheckExternalEvents(cs12, 0xE13);
-    // MOV DL,byte ptr [SI + 0x3] (19EF_0E10 / 0x1AD00)
-    DL = UInt8[DS, (ushort)(SI + 0x3)];
-    CheckExternalEvents(cs12, 0xE15);
-    // XOR BH,BH (19EF_0E13 / 0x1AD03)
-    // BH ^= BH;
-    BH = Alu.Xor8(BH, BH);
-    CheckExternalEvents(cs12, 0xE17);
-    // MOV AH,BH (19EF_0E15 / 0x1AD05)
-    AH = BH;
-    CheckExternalEvents(cs12, 0xE19);
-    // MOV BL,DH (19EF_0E17 / 0x1AD07)
-    BL = DH;
-    CheckExternalEvents(cs12, 0xE1B);
-    // MOV AL,byte ptr [BX + DI] (19EF_0E19 / 0x1AD09)
-    AL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xE1D);
-    // MOV BL,DL (19EF_0E1B / 0x1AD0B)
-    BL = DL;
-    CheckExternalEvents(cs12, 0xE1F);
-    // MOV BL,byte ptr [BX + DI] (19EF_0E1D / 0x1AD0D)
-    BL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xE21);
-    // ADD AX,BX (19EF_0E1F / 0x1AD0F)
-    // AX += BX;
-    AX = Alu.Add16(AX, BX);
-    CheckExternalEvents(cs12, 0xE24);
-    // MOV BL,byte ptr [SI + 0x1] (19EF_0E21 / 0x1AD11)
-    BL = UInt8[DS, (ushort)(SI + 0x1)];
-    CheckExternalEvents(cs12, 0xE26);
-    // MOV BL,byte ptr [BX + DI] (19EF_0E24 / 0x1AD14)
-    BL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xE28);
-    // ADD AX,BX (19EF_0E26 / 0x1AD16)
-    // AX += BX;
-    AX = Alu.Add16(AX, BX);
-    CheckExternalEvents(cs12, 0xE2B);
-    // MOV BL,byte ptr [SI + 0x2] (19EF_0E28 / 0x1AD18)
-    BL = UInt8[DS, (ushort)(SI + 0x2)];
-    CheckExternalEvents(cs12, 0xE2D);
-    // MOV BL,byte ptr [BX + DI] (19EF_0E2B / 0x1AD1B)
-    BL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xE2F);
-    // ADD AX,BX (19EF_0E2D / 0x1AD1D)
-    AX += BX;
-    CheckExternalEvents(cs12, 0xE31);
-    // SHR AX,0x1 (19EF_0E2F / 0x1AD1F)
-    AX >>= 0x1;
-    CheckExternalEvents(cs12, 0xE33);
-    // SHR AX,0x1 (19EF_0E31 / 0x1AD21)
-    // AX >>= 0x1;
-    AX = Alu.Shr16(AX, 0x1);
-    CheckExternalEvents(cs12, 0xE35);
-    // MOV CL,DL (19EF_0E33 / 0x1AD23)
-    CL = DL;
-    CheckExternalEvents(cs12, 0xE37);
-    // SUB CL,DH (19EF_0E35 / 0x1AD25)
-    CL -= DH;
-    CheckExternalEvents(cs12, 0xE39);
-    // SHR CL,0x1 (19EF_0E37 / 0x1AD27)
-    // CL >>= 0x1;
-    CL = Alu.Shr8(CL, 0x1);
-    CheckExternalEvents(cs12, 0xE3B);
-    // MOV BL,CL (19EF_0E39 / 0x1AD29)
-    BL = CL;
-    CheckExternalEvents(cs12, 0xE3D);
-    // ADD BL,DH (19EF_0E3B / 0x1AD2B)
-    // BL += DH;
-    BL = Alu.Add8(BL, DH);
-    CheckExternalEvents(cs12, 0xE3F);
-    // MOV AH,byte ptr [BX + DI] (19EF_0E3D / 0x1AD2D)
-    AH = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xE42);
-    // CMP AH,0xff (19EF_0E3F / 0x1AD2F)
-    Alu.Sub8(AH, 0xFF);
-    CheckExternalEvents(cs12, 0xE44);
-    // JNZ 0x1000:ad36 (19EF_0E42 / 0x1AD32)
-    if(!ZeroFlag) {
-      goto label_19EF_0E46_1AD36;
-    }
-    CheckExternalEvents(cs12, 0xE46);
-    // MOV byte ptr [BX + DI],AL (19EF_0E44 / 0x1AD34)
-    UInt8[DS, (ushort)(BX + DI)] = AL;
-    label_19EF_0E46_1AD36:
-    CheckExternalEvents(cs12, 0xE4A);
-    // MOV byte ptr [0x272],DH (19EF_0E46 / 0x1AD36)
-    UInt8[DS, 0x272] = DH;
-    CheckExternalEvents(cs12, 0xE4E);
-    // MOV byte ptr [0x275],DL (19EF_0E4A / 0x1AD3A)
-    UInt8[DS, 0x275] = DL;
-    CheckExternalEvents(cs12, 0xE52);
-    // MOV byte ptr [0x276],BL (19EF_0E4E / 0x1AD3E)
-    UInt8[DS, 0x276] = BL;
-    CheckExternalEvents(cs12, 0xE55);
-    // MOV AL,byte ptr [SI + 0x1] (19EF_0E52 / 0x1AD42)
-    AL = UInt8[DS, (ushort)(SI + 0x1)];
-    CheckExternalEvents(cs12, 0xE58);
-    // MOV [0x273],AL (19EF_0E55 / 0x1AD45)
-    UInt8[DS, 0x273] = AL;
-    CheckExternalEvents(cs12, 0xE5B);
-    // MOV AL,byte ptr [SI + 0x2] (19EF_0E58 / 0x1AD48)
-    AL = UInt8[DS, (ushort)(SI + 0x2)];
-    CheckExternalEvents(cs12, 0xE5E);
-    // MOV [0x274],AL (19EF_0E5B / 0x1AD4B)
-    UInt8[DS, 0x274] = AL;
-    CheckExternalEvents(cs12, 0xE60);
-    // MOV byte ptr [SI],DH (19EF_0E5E / 0x1AD4E)
-    UInt8[DS, (ushort)(SI)] = DH;
-    CheckExternalEvents(cs12, 0xE63);
-    // MOV byte ptr [SI + 0x3],BL (19EF_0E60 / 0x1AD50)
-    UInt8[DS, (ushort)(SI + 0x3)] = BL;
-    CheckExternalEvents(cs12, 0xE66);
-    // MOV byte ptr [SI + 0x6],BL (19EF_0E63 / 0x1AD53)
-    UInt8[DS, (ushort)(SI + 0x6)] = BL;
-    CheckExternalEvents(cs12, 0xE69);
-    // MOV byte ptr [SI + 0x9],BL (19EF_0E66 / 0x1AD56)
-    UInt8[DS, (ushort)(SI + 0x9)] = BL;
-    CheckExternalEvents(cs12, 0xE6C);
-    // MOV byte ptr [SI + 0xc],BL (19EF_0E69 / 0x1AD59)
-    UInt8[DS, (ushort)(SI + 0xC)] = BL;
-    CheckExternalEvents(cs12, 0xE6F);
-    // MOV AL,[0x273] (19EF_0E6C / 0x1AD5C)
-    AL = UInt8[DS, 0x273];
-    CheckExternalEvents(cs12, 0xE71);
-    // SUB AL,DH (19EF_0E6F / 0x1AD5F)
-    AL -= DH;
-    CheckExternalEvents(cs12, 0xE73);
-    // SHR AL,0x1 (19EF_0E71 / 0x1AD61)
-    // AL >>= 0x1;
-    AL = Alu.Shr8(AL, 0x1);
-    CheckExternalEvents(cs12, 0xE76);
-    // MOV [0x277],AL (19EF_0E73 / 0x1AD63)
-    UInt8[DS, 0x277] = AL;
-    CheckExternalEvents(cs12, 0xE7A);
-    // MOV BL,byte ptr [0x272] (19EF_0E76 / 0x1AD66)
-    BL = UInt8[DS, 0x272];
-    CheckExternalEvents(cs12, 0xE7C);
-    // XOR DH,DH (19EF_0E7A / 0x1AD6A)
-    // DH ^= DH;
-    DH = Alu.Xor8(DH, DH);
-    CheckExternalEvents(cs12, 0xE7E);
-    // MOV DL,byte ptr [BX + DI] (19EF_0E7C / 0x1AD6C)
-    DL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xE82);
-    // MOV BL,byte ptr [0x273] (19EF_0E7E / 0x1AD6E)
-    BL = UInt8[DS, 0x273];
-    CheckExternalEvents(cs12, 0xE85);
-    // MOV byte ptr [SI + 0x5],BL (19EF_0E82 / 0x1AD72)
-    UInt8[DS, (ushort)(SI + 0x5)] = BL;
-    CheckExternalEvents(cs12, 0xE87);
-    // MOV BL,byte ptr [BX + DI] (19EF_0E85 / 0x1AD75)
-    BL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xE89);
-    // ADD DX,BX (19EF_0E87 / 0x1AD77)
-    DX += BX;
-    CheckExternalEvents(cs12, 0xE8B);
-    // SHR DX,0x1 (19EF_0E89 / 0x1AD79)
-    // DX >>= 0x1;
-    DX = Alu.Shr16(DX, 0x1);
-    CheckExternalEvents(cs12, 0xE8D);
-    // MOV BL,AL (19EF_0E8B / 0x1AD7B)
-    BL = AL;
-    CheckExternalEvents(cs12, 0xE91);
-    // ADD BL,byte ptr [0x272] (19EF_0E8D / 0x1AD7D)
-    // BL += UInt8[DS, 0x272];
-    BL = Alu.Add8(BL, UInt8[DS, 0x272]);
-    CheckExternalEvents(cs12, 0xE94);
-    // MOV byte ptr [SI + 0x1],BL (19EF_0E91 / 0x1AD81)
-    UInt8[DS, (ushort)(SI + 0x1)] = BL;
-    CheckExternalEvents(cs12, 0xE97);
-    // MOV byte ptr [SI + 0x4],BL (19EF_0E94 / 0x1AD84)
-    UInt8[DS, (ushort)(SI + 0x4)] = BL;
-    CheckExternalEvents(cs12, 0xE99);
-    // MOV AH,byte ptr [BX + DI] (19EF_0E97 / 0x1AD87)
-    AH = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xE9C);
-    // CMP AH,0xff (19EF_0E99 / 0x1AD89)
-    Alu.Sub8(AH, 0xFF);
-    CheckExternalEvents(cs12, 0xE9E);
-    // JNZ 0x1000:adb8 (19EF_0E9C / 0x1AD8C)
-    if(!ZeroFlag) {
-      goto label_19EF_0EC8_1ADB8;
-    }
-    CheckExternalEvents(cs12, 0xEA0);
-    // MOV CX,SI (19EF_0E9E / 0x1AD8E)
-    CX = SI;
-    CheckExternalEvents(cs12, 0xEA3);
-    // MOV SI,0x9fb (19EF_0EA0 / 0x1AD90)
-    SI = 0x9FB;
-    CheckExternalEvents(cs12, 0xEA7);
-    // ADD SI,word ptr [0x9f9] (19EF_0EA3 / 0x1AD93)
-    SI += UInt16[DS, 0x9F9];
-    CheckExternalEvents(cs12, 0xEAB);
-    // INC byte ptr [0x9f9] (19EF_0EA7 / 0x1AD97)
-    UInt8[DS, 0x9F9] = Alu.Inc8(UInt8[DS, 0x9F9]);
-    CheckExternalEvents(cs12, 0xEAD);
-    // MOV AH,byte ptr [SI] (19EF_0EAB / 0x1AD9B)
-    AH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xEAF);
-    // MOV SI,CX (19EF_0EAD / 0x1AD9D)
-    SI = CX;
-    CheckExternalEvents(cs12, 0xEB1);
-    // MOV CL,AL (19EF_0EAF / 0x1AD9F)
-    CL = AL;
-    CheckExternalEvents(cs12, 0xEB3);
-    // SHL CL,0x1 (19EF_0EB1 / 0x1ADA1)
-    // CL <<= 0x1;
-    CL = Alu.Shl8(CL, 0x1);
-    CheckExternalEvents(cs12, 0xEB5);
-    // MOV CH,CL (19EF_0EB3 / 0x1ADA3)
-    CH = CL;
-    CheckExternalEvents(cs12, 0xEB7);
-    // SHL CL,0x1 (19EF_0EB5 / 0x1ADA5)
-    CL <<= 0x1;
-    CheckExternalEvents(cs12, 0xEB9);
-    // DEC CL (19EF_0EB7 / 0x1ADA7)
-    CL--;
-    CheckExternalEvents(cs12, 0xEBB);
-    // AND CL,AH (19EF_0EB9 / 0x1ADA9)
-    CL &= AH;
-    CheckExternalEvents(cs12, 0xEBD);
-    // SUB CL,CH (19EF_0EBB / 0x1ADAB)
-    CL -= CH;
-    CheckExternalEvents(cs12, 0xEBF);
-    // ADD DL,CL (19EF_0EBD / 0x1ADAD)
-    DL += CL;
-    CheckExternalEvents(cs12, 0xEC2);
-    // CMP DL,0x80 (19EF_0EBF / 0x1ADAF)
-    Alu.Sub8(DL, 0x80);
-    CheckExternalEvents(cs12, 0xEC4);
-    // JC 0x1000:adb6 (19EF_0EC2 / 0x1ADB2)
-    if(CarryFlag) {
-      goto label_19EF_0EC6_1ADB6;
-    }
-    CheckExternalEvents(cs12, 0xEC6);
-    // XOR DL,DL (19EF_0EC4 / 0x1ADB4)
-    // DL ^= DL;
-    DL = Alu.Xor8(DL, DL);
-    label_19EF_0EC6_1ADB6:
-    CheckExternalEvents(cs12, 0xEC8);
-    // MOV byte ptr [BX + DI],DL (19EF_0EC6 / 0x1ADB6)
-    UInt8[DS, (ushort)(BX + DI)] = DL;
-    label_19EF_0EC8_1ADB8:
-    CheckExternalEvents(cs12, 0xECC);
-    // MOV CL,byte ptr [0x274] (19EF_0EC8 / 0x1ADB8)
-    CL = UInt8[DS, 0x274];
-    CheckExternalEvents(cs12, 0xED0);
-    // SUB CL,byte ptr [0x272] (19EF_0ECC / 0x1ADBC)
-    CL -= UInt8[DS, 0x272];
-    CheckExternalEvents(cs12, 0xED2);
-    // SHR CL,0x1 (19EF_0ED0 / 0x1ADC0)
-    // CL >>= 0x1;
-    CL = Alu.Shr8(CL, 0x1);
-    CheckExternalEvents(cs12, 0xED6);
-    // MOV byte ptr [0x278],CL (19EF_0ED2 / 0x1ADC2)
-    UInt8[DS, 0x278] = CL;
-    CheckExternalEvents(cs12, 0xEDA);
-    // MOV BL,byte ptr [0x272] (19EF_0ED6 / 0x1ADC6)
-    BL = UInt8[DS, 0x272];
-    CheckExternalEvents(cs12, 0xEDC);
-    // MOV DL,byte ptr [BX + DI] (19EF_0EDA / 0x1ADCA)
-    DL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xEDE);
-    // XOR DH,DH (19EF_0EDC / 0x1ADCC)
-    // DH ^= DH;
-    DH = Alu.Xor8(DH, DH);
-    CheckExternalEvents(cs12, 0xEE2);
-    // MOV BL,byte ptr [0x274] (19EF_0EDE / 0x1ADCE)
-    BL = UInt8[DS, 0x274];
-    CheckExternalEvents(cs12, 0xEE4);
-    // MOV BL,byte ptr [BX + DI] (19EF_0EE2 / 0x1ADD2)
-    BL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xEE6);
-    // ADD DX,BX (19EF_0EE4 / 0x1ADD4)
-    DX += BX;
-    CheckExternalEvents(cs12, 0xEE8);
-    // SHR DX,0x1 (19EF_0EE6 / 0x1ADD6)
-    // DX >>= 0x1;
-    DX = Alu.Shr16(DX, 0x1);
-    CheckExternalEvents(cs12, 0xEEA);
-    // MOV BL,CL (19EF_0EE8 / 0x1ADD8)
-    BL = CL;
-    CheckExternalEvents(cs12, 0xEEE);
-    // ADD BL,byte ptr [0x272] (19EF_0EEA / 0x1ADDA)
-    // BL += UInt8[DS, 0x272];
-    BL = Alu.Add8(BL, UInt8[DS, 0x272]);
-    CheckExternalEvents(cs12, 0xEF1);
-    // MOV byte ptr [SI + 0x2],BL (19EF_0EEE / 0x1ADDE)
-    UInt8[DS, (ushort)(SI + 0x2)] = BL;
-    CheckExternalEvents(cs12, 0xEF4);
-    // MOV byte ptr [SI + 0x8],BL (19EF_0EF1 / 0x1ADE1)
-    UInt8[DS, (ushort)(SI + 0x8)] = BL;
-    CheckExternalEvents(cs12, 0xEF6);
-    // MOV AH,byte ptr [BX + DI] (19EF_0EF4 / 0x1ADE4)
-    AH = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xEF9);
-    // CMP AH,0xff (19EF_0EF6 / 0x1ADE6)
-    Alu.Sub8(AH, 0xFF);
-    CheckExternalEvents(cs12, 0xEFB);
-    // JNZ 0x1000:ae24 (19EF_0EF9 / 0x1ADE9)
-    if(!ZeroFlag) {
-      goto label_19EF_0F34_1AE24;
-    }
-    CheckExternalEvents(cs12, 0xEFD);
-    // MOV CX,SI (19EF_0EFB / 0x1ADEB)
-    CX = SI;
-    CheckExternalEvents(cs12, 0xF00);
-    // MOV SI,0x9fb (19EF_0EFD / 0x1ADED)
-    SI = 0x9FB;
-    CheckExternalEvents(cs12, 0xF04);
-    // ADD SI,word ptr [0x9f9] (19EF_0F00 / 0x1ADF0)
-    SI += UInt16[DS, 0x9F9];
-    CheckExternalEvents(cs12, 0xF08);
-    // INC byte ptr [0x9f9] (19EF_0F04 / 0x1ADF4)
-    UInt8[DS, 0x9F9] = Alu.Inc8(UInt8[DS, 0x9F9]);
-    CheckExternalEvents(cs12, 0xF0A);
-    // MOV AH,byte ptr [SI] (19EF_0F08 / 0x1ADF8)
-    AH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xF0C);
-    // MOV SI,CX (19EF_0F0A / 0x1ADFA)
-    SI = CX;
-    CheckExternalEvents(cs12, 0xF10);
-    // MOV DH,byte ptr [0x278] (19EF_0F0C / 0x1ADFC)
-    DH = UInt8[DS, 0x278];
-    CheckExternalEvents(cs12, 0xF12);
-    // SHR DH,0x1 (19EF_0F10 / 0x1AE00)
-    DH >>= 0x1;
-    CheckExternalEvents(cs12, 0xF14);
-    // SHR DH,0x1 (19EF_0F12 / 0x1AE02)
-    DH >>= 0x1;
-    CheckExternalEvents(cs12, 0xF16);
-    // SHR DH,0x1 (19EF_0F14 / 0x1AE04)
-    DH >>= 0x1;
-    CheckExternalEvents(cs12, 0xF19);
-    // CMP DH,0x9 (19EF_0F16 / 0x1AE06)
-    Alu.Sub8(DH, 0x9);
-    CheckExternalEvents(cs12, 0xF1B);
-    // JNZ 0x1000:ae0d (19EF_0F19 / 0x1AE09)
-    if(!ZeroFlag) {
-      goto label_19EF_0F1D_1AE0D;
-    }
-    CheckExternalEvents(cs12, 0xF1D);
-    // DEC DH (19EF_0F1B / 0x1AE0B)
-    DH--;
-    label_19EF_0F1D_1AE0D:
-    CheckExternalEvents(cs12, 0xF1F);
-    // SHL DH,0x1 (19EF_0F1D / 0x1AE0D)
-    // DH <<= 0x1;
-    DH = Alu.Shl8(DH, 0x1);
-    CheckExternalEvents(cs12, 0xF21);
-    // MOV CH,DH (19EF_0F1F / 0x1AE0F)
-    CH = DH;
-    CheckExternalEvents(cs12, 0xF23);
-    // SHL DH,0x1 (19EF_0F21 / 0x1AE11)
-    DH <<= 0x1;
-    CheckExternalEvents(cs12, 0xF25);
-    // DEC DH (19EF_0F23 / 0x1AE13)
-    DH--;
-    CheckExternalEvents(cs12, 0xF27);
-    // AND DH,AH (19EF_0F25 / 0x1AE15)
-    DH &= AH;
-    CheckExternalEvents(cs12, 0xF29);
-    // SUB DH,CH (19EF_0F27 / 0x1AE17)
-    DH -= CH;
-    CheckExternalEvents(cs12, 0xF2B);
-    // ADD DL,DH (19EF_0F29 / 0x1AE19)
-    DL += DH;
-    CheckExternalEvents(cs12, 0xF2E);
-    // CMP DL,0x80 (19EF_0F2B / 0x1AE1B)
-    Alu.Sub8(DL, 0x80);
-    CheckExternalEvents(cs12, 0xF30);
-    // JC 0x1000:ae22 (19EF_0F2E / 0x1AE1E)
-    if(CarryFlag) {
-      goto label_19EF_0F32_1AE22;
-    }
-    CheckExternalEvents(cs12, 0xF32);
-    // XOR DL,DL (19EF_0F30 / 0x1AE20)
-    // DL ^= DL;
-    DL = Alu.Xor8(DL, DL);
-    label_19EF_0F32_1AE22:
-    CheckExternalEvents(cs12, 0xF34);
-    // MOV byte ptr [BX + DI],DL (19EF_0F32 / 0x1AE22)
-    UInt8[DS, (ushort)(BX + DI)] = DL;
-    label_19EF_0F34_1AE24:
-    CheckExternalEvents(cs12, 0xF38);
-    // MOV BL,byte ptr [0x274] (19EF_0F34 / 0x1AE24)
-    BL = UInt8[DS, 0x274];
-    CheckExternalEvents(cs12, 0xF3B);
-    // MOV byte ptr [SI + 0xa],BL (19EF_0F38 / 0x1AE28)
-    UInt8[DS, (ushort)(SI + 0xA)] = BL;
-    CheckExternalEvents(cs12, 0xF3D);
-    // MOV DL,byte ptr [BX + DI] (19EF_0F3B / 0x1AE2B)
-    DL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xF41);
-    // MOV BL,byte ptr [0x275] (19EF_0F3D / 0x1AE2D)
-    BL = UInt8[DS, 0x275];
-    CheckExternalEvents(cs12, 0xF44);
-    // MOV byte ptr [SI + 0xf],BL (19EF_0F41 / 0x1AE31)
-    UInt8[DS, (ushort)(SI + 0xF)] = BL;
-    CheckExternalEvents(cs12, 0xF46);
-    // MOV BL,byte ptr [BX + DI] (19EF_0F44 / 0x1AE34)
-    BL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xF48);
-    // ADD DX,BX (19EF_0F46 / 0x1AE36)
-    DX += BX;
-    CheckExternalEvents(cs12, 0xF4A);
-    // SHR DX,0x1 (19EF_0F48 / 0x1AE38)
-    // DX >>= 0x1;
-    DX = Alu.Shr16(DX, 0x1);
-    CheckExternalEvents(cs12, 0xF4E);
-    // MOV BL,byte ptr [0x277] (19EF_0F4A / 0x1AE3A)
-    BL = UInt8[DS, 0x277];
-    CheckExternalEvents(cs12, 0xF52);
-    // ADD BL,byte ptr [0x274] (19EF_0F4E / 0x1AE3E)
-    // BL += UInt8[DS, 0x274];
-    BL = Alu.Add8(BL, UInt8[DS, 0x274]);
-    CheckExternalEvents(cs12, 0xF55);
-    // MOV byte ptr [SI + 0xb],BL (19EF_0F52 / 0x1AE42)
-    UInt8[DS, (ushort)(SI + 0xB)] = BL;
-    CheckExternalEvents(cs12, 0xF58);
-    // MOV byte ptr [SI + 0xe],BL (19EF_0F55 / 0x1AE45)
-    UInt8[DS, (ushort)(SI + 0xE)] = BL;
-    CheckExternalEvents(cs12, 0xF5A);
-    // MOV AH,byte ptr [BX + DI] (19EF_0F58 / 0x1AE48)
-    AH = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xF5D);
-    // CMP AH,0xff (19EF_0F5A / 0x1AE4A)
-    Alu.Sub8(AH, 0xFF);
-    CheckExternalEvents(cs12, 0xF5F);
-    // JNZ 0x1000:ae7b (19EF_0F5D / 0x1AE4D)
-    if(!ZeroFlag) {
-      goto label_19EF_0F8B_1AE7B;
-    }
-    CheckExternalEvents(cs12, 0xF61);
-    // MOV CX,SI (19EF_0F5F / 0x1AE4F)
-    CX = SI;
-    CheckExternalEvents(cs12, 0xF64);
-    // MOV SI,0x9fb (19EF_0F61 / 0x1AE51)
-    SI = 0x9FB;
-    CheckExternalEvents(cs12, 0xF68);
-    // ADD SI,word ptr [0x9f9] (19EF_0F64 / 0x1AE54)
-    SI += UInt16[DS, 0x9F9];
-    CheckExternalEvents(cs12, 0xF6C);
-    // INC byte ptr [0x9f9] (19EF_0F68 / 0x1AE58)
-    UInt8[DS, 0x9F9] = Alu.Inc8(UInt8[DS, 0x9F9]);
-    CheckExternalEvents(cs12, 0xF6E);
-    // MOV AH,byte ptr [SI] (19EF_0F6C / 0x1AE5C)
-    AH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xF70);
-    // MOV SI,CX (19EF_0F6E / 0x1AE5E)
-    SI = CX;
-    CheckExternalEvents(cs12, 0xF74);
-    // MOV CL,byte ptr [0x277] (19EF_0F70 / 0x1AE60)
-    CL = UInt8[DS, 0x277];
-    CheckExternalEvents(cs12, 0xF76);
-    // SHL CL,0x1 (19EF_0F74 / 0x1AE64)
-    // CL <<= 0x1;
-    CL = Alu.Shl8(CL, 0x1);
-    CheckExternalEvents(cs12, 0xF78);
-    // MOV CH,CL (19EF_0F76 / 0x1AE66)
-    CH = CL;
-    CheckExternalEvents(cs12, 0xF7A);
-    // SHL CL,0x1 (19EF_0F78 / 0x1AE68)
-    CL <<= 0x1;
-    CheckExternalEvents(cs12, 0xF7C);
-    // DEC CL (19EF_0F7A / 0x1AE6A)
-    CL--;
-    CheckExternalEvents(cs12, 0xF7E);
-    // AND CL,AH (19EF_0F7C / 0x1AE6C)
-    CL &= AH;
-    CheckExternalEvents(cs12, 0xF80);
-    // SUB CL,CH (19EF_0F7E / 0x1AE6E)
-    CL -= CH;
-    CheckExternalEvents(cs12, 0xF82);
-    // ADD DL,CL (19EF_0F80 / 0x1AE70)
-    DL += CL;
-    CheckExternalEvents(cs12, 0xF85);
-    // CMP DL,0x80 (19EF_0F82 / 0x1AE72)
-    Alu.Sub8(DL, 0x80);
-    CheckExternalEvents(cs12, 0xF87);
-    // JC 0x1000:ae79 (19EF_0F85 / 0x1AE75)
-    if(CarryFlag) {
-      goto label_19EF_0F89_1AE79;
-    }
-    CheckExternalEvents(cs12, 0xF89);
-    // XOR DL,DL (19EF_0F87 / 0x1AE77)
-    // DL ^= DL;
-    DL = Alu.Xor8(DL, DL);
-    label_19EF_0F89_1AE79:
-    CheckExternalEvents(cs12, 0xF8B);
-    // MOV byte ptr [BX + DI],DL (19EF_0F89 / 0x1AE79)
-    UInt8[DS, (ushort)(BX + DI)] = DL;
-    label_19EF_0F8B_1AE7B:
-    CheckExternalEvents(cs12, 0xF8F);
-    // MOV BL,byte ptr [0x273] (19EF_0F8B / 0x1AE7B)
-    BL = UInt8[DS, 0x273];
-    CheckExternalEvents(cs12, 0xF91);
-    // MOV DL,byte ptr [BX + DI] (19EF_0F8F / 0x1AE7F)
-    DL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xF95);
-    // MOV BL,byte ptr [0x275] (19EF_0F91 / 0x1AE81)
-    BL = UInt8[DS, 0x275];
-    CheckExternalEvents(cs12, 0xF97);
-    // MOV BL,byte ptr [BX + DI] (19EF_0F95 / 0x1AE85)
-    BL = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xF99);
-    // ADD DX,BX (19EF_0F97 / 0x1AE87)
-    DX += BX;
-    CheckExternalEvents(cs12, 0xF9B);
-    // SHR DX,0x1 (19EF_0F99 / 0x1AE89)
-    // DX >>= 0x1;
-    DX = Alu.Shr16(DX, 0x1);
-    CheckExternalEvents(cs12, 0xF9F);
-    // MOV BL,byte ptr [0x278] (19EF_0F9B / 0x1AE8B)
-    BL = UInt8[DS, 0x278];
-    CheckExternalEvents(cs12, 0xFA3);
-    // ADD BL,byte ptr [0x273] (19EF_0F9F / 0x1AE8F)
-    // BL += UInt8[DS, 0x273];
-    BL = Alu.Add8(BL, UInt8[DS, 0x273]);
-    CheckExternalEvents(cs12, 0xFA6);
-    // MOV byte ptr [SI + 0x7],BL (19EF_0FA3 / 0x1AE93)
-    UInt8[DS, (ushort)(SI + 0x7)] = BL;
-    CheckExternalEvents(cs12, 0xFA9);
-    // MOV byte ptr [SI + 0xd],BL (19EF_0FA6 / 0x1AE96)
-    UInt8[DS, (ushort)(SI + 0xD)] = BL;
-    CheckExternalEvents(cs12, 0xFAB);
-    // MOV AH,byte ptr [BX + DI] (19EF_0FA9 / 0x1AE99)
-    AH = UInt8[DS, (ushort)(BX + DI)];
-    CheckExternalEvents(cs12, 0xFAE);
-    // CMP AH,0xff (19EF_0FAB / 0x1AE9B)
-    Alu.Sub8(AH, 0xFF);
-    CheckExternalEvents(cs12, 0xFB0);
-    // JNZ 0x1000:aed7 (19EF_0FAE / 0x1AE9E)
-    if(!ZeroFlag) {
-      goto label_19EF_0FE7_1AED7;
-    }
-    CheckExternalEvents(cs12, 0xFB2);
-    // MOV CX,SI (19EF_0FB0 / 0x1AEA0)
-    CX = SI;
-    CheckExternalEvents(cs12, 0xFB5);
-    // MOV SI,0x9fb (19EF_0FB2 / 0x1AEA2)
-    SI = 0x9FB;
-    CheckExternalEvents(cs12, 0xFB9);
-    // ADD SI,word ptr [0x9f9] (19EF_0FB5 / 0x1AEA5)
-    SI += UInt16[DS, 0x9F9];
-    CheckExternalEvents(cs12, 0xFBD);
-    // INC byte ptr [0x9f9] (19EF_0FB9 / 0x1AEA9)
-    UInt8[DS, 0x9F9] = Alu.Inc8(UInt8[DS, 0x9F9]);
-    CheckExternalEvents(cs12, 0xFBF);
-    // MOV AH,byte ptr [SI] (19EF_0FBD / 0x1AEAD)
-    AH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0xFC1);
-    // MOV SI,CX (19EF_0FBF / 0x1AEAF)
-    SI = CX;
-    CheckExternalEvents(cs12, 0xFC3);
-    // MOV DH,AL (19EF_0FC1 / 0x1AEB1)
-    DH = AL;
-    CheckExternalEvents(cs12, 0xFC5);
-    // SHR DH,0x1 (19EF_0FC3 / 0x1AEB3)
-    DH >>= 0x1;
-    CheckExternalEvents(cs12, 0xFC7);
-    // SHR DH,0x1 (19EF_0FC5 / 0x1AEB5)
-    DH >>= 0x1;
-    CheckExternalEvents(cs12, 0xFC9);
-    // SHR DH,0x1 (19EF_0FC7 / 0x1AEB7)
-    DH >>= 0x1;
-    CheckExternalEvents(cs12, 0xFCC);
-    // CMP DH,0x9 (19EF_0FC9 / 0x1AEB9)
-    Alu.Sub8(DH, 0x9);
-    CheckExternalEvents(cs12, 0xFCE);
-    // JNZ 0x1000:aec0 (19EF_0FCC / 0x1AEBC)
-    if(!ZeroFlag) {
-      goto label_19EF_0FD0_1AEC0;
-    }
-    CheckExternalEvents(cs12, 0xFD0);
-    // DEC DH (19EF_0FCE / 0x1AEBE)
-    DH--;
-    label_19EF_0FD0_1AEC0:
-    CheckExternalEvents(cs12, 0xFD2);
-    // SHL DH,0x1 (19EF_0FD0 / 0x1AEC0)
-    // DH <<= 0x1;
-    DH = Alu.Shl8(DH, 0x1);
-    CheckExternalEvents(cs12, 0xFD4);
-    // MOV CH,DH (19EF_0FD2 / 0x1AEC2)
-    CH = DH;
-    CheckExternalEvents(cs12, 0xFD6);
-    // SHL DH,0x1 (19EF_0FD4 / 0x1AEC4)
-    DH <<= 0x1;
-    CheckExternalEvents(cs12, 0xFD8);
-    // DEC DH (19EF_0FD6 / 0x1AEC6)
-    DH--;
-    CheckExternalEvents(cs12, 0xFDA);
-    // AND DH,AH (19EF_0FD8 / 0x1AEC8)
-    DH &= AH;
-    CheckExternalEvents(cs12, 0xFDC);
-    // SUB DH,CH (19EF_0FDA / 0x1AECA)
-    DH -= CH;
-    CheckExternalEvents(cs12, 0xFDE);
-    // ADD DL,DH (19EF_0FDC / 0x1AECC)
-    DL += DH;
-    CheckExternalEvents(cs12, 0xFE1);
-    // CMP DL,0x80 (19EF_0FDE / 0x1AECE)
-    Alu.Sub8(DL, 0x80);
-    CheckExternalEvents(cs12, 0xFE3);
-    // JC 0x1000:aed5 (19EF_0FE1 / 0x1AED1)
-    if(CarryFlag) {
-      goto label_19EF_0FE5_1AED5;
-    }
-    CheckExternalEvents(cs12, 0xFE5);
-    // XOR DL,DL (19EF_0FE3 / 0x1AED3)
-    // DL ^= DL;
-    DL = Alu.Xor8(DL, DL);
-    label_19EF_0FE5_1AED5:
-    CheckExternalEvents(cs12, 0xFE7);
-    // MOV byte ptr [BX + DI],DL (19EF_0FE5 / 0x1AED5)
-    UInt8[DS, (ushort)(BX + DI)] = DL;
-    label_19EF_0FE7_1AED7:
-    CheckExternalEvents(cs12, 0xFEA);
-    // ADD SI,0x10 (19EF_0FE7 / 0x1AED7)
-    // SI += 0x10;
-    SI = Alu.Add16(SI, 0x10);
-    CheckExternalEvents(cs12, 0xFED);
-    // JMP 0x1000:ace8 (19EF_0FEA / 0x1AEDA)
-    goto label_19EF_0DF8_1ACE8;
-    label_19EF_0FED_1AEDD:
-    CheckExternalEvents(cs12, 0xFEE);
-    // RET  (19EF_0FED / 0x1AEDD)
-    return NearRet();
-  }
-  
-  public virtual Action unknown_19EF_0FEE_1AEDE(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_0FEE_1AEDE:
-    CheckExternalEvents(cs12, 0xFEF);
-    // PUSH BP (19EF_0FEE / 0x1AEDE)
-    Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0xFF1);
-    // MOV BP,SP (19EF_0FEF / 0x1AEDF)
-    BP = SP;
-    CheckExternalEvents(cs12, 0xFF2);
-    // PUSH DI (19EF_0FF1 / 0x1AEE1)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0xFF3);
-    // PUSH SI (19EF_0FF2 / 0x1AEE2)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0xFF4);
-    // PUSH DS (19EF_0FF3 / 0x1AEE3)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0xFF7);
-    // MOV AX,0x1ddc (19EF_0FF4 / 0x1AEE4)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0xFF9);
-    // MOV DS,AX (19EF_0FF7 / 0x1AEE7)
-    DS = AX;
-    CheckExternalEvents(cs12, 0xFFC);
-    // MOV SI,word ptr [BP + 0x6] (19EF_0FF9 / 0x1AEE9)
-    SI = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs12, 0xFFF);
-    // MOV AX,word ptr [BP + 0x8] (19EF_0FFC / 0x1AEEC)
-    AX = UInt16[SS, (ushort)(BP + 0x8)];
-    CheckExternalEvents(cs12, 0x1000);
-    // PUSH ES (19EF_0FFF / 0x1AEEF)
-    Stack.Push16(ES);
-    CheckExternalEvents(cs12, 0x1002);
-    // MOV ES,AX (19EF_1000 / 0x1AEF0)
-    ES = AX;
-    CheckExternalEvents(cs12, 0x1005);
-    // MOV BX,0x0 (19EF_1002 / 0x1AEF2)
-    BX = 0x0;
-    label_19EF_1005_1AEF5:
-    CheckExternalEvents(cs12, 0x1008);
-    // MOV AL,byte ptr ES:[SI] (19EF_1005 / 0x1AEF5)
-    AL = UInt8[ES, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x100A);
-    // XOR AH,AH (19EF_1008 / 0x1AEF8)
-    AH = 0;
-    CheckExternalEvents(cs12, 0x100C);
-    // SHR AL,0x1 (19EF_100A / 0x1AEFA)
+    CheckExternalEvents(cs14, 0x296);
+    // MOV BL,byte ptr ES:[SI] (19EF_0293 / 0x1A183)
+    BL = UInt8[ES, (ushort)(SI)];
+    CheckExternalEvents(cs14, 0x298);
+    // MOV AL,BL (19EF_0296 / 0x1A186)
+    AL = BL;
+    CheckExternalEvents(cs14, 0x29A);
+    // SHR AL,0x1 (19EF_0298 / 0x1A188)
     AL >>= 0x1;
-    CheckExternalEvents(cs12, 0x100E);
-    // SHR AL,0x1 (19EF_100C / 0x1AEFC)
+    CheckExternalEvents(cs14, 0x29C);
+    // SHR AL,0x1 (19EF_029A / 0x1A18A)
     AL >>= 0x1;
-    CheckExternalEvents(cs12, 0x1010);
-    // SHR AL,0x1 (19EF_100E / 0x1AEFE)
+    CheckExternalEvents(cs14, 0x29E);
+    // SHR AL,0x1 (19EF_029C / 0x1A18C)
     AL >>= 0x1;
-    CheckExternalEvents(cs12, 0x1012);
-    // SHR AL,0x1 (19EF_1010 / 0x1AF00)
+    CheckExternalEvents(cs14, 0x2A0);
+    // SHR AL,0x1 (19EF_029E / 0x1A18E)
     // AL >>= 0x1;
-    AL = Alu.Shr8(AL, 0x1);
-    CheckExternalEvents(cs12, 0x1014);
-    // MOV DI,AX (19EF_1012 / 0x1AF02)
-    DI = AX;
-    CheckExternalEvents(cs12, 0x1018);
-    // MOV CH,byte ptr [DI + 0xa459] (19EF_1014 / 0x1AF04)
-    CH = UInt8[DS, (ushort)(DI + 0xA459)];
-    CheckExternalEvents(cs12, 0x101B);
-    // MOV AL,byte ptr ES:[SI] (19EF_1018 / 0x1AF08)
-    AL = UInt8[ES, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x101D);
-    // AND AL,0x7 (19EF_101B / 0x1AF0B)
-    // AL &= 0x7;
-    AL = Alu.And8(AL, 0x7);
-    CheckExternalEvents(cs12, 0x101F);
-    // MOV DI,AX (19EF_101D / 0x1AF0D)
-    DI = AX;
-    CheckExternalEvents(cs12, 0x1023);
-    // MOV CL,byte ptr [DI + 0xa459] (19EF_101F / 0x1AF0F)
-    CL = UInt8[DS, (ushort)(DI + 0xA459)];
-    CheckExternalEvents(cs12, 0x1024);
-    // INC SI (19EF_1023 / 0x1AF13)
-    SI = Alu.Inc16(SI);
-    CheckExternalEvents(cs12, 0x1027);
-    // MOV AL,byte ptr ES:[SI] (19EF_1024 / 0x1AF14)
-    AL = UInt8[ES, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x1028);
-    // INC SI (19EF_1027 / 0x1AF17)
-    SI = Alu.Inc16(SI);
-    CheckExternalEvents(cs12, 0x102A);
-    // MOV DI,AX (19EF_1028 / 0x1AF18)
-    DI = AX;
-    CheckExternalEvents(cs12, 0x102E);
-    // MOV DH,byte ptr [DI + 0xa459] (19EF_102A / 0x1AF1A)
-    DH = UInt8[DS, (ushort)(DI + 0xA459)];
-    CheckExternalEvents(cs12, 0x1031);
-    // MOV AX,0x1010 (19EF_102E / 0x1AF1E)
-    AX = 0x1010;
-    CheckExternalEvents(cs12, 0x1033);
-    // INT 0x10 (19EF_1031 / 0x1AF21)
-    Interrupt(0x10);
-    CheckExternalEvents(cs12, 0x1034);
-    // PUSH BX (19EF_1033 / 0x1AF23)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x1036);
-    // SHL BX,0x1 (19EF_1034 / 0x1AF24)
-    BX <<= 0x1;
-    CheckExternalEvents(cs12, 0x1038);
-    // SHL BX,0x1 (19EF_1036 / 0x1AF26)
-    BX <<= 0x1;
-    CheckExternalEvents(cs12, 0x103A);
-    // SHL BX,0x1 (19EF_1038 / 0x1AF28)
-    BX <<= 0x1;
-    CheckExternalEvents(cs12, 0x103C);
-    // SHL BX,0x1 (19EF_103A / 0x1AF2A)
-    // BX <<= 0x1;
-    BX = Alu.Shl16(BX, 0x1);
-    CheckExternalEvents(cs12, 0x103F);
-    // MOV AX,0x1010 (19EF_103C / 0x1AF2C)
-    AX = 0x1010;
-    CheckExternalEvents(cs12, 0x1041);
-    // INT 0x10 (19EF_103F / 0x1AF2F)
-    Interrupt(0x10);
-    CheckExternalEvents(cs12, 0x1042);
-    // POP BX (19EF_1041 / 0x1AF31)
-    BX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x1043);
-    // INC BX (19EF_1042 / 0x1AF32)
-    BX++;
-    CheckExternalEvents(cs12, 0x1046);
-    // CMP BX,0x10 (19EF_1043 / 0x1AF33)
-    Alu.Sub16(BX, 0x10);
-    CheckExternalEvents(cs12, 0x1048);
-    // JC 0x1000:aef5 (19EF_1046 / 0x1AF36)
-    if(CarryFlag) {
-      goto label_19EF_1005_1AEF5;
+    AL = Alu8.Shr(AL, 0x1);
+    CheckExternalEvents(cs14, 0x2A2);
+    // MOV byte ptr [DI],AL (19EF_02A0 / 0x1A190)
+    UInt8[DS, (ushort)(DI)] = AL;
+    CheckExternalEvents(cs14, 0x2A4);
+    // MOV AL,byte ptr [DI] (19EF_02A2 / 0x1A192)
+    AL = UInt8[DS, (ushort)(DI)];
+    CheckExternalEvents(cs14, 0x2A7);
+    // MOV AX,0x4008 (19EF_02A4 / 0x1A194)
+    AX = 0x4008;
+    CheckExternalEvents(cs14, 0x2A8);
+    // OUT DX,AX (19EF_02A7 / 0x1A197)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x2AA);
+    // MOV byte ptr [DI],BL (19EF_02A8 / 0x1A198)
+    UInt8[DS, (ushort)(DI)] = BL;
+    CheckExternalEvents(cs14, 0x2AB);
+    // INC SI (19EF_02AA / 0x1A19A)
+    SI = Alu16.Inc(SI);
+    CheckExternalEvents(cs14, 0x2AE);
+    // MOV AX,0x2008 (19EF_02AB / 0x1A19B)
+    AX = 0x2008;
+    CheckExternalEvents(cs14, 0x2AF);
+    // OUT DX,AX (19EF_02AE / 0x1A19E)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x2B1);
+    // MOV AL,byte ptr [DI] (19EF_02AF / 0x1A19F)
+    AL = UInt8[DS, (ushort)(DI)];
+    CheckExternalEvents(cs14, 0x2B4);
+    // MOV BL,byte ptr ES:[SI] (19EF_02B1 / 0x1A1A1)
+    BL = UInt8[ES, (ushort)(SI)];
+    CheckExternalEvents(cs14, 0x2B6);
+    // MOV AL,BL (19EF_02B4 / 0x1A1A4)
+    AL = BL;
+    CheckExternalEvents(cs14, 0x2B8);
+    // SHR AL,0x1 (19EF_02B6 / 0x1A1A6)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x2BA);
+    // SHR AL,0x1 (19EF_02B8 / 0x1A1A8)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x2BC);
+    // SHR AL,0x1 (19EF_02BA / 0x1A1AA)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x2BE);
+    // SHR AL,0x1 (19EF_02BC / 0x1A1AC)
+    // AL >>= 0x1;
+    AL = Alu8.Shr(AL, 0x1);
+    CheckExternalEvents(cs14, 0x2C0);
+    // MOV byte ptr [DI],AL (19EF_02BE / 0x1A1AE)
+    UInt8[DS, (ushort)(DI)] = AL;
+    CheckExternalEvents(cs14, 0x2C2);
+    // MOV AL,byte ptr [DI] (19EF_02C0 / 0x1A1B0)
+    AL = UInt8[DS, (ushort)(DI)];
+    CheckExternalEvents(cs14, 0x2C5);
+    // MOV AX,0x1008 (19EF_02C2 / 0x1A1B2)
+    AX = 0x1008;
+    CheckExternalEvents(cs14, 0x2C6);
+    // OUT DX,AX (19EF_02C5 / 0x1A1B5)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x2C8);
+    // MOV byte ptr [DI],BL (19EF_02C6 / 0x1A1B6)
+    UInt8[DS, (ushort)(DI)] = BL;
+    CheckExternalEvents(cs14, 0x2C9);
+    // INC SI (19EF_02C8 / 0x1A1B8)
+    SI = Alu16.Inc(SI);
+    CheckExternalEvents(cs14, 0x2CC);
+    // MOV AX,0x808 (19EF_02C9 / 0x1A1B9)
+    AX = 0x808;
+    CheckExternalEvents(cs14, 0x2CD);
+    // OUT DX,AX (19EF_02CC / 0x1A1BC)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x2CF);
+    // MOV AL,byte ptr [DI] (19EF_02CD / 0x1A1BD)
+    AL = UInt8[DS, (ushort)(DI)];
+    CheckExternalEvents(cs14, 0x2D2);
+    // MOV BL,byte ptr ES:[SI] (19EF_02CF / 0x1A1BF)
+    BL = UInt8[ES, (ushort)(SI)];
+    CheckExternalEvents(cs14, 0x2D4);
+    // MOV AL,BL (19EF_02D2 / 0x1A1C2)
+    AL = BL;
+    CheckExternalEvents(cs14, 0x2D6);
+    // SHR AL,0x1 (19EF_02D4 / 0x1A1C4)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x2D8);
+    // SHR AL,0x1 (19EF_02D6 / 0x1A1C6)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x2DA);
+    // SHR AL,0x1 (19EF_02D8 / 0x1A1C8)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x2DC);
+    // SHR AL,0x1 (19EF_02DA / 0x1A1CA)
+    // AL >>= 0x1;
+    AL = Alu8.Shr(AL, 0x1);
+    CheckExternalEvents(cs14, 0x2DE);
+    // MOV byte ptr [DI],AL (19EF_02DC / 0x1A1CC)
+    UInt8[DS, (ushort)(DI)] = AL;
+    CheckExternalEvents(cs14, 0x2E0);
+    // MOV AL,byte ptr [DI] (19EF_02DE / 0x1A1CE)
+    AL = UInt8[DS, (ushort)(DI)];
+    CheckExternalEvents(cs14, 0x2E3);
+    // MOV AX,0x408 (19EF_02E0 / 0x1A1D0)
+    AX = 0x408;
+    CheckExternalEvents(cs14, 0x2E4);
+    // OUT DX,AX (19EF_02E3 / 0x1A1D3)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x2E6);
+    // MOV byte ptr [DI],BL (19EF_02E4 / 0x1A1D4)
+    UInt8[DS, (ushort)(DI)] = BL;
+    CheckExternalEvents(cs14, 0x2E7);
+    // INC SI (19EF_02E6 / 0x1A1D6)
+    SI = Alu16.Inc(SI);
+    CheckExternalEvents(cs14, 0x2EA);
+    // MOV AX,0x208 (19EF_02E7 / 0x1A1D7)
+    AX = 0x208;
+    CheckExternalEvents(cs14, 0x2EB);
+    // OUT DX,AX (19EF_02EA / 0x1A1DA)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x2ED);
+    // MOV AL,byte ptr [DI] (19EF_02EB / 0x1A1DB)
+    AL = UInt8[DS, (ushort)(DI)];
+    CheckExternalEvents(cs14, 0x2F0);
+    // MOV BL,byte ptr ES:[SI] (19EF_02ED / 0x1A1DD)
+    BL = UInt8[ES, (ushort)(SI)];
+    CheckExternalEvents(cs14, 0x2F2);
+    // MOV AL,BL (19EF_02F0 / 0x1A1E0)
+    AL = BL;
+    CheckExternalEvents(cs14, 0x2F4);
+    // SHR AL,0x1 (19EF_02F2 / 0x1A1E2)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x2F6);
+    // SHR AL,0x1 (19EF_02F4 / 0x1A1E4)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x2F8);
+    // SHR AL,0x1 (19EF_02F6 / 0x1A1E6)
+    AL >>= 0x1;
+    CheckExternalEvents(cs14, 0x2FA);
+    // SHR AL,0x1 (19EF_02F8 / 0x1A1E8)
+    // AL >>= 0x1;
+    AL = Alu8.Shr(AL, 0x1);
+    CheckExternalEvents(cs14, 0x2FC);
+    // MOV byte ptr [DI],AL (19EF_02FA / 0x1A1EA)
+    UInt8[DS, (ushort)(DI)] = AL;
+    CheckExternalEvents(cs14, 0x2FE);
+    // MOV AL,byte ptr [DI] (19EF_02FC / 0x1A1EC)
+    AL = UInt8[DS, (ushort)(DI)];
+    CheckExternalEvents(cs14, 0x301);
+    // MOV AX,0x108 (19EF_02FE / 0x1A1EE)
+    AX = 0x108;
+    CheckExternalEvents(cs14, 0x302);
+    // OUT DX,AX (19EF_0301 / 0x1A1F1)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x304);
+    // MOV byte ptr [DI],BL (19EF_0302 / 0x1A1F2)
+    UInt8[DS, (ushort)(DI)] = BL;
+    CheckExternalEvents(cs14, 0x305);
+    // INC SI (19EF_0304 / 0x1A1F4)
+    SI++;
+    CheckExternalEvents(cs14, 0x306);
+    // INC DI (19EF_0305 / 0x1A1F5)
+    DI = Alu16.Inc(DI);
+    CheckExternalEvents(cs14, 0x308);
+    // LOOP 0x1000:a17d (19EF_0306 / 0x1A1F6)
+    if(--CX != 0) {
+      goto label_19EF_028D_1A17D;
     }
-    CheckExternalEvents(cs12, 0x1049);
-    // POP ES (19EF_1048 / 0x1AF38)
-    ES = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x104A);
-    // POP DS (19EF_1049 / 0x1AF39)
+    CheckExternalEvents(cs14, 0x30B);
+    // MOV AX,0x8 (19EF_0308 / 0x1A1F8)
+    AX = 0x8;
+    CheckExternalEvents(cs14, 0x30C);
+    // OUT DX,AX (19EF_030B / 0x1A1FB)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x30D);
+    // POP DS (19EF_030C / 0x1A1FC)
     DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x104B);
-    // POP SI (19EF_104A / 0x1AF3A)
+    CheckExternalEvents(cs14, 0x30E);
+    // POP ES (19EF_030D / 0x1A1FD)
+    ES = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x30F);
+    // POP DS (19EF_030E / 0x1A1FE)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x310);
+    // POP SI (19EF_030F / 0x1A1FF)
     SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x104C);
-    // POP DI (19EF_104B / 0x1AF3B)
+    CheckExternalEvents(cs14, 0x311);
+    // POP DI (19EF_0310 / 0x1A200)
     DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x104D);
-    // POP BP (19EF_104C / 0x1AF3C)
+    CheckExternalEvents(cs14, 0x312);
+    // POP BP (19EF_0311 / 0x1A201)
     BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x104E);
-    // RETF  (19EF_104D / 0x1AF3D)
+    CheckExternalEvents(cs14, 0x313);
+    // RETF  (19EF_0312 / 0x1A202)
     return FarRet();
   }
   
-  public virtual Action unknown_19EF_104E_1AF3E(int loadOffset) {
+  public virtual Action unknown_19EF_0313_1A203(int loadOffset) {
     entrydispatcher:
     if(loadOffset != 0) {
       throw FailAsUntested("External goto not supported for this function.");
     }
-    label_19EF_104E_1AF3E:
-    CheckExternalEvents(cs12, 0x104F);
-    // PUSH BP (19EF_104E / 0x1AF3E)
+    label_19EF_0313_1A203:
+    CheckExternalEvents(cs14, 0x314);
+    // PUSH BP (19EF_0313 / 0x1A203)
     Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0x1051);
-    // MOV BP,SP (19EF_104F / 0x1AF3F)
+    CheckExternalEvents(cs14, 0x316);
+    // MOV BP,SP (19EF_0314 / 0x1A204)
     BP = SP;
-    CheckExternalEvents(cs12, 0x1052);
-    // PUSH DI (19EF_1051 / 0x1AF41)
+    CheckExternalEvents(cs14, 0x317);
+    // PUSH DI (19EF_0316 / 0x1A206)
     Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0x1053);
-    // PUSH SI (19EF_1052 / 0x1AF42)
+    CheckExternalEvents(cs14, 0x318);
+    // PUSH SI (19EF_0317 / 0x1A207)
     Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0x1054);
-    // PUSH DS (19EF_1053 / 0x1AF43)
+    CheckExternalEvents(cs14, 0x319);
+    // PUSH DS (19EF_0318 / 0x1A208)
     Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0x1057);
-    // MOV AX,0x1ddc (19EF_1054 / 0x1AF44)
+    CheckExternalEvents(cs14, 0x31C);
+    // MOV AX,0x1ddc (19EF_0319 / 0x1A209)
     AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0x1059);
-    // MOV DS,AX (19EF_1057 / 0x1AF47)
+    CheckExternalEvents(cs14, 0x31E);
+    // MOV DS,AX (19EF_031C / 0x1A20C)
     DS = AX;
-    CheckExternalEvents(cs12, 0x105C);
-    // MOV BX,word ptr [BP + 0x6] (19EF_1059 / 0x1AF49)
-    BX = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs12, 0x105F);
-    // SUB BX,0x11 (19EF_105C / 0x1AF4C)
-    // BX -= 0x11;
-    BX = Alu.Sub16(BX, 0x11);
-    CheckExternalEvents(cs12, 0x1062);
-    // MOV DI,0x2d3 (19EF_105F / 0x1AF4F)
-    DI = 0x2D3;
-    CheckExternalEvents(cs12, 0x1066);
-    // MOV AL,byte ptr [BX + 0xb0b] (19EF_1062 / 0x1AF52)
-    AL = UInt8[DS, (ushort)(BX + 0xB0B)];
-    CheckExternalEvents(cs12, 0x1068);
-    // MOV byte ptr [DI],AL (19EF_1066 / 0x1AF56)
-    UInt8[DS, (ushort)(DI)] = AL;
-    CheckExternalEvents(cs12, 0x106C);
-    // MOV AL,byte ptr [BX + 0xb0c] (19EF_1068 / 0x1AF58)
-    AL = UInt8[DS, (ushort)(BX + 0xB0C)];
-    CheckExternalEvents(cs12, 0x106F);
-    // MOV byte ptr [DI + 0x8],AL (19EF_106C / 0x1AF5C)
-    UInt8[DS, (ushort)(DI + 0x8)] = AL;
-    CheckExternalEvents(cs12, 0x1073);
-    // MOV AL,byte ptr [BX + 0xb1b] (19EF_106F / 0x1AF5F)
-    AL = UInt8[DS, (ushort)(BX + 0xB1B)];
-    CheckExternalEvents(cs12, 0x1076);
-    // MOV byte ptr [DI + 0x48],AL (19EF_1073 / 0x1AF63)
-    UInt8[DS, (ushort)(DI + 0x48)] = AL;
-    CheckExternalEvents(cs12, 0x107A);
-    // MOV AL,byte ptr [BX + 0xb1c] (19EF_1076 / 0x1AF66)
-    AL = UInt8[DS, (ushort)(BX + 0xB1C)];
-    CheckExternalEvents(cs12, 0x107D);
-    // MOV byte ptr [DI + 0x50],AL (19EF_107A / 0x1AF6A)
-    UInt8[DS, (ushort)(DI + 0x50)] = AL;
-    CheckExternalEvents(cs12, 0x1080);
-    // MOV SI,0x564 (19EF_107D / 0x1AF6D)
-    SI = 0x564;
-    CheckExternalEvents(cs12, 0x1081);
-    // PUSH BX (19EF_1080 / 0x1AF70)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x1084);
-    // CALL 0x1000:aaeb (19EF_1081 / 0x1AF71)
-    NearCall(cs12, 0x1084, unknown_19EF_0BFB_1AAEB);
-    CheckExternalEvents(cs12, 0x1085);
-    // POP BX (19EF_1084 / 0x1AF74)
-    BX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x1088);
-    // MOV DI,0x2d3 (19EF_1085 / 0x1AF75)
-    DI = 0x2D3;
-    CheckExternalEvents(cs12, 0x108C);
-    // MOV AL,byte ptr [BX + 0xb0c] (19EF_1088 / 0x1AF78)
-    AL = UInt8[DS, (ushort)(BX + 0xB0C)];
-    CheckExternalEvents(cs12, 0x108E);
-    // MOV byte ptr [DI],AL (19EF_108C / 0x1AF7C)
-    UInt8[DS, (ushort)(DI)] = AL;
-    CheckExternalEvents(cs12, 0x1092);
-    // MOV AL,byte ptr [BX + 0xb0d] (19EF_108E / 0x1AF7E)
-    AL = UInt8[DS, (ushort)(BX + 0xB0D)];
-    CheckExternalEvents(cs12, 0x1095);
-    // MOV byte ptr [DI + 0x8],AL (19EF_1092 / 0x1AF82)
-    UInt8[DS, (ushort)(DI + 0x8)] = AL;
-    CheckExternalEvents(cs12, 0x1099);
-    // MOV AL,byte ptr [BX + 0xb1c] (19EF_1095 / 0x1AF85)
-    AL = UInt8[DS, (ushort)(BX + 0xB1C)];
-    CheckExternalEvents(cs12, 0x109C);
-    // MOV byte ptr [DI + 0x48],AL (19EF_1099 / 0x1AF89)
-    UInt8[DS, (ushort)(DI + 0x48)] = AL;
-    CheckExternalEvents(cs12, 0x10A0);
-    // MOV AL,byte ptr [BX + 0xb1d] (19EF_109C / 0x1AF8C)
-    AL = UInt8[DS, (ushort)(BX + 0xB1D)];
-    CheckExternalEvents(cs12, 0x10A3);
-    // MOV byte ptr [DI + 0x50],AL (19EF_10A0 / 0x1AF90)
-    UInt8[DS, (ushort)(DI + 0x50)] = AL;
-    CheckExternalEvents(cs12, 0x10A6);
-    // MOV SI,0x5a4 (19EF_10A3 / 0x1AF93)
-    SI = 0x5A4;
-    CheckExternalEvents(cs12, 0x10A7);
-    // PUSH BX (19EF_10A6 / 0x1AF96)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x10AA);
-    // CALL 0x1000:aaeb (19EF_10A7 / 0x1AF97)
-    NearCall(cs12, 0x10AA, unknown_19EF_0BFB_1AAEB);
-    CheckExternalEvents(cs12, 0x10AB);
-    // POP BX (19EF_10AA / 0x1AF9A)
-    BX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x10AE);
-    // MOV DI,0x2d3 (19EF_10AB / 0x1AF9B)
-    DI = 0x2D3;
-    CheckExternalEvents(cs12, 0x10B2);
-    // MOV AL,byte ptr [BX + 0xb0d] (19EF_10AE / 0x1AF9E)
-    AL = UInt8[DS, (ushort)(BX + 0xB0D)];
-    CheckExternalEvents(cs12, 0x10B4);
-    // MOV byte ptr [DI],AL (19EF_10B2 / 0x1AFA2)
-    UInt8[DS, (ushort)(DI)] = AL;
-    CheckExternalEvents(cs12, 0x10B8);
-    // MOV AL,byte ptr [BX + 0xb0e] (19EF_10B4 / 0x1AFA4)
-    AL = UInt8[DS, (ushort)(BX + 0xB0E)];
-    CheckExternalEvents(cs12, 0x10BB);
-    // MOV byte ptr [DI + 0x8],AL (19EF_10B8 / 0x1AFA8)
-    UInt8[DS, (ushort)(DI + 0x8)] = AL;
-    CheckExternalEvents(cs12, 0x10BF);
-    // MOV AL,byte ptr [BX + 0xb1d] (19EF_10BB / 0x1AFAB)
-    AL = UInt8[DS, (ushort)(BX + 0xB1D)];
-    CheckExternalEvents(cs12, 0x10C2);
-    // MOV byte ptr [DI + 0x48],AL (19EF_10BF / 0x1AFAF)
-    UInt8[DS, (ushort)(DI + 0x48)] = AL;
-    CheckExternalEvents(cs12, 0x10C6);
-    // MOV AL,byte ptr [BX + 0xb1e] (19EF_10C2 / 0x1AFB2)
-    AL = UInt8[DS, (ushort)(BX + 0xB1E)];
-    CheckExternalEvents(cs12, 0x10C9);
-    // MOV byte ptr [DI + 0x50],AL (19EF_10C6 / 0x1AFB6)
-    UInt8[DS, (ushort)(DI + 0x50)] = AL;
-    CheckExternalEvents(cs12, 0x10CC);
-    // MOV SI,0x5e4 (19EF_10C9 / 0x1AFB9)
-    SI = 0x5E4;
-    CheckExternalEvents(cs12, 0x10CD);
-    // PUSH BX (19EF_10CC / 0x1AFBC)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x10D0);
-    // CALL 0x1000:aaeb (19EF_10CD / 0x1AFBD)
-    NearCall(cs12, 0x10D0, unknown_19EF_0BFB_1AAEB);
-    CheckExternalEvents(cs12, 0x10D1);
-    // POP BX (19EF_10D0 / 0x1AFC0)
-    BX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x10D4);
-    // MOV DI,0x2d3 (19EF_10D1 / 0x1AFC1)
-    DI = 0x2D3;
-    CheckExternalEvents(cs12, 0x10D8);
-    // MOV AL,byte ptr [BX + 0xb1b] (19EF_10D4 / 0x1AFC4)
-    AL = UInt8[DS, (ushort)(BX + 0xB1B)];
-    CheckExternalEvents(cs12, 0x10DA);
-    // MOV byte ptr [DI],AL (19EF_10D8 / 0x1AFC8)
-    UInt8[DS, (ushort)(DI)] = AL;
-    CheckExternalEvents(cs12, 0x10DE);
-    // MOV AL,byte ptr [BX + 0xb1c] (19EF_10DA / 0x1AFCA)
-    AL = UInt8[DS, (ushort)(BX + 0xB1C)];
-    CheckExternalEvents(cs12, 0x10E1);
-    // MOV byte ptr [DI + 0x8],AL (19EF_10DE / 0x1AFCE)
-    UInt8[DS, (ushort)(DI + 0x8)] = AL;
-    CheckExternalEvents(cs12, 0x10E5);
-    // MOV AL,byte ptr [BX + 0xb2b] (19EF_10E1 / 0x1AFD1)
-    AL = UInt8[DS, (ushort)(BX + 0xB2B)];
-    CheckExternalEvents(cs12, 0x10E8);
-    // MOV byte ptr [DI + 0x48],AL (19EF_10E5 / 0x1AFD5)
-    UInt8[DS, (ushort)(DI + 0x48)] = AL;
-    CheckExternalEvents(cs12, 0x10EC);
-    // MOV AL,byte ptr [BX + 0xb2c] (19EF_10E8 / 0x1AFD8)
-    AL = UInt8[DS, (ushort)(BX + 0xB2C)];
-    CheckExternalEvents(cs12, 0x10EF);
-    // MOV byte ptr [DI + 0x50],AL (19EF_10EC / 0x1AFDC)
-    UInt8[DS, (ushort)(DI + 0x50)] = AL;
-    CheckExternalEvents(cs12, 0x10F2);
-    // MOV SI,0x624 (19EF_10EF / 0x1AFDF)
-    SI = 0x624;
-    CheckExternalEvents(cs12, 0x10F3);
-    // PUSH BX (19EF_10F2 / 0x1AFE2)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x10F6);
-    // CALL 0x1000:aaeb (19EF_10F3 / 0x1AFE3)
-    NearCall(cs12, 0x10F6, unknown_19EF_0BFB_1AAEB);
-    CheckExternalEvents(cs12, 0x10F7);
-    // POP BX (19EF_10F6 / 0x1AFE6)
-    BX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x10FA);
-    // MOV DI,0x2d3 (19EF_10F7 / 0x1AFE7)
-    DI = 0x2D3;
-    CheckExternalEvents(cs12, 0x10FE);
-    // MOV AL,byte ptr [BX + 0xb1c] (19EF_10FA / 0x1AFEA)
-    AL = UInt8[DS, (ushort)(BX + 0xB1C)];
-    CheckExternalEvents(cs12, 0x1100);
-    // MOV byte ptr [DI],AL (19EF_10FE / 0x1AFEE)
-    UInt8[DS, (ushort)(DI)] = AL;
-    CheckExternalEvents(cs12, 0x1104);
-    // MOV AL,byte ptr [BX + 0xb1d] (19EF_1100 / 0x1AFF0)
-    AL = UInt8[DS, (ushort)(BX + 0xB1D)];
-    CheckExternalEvents(cs12, 0x1107);
-    // MOV byte ptr [DI + 0x8],AL (19EF_1104 / 0x1AFF4)
-    UInt8[DS, (ushort)(DI + 0x8)] = AL;
-    CheckExternalEvents(cs12, 0x110B);
-    // MOV AL,byte ptr [BX + 0xb2c] (19EF_1107 / 0x1AFF7)
-    AL = UInt8[DS, (ushort)(BX + 0xB2C)];
-    CheckExternalEvents(cs12, 0x110E);
-    // MOV byte ptr [DI + 0x48],AL (19EF_110B / 0x1AFFB)
-    UInt8[DS, (ushort)(DI + 0x48)] = AL;
-    CheckExternalEvents(cs12, 0x1112);
-    // MOV AL,byte ptr [BX + 0xb2d] (19EF_110E / 0x1AFFE)
-    AL = UInt8[DS, (ushort)(BX + 0xB2D)];
-    CheckExternalEvents(cs12, 0x1115);
-    // MOV byte ptr [DI + 0x50],AL (19EF_1112 / 0x1B002)
-    UInt8[DS, (ushort)(DI + 0x50)] = AL;
-    CheckExternalEvents(cs12, 0x1118);
-    // MOV SI,0x664 (19EF_1115 / 0x1B005)
-    SI = 0x664;
-    CheckExternalEvents(cs12, 0x1119);
-    // PUSH BX (19EF_1118 / 0x1B008)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x111C);
-    // CALL 0x1000:aaeb (19EF_1119 / 0x1B009)
-    NearCall(cs12, 0x111C, unknown_19EF_0BFB_1AAEB);
-    CheckExternalEvents(cs12, 0x111D);
-    // POP BX (19EF_111C / 0x1B00C)
-    BX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x1120);
-    // MOV DI,0x2d3 (19EF_111D / 0x1B00D)
-    DI = 0x2D3;
-    CheckExternalEvents(cs12, 0x1124);
-    // MOV AL,byte ptr [BX + 0xb1d] (19EF_1120 / 0x1B010)
-    AL = UInt8[DS, (ushort)(BX + 0xB1D)];
-    CheckExternalEvents(cs12, 0x1126);
-    // MOV byte ptr [DI],AL (19EF_1124 / 0x1B014)
-    UInt8[DS, (ushort)(DI)] = AL;
-    CheckExternalEvents(cs12, 0x112A);
-    // MOV AL,byte ptr [BX + 0xb1e] (19EF_1126 / 0x1B016)
-    AL = UInt8[DS, (ushort)(BX + 0xB1E)];
-    CheckExternalEvents(cs12, 0x112D);
-    // MOV byte ptr [DI + 0x8],AL (19EF_112A / 0x1B01A)
-    UInt8[DS, (ushort)(DI + 0x8)] = AL;
-    CheckExternalEvents(cs12, 0x1131);
-    // MOV AL,byte ptr [BX + 0xb2d] (19EF_112D / 0x1B01D)
-    AL = UInt8[DS, (ushort)(BX + 0xB2D)];
-    CheckExternalEvents(cs12, 0x1134);
-    // MOV byte ptr [DI + 0x48],AL (19EF_1131 / 0x1B021)
-    UInt8[DS, (ushort)(DI + 0x48)] = AL;
-    CheckExternalEvents(cs12, 0x1138);
-    // MOV AL,byte ptr [BX + 0xb2e] (19EF_1134 / 0x1B024)
-    AL = UInt8[DS, (ushort)(BX + 0xB2E)];
-    CheckExternalEvents(cs12, 0x113B);
-    // MOV byte ptr [DI + 0x50],AL (19EF_1138 / 0x1B028)
-    UInt8[DS, (ushort)(DI + 0x50)] = AL;
-    CheckExternalEvents(cs12, 0x113E);
-    // MOV SI,0x6a4 (19EF_113B / 0x1B02B)
-    SI = 0x6A4;
-    CheckExternalEvents(cs12, 0x113F);
-    // PUSH BX (19EF_113E / 0x1B02E)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x1142);
-    // CALL 0x1000:aaeb (19EF_113F / 0x1B02F)
-    NearCall(cs12, 0x1142, unknown_19EF_0BFB_1AAEB);
-    CheckExternalEvents(cs12, 0x1143);
-    // POP BX (19EF_1142 / 0x1B032)
-    BX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x1146);
-    // MOV DI,0x2d3 (19EF_1143 / 0x1B033)
-    DI = 0x2D3;
-    CheckExternalEvents(cs12, 0x114A);
-    // MOV AL,byte ptr [BX + 0xb2b] (19EF_1146 / 0x1B036)
-    AL = UInt8[DS, (ushort)(BX + 0xB2B)];
-    CheckExternalEvents(cs12, 0x114C);
-    // MOV byte ptr [DI],AL (19EF_114A / 0x1B03A)
-    UInt8[DS, (ushort)(DI)] = AL;
-    CheckExternalEvents(cs12, 0x1150);
-    // MOV AL,byte ptr [BX + 0xb2c] (19EF_114C / 0x1B03C)
-    AL = UInt8[DS, (ushort)(BX + 0xB2C)];
-    CheckExternalEvents(cs12, 0x1153);
-    // MOV byte ptr [DI + 0x8],AL (19EF_1150 / 0x1B040)
-    UInt8[DS, (ushort)(DI + 0x8)] = AL;
-    CheckExternalEvents(cs12, 0x1157);
-    // MOV AL,byte ptr [BX + 0xb3b] (19EF_1153 / 0x1B043)
-    AL = UInt8[DS, (ushort)(BX + 0xB3B)];
-    CheckExternalEvents(cs12, 0x115A);
-    // MOV byte ptr [DI + 0x48],AL (19EF_1157 / 0x1B047)
-    UInt8[DS, (ushort)(DI + 0x48)] = AL;
-    CheckExternalEvents(cs12, 0x115E);
-    // MOV AL,byte ptr [BX + 0xb3c] (19EF_115A / 0x1B04A)
-    AL = UInt8[DS, (ushort)(BX + 0xB3C)];
-    CheckExternalEvents(cs12, 0x1161);
-    // MOV byte ptr [DI + 0x50],AL (19EF_115E / 0x1B04E)
-    UInt8[DS, (ushort)(DI + 0x50)] = AL;
-    CheckExternalEvents(cs12, 0x1164);
-    // MOV SI,0x6e4 (19EF_1161 / 0x1B051)
-    SI = 0x6E4;
-    CheckExternalEvents(cs12, 0x1165);
-    // PUSH BX (19EF_1164 / 0x1B054)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x1168);
-    // CALL 0x1000:aaeb (19EF_1165 / 0x1B055)
-    NearCall(cs12, 0x1168, unknown_19EF_0BFB_1AAEB);
-    CheckExternalEvents(cs12, 0x1169);
-    // POP BX (19EF_1168 / 0x1B058)
-    BX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x116C);
-    // MOV DI,0x2d3 (19EF_1169 / 0x1B059)
-    DI = 0x2D3;
-    CheckExternalEvents(cs12, 0x1170);
-    // MOV AL,byte ptr [BX + 0xb2c] (19EF_116C / 0x1B05C)
-    AL = UInt8[DS, (ushort)(BX + 0xB2C)];
-    CheckExternalEvents(cs12, 0x1172);
-    // MOV byte ptr [DI],AL (19EF_1170 / 0x1B060)
-    UInt8[DS, (ushort)(DI)] = AL;
-    CheckExternalEvents(cs12, 0x1176);
-    // MOV AL,byte ptr [BX + 0xb2d] (19EF_1172 / 0x1B062)
-    AL = UInt8[DS, (ushort)(BX + 0xB2D)];
-    CheckExternalEvents(cs12, 0x1179);
-    // MOV byte ptr [DI + 0x8],AL (19EF_1176 / 0x1B066)
-    UInt8[DS, (ushort)(DI + 0x8)] = AL;
-    CheckExternalEvents(cs12, 0x117D);
-    // MOV AL,byte ptr [BX + 0xb3c] (19EF_1179 / 0x1B069)
-    AL = UInt8[DS, (ushort)(BX + 0xB3C)];
-    CheckExternalEvents(cs12, 0x1180);
-    // MOV byte ptr [DI + 0x48],AL (19EF_117D / 0x1B06D)
-    UInt8[DS, (ushort)(DI + 0x48)] = AL;
-    CheckExternalEvents(cs12, 0x1184);
-    // MOV AL,byte ptr [BX + 0xb3d] (19EF_1180 / 0x1B070)
-    AL = UInt8[DS, (ushort)(BX + 0xB3D)];
-    CheckExternalEvents(cs12, 0x1187);
-    // MOV byte ptr [DI + 0x50],AL (19EF_1184 / 0x1B074)
-    UInt8[DS, (ushort)(DI + 0x50)] = AL;
-    CheckExternalEvents(cs12, 0x118A);
-    // MOV SI,0x724 (19EF_1187 / 0x1B077)
-    SI = 0x724;
-    CheckExternalEvents(cs12, 0x118B);
-    // PUSH BX (19EF_118A / 0x1B07A)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x118E);
-    // CALL 0x1000:aaeb (19EF_118B / 0x1B07B)
-    NearCall(cs12, 0x118E, unknown_19EF_0BFB_1AAEB);
-    CheckExternalEvents(cs12, 0x118F);
-    // POP BX (19EF_118E / 0x1B07E)
-    BX = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x1192);
-    // MOV DI,0x2d3 (19EF_118F / 0x1B07F)
-    DI = 0x2D3;
-    CheckExternalEvents(cs12, 0x1196);
-    // MOV AL,byte ptr [BX + 0xb2d] (19EF_1192 / 0x1B082)
-    AL = UInt8[DS, (ushort)(BX + 0xB2D)];
-    CheckExternalEvents(cs12, 0x1198);
-    // MOV byte ptr [DI],AL (19EF_1196 / 0x1B086)
-    UInt8[DS, (ushort)(DI)] = AL;
-    CheckExternalEvents(cs12, 0x119C);
-    // MOV AL,byte ptr [BX + 0xb2e] (19EF_1198 / 0x1B088)
-    AL = UInt8[DS, (ushort)(BX + 0xB2E)];
-    CheckExternalEvents(cs12, 0x119F);
-    // MOV byte ptr [DI + 0x8],AL (19EF_119C / 0x1B08C)
-    UInt8[DS, (ushort)(DI + 0x8)] = AL;
-    CheckExternalEvents(cs12, 0x11A3);
-    // MOV AL,byte ptr [BX + 0xb3d] (19EF_119F / 0x1B08F)
-    AL = UInt8[DS, (ushort)(BX + 0xB3D)];
-    CheckExternalEvents(cs12, 0x11A6);
-    // MOV byte ptr [DI + 0x48],AL (19EF_11A3 / 0x1B093)
-    UInt8[DS, (ushort)(DI + 0x48)] = AL;
-    CheckExternalEvents(cs12, 0x11AA);
-    // MOV AL,byte ptr [BX + 0xb3e] (19EF_11A6 / 0x1B096)
-    AL = UInt8[DS, (ushort)(BX + 0xB3E)];
-    CheckExternalEvents(cs12, 0x11AD);
-    // MOV byte ptr [DI + 0x50],AL (19EF_11AA / 0x1B09A)
-    UInt8[DS, (ushort)(DI + 0x50)] = AL;
-    CheckExternalEvents(cs12, 0x11B0);
-    // MOV SI,0x764 (19EF_11AD / 0x1B09D)
-    SI = 0x764;
-    CheckExternalEvents(cs12, 0x11B3);
-    // CALL 0x1000:aaeb (19EF_11B0 / 0x1B0A0)
-    NearCall(cs12, 0x11B3, unknown_19EF_0BFB_1AAEB);
-    CheckExternalEvents(cs12, 0x11B6);
-    // CALL 0x1000:b776 (19EF_11B3 / 0x1B0A3)
-    NearCall(cs12, 0x11B6, unknown_19EF_1886_1B776);
-    CheckExternalEvents(cs12, 0x11B7);
-    // POP DS (19EF_11B6 / 0x1B0A6)
-    DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x11B8);
-    // POP SI (19EF_11B7 / 0x1B0A7)
-    SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x11B9);
-    // POP DI (19EF_11B8 / 0x1B0A8)
-    DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x11BA);
-    // POP BP (19EF_11B9 / 0x1B0A9)
-    BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x11BB);
-    // RETF  (19EF_11BA / 0x1B0AA)
-    return FarRet();
-  }
-  
-  public virtual Action unknown_19EF_11BB_1B0AB(int loadOffset) {
-    entrydispatcher:
-    switch(loadOffset) {
-      case 0x1B112: goto label_19EF_1222_1B112;break; // Target of external jump from 0x1B145
-      case 0x1B0F5: goto label_19EF_1205_1B0F5;break; // Target of external jump from 0x1B162
-      case 0: break; // 0 is the entry point ghidra detected, just after this switch
-      default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
-    }
-    label_19EF_11BB_1B0AB:
-    CheckExternalEvents(cs12, 0x11BE);
-    // CALL 0x1000:b1aa (19EF_11BB / 0x1B0AB)
-    NearCall(cs12, 0x11BE, unknown_19EF_12BA_1B1AA);
-    CheckExternalEvents(cs12, 0x11C0);
-    // OR AL,AL (19EF_11BE / 0x1B0AE)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs12, 0x11C2);
-    // JS 0x1000:b0b5 (19EF_11C0 / 0x1B0B0)
-    if(SignFlag) {
-      goto label_19EF_11C5_1B0B5;
-    }
-    CheckExternalEvents(cs12, 0x11C5);
-    // CALL 0x1000:b1e2 (19EF_11C2 / 0x1B0B2)
-    NearCall(cs12, 0x11C5, unknown_19EF_12F2_1B1E2);
-    label_19EF_11C5_1B0B5:
-    CheckExternalEvents(cs12, 0x11C7);
-    // MOV byte ptr [DI],BL (19EF_11C5 / 0x1B0B5)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs12, 0x11C8);
-    // INC SI (19EF_11C7 / 0x1B0B7)
-    SI++;
-    CheckExternalEvents(cs12, 0x11C9);
-    // INC DI (19EF_11C8 / 0x1B0B8)
-    DI = Alu.Inc16(DI);
-    CheckExternalEvents(cs12, 0x11CC);
-    // MOV CX,0x6 (19EF_11C9 / 0x1B0B9)
-    CX = 0x6;
-    label_19EF_11CC_1B0BC:
-    CheckExternalEvents(cs12, 0x11CE);
-    // XOR BL,BL (19EF_11CC / 0x1B0BC)
-    // BL ^= BL;
-    BL = Alu.Xor8(BL, BL);
-    CheckExternalEvents(cs12, 0x11D0);
-    // MOV AL,byte ptr [SI] (19EF_11CE / 0x1B0BE)
-    AL = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x11D2);
-    // OR AL,AL (19EF_11D0 / 0x1B0C0)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs12, 0x11D4);
-    // JNS 0x1000:b0cb (19EF_11D2 / 0x1B0C2)
-    if(!SignFlag) {
-      goto label_19EF_11DB_1B0CB;
-    }
-    CheckExternalEvents(cs12, 0x11D6);
-    // MOV BL,AL (19EF_11D4 / 0x1B0C4)
-    BL = AL;
-    CheckExternalEvents(cs12, 0x11D9);
-    // SUB BL,0x80 (19EF_11D6 / 0x1B0C6)
-    // BL -= 0x80;
-    BL = Alu.Sub8(BL, 0x80);
-    CheckExternalEvents(cs12, 0x11DB);
-    // JNZ 0x1000:b0de (19EF_11D9 / 0x1B0C9)
-    if(!ZeroFlag) {
-      goto label_19EF_11EE_1B0DE;
-    }
-    label_19EF_11DB_1B0CB:
-    CheckExternalEvents(cs12, 0x11DE);
-    // CALL 0x1000:b1e2 (19EF_11DB / 0x1B0CB)
-    NearCall(cs12, 0x11DE, unknown_19EF_12F2_1B1E2);
-    CheckExternalEvents(cs12, 0x11E1);
-    // CMP AL,byte ptr [SI + -0x1] (19EF_11DE / 0x1B0CE)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI - 0x1)]);
-    CheckExternalEvents(cs12, 0x11E3);
-    // JNZ 0x1000:b0d6 (19EF_11E1 / 0x1B0D1)
-    if(!ZeroFlag) {
-      goto label_19EF_11E6_1B0D6;
-    }
-    CheckExternalEvents(cs12, 0x11E6);
-    // OR BL,0x8 (19EF_11E3 / 0x1B0D3)
-    BL |= 0x8;
-    label_19EF_11E6_1B0D6:
-    CheckExternalEvents(cs12, 0x11E9);
-    // CMP AL,byte ptr [SI + 0x1] (19EF_11E6 / 0x1B0D6)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x1)]);
-    CheckExternalEvents(cs12, 0x11EB);
-    // JNZ 0x1000:b0de (19EF_11E9 / 0x1B0D9)
-    if(!ZeroFlag) {
-      goto label_19EF_11EE_1B0DE;
-    }
-    CheckExternalEvents(cs12, 0x11EE);
-    // OR BL,0x2 (19EF_11EB / 0x1B0DB)
-    // BL |= 0x2;
-    BL = Alu.Or8(BL, 0x2);
-    label_19EF_11EE_1B0DE:
-    CheckExternalEvents(cs12, 0x11F0);
-    // MOV byte ptr [DI],BL (19EF_11EE / 0x1B0DE)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs12, 0x11F1);
-    // INC SI (19EF_11F0 / 0x1B0E0)
-    SI++;
-    CheckExternalEvents(cs12, 0x11F2);
-    // INC DI (19EF_11F1 / 0x1B0E1)
-    DI = Alu.Inc16(DI);
-    CheckExternalEvents(cs12, 0x11F4);
-    // LOOP 0x1000:b0bc (19EF_11F2 / 0x1B0E2)
-    if(--CX != 0) {
-      goto label_19EF_11CC_1B0BC;
-    }
-    CheckExternalEvents(cs12, 0x11F7);
-    // CALL 0x1000:b1c9 (19EF_11F4 / 0x1B0E4)
-    NearCall(cs12, 0x11F7, unknown_19EF_12D9_1B1C9);
-    CheckExternalEvents(cs12, 0x11F9);
-    // OR AL,AL (19EF_11F7 / 0x1B0E7)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs12, 0x11FB);
-    // JS 0x1000:b0ee (19EF_11F9 / 0x1B0E9)
-    if(SignFlag) {
-      goto label_19EF_11FE_1B0EE;
-    }
-    CheckExternalEvents(cs12, 0x11FE);
-    // CALL 0x1000:b1e2 (19EF_11FB / 0x1B0EB)
-    NearCall(cs12, 0x11FE, unknown_19EF_12F2_1B1E2);
-    label_19EF_11FE_1B0EE:
-    CheckExternalEvents(cs12, 0x1200);
-    // MOV byte ptr [DI],BL (19EF_11FE / 0x1B0EE)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs12, 0x1201);
-    // INC SI (19EF_1200 / 0x1B0F0)
-    SI++;
-    CheckExternalEvents(cs12, 0x1202);
-    // INC DI (19EF_1201 / 0x1B0F1)
-    DI = Alu.Inc16(DI);
-    CheckExternalEvents(cs12, 0x1205);
-    // MOV DX,0x6 (19EF_1202 / 0x1B0F2)
-    DX = 0x6;
-    label_19EF_1205_1B0F5:
-    CheckExternalEvents(cs12, 0x1208);
-    // CALL 0x1000:b1aa (19EF_1205 / 0x1B0F5)
-    NearCall(cs12, 0x1208, unknown_19EF_12BA_1B1AA);
-    CheckExternalEvents(cs12, 0x120A);
-    // OR AL,AL (19EF_1208 / 0x1B0F8)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs12, 0x120C);
-    // JS 0x1000:b10b (19EF_120A / 0x1B0FA)
-    if(SignFlag) {
-      goto label_19EF_121B_1B10B;
-    }
-    CheckExternalEvents(cs12, 0x120F);
-    // CMP AL,byte ptr [SI + 0x8] (19EF_120C / 0x1B0FC)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x8)]);
-    CheckExternalEvents(cs12, 0x1211);
-    // JNZ 0x1000:b104 (19EF_120F / 0x1B0FF)
-    if(!ZeroFlag) {
-      goto label_19EF_1214_1B104;
-    }
-    CheckExternalEvents(cs12, 0x1214);
-    // OR BL,0x4 (19EF_1211 / 0x1B101)
-    BL |= 0x4;
-    label_19EF_1214_1B104:
-    CheckExternalEvents(cs12, 0x1217);
-    // CMP AL,byte ptr [SI + -0x8] (19EF_1214 / 0x1B104)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI - 0x8)]);
-    CheckExternalEvents(cs12, 0x1219);
-    // JNZ 0x1000:b10b (19EF_1217 / 0x1B107)
-    if(!ZeroFlag) {
-      goto label_19EF_121B_1B10B;
-    }
-    CheckExternalEvents(cs12, 0x121B);
-    // INC BL (19EF_1219 / 0x1B109)
-    BL = Alu.Inc8(BL);
-    label_19EF_121B_1B10B:
-    CheckExternalEvents(cs12, 0x121D);
-    // MOV byte ptr [DI],BL (19EF_121B / 0x1B10B)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs12, 0x121E);
-    // INC SI (19EF_121D / 0x1B10D)
-    SI++;
-    CheckExternalEvents(cs12, 0x121F);
-    // INC DI (19EF_121E / 0x1B10E)
-    DI = Alu.Inc16(DI);
-    CheckExternalEvents(cs12, 0x1222);
-    // MOV CX,0x6 (19EF_121F / 0x1B10F)
-    CX = 0x6;
-    label_19EF_1222_1B112:
-    CheckExternalEvents(cs12, 0x1224);
-    // XOR BL,BL (19EF_1222 / 0x1B112)
-    // BL ^= BL;
-    BL = Alu.Xor8(BL, BL);
-    CheckExternalEvents(cs12, 0x1226);
-    // MOV AL,byte ptr [SI] (19EF_1224 / 0x1B114)
-    AL = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x1228);
-    // OR AL,AL (19EF_1226 / 0x1B116)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs12, 0x122A);
-    // JNS 0x1000:b122 (19EF_1228 / 0x1B118)
-    if(!SignFlag) {
-      // Jump converted to entry function call
-      if(JumpDispatcher.Jump(split_1000_B122_1B122, 0)) {
-        loadOffset = JumpDispatcher.NextEntryAddress;
-        goto entrydispatcher;
-      }
-      return JumpDispatcher.JumpAsmReturn!;
-    }
-    CheckExternalEvents(cs12, 0x122C);
-    // MOV BL,AL (19EF_122A / 0x1B11A)
-    BL = AL;
-    CheckExternalEvents(cs12, 0x122F);
-    // SUB BL,0x80 (19EF_122C / 0x1B11C)
-    // BL -= 0x80;
-    BL = Alu.Sub8(BL, 0x80);
-    CheckExternalEvents(cs12, 0x1231);
-    // JMP 0x1000:b141 (19EF_122F / 0x1B11F)
-    // Jump converted to non entry function call
-    if(JumpDispatcher.Jump(split_1000_B122_1B122, 0x1B141 - cs1 * 0x10)) {
-      loadOffset = JumpDispatcher.NextEntryAddress;
-      goto entrydispatcher;
-    }
-    return JumpDispatcher.JumpAsmReturn!;
-  }
-  
-  public virtual Action split_1000_B122_1B122(int loadOffset) {
-    entrydispatcher:
-    switch(loadOffset) {
-      case 0x1B141: goto label_19EF_1251_1B141;break; // Target of external jump from 0x1B13D, 0x1B11F
-      case 0: break; // 0 is the entry point ghidra detected, just after this switch
-      default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
-    }
-    label_1000_B122_1B122:
-    CheckExternalEvents(cs7, 0xB125);
-    // CMP AL,byte ptr [SI + -0x1] (1000_B122 / 0x1B122)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI - 0x1)]);
-    CheckExternalEvents(cs7, 0xB127);
-    // JNZ 0x1000:b12a (1000_B125 / 0x1B125)
-    if(!ZeroFlag) {
-      goto label_1000_B12A_1B12A;
-    }
-    CheckExternalEvents(cs7, 0xB12A);
-    // OR BL,0x8 (1000_B127 / 0x1B127)
-    BL |= 0x8;
-    label_1000_B12A_1B12A:
-    CheckExternalEvents(cs7, 0xB12D);
-    // CMP AL,byte ptr [SI + 0x8] (1000_B12A / 0x1B12A)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x8)]);
-    CheckExternalEvents(cs7, 0xB12F);
-    // JNZ 0x1000:b132 (1000_B12D / 0x1B12D)
-    if(!ZeroFlag) {
-      goto label_1000_B132_1B132;
-    }
-    CheckExternalEvents(cs7, 0xB132);
-    // OR BL,0x4 (1000_B12F / 0x1B12F)
-    BL |= 0x4;
-    label_1000_B132_1B132:
-    CheckExternalEvents(cs7, 0xB135);
-    // CMP AL,byte ptr [SI + 0x1] (1000_B132 / 0x1B132)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x1)]);
-    CheckExternalEvents(cs7, 0xB137);
-    // JNZ 0x1000:b13a (1000_B135 / 0x1B135)
-    if(!ZeroFlag) {
-      goto label_1000_B13A_1B13A;
-    }
-    CheckExternalEvents(cs7, 0xB13A);
-    // OR BL,0x2 (1000_B137 / 0x1B137)
-    BL |= 0x2;
-    label_1000_B13A_1B13A:
-    CheckExternalEvents(cs7, 0xB13D);
-    // CMP AL,byte ptr [SI + -0x8] (1000_B13A / 0x1B13A)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI - 0x8)]);
-    CheckExternalEvents(cs7, 0xB13F);
-    // JNZ 0x1000:b141 (1000_B13D / 0x1B13D)
-    if(!ZeroFlag) {
-      goto label_1000_B141_1B141;
-    }
-    CheckExternalEvents(cs7, 0xB141);
-    // INC BL (1000_B13F / 0x1B13F)
-    BL = Alu.Inc8(BL);
-    label_1000_B141_1B141:
-    CheckExternalEvents(cs7, 0xB143);
-    // MOV byte ptr [DI],BL (1000_B141 / 0x1B141)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs7, 0xB144);
-    // INC SI (1000_B143 / 0x1B143)
-    SI++;
-    CheckExternalEvents(cs7, 0xB145);
-    // INC DI (1000_B144 / 0x1B144)
-    DI = Alu.Inc16(DI);
-    CheckExternalEvents(cs7, 0xB147);
-    // LOOP 0x1000:b112 (1000_B145 / 0x1B145)
-    if(--CX != 0) {
-      // Jump converted to non entry function call
-      if(JumpDispatcher.Jump(unknown_19EF_11BB_1B0AB, 0x1B112 - cs1 * 0x10)) {
-        loadOffset = JumpDispatcher.NextEntryAddress;
-        goto entrydispatcher;
-      }
-      return JumpDispatcher.JumpAsmReturn!;
-    }
-    CheckExternalEvents(cs7, 0xB14A);
-    // CALL 0x1000:b1c9 (1000_B147 / 0x1B147)
-    NearCall(cs7, 0xB14A, unknown_19EF_12D9_1B1C9);
-    CheckExternalEvents(cs7, 0xB14C);
-    // OR AL,AL (1000_B14A / 0x1B14A)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs7, 0xB14E);
-    // JS 0x1000:b15d (1000_B14C / 0x1B14C)
-    if(SignFlag) {
-      goto label_1000_B15D_1B15D;
-    }
-    CheckExternalEvents(cs7, 0xB151);
-    // CMP AL,byte ptr [SI + 0x8] (1000_B14E / 0x1B14E)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x8)]);
-    CheckExternalEvents(cs7, 0xB153);
-    // JNZ 0x1000:b156 (1000_B151 / 0x1B151)
-    if(!ZeroFlag) {
-      goto label_1000_B156_1B156;
-    }
-    CheckExternalEvents(cs7, 0xB156);
-    // OR BL,0x4 (1000_B153 / 0x1B153)
-    BL |= 0x4;
-    label_1000_B156_1B156:
-    CheckExternalEvents(cs7, 0xB159);
-    // CMP AL,byte ptr [SI + -0x8] (1000_B156 / 0x1B156)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI - 0x8)]);
-    CheckExternalEvents(cs7, 0xB15B);
-    // JNZ 0x1000:b15d (1000_B159 / 0x1B159)
-    if(!ZeroFlag) {
-      goto label_1000_B15D_1B15D;
-    }
-    CheckExternalEvents(cs7, 0xB15D);
-    // INC BL (1000_B15B / 0x1B15B)
-    BL = Alu.Inc8(BL);
-    label_1000_B15D_1B15D:
-    CheckExternalEvents(cs7, 0xB15F);
-    // MOV byte ptr [DI],BL (1000_B15D / 0x1B15D)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs7, 0xB160);
-    // INC SI (1000_B15F / 0x1B15F)
-    SI++;
-    CheckExternalEvents(cs7, 0xB161);
-    // INC DI (1000_B160 / 0x1B160)
-    DI++;
-    CheckExternalEvents(cs7, 0xB162);
-    // DEC DX (1000_B161 / 0x1B161)
-    DX = Alu.Dec16(DX);
-    CheckExternalEvents(cs7, 0xB164);
-    // JNZ 0x1000:b0f5 (1000_B162 / 0x1B162)
-    if(!ZeroFlag) {
-      // Jump converted to non entry function call
-      if(JumpDispatcher.Jump(unknown_19EF_11BB_1B0AB, 0x1B0F5 - cs1 * 0x10)) {
-        loadOffset = JumpDispatcher.NextEntryAddress;
-        goto entrydispatcher;
-      }
-      return JumpDispatcher.JumpAsmReturn!;
-    }
-    CheckExternalEvents(cs7, 0xB167);
-    // CALL 0x1000:b1aa (1000_B164 / 0x1B164)
-    NearCall(cs7, 0xB167, unknown_19EF_12BA_1B1AA);
-    CheckExternalEvents(cs7, 0xB169);
-    // OR AL,AL (1000_B167 / 0x1B167)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs7, 0xB16B);
-    // JS 0x1000:b16e (1000_B169 / 0x1B169)
-    if(SignFlag) {
-      goto label_1000_B16E_1B16E;
-    }
-    CheckExternalEvents(cs7, 0xB16E);
-    // CALL 0x1000:b1f3 (1000_B16B / 0x1B16B)
-    NearCall(cs7, 0xB16E, unknown_19EF_1303_1B1F3);
-    label_1000_B16E_1B16E:
-    CheckExternalEvents(cs7, 0xB170);
-    // MOV byte ptr [DI],BL (1000_B16E / 0x1B16E)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs7, 0xB171);
-    // INC SI (1000_B170 / 0x1B170)
-    SI++;
-    CheckExternalEvents(cs7, 0xB172);
-    // INC DI (1000_B171 / 0x1B171)
-    DI = Alu.Inc16(DI);
-    CheckExternalEvents(cs7, 0xB175);
-    // MOV CX,0x6 (1000_B172 / 0x1B172)
-    CX = 0x6;
-    label_1000_B175_1B175:
-    CheckExternalEvents(cs7, 0xB177);
-    // XOR BL,BL (1000_B175 / 0x1B175)
-    // BL ^= BL;
-    BL = Alu.Xor8(BL, BL);
-    CheckExternalEvents(cs7, 0xB179);
-    // MOV AL,byte ptr [SI] (1000_B177 / 0x1B177)
-    AL = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs7, 0xB17B);
-    // OR AL,AL (1000_B179 / 0x1B179)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs7, 0xB17D);
-    // JNS 0x1000:b184 (1000_B17B / 0x1B17B)
-    if(!SignFlag) {
-      goto label_1000_B184_1B184;
-    }
-    CheckExternalEvents(cs7, 0xB17F);
-    // MOV BL,AL (1000_B17D / 0x1B17D)
-    BL = AL;
-    CheckExternalEvents(cs7, 0xB182);
-    // SUB BL,0x80 (1000_B17F / 0x1B17F)
-    // BL -= 0x80;
-    BL = Alu.Sub8(BL, 0x80);
-    CheckExternalEvents(cs7, 0xB184);
-    // JNZ 0x1000:b197 (1000_B182 / 0x1B182)
-    if(!ZeroFlag) {
-      goto label_1000_B197_1B197;
-    }
-    label_1000_B184_1B184:
-    CheckExternalEvents(cs7, 0xB187);
-    // CMP AL,byte ptr [SI + -0x1] (1000_B184 / 0x1B184)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI - 0x1)]);
-    CheckExternalEvents(cs7, 0xB189);
-    // JNZ 0x1000:b18c (1000_B187 / 0x1B187)
-    if(!ZeroFlag) {
-      goto label_1000_B18C_1B18C;
-    }
-    CheckExternalEvents(cs7, 0xB18C);
-    // OR BL,0x8 (1000_B189 / 0x1B189)
-    BL |= 0x8;
-    label_1000_B18C_1B18C:
-    CheckExternalEvents(cs7, 0xB18F);
-    // CMP AL,byte ptr [SI + 0x1] (1000_B18C / 0x1B18C)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x1)]);
-    CheckExternalEvents(cs7, 0xB191);
-    // JNZ 0x1000:b194 (1000_B18F / 0x1B18F)
-    if(!ZeroFlag) {
-      goto label_1000_B194_1B194;
-    }
-    CheckExternalEvents(cs7, 0xB194);
-    // OR BL,0x2 (1000_B191 / 0x1B191)
-    // BL |= 0x2;
-    BL = Alu.Or8(BL, 0x2);
-    label_1000_B194_1B194:
-    CheckExternalEvents(cs7, 0xB197);
-    // CALL 0x1000:b1f3 (1000_B194 / 0x1B194)
-    NearCall(cs7, 0xB197, unknown_19EF_1303_1B1F3);
-    label_1000_B197_1B197:
-    CheckExternalEvents(cs7, 0xB199);
-    // MOV byte ptr [DI],BL (1000_B197 / 0x1B197)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs7, 0xB19A);
-    // INC SI (1000_B199 / 0x1B199)
-    SI++;
-    CheckExternalEvents(cs7, 0xB19B);
-    // INC DI (1000_B19A / 0x1B19A)
-    DI = Alu.Inc16(DI);
-    CheckExternalEvents(cs7, 0xB19D);
-    // LOOP 0x1000:b175 (1000_B19B / 0x1B19B)
-    if(--CX != 0) {
-      goto label_1000_B175_1B175;
-    }
-    CheckExternalEvents(cs7, 0xB1A0);
-    // CALL 0x1000:b1c9 (1000_B19D / 0x1B19D)
-    NearCall(cs7, 0xB1A0, unknown_19EF_12D9_1B1C9);
-    CheckExternalEvents(cs7, 0xB1A2);
-    // OR AL,AL (1000_B1A0 / 0x1B1A0)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs7, 0xB1A4);
-    // JS 0x1000:b1a7 (1000_B1A2 / 0x1B1A2)
-    if(SignFlag) {
-      goto label_1000_B1A7_1B1A7;
-    }
-    CheckExternalEvents(cs7, 0xB1A7);
-    // CALL 0x1000:b1f3 (1000_B1A4 / 0x1B1A4)
-    NearCall(cs7, 0xB1A7, unknown_19EF_1303_1B1F3);
-    label_1000_B1A7_1B1A7:
-    CheckExternalEvents(cs7, 0xB1A9);
-    // MOV byte ptr [DI],BL (1000_B1A7 / 0x1B1A7)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs7, 0xB1AA);
-    // RET  (1000_B1A9 / 0x1B1A9)
-    return NearRet();
-  }
-  
-  public virtual Action unknown_19EF_12BA_1B1AA(int loadOffset) {
-    entrydispatcher:
-    switch(loadOffset) {
-      case 0x1B1C3: goto label_19EF_12D3_1B1C3;break; // Target of external jump from 0x1B1B0, 0x1B1CF
-      case 0: break; // 0 is the entry point ghidra detected, just after this switch
-      default: throw FailAsUntested("Could not find any label from outside with address " + loadOffset);
-    }
-    label_19EF_12BA_1B1AA:
-    CheckExternalEvents(cs12, 0x12BC);
-    // XOR BL,BL (19EF_12BA / 0x1B1AA)
-    // BL ^= BL;
-    BL = Alu.Xor8(BL, BL);
-    CheckExternalEvents(cs12, 0x12BE);
-    // MOV AL,byte ptr [SI] (19EF_12BC / 0x1B1AC)
-    AL = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x12C0);
-    // OR AL,AL (19EF_12BE / 0x1B1AE)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs12, 0x12C2);
-    // JS 0x1000:b1c3 (19EF_12C0 / 0x1B1B0)
-    if(SignFlag) {
-      goto label_19EF_12D3_1B1C3;
-    }
-    CheckExternalEvents(cs12, 0x12C5);
-    // CMP AL,byte ptr [SI + -0x39] (19EF_12C2 / 0x1B1B2)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI - 0x39)]);
-    CheckExternalEvents(cs12, 0x12C7);
-    // JNZ 0x1000:b1ba (19EF_12C5 / 0x1B1B5)
-    if(!ZeroFlag) {
-      goto label_19EF_12CA_1B1BA;
-    }
-    CheckExternalEvents(cs12, 0x12CA);
-    // OR BL,0x8 (19EF_12C7 / 0x1B1B7)
-    BL |= 0x8;
-    label_19EF_12CA_1B1BA:
-    CheckExternalEvents(cs12, 0x12CD);
-    // CMP AL,byte ptr [SI + 0x1] (19EF_12CA / 0x1B1BA)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x1)]);
-    CheckExternalEvents(cs12, 0x12CF);
-    // JNZ 0x1000:b1c2 (19EF_12CD / 0x1B1BD)
-    if(!ZeroFlag) {
-      // JNZ target is RET, inlining.
-      CheckExternalEvents(cs12, 0x12D3);
-      // RET  (19EF_12D2 / 0x1B1C2)
-      return NearRet();
-    }
-    CheckExternalEvents(cs12, 0x12D2);
-    // OR BL,0x2 (19EF_12CF / 0x1B1BF)
-    // BL |= 0x2;
-    BL = Alu.Or8(BL, 0x2);
-    label_19EF_12D2_1B1C2:
-    CheckExternalEvents(cs12, 0x12D3);
-    // RET  (19EF_12D2 / 0x1B1C2)
-    return NearRet();
-    label_19EF_12D3_1B1C3:
-    CheckExternalEvents(cs12, 0x12D5);
-    // MOV BL,AL (19EF_12D3 / 0x1B1C3)
-    BL = AL;
-    CheckExternalEvents(cs12, 0x12D8);
-    // SUB BL,0x80 (19EF_12D5 / 0x1B1C5)
-    // BL -= 0x80;
-    BL = Alu.Sub8(BL, 0x80);
-    CheckExternalEvents(cs12, 0x12D9);
-    // RET  (19EF_12D8 / 0x1B1C8)
-    return NearRet();
-  }
-  
-  public virtual Action unknown_19EF_12D9_1B1C9(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_12D9_1B1C9:
-    CheckExternalEvents(cs12, 0x12DB);
-    // XOR BL,BL (19EF_12D9 / 0x1B1C9)
-    // BL ^= BL;
-    BL = Alu.Xor8(BL, BL);
-    CheckExternalEvents(cs12, 0x12DD);
-    // MOV AL,byte ptr [SI] (19EF_12DB / 0x1B1CB)
-    AL = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x12DF);
-    // OR AL,AL (19EF_12DD / 0x1B1CD)
-    // AL |= AL;
-    AL = Alu.Or8(AL, AL);
-    CheckExternalEvents(cs12, 0x12E1);
-    // JS 0x1000:b1c3 (19EF_12DF / 0x1B1CF)
-    if(SignFlag) {
-      // Jump converted to non entry function call
-      if(JumpDispatcher.Jump(unknown_19EF_12BA_1B1AA, 0x1B1C3 - cs1 * 0x10)) {
-        loadOffset = JumpDispatcher.NextEntryAddress;
-        goto entrydispatcher;
-      }
-      return JumpDispatcher.JumpAsmReturn!;
-    }
-    CheckExternalEvents(cs12, 0x12E4);
-    // CMP AL,byte ptr [SI + -0x1] (19EF_12E1 / 0x1B1D1)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI - 0x1)]);
-    CheckExternalEvents(cs12, 0x12E6);
-    // JNZ 0x1000:b1d9 (19EF_12E4 / 0x1B1D4)
-    if(!ZeroFlag) {
-      goto label_19EF_12E9_1B1D9;
-    }
-    CheckExternalEvents(cs12, 0x12E9);
-    // OR BL,0x8 (19EF_12E6 / 0x1B1D6)
-    BL |= 0x8;
-    label_19EF_12E9_1B1D9:
-    CheckExternalEvents(cs12, 0x12EC);
-    // CMP AL,byte ptr [SI + 0x39] (19EF_12E9 / 0x1B1D9)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x39)]);
-    CheckExternalEvents(cs12, 0x12EE);
-    // JNZ 0x1000:b1e1 (19EF_12EC / 0x1B1DC)
-    if(!ZeroFlag) {
-      // JNZ target is RET, inlining.
-      CheckExternalEvents(cs12, 0x12F2);
-      // RET  (19EF_12F1 / 0x1B1E1)
-      return NearRet();
-    }
-    CheckExternalEvents(cs12, 0x12F1);
-    // OR BL,0x2 (19EF_12EE / 0x1B1DE)
-    // BL |= 0x2;
-    BL = Alu.Or8(BL, 0x2);
-    label_19EF_12F1_1B1E1:
-    CheckExternalEvents(cs12, 0x12F2);
-    // RET  (19EF_12F1 / 0x1B1E1)
-    return NearRet();
-  }
-  
-  public virtual Action unknown_19EF_12F2_1B1E2(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_12F2_1B1E2:
-    CheckExternalEvents(cs12, 0x12F6);
-    // CMP AL,byte ptr [SI + 0xff78] (19EF_12F2 / 0x1B1E2)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0xFF78)]);
-    CheckExternalEvents(cs12, 0x12F8);
-    // JNZ 0x1000:b1ea (19EF_12F6 / 0x1B1E6)
-    if(!ZeroFlag) {
-      goto label_19EF_12FA_1B1EA;
-    }
-    CheckExternalEvents(cs12, 0x12FA);
-    // INC BL (19EF_12F8 / 0x1B1E8)
-    BL++;
-    label_19EF_12FA_1B1EA:
-    CheckExternalEvents(cs12, 0x12FD);
-    // CMP AL,byte ptr [SI + 0x8] (19EF_12FA / 0x1B1EA)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x8)]);
-    CheckExternalEvents(cs12, 0x12FF);
-    // JNZ 0x1000:b1f2 (19EF_12FD / 0x1B1ED)
-    if(!ZeroFlag) {
-      // JNZ target is RET, inlining.
-      CheckExternalEvents(cs12, 0x1303);
-      // RET  (19EF_1302 / 0x1B1F2)
-      return NearRet();
-    }
-    CheckExternalEvents(cs12, 0x1302);
-    // OR BL,0x4 (19EF_12FF / 0x1B1EF)
-    // BL |= 0x4;
-    BL = Alu.Or8(BL, 0x4);
-    label_19EF_1302_1B1F2:
-    CheckExternalEvents(cs12, 0x1303);
-    // RET  (19EF_1302 / 0x1B1F2)
-    return NearRet();
-  }
-  
-  public virtual Action unknown_19EF_1303_1B1F3(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_1303_1B1F3:
-    CheckExternalEvents(cs12, 0x1306);
-    // CMP AL,byte ptr [SI + -0x8] (19EF_1303 / 0x1B1F3)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI - 0x8)]);
-    CheckExternalEvents(cs12, 0x1308);
-    // JNZ 0x1000:b1fa (19EF_1306 / 0x1B1F6)
-    if(!ZeroFlag) {
-      goto label_19EF_130A_1B1FA;
-    }
-    CheckExternalEvents(cs12, 0x130A);
-    // INC BL (19EF_1308 / 0x1B1F8)
-    BL++;
-    label_19EF_130A_1B1FA:
-    CheckExternalEvents(cs12, 0x130E);
-    // CMP AL,byte ptr [SI + 0x88] (19EF_130A / 0x1B1FA)
-    Alu.Sub8(AL, UInt8[DS, (ushort)(SI + 0x88)]);
-    CheckExternalEvents(cs12, 0x1310);
-    // JNZ 0x1000:b203 (19EF_130E / 0x1B1FE)
-    if(!ZeroFlag) {
-      // JNZ target is RET, inlining.
-      CheckExternalEvents(cs12, 0x1314);
-      // RET  (19EF_1313 / 0x1B203)
-      return NearRet();
-    }
-    CheckExternalEvents(cs12, 0x1313);
-    // OR BL,0x4 (19EF_1310 / 0x1B200)
-    // BL |= 0x4;
-    BL = Alu.Or8(BL, 0x4);
-    label_19EF_1313_1B203:
-    CheckExternalEvents(cs12, 0x1314);
-    // RET  (19EF_1313 / 0x1B203)
-    return NearRet();
-  }
-  
-  public virtual Action unknown_19EF_1314_1B204(int loadOffset) {
-    entrydispatcher:
-    if(loadOffset != 0) {
-      throw FailAsUntested("External goto not supported for this function.");
-    }
-    label_19EF_1314_1B204:
-    CheckExternalEvents(cs12, 0x1315);
-    // PUSH BP (19EF_1314 / 0x1B204)
-    Stack.Push16(BP);
-    CheckExternalEvents(cs12, 0x1317);
-    // MOV BP,SP (19EF_1315 / 0x1B205)
-    BP = SP;
-    CheckExternalEvents(cs12, 0x1318);
-    // PUSH DI (19EF_1317 / 0x1B207)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0x1319);
-    // PUSH SI (19EF_1318 / 0x1B208)
-    Stack.Push16(SI);
-    CheckExternalEvents(cs12, 0x131A);
-    // PUSH DS (19EF_1319 / 0x1B209)
-    Stack.Push16(DS);
-    CheckExternalEvents(cs12, 0x131D);
-    // MOV AX,0x1ddc (19EF_131A / 0x1B20A)
-    AX = 0x1DDC;
-    CheckExternalEvents(cs12, 0x131F);
-    // MOV DS,AX (19EF_131D / 0x1B20D)
-    DS = AX;
-    CheckExternalEvents(cs12, 0x1322);
-    // MOV AX,word ptr [BP + 0x6] (19EF_131F / 0x1B20F)
+    CheckExternalEvents(cs14, 0x31F);
+    // PUSH ES (19EF_031E / 0x1A20E)
+    Stack.Push16(ES);
+    CheckExternalEvents(cs14, 0x322);
+    // MOV DX,0x3ce (19EF_031F / 0x1A20F)
+    DX = 0x3CE;
+    CheckExternalEvents(cs14, 0x325);
+    // MOV AX,0x205 (19EF_0322 / 0x1A212)
+    AX = 0x205;
+    CheckExternalEvents(cs14, 0x326);
+    // OUT DX,AX (19EF_0325 / 0x1A215)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x329);
+    // MOV AX,0x8 (19EF_0326 / 0x1A216)
+    AX = 0x8;
+    CheckExternalEvents(cs14, 0x32A);
+    // OUT DX,AX (19EF_0329 / 0x1A219)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x32D);
+    // MOV AX,word ptr [BP + 0x6] (19EF_032A / 0x1A21A)
     AX = UInt16[SS, (ushort)(BP + 0x6)];
-    CheckExternalEvents(cs12, 0x1325);
-    // MOV [0x2cf],AX (19EF_1322 / 0x1B212)
-    UInt16[DS, 0x2CF] = AX;
-    CheckExternalEvents(cs12, 0x1328);
-    // MOV BX,word ptr [BP + 0x8] (19EF_1325 / 0x1B215)
-    BX = UInt16[SS, (ushort)(BP + 0x8)];
-    CheckExternalEvents(cs12, 0x132C);
-    // MOV word ptr [0x2d1],BX (19EF_1328 / 0x1B218)
-    UInt16[DS, 0x2D1] = BX;
-    CheckExternalEvents(cs12, 0x132E);
-    // SHR BL,0x1 (19EF_132C / 0x1B21C)
-    BL >>= 0x1;
-    CheckExternalEvents(cs12, 0x1330);
-    // SHR BL,0x1 (19EF_132E / 0x1B21E)
-    BL >>= 0x1;
-    CheckExternalEvents(cs12, 0x1332);
-    // SHR BL,0x1 (19EF_1330 / 0x1B220)
-    BL >>= 0x1;
-    CheckExternalEvents(cs12, 0x1334);
-    // SHR BL,0x1 (19EF_1332 / 0x1B222)
-    // BL >>= 0x1;
-    BL = Alu.Shr8(BL, 0x1);
-    CheckExternalEvents(cs12, 0x1338);
-    // MOV byte ptr [0x2ce],BL (19EF_1334 / 0x1B224)
-    UInt8[DS, 0x2CE] = BL;
-    CheckExternalEvents(cs12, 0x133A);
-    // SHR AL,0x1 (19EF_1338 / 0x1B228)
-    AL >>= 0x1;
-    CheckExternalEvents(cs12, 0x133C);
-    // SHR AL,0x1 (19EF_133A / 0x1B22A)
-    AL >>= 0x1;
-    CheckExternalEvents(cs12, 0x133E);
-    // SHR AL,0x1 (19EF_133C / 0x1B22C)
-    AL >>= 0x1;
-    CheckExternalEvents(cs12, 0x1340);
-    // SHR AL,0x1 (19EF_133E / 0x1B22E)
-    // AL >>= 0x1;
-    AL = Alu.Shr8(AL, 0x1);
-    CheckExternalEvents(cs12, 0x1343);
-    // MOV [0x2cd],AL (19EF_1340 / 0x1B230)
-    UInt8[DS, 0x2CD] = AL;
-    CheckExternalEvents(cs12, 0x1346);
-    // MOV DI,0x7ad (19EF_1343 / 0x1B233)
-    DI = 0x7AD;
-    CheckExternalEvents(cs12, 0x1348);
-    // DEC AL (19EF_1346 / 0x1B236)
-    AL--;
-    CheckExternalEvents(cs12, 0x134A);
-    // DEC BL (19EF_1348 / 0x1B238)
-    BL = Alu.Dec8(BL);
-    CheckExternalEvents(cs12, 0x134D);
-    // CALL 0x1000:b2c9 (19EF_134A / 0x1B23A)
-    NearCall(cs12, 0x134D, unknown_19EF_13D9_1B2C9);
-    CheckExternalEvents(cs12, 0x1350);
-    // MOV [0x7a4],AL (19EF_134D / 0x1B23D)
-    UInt8[DS, 0x7A4] = AL;
-    CheckExternalEvents(cs12, 0x1354);
-    // MOV BL,byte ptr [0x2ce] (19EF_1350 / 0x1B240)
-    BL = UInt8[DS, 0x2CE];
-    CheckExternalEvents(cs12, 0x1357);
-    // MOV AL,[0x2cd] (19EF_1354 / 0x1B244)
-    AL = UInt8[DS, 0x2CD];
-    CheckExternalEvents(cs12, 0x1359);
-    // DEC BL (19EF_1357 / 0x1B247)
-    BL = Alu.Dec8(BL);
-    CheckExternalEvents(cs12, 0x135C);
-    // CALL 0x1000:b2c9 (19EF_1359 / 0x1B249)
-    NearCall(cs12, 0x135C, unknown_19EF_13D9_1B2C9);
-    CheckExternalEvents(cs12, 0x135F);
-    // MOV [0x7a5],AL (19EF_135C / 0x1B24C)
-    UInt8[DS, 0x7A5] = AL;
-    CheckExternalEvents(cs12, 0x1363);
-    // MOV BL,byte ptr [0x2ce] (19EF_135F / 0x1B24F)
-    BL = UInt8[DS, 0x2CE];
-    CheckExternalEvents(cs12, 0x1365);
-    // DEC BL (19EF_1363 / 0x1B253)
-    BL = Alu.Dec8(BL);
-    CheckExternalEvents(cs12, 0x1368);
-    // MOV AL,[0x2cd] (19EF_1365 / 0x1B255)
-    AL = UInt8[DS, 0x2CD];
-    CheckExternalEvents(cs12, 0x136A);
-    // INC AL (19EF_1368 / 0x1B258)
-    AL = Alu.Inc8(AL);
-    CheckExternalEvents(cs12, 0x136D);
-    // CALL 0x1000:b2c9 (19EF_136A / 0x1B25A)
-    NearCall(cs12, 0x136D, unknown_19EF_13D9_1B2C9);
-    CheckExternalEvents(cs12, 0x1371);
-    // ADD DI,0xa8 (19EF_136D / 0x1B25D)
-    // DI += 0xA8;
-    DI = Alu.Add16(DI, 0xA8);
-    CheckExternalEvents(cs12, 0x1374);
-    // MOV [0x7a6],AL (19EF_1371 / 0x1B261)
-    UInt8[DS, 0x7A6] = AL;
-    CheckExternalEvents(cs12, 0x1378);
-    // MOV BL,byte ptr [0x2ce] (19EF_1374 / 0x1B264)
-    BL = UInt8[DS, 0x2CE];
-    CheckExternalEvents(cs12, 0x137B);
-    // MOV AL,[0x2cd] (19EF_1378 / 0x1B268)
-    AL = UInt8[DS, 0x2CD];
-    CheckExternalEvents(cs12, 0x137D);
-    // DEC AL (19EF_137B / 0x1B26B)
-    AL = Alu.Dec8(AL);
-    CheckExternalEvents(cs12, 0x1380);
-    // CALL 0x1000:b2c9 (19EF_137D / 0x1B26D)
-    NearCall(cs12, 0x1380, unknown_19EF_13D9_1B2C9);
-    CheckExternalEvents(cs12, 0x1383);
-    // MOV [0x7a7],AL (19EF_1380 / 0x1B270)
-    UInt8[DS, 0x7A7] = AL;
-    CheckExternalEvents(cs12, 0x1387);
-    // MOV BL,byte ptr [0x2ce] (19EF_1383 / 0x1B273)
-    BL = UInt8[DS, 0x2CE];
-    CheckExternalEvents(cs12, 0x138A);
-    // MOV AL,[0x2cd] (19EF_1387 / 0x1B277)
-    AL = UInt8[DS, 0x2CD];
-    CheckExternalEvents(cs12, 0x138D);
-    // CALL 0x1000:b2c9 (19EF_138A / 0x1B27A)
-    NearCall(cs12, 0x138D, unknown_19EF_13D9_1B2C9);
-    CheckExternalEvents(cs12, 0x1390);
-    // MOV [0x7a8],AL (19EF_138D / 0x1B27D)
-    UInt8[DS, 0x7A8] = AL;
-    CheckExternalEvents(cs12, 0x1394);
-    // MOV BL,byte ptr [0x2ce] (19EF_1390 / 0x1B280)
-    BL = UInt8[DS, 0x2CE];
-    CheckExternalEvents(cs12, 0x1397);
-    // MOV AL,[0x2cd] (19EF_1394 / 0x1B284)
-    AL = UInt8[DS, 0x2CD];
-    CheckExternalEvents(cs12, 0x1399);
-    // INC AL (19EF_1397 / 0x1B287)
-    AL = Alu.Inc8(AL);
-    CheckExternalEvents(cs12, 0x139C);
-    // CALL 0x1000:b2c9 (19EF_1399 / 0x1B289)
-    NearCall(cs12, 0x139C, unknown_19EF_13D9_1B2C9);
-    CheckExternalEvents(cs12, 0x13A0);
-    // ADD DI,0xa8 (19EF_139C / 0x1B28C)
-    // DI += 0xA8;
-    DI = Alu.Add16(DI, 0xA8);
-    CheckExternalEvents(cs12, 0x13A3);
-    // MOV [0x7a9],AL (19EF_13A0 / 0x1B290)
-    UInt8[DS, 0x7A9] = AL;
-    CheckExternalEvents(cs12, 0x13A7);
-    // MOV BL,byte ptr [0x2ce] (19EF_13A3 / 0x1B293)
-    BL = UInt8[DS, 0x2CE];
-    CheckExternalEvents(cs12, 0x13A9);
-    // INC BL (19EF_13A7 / 0x1B297)
-    BL = Alu.Inc8(BL);
-    CheckExternalEvents(cs12, 0x13AC);
-    // MOV AL,[0x2cd] (19EF_13A9 / 0x1B299)
-    AL = UInt8[DS, 0x2CD];
-    CheckExternalEvents(cs12, 0x13AE);
-    // DEC AL (19EF_13AC / 0x1B29C)
-    AL = Alu.Dec8(AL);
-    CheckExternalEvents(cs12, 0x13B1);
-    // CALL 0x1000:b2c9 (19EF_13AE / 0x1B29E)
-    NearCall(cs12, 0x13B1, unknown_19EF_13D9_1B2C9);
-    CheckExternalEvents(cs12, 0x13B4);
-    // MOV [0x7aa],AL (19EF_13B1 / 0x1B2A1)
-    UInt8[DS, 0x7AA] = AL;
-    CheckExternalEvents(cs12, 0x13B8);
-    // MOV BL,byte ptr [0x2ce] (19EF_13B4 / 0x1B2A4)
-    BL = UInt8[DS, 0x2CE];
-    CheckExternalEvents(cs12, 0x13BA);
-    // INC BL (19EF_13B8 / 0x1B2A8)
-    BL = Alu.Inc8(BL);
-    CheckExternalEvents(cs12, 0x13BD);
-    // MOV AL,[0x2cd] (19EF_13BA / 0x1B2AA)
-    AL = UInt8[DS, 0x2CD];
-    CheckExternalEvents(cs12, 0x13C0);
-    // CALL 0x1000:b2c9 (19EF_13BD / 0x1B2AD)
-    NearCall(cs12, 0x13C0, unknown_19EF_13D9_1B2C9);
-    CheckExternalEvents(cs12, 0x13C3);
-    // MOV [0x7ab],AL (19EF_13C0 / 0x1B2B0)
-    UInt8[DS, 0x7AB] = AL;
-    CheckExternalEvents(cs12, 0x13C7);
-    // MOV BL,byte ptr [0x2ce] (19EF_13C3 / 0x1B2B3)
-    BL = UInt8[DS, 0x2CE];
-    CheckExternalEvents(cs12, 0x13C9);
-    // INC BL (19EF_13C7 / 0x1B2B7)
-    BL = Alu.Inc8(BL);
-    CheckExternalEvents(cs12, 0x13CC);
-    // MOV AL,[0x2cd] (19EF_13C9 / 0x1B2B9)
-    AL = UInt8[DS, 0x2CD];
-    CheckExternalEvents(cs12, 0x13CE);
-    // INC AL (19EF_13CC / 0x1B2BC)
-    AL = Alu.Inc8(AL);
-    CheckExternalEvents(cs12, 0x13D1);
-    // CALL 0x1000:b2c9 (19EF_13CE / 0x1B2BE)
-    NearCall(cs12, 0x13D1, unknown_19EF_13D9_1B2C9);
-    CheckExternalEvents(cs12, 0x13D4);
-    // MOV [0x7ac],AL (19EF_13D1 / 0x1B2C1)
-    UInt8[DS, 0x7AC] = AL;
-    CheckExternalEvents(cs12, 0x13D5);
-    // POP DS (19EF_13D4 / 0x1B2C4)
+    CheckExternalEvents(cs14, 0x32F);
+    // MOV DI,AX (19EF_032D / 0x1A21D)
+    DI = AX;
+    CheckExternalEvents(cs14, 0x332);
+    // MOV AX,word ptr [BP + 0x8] (19EF_032F / 0x1A21F)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs14, 0x334);
+    // MOV ES,AX (19EF_0332 / 0x1A222)
+    ES = AX;
+    CheckExternalEvents(cs14, 0x337);
+    // MOV BX,word ptr [BP + 0xa] (19EF_0334 / 0x1A224)
+    BX = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs14, 0x33A);
+    // MOV AX,word ptr [BP + 0xc] (19EF_0337 / 0x1A227)
+    AX = UInt16[SS, (ushort)(BP + 0xC)];
+    CheckExternalEvents(cs14, 0x33D);
+    // MOV DX,0x140 (19EF_033A / 0x1A22A)
+    DX = 0x140;
+    CheckExternalEvents(cs14, 0x33F);
+    // MUL DX (19EF_033D / 0x1A22D)
+    uint resMul19EF_033D = Alu16.Mul(AX, DX);
+    AX = (ushort)(resMul19EF_033D);
+    DX = (ushort)(resMul19EF_033D >> 16);
+    CheckExternalEvents(cs14, 0x341);
+    // ADD AX,BX (19EF_033F / 0x1A22F)
+    // AX += BX;
+    AX = Alu16.Add(AX, BX);
+    CheckExternalEvents(cs14, 0x343);
+    // MOV SI,AX (19EF_0341 / 0x1A231)
+    SI = AX;
+    CheckExternalEvents(cs14, 0x344);
+    // PUSH DS (19EF_0343 / 0x1A233)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x347);
+    // MOV AX,0xa800 (19EF_0344 / 0x1A234)
+    AX = 0xA800;
+    CheckExternalEvents(cs14, 0x349);
+    // MOV DS,AX (19EF_0347 / 0x1A237)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x34C);
+    // MOV CX,0x8 (19EF_0349 / 0x1A239)
+    CX = 0x8;
+    CheckExternalEvents(cs14, 0x34F);
+    // MOV DX,0x3ce (19EF_034C / 0x1A23C)
+    DX = 0x3CE;
+    label_19EF_034F_1A23F:
+    CheckExternalEvents(cs14, 0x352);
+    // MOV AX,0x4 (19EF_034F / 0x1A23F)
+    AX = 0x4;
+    CheckExternalEvents(cs14, 0x353);
+    // OUT DX,AX (19EF_0352 / 0x1A242)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x355);
+    // MOV AL,byte ptr [SI] (19EF_0353 / 0x1A243)
+    AL = UInt8[DS, (ushort)(SI)];
+    CheckExternalEvents(cs14, 0x356);
+    // STOSB ES:DI (19EF_0355 / 0x1A245)
+    UInt8[ES, (ushort)(DI)] = AL;
+    DI = (ushort)(DI + Direction8);
+    CheckExternalEvents(cs14, 0x359);
+    // MOV AX,0x104 (19EF_0356 / 0x1A246)
+    AX = 0x104;
+    CheckExternalEvents(cs14, 0x35A);
+    // OUT DX,AX (19EF_0359 / 0x1A249)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x35C);
+    // MOV AL,byte ptr [SI] (19EF_035A / 0x1A24A)
+    AL = UInt8[DS, (ushort)(SI)];
+    CheckExternalEvents(cs14, 0x35D);
+    // STOSB ES:DI (19EF_035C / 0x1A24C)
+    UInt8[ES, (ushort)(DI)] = AL;
+    DI = (ushort)(DI + Direction8);
+    CheckExternalEvents(cs14, 0x360);
+    // MOV AX,0x204 (19EF_035D / 0x1A24D)
+    AX = 0x204;
+    CheckExternalEvents(cs14, 0x361);
+    // OUT DX,AX (19EF_0360 / 0x1A250)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x363);
+    // MOV AL,byte ptr [SI] (19EF_0361 / 0x1A251)
+    AL = UInt8[DS, (ushort)(SI)];
+    CheckExternalEvents(cs14, 0x364);
+    // STOSB ES:DI (19EF_0363 / 0x1A253)
+    UInt8[ES, (ushort)(DI)] = AL;
+    DI = (ushort)(DI + Direction8);
+    CheckExternalEvents(cs14, 0x367);
+    // MOV AX,0x304 (19EF_0364 / 0x1A254)
+    AX = 0x304;
+    CheckExternalEvents(cs14, 0x368);
+    // OUT DX,AX (19EF_0367 / 0x1A257)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x36A);
+    // MOV AL,byte ptr [SI] (19EF_0368 / 0x1A258)
+    AL = UInt8[DS, (ushort)(SI)];
+    CheckExternalEvents(cs14, 0x36B);
+    // STOSB ES:DI (19EF_036A / 0x1A25A)
+    UInt8[ES, (ushort)(DI)] = AL;
+    DI = (ushort)(DI + Direction8);
+    CheckExternalEvents(cs14, 0x36E);
+    // ADD SI,0x28 (19EF_036B / 0x1A25B)
+    // SI += 0x28;
+    SI = Alu16.Add(SI, 0x28);
+    CheckExternalEvents(cs14, 0x370);
+    // LOOP 0x1000:a23f (19EF_036E / 0x1A25E)
+    if(--CX != 0) {
+      goto label_19EF_034F_1A23F;
+    }
+    CheckExternalEvents(cs14, 0x371);
+    // POP DS (19EF_0370 / 0x1A260)
     DS = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x13D6);
-    // POP SI (19EF_13D5 / 0x1B2C5)
+    CheckExternalEvents(cs14, 0x372);
+    // POP ES (19EF_0371 / 0x1A261)
+    ES = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x373);
+    // POP DS (19EF_0372 / 0x1A262)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x374);
+    // POP SI (19EF_0373 / 0x1A263)
     SI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x13D7);
-    // POP DI (19EF_13D6 / 0x1B2C6)
+    CheckExternalEvents(cs14, 0x375);
+    // POP DI (19EF_0374 / 0x1A264)
     DI = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x13D8);
-    // POP BP (19EF_13D7 / 0x1B2C7)
+    CheckExternalEvents(cs14, 0x376);
+    // POP BP (19EF_0375 / 0x1A265)
     BP = Stack.Pop16();;
-    CheckExternalEvents(cs12, 0x13D9);
-    // RETF  (19EF_13D8 / 0x1B2C8)
+    CheckExternalEvents(cs14, 0x377);
+    // RETF  (19EF_0376 / 0x1A266)
     return FarRet();
   }
   
-  public virtual Action unknown_19EF_13D9_1B2C9(int loadOffset) {
+  public virtual Action unknown_19EF_0377_1A267(int loadOffset) {
     entrydispatcher:
     if(loadOffset != 0) {
       throw FailAsUntested("External goto not supported for this function.");
     }
-    label_19EF_13D9_1B2C9:
-    CheckExternalEvents(cs12, 0x13DC);
-    // MOV SI,0x424 (19EF_13D9 / 0x1B2C9)
-    SI = 0x424;
-    CheckExternalEvents(cs12, 0x13DE);
-    // MOV CL,BL (19EF_13DC / 0x1B2CC)
-    CL = BL;
-    CheckExternalEvents(cs12, 0x13E0);
-    // MOV CH,AL (19EF_13DE / 0x1B2CE)
-    CH = AL;
-    CheckExternalEvents(cs12, 0x13E2);
-    // ADD CL,CH (19EF_13E0 / 0x1B2D0)
-    // CL += CH;
-    CL = Alu.Add8(CL, CH);
-    CheckExternalEvents(cs12, 0x13E4);
-    // MOV CH,CL (19EF_13E2 / 0x1B2D2)
-    CH = CL;
-    CheckExternalEvents(cs12, 0x13E7);
-    // AND CL,0x3 (19EF_13E4 / 0x1B2D4)
-    // CL &= 0x3;
-    CL = Alu.And8(CL, 0x3);
-    CheckExternalEvents(cs12, 0x13EB);
-    // MOV byte ptr [0x273],CL (19EF_13E7 / 0x1B2D7)
-    UInt8[DS, 0x273] = CL;
-    CheckExternalEvents(cs12, 0x13ED);
-    // SHL CH,0x1 (19EF_13EB / 0x1B2DB)
-    CH <<= 0x1;
-    CheckExternalEvents(cs12, 0x13EF);
-    // SHL CH,0x1 (19EF_13ED / 0x1B2DD)
-    CH <<= 0x1;
-    CheckExternalEvents(cs12, 0x13F2);
-    // AND CH,0x10 (19EF_13EF / 0x1B2DF)
-    // CH &= 0x10;
-    CH = Alu.And8(CH, 0x10);
-    CheckExternalEvents(cs12, 0x13F6);
-    // MOV byte ptr [0x272],CH (19EF_13F2 / 0x1B2E2)
-    UInt8[DS, 0x272] = CH;
-    CheckExternalEvents(cs12, 0x13F8);
-    // XOR DH,DH (19EF_13F6 / 0x1B2E6)
-    // DH ^= DH;
-    DH = Alu.Xor8(DH, DH);
-    CheckExternalEvents(cs12, 0x13FA);
-    // MOV DL,BL (19EF_13F8 / 0x1B2E8)
-    DL = BL;
-    CheckExternalEvents(cs12, 0x13FC);
-    // SHL DL,0x1 (19EF_13FA / 0x1B2EA)
-    DL <<= 0x1;
-    CheckExternalEvents(cs12, 0x13FE);
-    // SHL DL,0x1 (19EF_13FC / 0x1B2EC)
-    DL <<= 0x1;
-    CheckExternalEvents(cs12, 0x1400);
-    // SHL DL,0x1 (19EF_13FE / 0x1B2EE)
-    DL <<= 0x1;
-    CheckExternalEvents(cs12, 0x1402);
-    // ADD SI,DX (19EF_1400 / 0x1B2F0)
-    SI += DX;
-    CheckExternalEvents(cs12, 0x1405);
-    // CMP BL,0xff (19EF_1402 / 0x1B2F2)
-    Alu.Sub8(BL, 0xFF);
-    CheckExternalEvents(cs12, 0x1407);
-    // JNZ 0x1000:b2fd (19EF_1405 / 0x1B2F5)
-    if(!ZeroFlag) {
-      goto label_19EF_140D_1B2FD;
+    label_19EF_0377_1A267:
+    CheckExternalEvents(cs14, 0x378);
+    // PUSH BP (19EF_0377 / 0x1A267)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0x37A);
+    // MOV BP,SP (19EF_0378 / 0x1A268)
+    BP = SP;
+    CheckExternalEvents(cs14, 0x37B);
+    // PUSH DI (19EF_037A / 0x1A26A)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0x37C);
+    // PUSH SI (19EF_037B / 0x1A26B)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0x37D);
+    // PUSH DS (19EF_037C / 0x1A26C)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x380);
+    // MOV AX,0x1ddc (19EF_037D / 0x1A26D)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0x382);
+    // MOV DS,AX (19EF_0380 / 0x1A270)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x383);
+    // PUSH ES (19EF_0382 / 0x1A272)
+    Stack.Push16(ES);
+    CheckExternalEvents(cs14, 0x386);
+    // MOV AX,word ptr [BP + 0x6] (19EF_0383 / 0x1A273)
+    AX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs14, 0x388);
+    // MOV DI,AX (19EF_0386 / 0x1A276)
+    DI = AX;
+    CheckExternalEvents(cs14, 0x38B);
+    // MOV AX,word ptr [BP + 0x8] (19EF_0388 / 0x1A278)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs14, 0x38D);
+    // MOV ES,AX (19EF_038B / 0x1A27B)
+    ES = AX;
+    CheckExternalEvents(cs14, 0x390);
+    // MOV AX,word ptr [BP + 0xa] (19EF_038D / 0x1A27D)
+    AX = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs14, 0x392);
+    // MOV SI,AX (19EF_0390 / 0x1A280)
+    SI = AX;
+    CheckExternalEvents(cs14, 0x395);
+    // MOV AX,word ptr [BP + 0xc] (19EF_0392 / 0x1A282)
+    AX = UInt16[SS, (ushort)(BP + 0xC)];
+    CheckExternalEvents(cs14, 0x398);
+    // MOV [0x25c],AX (19EF_0395 / 0x1A285)
+    UInt16[DS, 0x25C] = AX;
+    CheckExternalEvents(cs14, 0x39B);
+    // MOV AX,word ptr [BP + 0xe] (19EF_0398 / 0x1A288)
+    AX = UInt16[SS, (ushort)(BP + 0xE)];
+    CheckExternalEvents(cs14, 0x39E);
+    // MOV [0x262],AX (19EF_039B / 0x1A28B)
+    UInt16[DS, 0x262] = AX;
+    CheckExternalEvents(cs14, 0x3A0);
+    // SAR AX,0x1 (19EF_039E / 0x1A28E)
+    AX = Alu16.Sar(AX, 0x1);
+    CheckExternalEvents(cs14, 0x3A2);
+    // SAR AX,0x1 (19EF_03A0 / 0x1A290)
+    AX = Alu16.Sar(AX, 0x1);
+    CheckExternalEvents(cs14, 0x3A4);
+    // SAR AX,0x1 (19EF_03A2 / 0x1A292)
+    AX = Alu16.Sar(AX, 0x1);
+    CheckExternalEvents(cs14, 0x3A7);
+    // MOV [0x266],AX (19EF_03A4 / 0x1A294)
+    UInt16[DS, 0x266] = AX;
+    CheckExternalEvents(cs14, 0x3AA);
+    // MOV AX,word ptr [BP + 0x10] (19EF_03A7 / 0x1A297)
+    AX = UInt16[SS, (ushort)(BP + 0x10)];
+    CheckExternalEvents(cs14, 0x3AD);
+    // MOV [0x264],AX (19EF_03AA / 0x1A29A)
+    UInt16[DS, 0x264] = AX;
+    CheckExternalEvents(cs14, 0x3AE);
+    // PUSH DS (19EF_03AD / 0x1A29D)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x3AF);
+    // INC SI (19EF_03AE / 0x1A29E)
+    SI = Alu16.Inc(SI);
+    CheckExternalEvents(cs14, 0x3B2);
+    // MOV AX,[0x25c] (19EF_03AF / 0x1A29F)
+    AX = UInt16[DS, 0x25C];
+    CheckExternalEvents(cs14, 0x3B4);
+    // MOV DS,AX (19EF_03B2 / 0x1A2A2)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x3B5);
+    // LODSW SI (19EF_03B4 / 0x1A2A4)
+    AX = UInt16[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction16);
+    CheckExternalEvents(cs14, 0x3B6);
+    // INC SI (19EF_03B5 / 0x1A2A5)
+    SI = Alu16.Inc(SI);
+    CheckExternalEvents(cs14, 0x3B7);
+    // POP DS (19EF_03B6 / 0x1A2A6)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x3B9);
+    // INC AL (19EF_03B7 / 0x1A2A7)
+    AL = Alu8.Inc(AL);
+    CheckExternalEvents(cs14, 0x3BA);
+    // PUSH AX (19EF_03B9 / 0x1A2A9)
+    Stack.Push16(AX);
+    CheckExternalEvents(cs14, 0x3BD);
+    // AND AX,0xff (19EF_03BA / 0x1A2AA)
+    // AX &= 0xFF;
+    AX = Alu16.And(AX, 0xFF);
+    CheckExternalEvents(cs14, 0x3C0);
+    // MOV [0x26c],AX (19EF_03BD / 0x1A2AD)
+    UInt16[DS, 0x26C] = AX;
+    CheckExternalEvents(cs14, 0x3C1);
+    // POP AX (19EF_03C0 / 0x1A2B0)
+    AX = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x3C3);
+    // XCHG AH,AL (19EF_03C1 / 0x1A2B1)
+    (AL, AH) = (AH, AL);
+    CheckExternalEvents(cs14, 0x3C6);
+    // AND AX,0xff (19EF_03C3 / 0x1A2B3)
+    // AX &= 0xFF;
+    AX = Alu16.And(AX, 0xFF);
+    CheckExternalEvents(cs14, 0x3C9);
+    // MOV [0x268],AX (19EF_03C6 / 0x1A2B6)
+    UInt16[DS, 0x268] = AX;
+    CheckExternalEvents(cs14, 0x3CB);
+    // SHL AX,0x1 (19EF_03C9 / 0x1A2B9)
+    AX <<= 0x1;
+    CheckExternalEvents(cs14, 0x3CD);
+    // SHL AX,0x1 (19EF_03CB / 0x1A2BB)
+    // AX <<= 0x1;
+    AX = Alu16.Shl(AX, 0x1);
+    CheckExternalEvents(cs14, 0x3D0);
+    // MOV [0x26a],AX (19EF_03CD / 0x1A2BD)
+    UInt16[DS, 0x26A] = AX;
+    CheckExternalEvents(cs14, 0x3D3);
+    // MOV AX,[0x264] (19EF_03D0 / 0x1A2C0)
+    AX = UInt16[DS, 0x264];
+    CheckExternalEvents(cs14, 0x3D6);
+    // CMP AX,0x0 (19EF_03D3 / 0x1A2C3)
+    Alu16.Sub(AX, 0x0);
+    CheckExternalEvents(cs14, 0x3D8);
+    // JNS 0x1000:a2ed (19EF_03D6 / 0x1A2C6)
+    if(!SignFlag) {
+      goto label_19EF_03FD_1A2ED;
     }
-    CheckExternalEvents(cs12, 0x140A);
-    // MOV SI,0x364 (19EF_1407 / 0x1B2F7)
-    SI = 0x364;
-    CheckExternalEvents(cs12, 0x140D);
-    // ADD SI,0x38 (19EF_140A / 0x1B2FA)
-    SI += 0x38;
-    label_19EF_140D_1B2FD:
-    CheckExternalEvents(cs12, 0x1410);
-    // CMP BL,0x8 (19EF_140D / 0x1B2FD)
-    Alu.Sub8(BL, 0x8);
-    CheckExternalEvents(cs12, 0x1412);
-    // JNZ 0x1000:b305 (19EF_1410 / 0x1B300)
-    if(!ZeroFlag) {
-      goto label_19EF_1415_1B305;
+    CheckExternalEvents(cs14, 0x3DA);
+    // NEG AX (19EF_03D8 / 0x1A2C8)
+    AX = Alu16.Sub(0, AX);
+    CheckExternalEvents(cs14, 0x3DE);
+    // CMP AX,word ptr [0x26c] (19EF_03DA / 0x1A2CA)
+    Alu16.Sub(AX, UInt16[DS, 0x26C]);
+    CheckExternalEvents(cs14, 0x3E0);
+    // JNC 0x1000:a337 (19EF_03DE / 0x1A2CE)
+    if(!CarryFlag) {
+      // JNC target is JMP, inlining.
+      CheckExternalEvents(cs8, 0xA33A);
+      // JMP 0x1000:a458 (1000_A337 / 0x1A337)
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A458_1A458, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
     }
-    CheckExternalEvents(cs12, 0x1415);
-    // MOV SI,0x4e4 (19EF_1412 / 0x1B302)
-    SI = 0x4E4;
-    label_19EF_1415_1B305:
-    CheckExternalEvents(cs12, 0x1417);
-    // MOV DL,AL (19EF_1415 / 0x1B305)
-    DL = AL;
-    CheckExternalEvents(cs12, 0x1419);
-    // CMP AL,0xff (19EF_1417 / 0x1B307)
-    Alu.Sub8(AL, 0xFF);
-    CheckExternalEvents(cs12, 0x141B);
-    // JNZ 0x1000:b310 (19EF_1419 / 0x1B309)
-    if(!ZeroFlag) {
-      goto label_19EF_1420_1B310;
-    }
-    CheckExternalEvents(cs12, 0x141D);
-    // MOV DL,0x7 (19EF_141B / 0x1B30B)
-    DL = 0x7;
-    CheckExternalEvents(cs12, 0x1420);
-    // SUB SI,0x40 (19EF_141D / 0x1B30D)
-    SI -= 0x40;
-    label_19EF_1420_1B310:
-    CheckExternalEvents(cs12, 0x1422);
-    // CMP AL,0x8 (19EF_1420 / 0x1B310)
-    Alu.Sub8(AL, 0x8);
-    CheckExternalEvents(cs12, 0x1424);
-    // JNZ 0x1000:b319 (19EF_1422 / 0x1B312)
-    if(!ZeroFlag) {
-      goto label_19EF_1429_1B319;
-    }
-    CheckExternalEvents(cs12, 0x1426);
-    // XOR DL,DL (19EF_1424 / 0x1B314)
-    DL = 0;
-    CheckExternalEvents(cs12, 0x1429);
-    // ADD SI,0x40 (19EF_1426 / 0x1B316)
-    SI += 0x40;
-    label_19EF_1429_1B319:
-    CheckExternalEvents(cs12, 0x142B);
-    // ADD SI,DX (19EF_1429 / 0x1B319)
-    SI += DX;
-    CheckExternalEvents(cs12, 0x142D);
-    // XOR DL,DL (19EF_142B / 0x1B31B)
-    // DL ^= DL;
-    DL = Alu.Xor8(DL, DL);
-    CheckExternalEvents(cs12, 0x142F);
-    // MOV CH,byte ptr [SI] (19EF_142D / 0x1B31D)
-    CH = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x1433);
-    // MOV byte ptr [0x2c9],CH (19EF_142F / 0x1B31F)
-    UInt8[DS, 0x2C9] = CH;
-    CheckExternalEvents(cs12, 0x1435);
-    // MOV DH,CH (19EF_1433 / 0x1B323)
-    DH = CH;
-    CheckExternalEvents(cs12, 0x1437);
-    // SHR DX,0x1 (19EF_1435 / 0x1B325)
-    DX >>= 0x1;
-    CheckExternalEvents(cs12, 0x1439);
-    // SHR DX,0x1 (19EF_1437 / 0x1B327)
-    DX >>= 0x1;
-    CheckExternalEvents(cs12, 0x143D);
-    // SUB SI,0x324 (19EF_1439 / 0x1B329)
-    SI -= 0x324;
-    CheckExternalEvents(cs12, 0x1441);
-    // ADD SI,0x564 (19EF_143D / 0x1B32D)
-    // SI += 0x564;
-    SI = Alu.Add16(SI, 0x564);
-    CheckExternalEvents(cs12, 0x1443);
-    // MOV BL,byte ptr [SI] (19EF_1441 / 0x1B331)
-    BL = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x1447);
-    // MOV byte ptr [0x2ca],BL (19EF_1443 / 0x1B333)
-    UInt8[DS, 0x2CA] = BL;
-    CheckExternalEvents(cs12, 0x144A);
-    // MOV SI,0xc1d (19EF_1447 / 0x1B337)
-    SI = 0xC1D;
-    CheckExternalEvents(cs12, 0x144C);
-    // OR BL,BL (19EF_144A / 0x1B33A)
-    // BL |= BL;
-    BL = Alu.Or8(BL, BL);
-    CheckExternalEvents(cs12, 0x144E);
-    // JS 0x1000:b356 (19EF_144C / 0x1B33C)
+    CheckExternalEvents(cs14, 0x3E4);
+    // MOV DX,word ptr [0x268] (19EF_03E0 / 0x1A2D0)
+    DX = UInt16[DS, 0x268];
+    CheckExternalEvents(cs14, 0x3E6);
+    // SHL DX,0x1 (19EF_03E4 / 0x1A2D4)
+    DX <<= 0x1;
+    CheckExternalEvents(cs14, 0x3E8);
+    // SHL DX,0x1 (19EF_03E6 / 0x1A2D6)
+    DX <<= 0x1;
+    CheckExternalEvents(cs14, 0x3EA);
+    // MUL DX (19EF_03E8 / 0x1A2D8)
+    uint resMul19EF_03E8 = Alu16.Mul(AX, DX);
+    AX = (ushort)(resMul19EF_03E8);
+    DX = (ushort)(resMul19EF_03E8 >> 16);
+    CheckExternalEvents(cs14, 0x3EC);
+    // ADD SI,AX (19EF_03EA / 0x1A2DA)
+    // SI += AX;
+    SI = Alu16.Add(SI, AX);
+    CheckExternalEvents(cs14, 0x3EF);
+    // MOV AX,[0x26c] (19EF_03EC / 0x1A2DC)
+    AX = UInt16[DS, 0x26C];
+    CheckExternalEvents(cs14, 0x3F3);
+    // ADD AX,word ptr [0x264] (19EF_03EF / 0x1A2DF)
+    // AX += UInt16[DS, 0x264];
+    AX = Alu16.Add(AX, UInt16[DS, 0x264]);
+    CheckExternalEvents(cs14, 0x3F5);
+    // JS 0x1000:a337 (19EF_03F3 / 0x1A2E3)
     if(SignFlag) {
       // JS target is JMP, inlining.
-      CheckExternalEvents(cs12, 0x1469);
-      // JMP 0x1000:b42a (19EF_1466 / 0x1B356)
-      // Jump converted to non entry function call
-      if(JumpDispatcher.Jump(split_1000_B3E0_1B3E0, 0x1B42A - cs1 * 0x10)) {
-        loadOffset = JumpDispatcher.NextEntryAddress;
-        goto entrydispatcher;
-      }
-      return JumpDispatcher.JumpAsmReturn!;
-    }
-    CheckExternalEvents(cs12, 0x1450);
-    // JZ 0x1000:b34f (19EF_144E / 0x1B33E)
-    if(ZeroFlag) {
-      goto label_19EF_145F_1B34F;
-    }
-    CheckExternalEvents(cs12, 0x1453);
-    // CMP BL,0x10 (19EF_1450 / 0x1B340)
-    Alu.Sub8(BL, 0x10);
-    CheckExternalEvents(cs12, 0x1455);
-    // JZ 0x1000:b359 (19EF_1453 / 0x1B343)
-    if(ZeroFlag) {
-      goto label_19EF_1469_1B359;
-    }
-    CheckExternalEvents(cs12, 0x1458);
-    // SUB BL,0x10 (19EF_1455 / 0x1B345)
-    BL -= 0x10;
-    CheckExternalEvents(cs12, 0x145B);
-    // CMP BL,0x31 (19EF_1458 / 0x1B348)
-    Alu.Sub8(BL, 0x31);
-    CheckExternalEvents(cs12, 0x145D);
-    // JC 0x1000:b34f (19EF_145B / 0x1B34B)
-    if(CarryFlag) {
-      goto label_19EF_145F_1B34F;
-    }
-    CheckExternalEvents(cs12, 0x145F);
-    // MOV BL,0x30 (19EF_145D / 0x1B34D)
-    BL = 0x30;
-    label_19EF_145F_1B34F:
-    CheckExternalEvents(cs12, 0x1464);
-    // CMP byte ptr [0x273],0x0 (19EF_145F / 0x1B34F)
-    Alu.Sub8(UInt8[DS, 0x273], 0x0);
-    CheckExternalEvents(cs12, 0x1466);
-    // JNZ 0x1000:b35e (19EF_1464 / 0x1B354)
-    if(!ZeroFlag) {
-      goto label_19EF_146E_1B35E;
-    }
-    label_19EF_1466_1B356:
-    CheckExternalEvents(cs12, 0x1469);
-    // JMP 0x1000:b42a (19EF_1466 / 0x1B356)
-    // Jump converted to non entry function call
-    if(JumpDispatcher.Jump(split_1000_B3E0_1B3E0, 0x1B42A - cs1 * 0x10)) {
-      loadOffset = JumpDispatcher.NextEntryAddress;
-      goto entrydispatcher;
-    }
-    return JumpDispatcher.JumpAsmReturn!;
-    label_19EF_1469_1B359:
-    CheckExternalEvents(cs12, 0x146B);
-    // MOV BL,0x70 (19EF_1469 / 0x1B359)
-    BL = 0x70;
-    CheckExternalEvents(cs12, 0x146E);
-    // JMP 0x1000:b42a (19EF_146B / 0x1B35B)
-    // Jump converted to non entry function call
-    if(JumpDispatcher.Jump(split_1000_B3E0_1B3E0, 0x1B42A - cs1 * 0x10)) {
-      loadOffset = JumpDispatcher.NextEntryAddress;
-      goto entrydispatcher;
-    }
-    return JumpDispatcher.JumpAsmReturn!;
-    label_19EF_146E_1B35E:
-    CheckExternalEvents(cs12, 0x1473);
-    // CMP byte ptr [0x273],0x2 (19EF_146E / 0x1B35E)
-    Alu.Sub8(UInt8[DS, 0x273], 0x2);
-    CheckExternalEvents(cs12, 0x1475);
-    // JNZ 0x1000:b39f (19EF_1473 / 0x1B363)
-    if(!ZeroFlag) {
-      goto label_19EF_14AF_1B39F;
-    }
-    CheckExternalEvents(cs12, 0x1476);
-    // PUSH DI (19EF_1475 / 0x1B365)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0x1477);
-    // PUSH BX (19EF_1476 / 0x1B366)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x147A);
-    // MOV DI,0x20dd (19EF_1477 / 0x1B367)
-    DI = 0x20DD;
-    CheckExternalEvents(cs12, 0x147D);
-    // ADD DI,0x7 (19EF_147A / 0x1B36A)
-    DI += 0x7;
-    CheckExternalEvents(cs12, 0x147F);
-    // XOR BH,BH (19EF_147D / 0x1B36D)
-    // BH ^= BH;
-    BH = Alu.Xor8(BH, BH);
-    CheckExternalEvents(cs12, 0x1481);
-    // MOV BL,CH (19EF_147F / 0x1B36F)
-    BL = CH;
-    CheckExternalEvents(cs12, 0x1485);
-    // MOV CH,byte ptr [BX + 0x211d] (19EF_1481 / 0x1B371)
-    CH = UInt8[DS, (ushort)(BX + 0x211D)];
-    CheckExternalEvents(cs12, 0x1487);
-    // XOR CL,CL (19EF_1485 / 0x1B375)
-    CL = 0;
-    CheckExternalEvents(cs12, 0x1489);
-    // SHR CX,0x1 (19EF_1487 / 0x1B377)
-    CX >>= 0x1;
-    CheckExternalEvents(cs12, 0x148B);
-    // SHR CX,0x1 (19EF_1489 / 0x1B379)
-    CX >>= 0x1;
-    CheckExternalEvents(cs12, 0x148D);
-    // ADD SI,CX (19EF_148B / 0x1B37B)
-    // SI += CX;
-    SI = Alu.Add16(SI, CX);
-    CheckExternalEvents(cs12, 0x148F);
-    // MOV AL,0x8 (19EF_148D / 0x1B37D)
-    AL = 0x8;
-    label_19EF_148F_1B37F:
-    CheckExternalEvents(cs12, 0x1492);
-    // MOV CX,0x8 (19EF_148F / 0x1B37F)
-    CX = 0x8;
-    CheckExternalEvents(cs12, 0x1494);
-    // XOR BH,BH (19EF_1492 / 0x1B382)
-    // BH ^= BH;
-    BH = Alu.Xor8(BH, BH);
-    label_19EF_1494_1B384:
-    CheckExternalEvents(cs12, 0x1496);
-    // MOV BL,byte ptr [SI] (19EF_1494 / 0x1B384)
-    BL = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x1499);
-    // CMP BL,0x40 (19EF_1496 / 0x1B386)
-    Alu.Sub8(BL, 0x40);
-    CheckExternalEvents(cs12, 0x149B);
-    // JNC 0x1000:b38f (19EF_1499 / 0x1B389)
-    if(!CarryFlag) {
-      goto label_19EF_149F_1B38F;
-    }
-    CheckExternalEvents(cs12, 0x149F);
-    // MOV BL,byte ptr [BX + 0x211d] (19EF_149B / 0x1B38B)
-    BL = UInt8[DS, (ushort)(BX + 0x211D)];
-    label_19EF_149F_1B38F:
-    CheckExternalEvents(cs12, 0x14A1);
-    // MOV byte ptr [DI],BL (19EF_149F / 0x1B38F)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs12, 0x14A2);
-    // INC SI (19EF_14A1 / 0x1B391)
-    SI++;
-    CheckExternalEvents(cs12, 0x14A3);
-    // DEC DI (19EF_14A2 / 0x1B392)
-    DI = Alu.Dec16(DI);
-    CheckExternalEvents(cs12, 0x14A5);
-    // LOOP 0x1000:b384 (19EF_14A3 / 0x1B393)
-    if(--CX != 0) {
-      goto label_19EF_1494_1B384;
-    }
-    CheckExternalEvents(cs12, 0x14A8);
-    // ADD DI,0x10 (19EF_14A5 / 0x1B395)
-    DI += 0x10;
-    CheckExternalEvents(cs12, 0x14AA);
-    // DEC AL (19EF_14A8 / 0x1B398)
-    AL = Alu.Dec8(AL);
-    CheckExternalEvents(cs12, 0x14AC);
-    // JNZ 0x1000:b37f (19EF_14AA / 0x1B39A)
-    if(!ZeroFlag) {
-      goto label_19EF_148F_1B37F;
-    }
-    CheckExternalEvents(cs12, 0x14AF);
-    // JMP 0x1000:b423 (19EF_14AC / 0x1B39C)
-    // Jump converted to non entry function call
-    if(JumpDispatcher.Jump(split_1000_B3E0_1B3E0, 0x1B423 - cs1 * 0x10)) {
-      loadOffset = JumpDispatcher.NextEntryAddress;
-      goto entrydispatcher;
-    }
-    return JumpDispatcher.JumpAsmReturn!;
-    label_19EF_14AF_1B39F:
-    CheckExternalEvents(cs12, 0x14B4);
-    // CMP byte ptr [0x273],0x1 (19EF_14AF / 0x1B39F)
-    Alu.Sub8(UInt8[DS, 0x273], 0x1);
-    CheckExternalEvents(cs12, 0x14B6);
-    // JNZ 0x1000:b3e0 (19EF_14B4 / 0x1B3A4)
-    if(!ZeroFlag) {
+      CheckExternalEvents(cs8, 0xA33A);
+      // JMP 0x1000:a458 (1000_A337 / 0x1A337)
       // Jump converted to entry function call
-      if(JumpDispatcher.Jump(split_1000_B3E0_1B3E0, 0)) {
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A458_1A458, 0)) {
         loadOffset = JumpDispatcher.NextEntryAddress;
         goto entrydispatcher;
       }
       return JumpDispatcher.JumpAsmReturn!;
     }
-    CheckExternalEvents(cs12, 0x14B7);
-    // PUSH DI (19EF_14B6 / 0x1B3A6)
-    Stack.Push16(DI);
-    CheckExternalEvents(cs12, 0x14B8);
-    // PUSH BX (19EF_14B7 / 0x1B3A7)
-    Stack.Push16(BX);
-    CheckExternalEvents(cs12, 0x14BB);
-    // MOV DI,0x20dd (19EF_14B8 / 0x1B3A8)
-    DI = 0x20DD;
-    CheckExternalEvents(cs12, 0x14BE);
-    // ADD DI,0x38 (19EF_14BB / 0x1B3AB)
-    DI += 0x38;
-    CheckExternalEvents(cs12, 0x14C0);
-    // XOR BH,BH (19EF_14BE / 0x1B3AE)
-    // BH ^= BH;
-    BH = Alu.Xor8(BH, BH);
-    CheckExternalEvents(cs12, 0x14C2);
-    // MOV BL,CH (19EF_14C0 / 0x1B3B0)
-    BL = CH;
-    CheckExternalEvents(cs12, 0x14C6);
-    // MOV CH,byte ptr [BX + 0x213d] (19EF_14C2 / 0x1B3B2)
-    CH = UInt8[DS, (ushort)(BX + 0x213D)];
-    CheckExternalEvents(cs12, 0x14C8);
-    // XOR CL,CL (19EF_14C6 / 0x1B3B6)
-    CL = 0;
-    CheckExternalEvents(cs12, 0x14CA);
-    // SHR CX,0x1 (19EF_14C8 / 0x1B3B8)
-    CX >>= 0x1;
-    CheckExternalEvents(cs12, 0x14CC);
-    // SHR CX,0x1 (19EF_14CA / 0x1B3BA)
-    CX >>= 0x1;
-    CheckExternalEvents(cs12, 0x14CE);
-    // ADD SI,CX (19EF_14CC / 0x1B3BC)
-    // SI += CX;
-    SI = Alu.Add16(SI, CX);
-    CheckExternalEvents(cs12, 0x14D0);
-    // MOV AL,0x8 (19EF_14CE / 0x1B3BE)
-    AL = 0x8;
-    label_19EF_14D0_1B3C0:
-    CheckExternalEvents(cs12, 0x14D3);
-    // MOV CX,0x8 (19EF_14D0 / 0x1B3C0)
-    CX = 0x8;
-    CheckExternalEvents(cs12, 0x14D5);
-    // XOR BH,BH (19EF_14D3 / 0x1B3C3)
-    // BH ^= BH;
-    BH = Alu.Xor8(BH, BH);
-    label_19EF_14D5_1B3C5:
-    CheckExternalEvents(cs12, 0x14D7);
-    // MOV BL,byte ptr [SI] (19EF_14D5 / 0x1B3C5)
-    BL = UInt8[DS, (ushort)(SI)];
-    CheckExternalEvents(cs12, 0x14DA);
-    // CMP BL,0x40 (19EF_14D7 / 0x1B3C7)
-    Alu.Sub8(BL, 0x40);
-    CheckExternalEvents(cs12, 0x14DC);
-    // JNC 0x1000:b3d0 (19EF_14DA / 0x1B3CA)
+    CheckExternalEvents(cs14, 0x3F8);
+    // MOV [0x26c],AX (19EF_03F5 / 0x1A2E5)
+    UInt16[DS, 0x26C] = AX;
+    CheckExternalEvents(cs14, 0x3FA);
+    // XOR AX,AX (19EF_03F8 / 0x1A2E8)
+    // AX ^= AX;
+    AX = Alu16.Xor(AX, AX);
+    CheckExternalEvents(cs14, 0x3FD);
+    // MOV [0x264],AX (19EF_03FA / 0x1A2EA)
+    UInt16[DS, 0x264] = AX;
+    label_19EF_03FD_1A2ED:
+    CheckExternalEvents(cs14, 0x400);
+    // MOV AX,0xc8 (19EF_03FD / 0x1A2ED)
+    AX = 0xC8;
+    CheckExternalEvents(cs14, 0x404);
+    // SUB AX,word ptr [0x264] (19EF_0400 / 0x1A2F0)
+    // AX -= UInt16[DS, 0x264];
+    AX = Alu16.Sub(AX, UInt16[DS, 0x264]);
+    CheckExternalEvents(cs14, 0x406);
+    // JS 0x1000:a337 (19EF_0404 / 0x1A2F4)
+    if(SignFlag) {
+      // JS target is JMP, inlining.
+      CheckExternalEvents(cs8, 0xA33A);
+      // JMP 0x1000:a458 (1000_A337 / 0x1A337)
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A458_1A458, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs14, 0x408);
+    // JZ 0x1000:a337 (19EF_0406 / 0x1A2F6)
+    if(ZeroFlag) {
+      // JZ target is JMP, inlining.
+      CheckExternalEvents(cs8, 0xA33A);
+      // JMP 0x1000:a458 (1000_A337 / 0x1A337)
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A458_1A458, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs14, 0x40C);
+    // CMP AX,word ptr [0x26c] (19EF_0408 / 0x1A2F8)
+    Alu16.Sub(AX, UInt16[DS, 0x26C]);
+    CheckExternalEvents(cs14, 0x40E);
+    // JNC 0x1000:a301 (19EF_040C / 0x1A2FC)
     if(!CarryFlag) {
-      goto label_19EF_14E0_1B3D0;
+      goto label_19EF_0411_1A301;
     }
-    CheckExternalEvents(cs12, 0x14E0);
-    // MOV BL,byte ptr [BX + 0x213d] (19EF_14DC / 0x1B3CC)
-    BL = UInt8[DS, (ushort)(BX + 0x213D)];
-    label_19EF_14E0_1B3D0:
-    CheckExternalEvents(cs12, 0x14E2);
-    // MOV byte ptr [DI],BL (19EF_14E0 / 0x1B3D0)
-    UInt8[DS, (ushort)(DI)] = BL;
-    CheckExternalEvents(cs12, 0x14E3);
-    // INC SI (19EF_14E2 / 0x1B3D2)
-    SI++;
-    CheckExternalEvents(cs12, 0x14E4);
-    // INC DI (19EF_14E3 / 0x1B3D3)
-    DI = Alu.Inc16(DI);
-    CheckExternalEvents(cs12, 0x14E6);
-    // LOOP 0x1000:b3c5 (19EF_14E4 / 0x1B3D4)
+    CheckExternalEvents(cs14, 0x411);
+    // MOV [0x26c],AX (19EF_040E / 0x1A2FE)
+    UInt16[DS, 0x26C] = AX;
+    label_19EF_0411_1A301:
+    CheckExternalEvents(cs14, 0x414);
+    // MOV AX,[0x266] (19EF_0411 / 0x1A301)
+    AX = UInt16[DS, 0x266];
+    CheckExternalEvents(cs14, 0x417);
+    // CMP AX,0x0 (19EF_0414 / 0x1A304)
+    Alu16.Sub(AX, 0x0);
+    CheckExternalEvents(cs14, 0x419);
+    // JNS 0x1000:a320 (19EF_0417 / 0x1A307)
+    if(!SignFlag) {
+      goto label_19EF_0430_1A320;
+    }
+    CheckExternalEvents(cs14, 0x41D);
+    // ADD word ptr [0x268],AX (19EF_0419 / 0x1A309)
+    UInt16[DS, 0x268] += AX;
+    CheckExternalEvents(cs14, 0x41F);
+    // NEG AX (19EF_041D / 0x1A30D)
+    AX = Alu16.Sub(0, AX);
+    CheckExternalEvents(cs14, 0x421);
+    // SHL AX,0x1 (19EF_041F / 0x1A30F)
+    AX <<= 0x1;
+    CheckExternalEvents(cs14, 0x423);
+    // SHL AX,0x1 (19EF_0421 / 0x1A311)
+    AX <<= 0x1;
+    CheckExternalEvents(cs14, 0x425);
+    // ADD SI,AX (19EF_0423 / 0x1A313)
+    SI += AX;
+    CheckExternalEvents(cs14, 0x429);
+    // CMP AX,word ptr [0x26a] (19EF_0425 / 0x1A315)
+    Alu16.Sub(AX, UInt16[DS, 0x26A]);
+    CheckExternalEvents(cs14, 0x42B);
+    // JNC 0x1000:a337 (19EF_0429 / 0x1A319)
+    if(!CarryFlag) {
+      // JNC target is JMP, inlining.
+      CheckExternalEvents(cs8, 0xA33A);
+      // JMP 0x1000:a458 (1000_A337 / 0x1A337)
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A458_1A458, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs14, 0x42D);
+    // XOR AX,AX (19EF_042B / 0x1A31B)
+    // AX ^= AX;
+    AX = Alu16.Xor(AX, AX);
+    CheckExternalEvents(cs14, 0x430);
+    // MOV [0x266],AX (19EF_042D / 0x1A31D)
+    UInt16[DS, 0x266] = AX;
+    label_19EF_0430_1A320:
+    CheckExternalEvents(cs14, 0x433);
+    // MOV AX,0x28 (19EF_0430 / 0x1A320)
+    AX = 0x28;
+    CheckExternalEvents(cs14, 0x437);
+    // SUB AX,word ptr [0x266] (19EF_0433 / 0x1A323)
+    // AX -= UInt16[DS, 0x266];
+    AX = Alu16.Sub(AX, UInt16[DS, 0x266]);
+    CheckExternalEvents(cs14, 0x439);
+    // JS 0x1000:a337 (19EF_0437 / 0x1A327)
+    if(SignFlag) {
+      // JS target is JMP, inlining.
+      CheckExternalEvents(cs8, 0xA33A);
+      // JMP 0x1000:a458 (1000_A337 / 0x1A337)
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A458_1A458, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs14, 0x43B);
+    // JZ 0x1000:a337 (19EF_0439 / 0x1A329)
+    if(ZeroFlag) {
+      // JZ target is JMP, inlining.
+      CheckExternalEvents(cs8, 0xA33A);
+      // JMP 0x1000:a458 (1000_A337 / 0x1A337)
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A458_1A458, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs14, 0x43F);
+    // CMP AX,word ptr [0x268] (19EF_043B / 0x1A32B)
+    Alu16.Sub(AX, UInt16[DS, 0x268]);
+    CheckExternalEvents(cs14, 0x441);
+    // JNC 0x1000:a33a (19EF_043F / 0x1A32F)
+    if(!CarryFlag) {
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A33A_1A33A, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs14, 0x444);
+    // MOV [0x268],AX (19EF_0441 / 0x1A331)
+    UInt16[DS, 0x268] = AX;
+    CheckExternalEvents(cs14, 0x446);
+    // JMP 0x1000:a33a (19EF_0444 / 0x1A334)
+    // Jump converted to entry function call
+    if(JumpDispatcher.Jump(ghidra_guess_1000_A33A_1A33A, 0)) {
+      loadOffset = JumpDispatcher.NextEntryAddress;
+      goto entrydispatcher;
+    }
+    return JumpDispatcher.JumpAsmReturn!;
+  }
+  
+  public virtual Action split_1000_A337_1A337(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_A337_1A337:
+    CheckExternalEvents(cs8, 0xA33A);
+    // JMP 0x1000:a458 (1000_A337 / 0x1A337)
+    // Jump converted to entry function call
+    if(JumpDispatcher.Jump(ghidra_guess_1000_A458_1A458, 0)) {
+      loadOffset = JumpDispatcher.NextEntryAddress;
+      goto entrydispatcher;
+    }
+    return JumpDispatcher.JumpAsmReturn!;
+  }
+  
+  public virtual Action ghidra_guess_1000_A33A_1A33A(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_A33A_1A33A:
+    CheckExternalEvents(cs8, 0xA33D);
+    // MOV AX,[0x264] (1000_A33A / 0x1A33A)
+    AX = UInt16[DS, 0x264];
+    CheckExternalEvents(cs8, 0xA340);
+    // MOV DX,0x28 (1000_A33D / 0x1A33D)
+    DX = 0x28;
+    CheckExternalEvents(cs8, 0xA342);
+    // MUL DL (1000_A340 / 0x1A340)
+    ushort resMul1000_A340 = Alu8.Mul(AL, DL);
+    AL = (byte)(resMul1000_A340);
+    AH = (byte)(resMul1000_A340 >> 8);
+    CheckExternalEvents(cs8, 0xA346);
+    // ADD AX,word ptr [0x266] (1000_A342 / 0x1A342)
+    AX += UInt16[DS, 0x266];
+    CheckExternalEvents(cs8, 0xA348);
+    // ADD DI,AX (1000_A346 / 0x1A346)
+    // DI += AX;
+    DI = Alu16.Add(DI, AX);
+    CheckExternalEvents(cs8, 0xA34B);
+    // MOV AX,0x28 (1000_A348 / 0x1A348)
+    AX = 0x28;
+    CheckExternalEvents(cs8, 0xA34F);
+    // SUB AX,word ptr [0x268] (1000_A34B / 0x1A34B)
+    // AX -= UInt16[DS, 0x268];
+    AX = Alu16.Sub(AX, UInt16[DS, 0x268]);
+    CheckExternalEvents(cs8, 0xA352);
+    // MOV [0x264],AX (1000_A34F / 0x1A34F)
+    UInt16[DS, 0x264] = AX;
+    CheckExternalEvents(cs8, 0xA355);
+    // MOV DX,0x3ce (1000_A352 / 0x1A352)
+    DX = 0x3CE;
+    CheckExternalEvents(cs8, 0xA358);
+    // MOV AX,0x5 (1000_A355 / 0x1A355)
+    AX = 0x5;
+    CheckExternalEvents(cs8, 0xA359);
+    // OUT DX,AX (1000_A358 / 0x1A358)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA35C);
+    // MOV AX,0xff08 (1000_A359 / 0x1A359)
+    AX = 0xFF08;
+    CheckExternalEvents(cs8, 0xA35D);
+    // OUT DX,AX (1000_A35C / 0x1A35C)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA361);
+    // MOV BX,word ptr [0x262] (1000_A35D / 0x1A35D)
+    BX = UInt16[DS, 0x262];
+    CheckExternalEvents(cs8, 0xA364);
+    // AND BX,0x7 (1000_A361 / 0x1A361)
+    // BX &= 0x7;
+    BX = Alu16.And(BX, 0x7);
+    label_1000_A364_1A364:
+    CheckExternalEvents(cs8, 0xA368);
+    // MOV BP,word ptr [0x266] (1000_A364 / 0x1A364)
+    BP = UInt16[DS, 0x266];
+    CheckExternalEvents(cs8, 0xA36C);
+    // MOV CX,word ptr [0x268] (1000_A368 / 0x1A368)
+    CX = UInt16[DS, 0x268];
+    CheckExternalEvents(cs8, 0xA36F);
+    // MOV AX,[0x25c] (1000_A36C / 0x1A36C)
+    AX = UInt16[DS, 0x25C];
+    CheckExternalEvents(cs8, 0xA370);
+    // PUSH DS (1000_A36F / 0x1A36F)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs8, 0xA372);
+    // MOV DS,AX (1000_A370 / 0x1A370)
+    DS = AX;
+    CheckExternalEvents(cs8, 0xA374);
+    // MOV DH,0x3 (1000_A372 / 0x1A372)
+    DH = 0x3;
+    label_1000_A374_1A374:
+    CheckExternalEvents(cs8, 0xA375);
+    // PUSH CX (1000_A374 / 0x1A374)
+    Stack.Push16(CX);
+    CheckExternalEvents(cs8, 0xA377);
+    // MOV DL,0xce (1000_A375 / 0x1A375)
+    DL = 0xCE;
+    CheckExternalEvents(cs8, 0xA37A);
+    // MOV AX,0x4 (1000_A377 / 0x1A377)
+    AX = 0x4;
+    CheckExternalEvents(cs8, 0xA37B);
+    // OUT DX,AX (1000_A37A / 0x1A37A)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA37D);
+    // MOV DL,0xc4 (1000_A37B / 0x1A37B)
+    DL = 0xC4;
+    CheckExternalEvents(cs8, 0xA380);
+    // MOV AX,0x102 (1000_A37D / 0x1A37D)
+    AX = 0x102;
+    CheckExternalEvents(cs8, 0xA381);
+    // OUT DX,AX (1000_A380 / 0x1A380)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA383);
+    // MOV AX,word ptr [SI] (1000_A381 / 0x1A381)
+    AX = UInt16[DS, (ushort)(SI)];
+    CheckExternalEvents(cs8, 0xA386);
+    // OR AX,word ptr [SI + 0x2] (1000_A383 / 0x1A383)
+    // AX |= UInt16[DS, (ushort)(SI + 0x2)];
+    AX = Alu16.Or(AX, UInt16[DS, (ushort)(SI + 0x2)]);
+    CheckExternalEvents(cs8, 0xA388);
+    // OR AH,AL (1000_A386 / 0x1A386)
+    AH |= AL;
+    CheckExternalEvents(cs8, 0xA38A);
+    // XOR AL,AL (1000_A388 / 0x1A388)
+    AL = 0;
+    CheckExternalEvents(cs8, 0xA38C);
+    // CMP BL,AL (1000_A38A / 0x1A38A)
+    Alu8.Sub(BL, AL);
+    CheckExternalEvents(cs8, 0xA38E);
+    // JZ 0x1000:a392 (1000_A38C / 0x1A38C)
+    if(ZeroFlag) {
+      goto label_1000_A392_1A392;
+    }
+    CheckExternalEvents(cs8, 0xA390);
+    // MOV CL,BL (1000_A38E / 0x1A38E)
+    CL = BL;
+    CheckExternalEvents(cs8, 0xA392);
+    // SHR AX,CL (1000_A390 / 0x1A390)
+    // AX >>= CL;
+    AX = Alu16.Shr(AX, CL);
+    label_1000_A392_1A392:
+    CheckExternalEvents(cs8, 0xA394);
+    // NOT AX (1000_A392 / 0x1A392)
+    AX = (ushort)(~AX);
+    CheckExternalEvents(cs8, 0xA396);
+    // MOV CH,AH (1000_A394 / 0x1A394)
+    CH = AH;
+    CheckExternalEvents(cs8, 0xA398);
+    // MOV BH,AL (1000_A396 / 0x1A396)
+    BH = AL;
+    CheckExternalEvents(cs8, 0xA39B);
+    // AND byte ptr ES:[DI],CH (1000_A398 / 0x1A398)
+    // UInt8[ES, (ushort)(DI)] &= CH;
+    UInt8[ES, (ushort)(DI)] = Alu8.And(UInt8[ES, (ushort)(DI)], CH);
+    CheckExternalEvents(cs8, 0xA39C);
+    // LODSB SI (1000_A39B / 0x1A39B)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs8, 0xA39E);
+    // MOV AH,AL (1000_A39C / 0x1A39C)
+    AH = AL;
+    CheckExternalEvents(cs8, 0xA3A0);
+    // XOR AL,AL (1000_A39E / 0x1A39E)
+    AL = 0;
+    CheckExternalEvents(cs8, 0xA3A2);
+    // CMP BL,AL (1000_A3A0 / 0x1A3A0)
+    Alu8.Sub(BL, AL);
+    CheckExternalEvents(cs8, 0xA3A4);
+    // JZ 0x1000:a3a6 (1000_A3A2 / 0x1A3A2)
+    if(ZeroFlag) {
+      goto label_1000_A3A6_1A3A6;
+    }
+    CheckExternalEvents(cs8, 0xA3A6);
+    // SHR AX,CL (1000_A3A4 / 0x1A3A4)
+    // AX >>= CL;
+    AX = Alu16.Shr(AX, CL);
+    label_1000_A3A6_1A3A6:
+    CheckExternalEvents(cs8, 0xA3A9);
+    // OR byte ptr ES:[DI],AH (1000_A3A6 / 0x1A3A6)
+    UInt8[ES, (ushort)(DI)] |= AH;
+    CheckExternalEvents(cs8, 0xA3AC);
+    // CMP BP,0x27 (1000_A3A9 / 0x1A3A9)
+    Alu16.Sub(BP, 0x27);
+    CheckExternalEvents(cs8, 0xA3AE);
+    // JNC 0x1000:a3b6 (1000_A3AC / 0x1A3AC)
+    if(!CarryFlag) {
+      goto label_1000_A3B6_1A3B6;
+    }
+    CheckExternalEvents(cs8, 0xA3B2);
+    // AND byte ptr ES:[DI + 0x1],BH (1000_A3AE / 0x1A3AE)
+    // UInt8[ES, (ushort)(DI + 0x1)] &= BH;
+    UInt8[ES, (ushort)(DI + 0x1)] = Alu8.And(UInt8[ES, (ushort)(DI + 0x1)], BH);
+    CheckExternalEvents(cs8, 0xA3B6);
+    // OR byte ptr ES:[DI + 0x1],AL (1000_A3B2 / 0x1A3B2)
+    // UInt8[ES, (ushort)(DI + 0x1)] |= AL;
+    UInt8[ES, (ushort)(DI + 0x1)] = Alu8.Or(UInt8[ES, (ushort)(DI + 0x1)], AL);
+    label_1000_A3B6_1A3B6:
+    CheckExternalEvents(cs8, 0xA3B8);
+    // MOV DL,0xce (1000_A3B6 / 0x1A3B6)
+    DL = 0xCE;
+    CheckExternalEvents(cs8, 0xA3BB);
+    // MOV AX,0x104 (1000_A3B8 / 0x1A3B8)
+    AX = 0x104;
+    CheckExternalEvents(cs8, 0xA3BC);
+    // OUT DX,AX (1000_A3BB / 0x1A3BB)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA3BE);
+    // MOV DL,0xc4 (1000_A3BC / 0x1A3BC)
+    DL = 0xC4;
+    CheckExternalEvents(cs8, 0xA3C1);
+    // MOV AX,0x202 (1000_A3BE / 0x1A3BE)
+    AX = 0x202;
+    CheckExternalEvents(cs8, 0xA3C2);
+    // OUT DX,AX (1000_A3C1 / 0x1A3C1)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA3C5);
+    // AND byte ptr ES:[DI],CH (1000_A3C2 / 0x1A3C2)
+    // UInt8[ES, (ushort)(DI)] &= CH;
+    UInt8[ES, (ushort)(DI)] = Alu8.And(UInt8[ES, (ushort)(DI)], CH);
+    CheckExternalEvents(cs8, 0xA3C6);
+    // LODSB SI (1000_A3C5 / 0x1A3C5)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs8, 0xA3C8);
+    // MOV AH,AL (1000_A3C6 / 0x1A3C6)
+    AH = AL;
+    CheckExternalEvents(cs8, 0xA3CA);
+    // XOR AL,AL (1000_A3C8 / 0x1A3C8)
+    AL = 0;
+    CheckExternalEvents(cs8, 0xA3CC);
+    // CMP BL,AL (1000_A3CA / 0x1A3CA)
+    Alu8.Sub(BL, AL);
+    CheckExternalEvents(cs8, 0xA3CE);
+    // JZ 0x1000:a3d0 (1000_A3CC / 0x1A3CC)
+    if(ZeroFlag) {
+      goto label_1000_A3D0_1A3D0;
+    }
+    CheckExternalEvents(cs8, 0xA3D0);
+    // SHR AX,CL (1000_A3CE / 0x1A3CE)
+    // AX >>= CL;
+    AX = Alu16.Shr(AX, CL);
+    label_1000_A3D0_1A3D0:
+    CheckExternalEvents(cs8, 0xA3D3);
+    // OR byte ptr ES:[DI],AH (1000_A3D0 / 0x1A3D0)
+    UInt8[ES, (ushort)(DI)] |= AH;
+    CheckExternalEvents(cs8, 0xA3D6);
+    // CMP BP,0x27 (1000_A3D3 / 0x1A3D3)
+    Alu16.Sub(BP, 0x27);
+    CheckExternalEvents(cs8, 0xA3D8);
+    // JNC 0x1000:a3e0 (1000_A3D6 / 0x1A3D6)
+    if(!CarryFlag) {
+      goto label_1000_A3E0_1A3E0;
+    }
+    CheckExternalEvents(cs8, 0xA3DC);
+    // AND byte ptr ES:[DI + 0x1],BH (1000_A3D8 / 0x1A3D8)
+    // UInt8[ES, (ushort)(DI + 0x1)] &= BH;
+    UInt8[ES, (ushort)(DI + 0x1)] = Alu8.And(UInt8[ES, (ushort)(DI + 0x1)], BH);
+    CheckExternalEvents(cs8, 0xA3E0);
+    // OR byte ptr ES:[DI + 0x1],AL (1000_A3DC / 0x1A3DC)
+    // UInt8[ES, (ushort)(DI + 0x1)] |= AL;
+    UInt8[ES, (ushort)(DI + 0x1)] = Alu8.Or(UInt8[ES, (ushort)(DI + 0x1)], AL);
+    label_1000_A3E0_1A3E0:
+    CheckExternalEvents(cs8, 0xA3E2);
+    // MOV DL,0xce (1000_A3E0 / 0x1A3E0)
+    DL = 0xCE;
+    CheckExternalEvents(cs8, 0xA3E5);
+    // MOV AX,0x204 (1000_A3E2 / 0x1A3E2)
+    AX = 0x204;
+    CheckExternalEvents(cs8, 0xA3E6);
+    // OUT DX,AX (1000_A3E5 / 0x1A3E5)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA3E8);
+    // MOV DL,0xc4 (1000_A3E6 / 0x1A3E6)
+    DL = 0xC4;
+    CheckExternalEvents(cs8, 0xA3EB);
+    // MOV AX,0x402 (1000_A3E8 / 0x1A3E8)
+    AX = 0x402;
+    CheckExternalEvents(cs8, 0xA3EC);
+    // OUT DX,AX (1000_A3EB / 0x1A3EB)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA3EF);
+    // AND byte ptr ES:[DI],CH (1000_A3EC / 0x1A3EC)
+    // UInt8[ES, (ushort)(DI)] &= CH;
+    UInt8[ES, (ushort)(DI)] = Alu8.And(UInt8[ES, (ushort)(DI)], CH);
+    CheckExternalEvents(cs8, 0xA3F0);
+    // LODSB SI (1000_A3EF / 0x1A3EF)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs8, 0xA3F2);
+    // MOV AH,AL (1000_A3F0 / 0x1A3F0)
+    AH = AL;
+    CheckExternalEvents(cs8, 0xA3F4);
+    // XOR AL,AL (1000_A3F2 / 0x1A3F2)
+    AL = 0;
+    CheckExternalEvents(cs8, 0xA3F6);
+    // CMP BL,AL (1000_A3F4 / 0x1A3F4)
+    Alu8.Sub(BL, AL);
+    CheckExternalEvents(cs8, 0xA3F8);
+    // JZ 0x1000:a3fa (1000_A3F6 / 0x1A3F6)
+    if(ZeroFlag) {
+      goto label_1000_A3FA_1A3FA;
+    }
+    CheckExternalEvents(cs8, 0xA3FA);
+    // SHR AX,CL (1000_A3F8 / 0x1A3F8)
+    // AX >>= CL;
+    AX = Alu16.Shr(AX, CL);
+    label_1000_A3FA_1A3FA:
+    CheckExternalEvents(cs8, 0xA3FD);
+    // OR byte ptr ES:[DI],AH (1000_A3FA / 0x1A3FA)
+    UInt8[ES, (ushort)(DI)] |= AH;
+    CheckExternalEvents(cs8, 0xA400);
+    // CMP BP,0x27 (1000_A3FD / 0x1A3FD)
+    Alu16.Sub(BP, 0x27);
+    CheckExternalEvents(cs8, 0xA402);
+    // JNC 0x1000:a40a (1000_A400 / 0x1A400)
+    if(!CarryFlag) {
+      goto label_1000_A40A_1A40A;
+    }
+    CheckExternalEvents(cs8, 0xA406);
+    // AND byte ptr ES:[DI + 0x1],BH (1000_A402 / 0x1A402)
+    // UInt8[ES, (ushort)(DI + 0x1)] &= BH;
+    UInt8[ES, (ushort)(DI + 0x1)] = Alu8.And(UInt8[ES, (ushort)(DI + 0x1)], BH);
+    CheckExternalEvents(cs8, 0xA40A);
+    // OR byte ptr ES:[DI + 0x1],AL (1000_A406 / 0x1A406)
+    // UInt8[ES, (ushort)(DI + 0x1)] |= AL;
+    UInt8[ES, (ushort)(DI + 0x1)] = Alu8.Or(UInt8[ES, (ushort)(DI + 0x1)], AL);
+    label_1000_A40A_1A40A:
+    CheckExternalEvents(cs8, 0xA40C);
+    // MOV DL,0xce (1000_A40A / 0x1A40A)
+    DL = 0xCE;
+    CheckExternalEvents(cs8, 0xA40F);
+    // MOV AX,0x304 (1000_A40C / 0x1A40C)
+    AX = 0x304;
+    CheckExternalEvents(cs8, 0xA410);
+    // OUT DX,AX (1000_A40F / 0x1A40F)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA412);
+    // MOV DL,0xc4 (1000_A410 / 0x1A410)
+    DL = 0xC4;
+    CheckExternalEvents(cs8, 0xA415);
+    // MOV AX,0x802 (1000_A412 / 0x1A412)
+    AX = 0x802;
+    CheckExternalEvents(cs8, 0xA416);
+    // OUT DX,AX (1000_A415 / 0x1A415)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA419);
+    // AND byte ptr ES:[DI],CH (1000_A416 / 0x1A416)
+    // UInt8[ES, (ushort)(DI)] &= CH;
+    UInt8[ES, (ushort)(DI)] = Alu8.And(UInt8[ES, (ushort)(DI)], CH);
+    CheckExternalEvents(cs8, 0xA41A);
+    // LODSB SI (1000_A419 / 0x1A419)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs8, 0xA41C);
+    // MOV AH,AL (1000_A41A / 0x1A41A)
+    AH = AL;
+    CheckExternalEvents(cs8, 0xA41E);
+    // XOR AL,AL (1000_A41C / 0x1A41C)
+    AL = 0;
+    CheckExternalEvents(cs8, 0xA420);
+    // CMP BL,AL (1000_A41E / 0x1A41E)
+    Alu8.Sub(BL, AL);
+    CheckExternalEvents(cs8, 0xA422);
+    // JZ 0x1000:a424 (1000_A420 / 0x1A420)
+    if(ZeroFlag) {
+      goto label_1000_A424_1A424;
+    }
+    CheckExternalEvents(cs8, 0xA424);
+    // SHR AX,CL (1000_A422 / 0x1A422)
+    // AX >>= CL;
+    AX = Alu16.Shr(AX, CL);
+    label_1000_A424_1A424:
+    CheckExternalEvents(cs8, 0xA427);
+    // OR byte ptr ES:[DI],AH (1000_A424 / 0x1A424)
+    UInt8[ES, (ushort)(DI)] |= AH;
+    CheckExternalEvents(cs8, 0xA42A);
+    // CMP BP,0x27 (1000_A427 / 0x1A427)
+    Alu16.Sub(BP, 0x27);
+    CheckExternalEvents(cs8, 0xA42C);
+    // JNC 0x1000:a434 (1000_A42A / 0x1A42A)
+    if(!CarryFlag) {
+      goto label_1000_A434_1A434;
+    }
+    CheckExternalEvents(cs8, 0xA430);
+    // AND byte ptr ES:[DI + 0x1],BH (1000_A42C / 0x1A42C)
+    // UInt8[ES, (ushort)(DI + 0x1)] &= BH;
+    UInt8[ES, (ushort)(DI + 0x1)] = Alu8.And(UInt8[ES, (ushort)(DI + 0x1)], BH);
+    CheckExternalEvents(cs8, 0xA434);
+    // OR byte ptr ES:[DI + 0x1],AL (1000_A430 / 0x1A430)
+    UInt8[ES, (ushort)(DI + 0x1)] |= AL;
+    label_1000_A434_1A434:
+    CheckExternalEvents(cs8, 0xA435);
+    // INC BP (1000_A434 / 0x1A434)
+    BP++;
+    CheckExternalEvents(cs8, 0xA436);
+    // INC DI (1000_A435 / 0x1A435)
+    DI = Alu16.Inc(DI);
+    CheckExternalEvents(cs8, 0xA437);
+    // POP CX (1000_A436 / 0x1A436)
+    CX = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA439);
+    // LOOP 0x1000:a455 (1000_A437 / 0x1A437)
     if(--CX != 0) {
-      goto label_19EF_14D5_1B3C5;
+      // LOOP target is JMP, inlining.
+      CheckExternalEvents(cs8, 0xA458);
+      // JMP 0x1000:a374 (1000_A455 / 0x1A455)
+      goto label_1000_A374_1A374;
     }
-    CheckExternalEvents(cs12, 0x14E9);
-    // SUB DI,0x10 (19EF_14E6 / 0x1B3D6)
-    DI -= 0x10;
-    CheckExternalEvents(cs12, 0x14EB);
-    // DEC AL (19EF_14E9 / 0x1B3D9)
-    AL = Alu.Dec8(AL);
-    CheckExternalEvents(cs12, 0x14ED);
-    // JNZ 0x1000:b3c0 (19EF_14EB / 0x1B3DB)
+    CheckExternalEvents(cs8, 0xA43A);
+    // POP DS (1000_A439 / 0x1A439)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA43E);
+    // ADD SI,word ptr [0x26a] (1000_A43A / 0x1A43A)
+    // SI += UInt16[DS, 0x26A];
+    SI = Alu16.Add(SI, UInt16[DS, 0x26A]);
+    CheckExternalEvents(cs8, 0xA441);
+    // MOV AX,[0x268] (1000_A43E / 0x1A43E)
+    AX = UInt16[DS, 0x268];
+    CheckExternalEvents(cs8, 0xA443);
+    // SHL AX,0x1 (1000_A441 / 0x1A441)
+    AX <<= 0x1;
+    CheckExternalEvents(cs8, 0xA445);
+    // SHL AX,0x1 (1000_A443 / 0x1A443)
+    AX <<= 0x1;
+    CheckExternalEvents(cs8, 0xA447);
+    // SUB SI,AX (1000_A445 / 0x1A445)
+    SI -= AX;
+    CheckExternalEvents(cs8, 0xA44B);
+    // ADD DI,word ptr [0x264] (1000_A447 / 0x1A447)
+    DI += UInt16[DS, 0x264];
+    label_1000_A44B_1A44B:
+    CheckExternalEvents(cs8, 0xA450);
+    // SUB word ptr [0x26c],0x1 (1000_A44B / 0x1A44B)
+    // UInt16[DS, 0x26C] -= 0x1;
+    UInt16[DS, 0x26C] = Alu16.Sub(UInt16[DS, 0x26C], 0x1);
+    CheckExternalEvents(cs8, 0xA452);
+    // JZ 0x1000:a458 (1000_A450 / 0x1A450)
+    if(ZeroFlag) {
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(ghidra_guess_1000_A458_1A458, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs8, 0xA455);
+    // JMP 0x1000:a364 (1000_A452 / 0x1A452)
+    goto label_1000_A364_1A364;
+    label_1000_A455_1A455:
+    CheckExternalEvents(cs8, 0xA458);
+    // JMP 0x1000:a374 (1000_A455 / 0x1A455)
+    goto label_1000_A374_1A374;
+  }
+  
+  public virtual Action ghidra_guess_1000_A458_1A458(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_A458_1A458:
+    CheckExternalEvents(cs8, 0xA45B);
+    // MOV AX,0xf02 (1000_A458 / 0x1A458)
+    AX = 0xF02;
+    CheckExternalEvents(cs8, 0xA45C);
+    // OUT DX,AX (1000_A45B / 0x1A45B)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs8, 0xA45D);
+    // POP ES (1000_A45C / 0x1A45C)
+    ES = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA45E);
+    // POP DS (1000_A45D / 0x1A45D)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA45F);
+    // POP SI (1000_A45E / 0x1A45E)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA460);
+    // POP DI (1000_A45F / 0x1A45F)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA461);
+    // POP BP (1000_A460 / 0x1A460)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs8, 0xA462);
+    // RETF  (1000_A461 / 0x1A461)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_0572_1A462(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_0572_1A462:
+    CheckExternalEvents(cs14, 0x573);
+    // PUSH BP (19EF_0572 / 0x1A462)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0x575);
+    // MOV BP,SP (19EF_0573 / 0x1A463)
+    BP = SP;
+    CheckExternalEvents(cs14, 0x576);
+    // PUSH DI (19EF_0575 / 0x1A465)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0x577);
+    // PUSH SI (19EF_0576 / 0x1A466)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0x578);
+    // PUSH DS (19EF_0577 / 0x1A467)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x57B);
+    // MOV AX,0x1ddc (19EF_0578 / 0x1A468)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0x57D);
+    // MOV DS,AX (19EF_057B / 0x1A46B)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x57E);
+    // PUSH ES (19EF_057D / 0x1A46D)
+    Stack.Push16(ES);
+    CheckExternalEvents(cs14, 0x581);
+    // MOV SI,word ptr [BP + 0x6] (19EF_057E / 0x1A46E)
+    SI = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs14, 0x584);
+    // MOV BX,word ptr [BP + 0x8] (19EF_0581 / 0x1A471)
+    BX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs14, 0x587);
+    // MOV DI,word ptr [BP + 0xa] (19EF_0584 / 0x1A474)
+    DI = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs14, 0x58A);
+    // MOV AX,word ptr [BP + 0xc] (19EF_0587 / 0x1A477)
+    AX = UInt16[SS, (ushort)(BP + 0xC)];
+    CheckExternalEvents(cs14, 0x58C);
+    // MOV ES,AX (19EF_058A / 0x1A47A)
+    ES = AX;
+    CheckExternalEvents(cs14, 0x58F);
+    // MOV CX,word ptr [BP + 0xe] (19EF_058C / 0x1A47C)
+    CX = UInt16[SS, (ushort)(BP + 0xE)];
+    CheckExternalEvents(cs14, 0x591);
+    // SHR CX,0x1 (19EF_058F / 0x1A47F)
+    // CX >>= 0x1;
+    CX = Alu16.Shr(CX, 0x1);
+    CheckExternalEvents(cs14, 0x592);
+    // PUSH DS (19EF_0591 / 0x1A481)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x594);
+    // MOV DS,BX (19EF_0592 / 0x1A482)
+    DS = BX;
+    label_19EF_0594_1A484:
+    CheckExternalEvents(cs14, 0x595);
+    // LODSB SI (19EF_0594 / 0x1A484)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs14, 0x598);
+    // CALL 0x1000:a4af (19EF_0595 / 0x1A485)
+    NearCall(cs14, 0x598, unknown_19EF_05BF_1A4AF);
+    CheckExternalEvents(cs14, 0x59B);
+    // CALL 0x1000:a4af (19EF_0598 / 0x1A488)
+    NearCall(cs14, 0x59B, unknown_19EF_05BF_1A4AF);
+    CheckExternalEvents(cs14, 0x59C);
+    // LODSB SI (19EF_059B / 0x1A48B)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs14, 0x59F);
+    // CALL 0x1000:a4af (19EF_059C / 0x1A48C)
+    NearCall(cs14, 0x59F, unknown_19EF_05BF_1A4AF);
+    CheckExternalEvents(cs14, 0x5A2);
+    // CALL 0x1000:a4af (19EF_059F / 0x1A48F)
+    NearCall(cs14, 0x5A2, unknown_19EF_05BF_1A4AF);
+    CheckExternalEvents(cs14, 0x5A3);
+    // LODSB SI (19EF_05A2 / 0x1A492)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs14, 0x5A6);
+    // CALL 0x1000:a4af (19EF_05A3 / 0x1A493)
+    NearCall(cs14, 0x5A6, unknown_19EF_05BF_1A4AF);
+    CheckExternalEvents(cs14, 0x5A9);
+    // CALL 0x1000:a4af (19EF_05A6 / 0x1A496)
+    NearCall(cs14, 0x5A9, unknown_19EF_05BF_1A4AF);
+    CheckExternalEvents(cs14, 0x5AA);
+    // LODSB SI (19EF_05A9 / 0x1A499)
+    AL = UInt8[DS, (ushort)(SI)];
+    SI = (ushort)(SI + Direction8);
+    CheckExternalEvents(cs14, 0x5AD);
+    // CALL 0x1000:a4af (19EF_05AA / 0x1A49A)
+    NearCall(cs14, 0x5AD, unknown_19EF_05BF_1A4AF);
+    CheckExternalEvents(cs14, 0x5B0);
+    // CALL 0x1000:a4af (19EF_05AD / 0x1A49D)
+    NearCall(cs14, 0x5B0, unknown_19EF_05BF_1A4AF);
+    CheckExternalEvents(cs14, 0x5B2);
+    // MOV AX,BX (19EF_05B0 / 0x1A4A0)
+    AX = BX;
+    CheckExternalEvents(cs14, 0x5B3);
+    // STOSW ES:DI (19EF_05B2 / 0x1A4A2)
+    UInt16[ES, (ushort)(DI)] = AX;
+    DI = (ushort)(DI + Direction16);
+    CheckExternalEvents(cs14, 0x5B5);
+    // MOV AX,DX (19EF_05B3 / 0x1A4A3)
+    AX = DX;
+    CheckExternalEvents(cs14, 0x5B6);
+    // STOSW ES:DI (19EF_05B5 / 0x1A4A5)
+    UInt16[ES, (ushort)(DI)] = AX;
+    DI = (ushort)(DI + Direction16);
+    CheckExternalEvents(cs14, 0x5B8);
+    // LOOP 0x1000:a484 (19EF_05B6 / 0x1A4A6)
+    if(--CX != 0) {
+      goto label_19EF_0594_1A484;
+    }
+    CheckExternalEvents(cs14, 0x5B9);
+    // POP DS (19EF_05B8 / 0x1A4A8)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x5BA);
+    // POP ES (19EF_05B9 / 0x1A4A9)
+    ES = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x5BB);
+    // POP DS (19EF_05BA / 0x1A4AA)
+    DS = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x5BC);
+    // POP SI (19EF_05BB / 0x1A4AB)
+    SI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x5BD);
+    // POP DI (19EF_05BC / 0x1A4AC)
+    DI = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x5BE);
+    // POP BP (19EF_05BD / 0x1A4AD)
+    BP = Stack.Pop16();;
+    CheckExternalEvents(cs14, 0x5BF);
+    // RETF  (19EF_05BE / 0x1A4AE)
+    return FarRet();
+  }
+  
+  public virtual Action unknown_19EF_05BF_1A4AF(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_05BF_1A4AF:
+    CheckExternalEvents(cs14, 0x5C1);
+    // SHL AL,0x1 (19EF_05BF / 0x1A4AF)
+    // AL <<= 0x1;
+    AL = Alu8.Shl(AL, 0x1);
+    CheckExternalEvents(cs14, 0x5C3);
+    // RCL DH,0x1 (19EF_05C1 / 0x1A4B1)
+    DH = Alu8.Rcl(DH, 0x1);
+    CheckExternalEvents(cs14, 0x5C5);
+    // SHL AL,0x1 (19EF_05C3 / 0x1A4B3)
+    // AL <<= 0x1;
+    AL = Alu8.Shl(AL, 0x1);
+    CheckExternalEvents(cs14, 0x5C7);
+    // RCL DL,0x1 (19EF_05C5 / 0x1A4B5)
+    DL = Alu8.Rcl(DL, 0x1);
+    CheckExternalEvents(cs14, 0x5C9);
+    // SHL AL,0x1 (19EF_05C7 / 0x1A4B7)
+    // AL <<= 0x1;
+    AL = Alu8.Shl(AL, 0x1);
+    CheckExternalEvents(cs14, 0x5CB);
+    // RCL BH,0x1 (19EF_05C9 / 0x1A4B9)
+    BH = Alu8.Rcl(BH, 0x1);
+    CheckExternalEvents(cs14, 0x5CD);
+    // SHL AL,0x1 (19EF_05CB / 0x1A4BB)
+    // AL <<= 0x1;
+    AL = Alu8.Shl(AL, 0x1);
+    CheckExternalEvents(cs14, 0x5CF);
+    // RCL BL,0x1 (19EF_05CD / 0x1A4BD)
+    BL = Alu8.Rcl(BL, 0x1);
+    CheckExternalEvents(cs14, 0x5D0);
+    // RET  (19EF_05CF / 0x1A4BF)
+    return NearRet();
+  }
+  
+  public virtual Action unknown_19EF_05D0_1A4C0(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_19EF_05D0_1A4C0:
+    CheckExternalEvents(cs14, 0x5D1);
+    // PUSH BP (19EF_05D0 / 0x1A4C0)
+    Stack.Push16(BP);
+    CheckExternalEvents(cs14, 0x5D3);
+    // MOV BP,SP (19EF_05D1 / 0x1A4C1)
+    BP = SP;
+    CheckExternalEvents(cs14, 0x5D4);
+    // PUSH DI (19EF_05D3 / 0x1A4C3)
+    Stack.Push16(DI);
+    CheckExternalEvents(cs14, 0x5D5);
+    // PUSH SI (19EF_05D4 / 0x1A4C4)
+    Stack.Push16(SI);
+    CheckExternalEvents(cs14, 0x5D6);
+    // PUSH DS (19EF_05D5 / 0x1A4C5)
+    Stack.Push16(DS);
+    CheckExternalEvents(cs14, 0x5D9);
+    // MOV AX,0x1ddc (19EF_05D6 / 0x1A4C6)
+    AX = 0x1DDC;
+    CheckExternalEvents(cs14, 0x5DB);
+    // MOV DS,AX (19EF_05D9 / 0x1A4C9)
+    DS = AX;
+    CheckExternalEvents(cs14, 0x5DC);
+    // PUSH ES (19EF_05DB / 0x1A4CB)
+    Stack.Push16(ES);
+    CheckExternalEvents(cs14, 0x5DF);
+    // MOV AX,word ptr [BP + 0x6] (19EF_05DC / 0x1A4CC)
+    AX = UInt16[SS, (ushort)(BP + 0x6)];
+    CheckExternalEvents(cs14, 0x5E2);
+    // MOV [0x220],AX (19EF_05DF / 0x1A4CF)
+    UInt16[DS, 0x220] = AX;
+    CheckExternalEvents(cs14, 0x5E5);
+    // MOV AX,word ptr [BP + 0x8] (19EF_05E2 / 0x1A4D2)
+    AX = UInt16[SS, (ushort)(BP + 0x8)];
+    CheckExternalEvents(cs14, 0x5E8);
+    // MOV [0x234],AX (19EF_05E5 / 0x1A4D5)
+    UInt16[DS, 0x234] = AX;
+    CheckExternalEvents(cs14, 0x5EB);
+    // MOV AX,word ptr [BP + 0xa] (19EF_05E8 / 0x1A4D8)
+    AX = UInt16[SS, (ushort)(BP + 0xA)];
+    CheckExternalEvents(cs14, 0x5EE);
+    // MOV [0x236],AX (19EF_05EB / 0x1A4DB)
+    UInt16[DS, 0x236] = AX;
+    CheckExternalEvents(cs14, 0x5F1);
+    // MOV AX,word ptr [BP + 0xc] (19EF_05EE / 0x1A4DE)
+    AX = UInt16[SS, (ushort)(BP + 0xC)];
+    CheckExternalEvents(cs14, 0x5F4);
+    // MOV [0x224],AX (19EF_05F1 / 0x1A4E1)
+    UInt16[DS, 0x224] = AX;
+    CheckExternalEvents(cs14, 0x5F9);
+    // CMP word ptr [0xb764],0x3 (19EF_05F4 / 0x1A4E4)
+    Alu16.Sub(UInt16[DS, 0xB764], 0x3);
+    CheckExternalEvents(cs14, 0x5FB);
+    // JZ 0x1000:a4f5 (19EF_05F9 / 0x1A4E9)
+    if(ZeroFlag) {
+      goto label_19EF_0605_1A4F5;
+    }
+    CheckExternalEvents(cs14, 0x600);
+    // CMP word ptr [0xb764],0x0 (19EF_05FB / 0x1A4EB)
+    Alu16.Sub(UInt16[DS, 0xB764], 0x0);
+    CheckExternalEvents(cs14, 0x602);
+    // JNZ 0x1000:a520 (19EF_0600 / 0x1A4F0)
     if(!ZeroFlag) {
-      goto label_19EF_14D0_1B3C0;
+      goto label_19EF_0630_1A520;
     }
-    CheckExternalEvents(cs12, 0x14EF);
-    // JMP 0x1000:b423 (19EF_14ED / 0x1B3DD)
+    CheckExternalEvents(cs14, 0x605);
+    // JMP 0x1000:a5ed (19EF_0602 / 0x1A4F2)
+    // Jump converted to entry function call
+    if(JumpDispatcher.Jump(ghidra_guess_1000_A5ED_1A5ED, 0)) {
+      loadOffset = JumpDispatcher.NextEntryAddress;
+      goto entrydispatcher;
+    }
+    return JumpDispatcher.JumpAsmReturn!;
+    label_19EF_0605_1A4F5:
+    CheckExternalEvents(cs14, 0x608);
+    // MOV AX,0xa000 (19EF_0605 / 0x1A4F5)
+    AX = 0xA000;
+    CheckExternalEvents(cs14, 0x60A);
+    // MOV ES,AX (19EF_0608 / 0x1A4F8)
+    ES = AX;
+    CheckExternalEvents(cs14, 0x60D);
+    // MOV AX,[0x234] (19EF_060A / 0x1A4FA)
+    AX = UInt16[DS, 0x234];
+    CheckExternalEvents(cs14, 0x610);
+    // MOV DX,0x140 (19EF_060D / 0x1A4FD)
+    DX = 0x140;
+    CheckExternalEvents(cs14, 0x612);
+    // MUL DX (19EF_0610 / 0x1A500)
+    uint resMul19EF_0610 = Alu16.Mul(AX, DX);
+    AX = (ushort)(resMul19EF_0610);
+    DX = (ushort)(resMul19EF_0610 >> 16);
+    CheckExternalEvents(cs14, 0x616);
+    // ADD AX,word ptr [0x220] (19EF_0612 / 0x1A502)
+    // AX += UInt16[DS, 0x220];
+    AX = Alu16.Add(AX, UInt16[DS, 0x220]);
+    CheckExternalEvents(cs14, 0x618);
+    // MOV DI,AX (19EF_0616 / 0x1A506)
+    DI = AX;
+    CheckExternalEvents(cs14, 0x61C);
+    // MOV CX,word ptr [0x236] (19EF_0618 / 0x1A508)
+    CX = UInt16[DS, 0x236];
+    CheckExternalEvents(cs14, 0x620);
+    // SUB CX,word ptr [0x234] (19EF_061C / 0x1A50C)
+    CX -= UInt16[DS, 0x234];
+    CheckExternalEvents(cs14, 0x621);
+    // INC CX (19EF_0620 / 0x1A510)
+    CX = Alu16.Inc(CX);
+    CheckExternalEvents(cs14, 0x624);
+    // MOV AX,[0x224] (19EF_0621 / 0x1A511)
+    AX = UInt16[DS, 0x224];
+    label_19EF_0624_1A514:
+    CheckExternalEvents(cs14, 0x627);
+    // MOV byte ptr ES:[DI],AL (19EF_0624 / 0x1A514)
+    UInt8[ES, (ushort)(DI)] = AL;
+    CheckExternalEvents(cs14, 0x62B);
+    // ADD DI,0x140 (19EF_0627 / 0x1A517)
+    // DI += 0x140;
+    DI = Alu16.Add(DI, 0x140);
+    CheckExternalEvents(cs14, 0x62D);
+    // LOOP 0x1000:a514 (19EF_062B / 0x1A51B)
+    if(--CX != 0) {
+      goto label_19EF_0624_1A514;
+    }
+    CheckExternalEvents(cs14, 0x630);
+    // JMP 0x1000:a5e7 (19EF_062D / 0x1A51D)
     // Jump converted to non entry function call
-    if(JumpDispatcher.Jump(split_1000_B3E0_1B3E0, 0x1B423 - cs1 * 0x10)) {
+    if(JumpDispatcher.Jump(split_1000_A5E1_1A5E1, 0x1A5E7 - cs1 * 0x10)) {
+      loadOffset = JumpDispatcher.NextEntryAddress;
+      goto entrydispatcher;
+    }
+    return JumpDispatcher.JumpAsmReturn!;
+    label_19EF_0630_1A520:
+    CheckExternalEvents(cs14, 0x635);
+    // CMP word ptr [0xb764],0x1 (19EF_0630 / 0x1A520)
+    Alu16.Sub(UInt16[DS, 0xB764], 0x1);
+    CheckExternalEvents(cs14, 0x637);
+    // JZ 0x1000:a56f (19EF_0635 / 0x1A525)
+    if(ZeroFlag) {
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(split_1000_A56F_1A56F, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs14, 0x63A);
+    // MOV DX,0x3ce (19EF_0637 / 0x1A527)
+    DX = 0x3CE;
+    CheckExternalEvents(cs14, 0x63D);
+    // MOV AX,0x205 (19EF_063A / 0x1A52A)
+    AX = 0x205;
+    CheckExternalEvents(cs14, 0x63E);
+    // OUT DX,AX (19EF_063D / 0x1A52D)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x642);
+    // MOV CX,word ptr [0x220] (19EF_063E / 0x1A52E)
+    CX = UInt16[DS, 0x220];
+    CheckExternalEvents(cs14, 0x645);
+    // MOV AX,0x8008 (19EF_0642 / 0x1A532)
+    AX = 0x8008;
+    CheckExternalEvents(cs14, 0x648);
+    // AND CX,0x7 (19EF_0645 / 0x1A535)
+    // CX &= 0x7;
+    CX = Alu16.And(CX, 0x7);
+    CheckExternalEvents(cs14, 0x64A);
+    // JZ 0x1000:a53c (19EF_0648 / 0x1A538)
+    if(ZeroFlag) {
+      goto label_19EF_064C_1A53C;
+    }
+    CheckExternalEvents(cs14, 0x64C);
+    // SHR AH,CL (19EF_064A / 0x1A53A)
+    // AH >>= CL;
+    AH = Alu8.Shr(AH, CL);
+    label_19EF_064C_1A53C:
+    CheckExternalEvents(cs14, 0x64D);
+    // OUT DX,AX (19EF_064C / 0x1A53C)
+    Cpu.Out16(DX, AX);
+    CheckExternalEvents(cs14, 0x650);
+    // MOV AX,0xa000 (19EF_064D / 0x1A53D)
+    AX = 0xA000;
+    CheckExternalEvents(cs14, 0x652);
+    // MOV ES,AX (19EF_0650 / 0x1A540)
+    ES = AX;
+    CheckExternalEvents(cs14, 0x656);
+    // MOV DX,word ptr [0x234] (19EF_0652 / 0x1A542)
+    DX = UInt16[DS, 0x234];
+    CheckExternalEvents(cs14, 0x659);
+    // MOV AX,0x28 (19EF_0656 / 0x1A546)
+    AX = 0x28;
+    CheckExternalEvents(cs14, 0x65B);
+    // MUL DL (19EF_0659 / 0x1A549)
+    ushort resMul19EF_0659 = Alu8.Mul(AL, DL);
+    AL = (byte)(resMul19EF_0659);
+    AH = (byte)(resMul19EF_0659 >> 8);
+    CheckExternalEvents(cs14, 0x65F);
+    // MOV BX,word ptr [0x220] (19EF_065B / 0x1A54B)
+    BX = UInt16[DS, 0x220];
+    CheckExternalEvents(cs14, 0x661);
+    // SHR BX,0x1 (19EF_065F / 0x1A54F)
+    BX >>= 0x1;
+    CheckExternalEvents(cs14, 0x663);
+    // SHR BX,0x1 (19EF_0661 / 0x1A551)
+    BX >>= 0x1;
+    CheckExternalEvents(cs14, 0x665);
+    // SHR BX,0x1 (19EF_0663 / 0x1A553)
+    BX >>= 0x1;
+    CheckExternalEvents(cs14, 0x667);
+    // ADD AX,BX (19EF_0665 / 0x1A555)
+    // AX += BX;
+    AX = Alu16.Add(AX, BX);
+    CheckExternalEvents(cs14, 0x669);
+    // MOV DI,AX (19EF_0667 / 0x1A557)
+    DI = AX;
+    CheckExternalEvents(cs14, 0x66C);
+    // MOV AX,[0x224] (19EF_0669 / 0x1A559)
+    AX = UInt16[DS, 0x224];
+    label_19EF_066C_1A55C:
+    CheckExternalEvents(cs14, 0x66F);
+    // MOV AH,byte ptr ES:[DI] (19EF_066C / 0x1A55C)
+    AH = UInt8[ES, (ushort)(DI)];
+    CheckExternalEvents(cs14, 0x672);
+    // MOV byte ptr ES:[DI],AL (19EF_066F / 0x1A55F)
+    UInt8[ES, (ushort)(DI)] = AL;
+    CheckExternalEvents(cs14, 0x675);
+    // ADD DI,0x28 (19EF_0672 / 0x1A562)
+    DI += 0x28;
+    CheckExternalEvents(cs14, 0x676);
+    // INC DX (19EF_0675 / 0x1A565)
+    DX++;
+    CheckExternalEvents(cs14, 0x67A);
+    // CMP DX,word ptr [0x236] (19EF_0676 / 0x1A566)
+    Alu16.Sub(DX, UInt16[DS, 0x236]);
+    CheckExternalEvents(cs14, 0x67C);
+    // JLE 0x1000:a55c (19EF_067A / 0x1A56A)
+    if(ZeroFlag || SignFlag != OverflowFlag) {
+      goto label_19EF_066C_1A55C;
+    }
+    CheckExternalEvents(cs14, 0x67E);
+    // JMP 0x1000:a5e7 (19EF_067C / 0x1A56C)
+    // Jump converted to non entry function call
+    if(JumpDispatcher.Jump(split_1000_A5E1_1A5E1, 0x1A5E7 - cs1 * 0x10)) {
+      loadOffset = JumpDispatcher.NextEntryAddress;
+      goto entrydispatcher;
+    }
+    return JumpDispatcher.JumpAsmReturn!;
+  }
+  
+  public virtual Action split_1000_A56F_1A56F(int loadOffset) {
+    entrydispatcher:
+    if(loadOffset != 0) {
+      throw FailAsUntested("External goto not supported for this function.");
+    }
+    label_1000_A56F_1A56F:
+    CheckExternalEvents(cs8, 0xA572);
+    // MOV CX,0x4 (1000_A56F / 0x1A56F)
+    CX = 0x4;
+    CheckExternalEvents(cs8, 0xA574);
+    // SHL AX,CL (1000_A572 / 0x1A572)
+    // AX <<= CL;
+    AX = Alu16.Shl(AX, CL);
+    CheckExternalEvents(cs8, 0xA578);
+    // OR AX,word ptr [0x224] (1000_A574 / 0x1A574)
+    // AX |= UInt16[DS, 0x224];
+    AX = Alu16.Or(AX, UInt16[DS, 0x224]);
+    CheckExternalEvents(cs8, 0xA57B);
+    // MOV BX,0xf (1000_A578 / 0x1A578)
+    BX = 0xF;
+    CheckExternalEvents(cs8, 0xA57F);
+    // MOV CX,word ptr [0x220] (1000_A57B / 0x1A57B)
+    CX = UInt16[DS, 0x220];
+    CheckExternalEvents(cs8, 0xA583);
+    // TEST CX,0x1 (1000_A57F / 0x1A57F)
+    Alu16.And(CX, 0x1);
+    CheckExternalEvents(cs8, 0xA585);
+    // JNZ 0x1000:a58a (1000_A583 / 0x1A583)
+    if(!ZeroFlag) {
+      goto label_1000_A58A_1A58A;
+    }
+    CheckExternalEvents(cs8, 0xA588);
+    // MOV CX,0x4 (1000_A585 / 0x1A585)
+    CX = 0x4;
+    CheckExternalEvents(cs8, 0xA58A);
+    // SHL BX,CL (1000_A588 / 0x1A588)
+    BX <<= CL;
+    label_1000_A58A_1A58A:
+    CheckExternalEvents(cs8, 0xA58C);
+    // AND AX,BX (1000_A58A / 0x1A58A)
+    // AX &= BX;
+    AX = Alu16.And(AX, BX);
+    CheckExternalEvents(cs8, 0xA58F);
+    // MOV [0x224],AX (1000_A58C / 0x1A58C)
+    UInt16[DS, 0x224] = AX;
+    CheckExternalEvents(cs8, 0xA591);
+    // NOT BL (1000_A58F / 0x1A58F)
+    BL = (byte)(~BL);
+    CheckExternalEvents(cs8, 0xA594);
+    // MOV AX,0xb800 (1000_A591 / 0x1A591)
+    AX = 0xB800;
+    CheckExternalEvents(cs8, 0xA596);
+    // MOV ES,AX (1000_A594 / 0x1A594)
+    ES = AX;
+    CheckExternalEvents(cs8, 0xA599);
+    // MOV AX,[0x234] (1000_A596 / 0x1A596)
+    AX = UInt16[DS, 0x234];
+    CheckExternalEvents(cs8, 0xA59B);
+    // AND AL,0xfc (1000_A599 / 0x1A599)
+    // AL &= 0xFC;
+    AL = Alu8.And(AL, 0xFC);
+    CheckExternalEvents(cs8, 0xA59E);
+    // MOV DX,0x28 (1000_A59B / 0x1A59B)
+    DX = 0x28;
+    CheckExternalEvents(cs8, 0xA5A0);
+    // MUL DL (1000_A59E / 0x1A59E)
+    ushort resMul1000_A59E = Alu8.Mul(AL, DL);
+    AL = (byte)(resMul1000_A59E);
+    AH = (byte)(resMul1000_A59E >> 8);
+    CheckExternalEvents(cs8, 0xA5A4);
+    // MOV CX,word ptr [0x234] (1000_A5A0 / 0x1A5A0)
+    CX = UInt16[DS, 0x234];
+    CheckExternalEvents(cs8, 0xA5A7);
+    // AND CX,0x3 (1000_A5A4 / 0x1A5A4)
+    // CX &= 0x3;
+    CX = Alu16.And(CX, 0x3);
+    CheckExternalEvents(cs8, 0xA5A9);
+    // JZ 0x1000:a5ae (1000_A5A7 / 0x1A5A7)
+    if(ZeroFlag) {
+      goto label_1000_A5AE_1A5AE;
+    }
+    label_1000_A5A9_1A5A9:
+    CheckExternalEvents(cs8, 0xA5AC);
+    // ADD AH,0x20 (1000_A5A9 / 0x1A5A9)
+    // AH += 0x20;
+    AH = Alu8.Add(AH, 0x20);
+    CheckExternalEvents(cs8, 0xA5AE);
+    // LOOP 0x1000:a5a9 (1000_A5AC / 0x1A5AC)
+    if(--CX != 0) {
+      goto label_1000_A5A9_1A5A9;
+    }
+    label_1000_A5AE_1A5AE:
+    CheckExternalEvents(cs8, 0xA5B2);
+    // MOV DX,word ptr [0x220] (1000_A5AE / 0x1A5AE)
+    DX = UInt16[DS, 0x220];
+    CheckExternalEvents(cs8, 0xA5B4);
+    // SHR DX,0x1 (1000_A5B2 / 0x1A5B2)
+    DX >>= 0x1;
+    CheckExternalEvents(cs8, 0xA5B6);
+    // ADD AX,DX (1000_A5B4 / 0x1A5B4)
+    // AX += DX;
+    AX = Alu16.Add(AX, DX);
+    CheckExternalEvents(cs8, 0xA5BA);
+    // MOV DX,word ptr [0x234] (1000_A5B6 / 0x1A5B6)
+    DX = UInt16[DS, 0x234];
+    CheckExternalEvents(cs8, 0xA5BC);
+    // MOV DI,AX (1000_A5BA / 0x1A5BA)
+    DI = AX;
+    CheckExternalEvents(cs8, 0xA5C0);
+    // MOV CX,word ptr [0x236] (1000_A5BC / 0x1A5BC)
+    CX = UInt16[DS, 0x236];
+    CheckExternalEvents(cs8, 0xA5C4);
+    // SUB CX,word ptr [0x234] (1000_A5C0 / 0x1A5C0)
+    CX -= UInt16[DS, 0x234];
+    CheckExternalEvents(cs8, 0xA5C5);
+    // INC CX (1000_A5C4 / 0x1A5C4)
+    CX = Alu16.Inc(CX);
+    label_1000_A5C5_1A5C5:
+    CheckExternalEvents(cs8, 0xA5C8);
+    // MOV AL,byte ptr ES:[DI] (1000_A5C5 / 0x1A5C5)
+    AL = UInt8[ES, (ushort)(DI)];
+    CheckExternalEvents(cs8, 0xA5CA);
+    // AND AL,BL (1000_A5C8 / 0x1A5C8)
+    // AL &= BL;
+    AL = Alu8.And(AL, BL);
+    CheckExternalEvents(cs8, 0xA5CE);
+    // OR AX,word ptr [0x224] (1000_A5CA / 0x1A5CA)
+    // AX |= UInt16[DS, 0x224];
+    AX = Alu16.Or(AX, UInt16[DS, 0x224]);
+    CheckExternalEvents(cs8, 0xA5D1);
+    // MOV byte ptr ES:[DI],AL (1000_A5CE / 0x1A5CE)
+    UInt8[ES, (ushort)(DI)] = AL;
+    CheckExternalEvents(cs8, 0xA5D3);
+    // INC DL (1000_A5D1 / 0x1A5D1)
+    DL++;
+    CheckExternalEvents(cs8, 0xA5D6);
+    // AND DL,0x3 (1000_A5D3 / 0x1A5D3)
+    // DL &= 0x3;
+    DL = Alu8.And(DL, 0x3);
+    CheckExternalEvents(cs8, 0xA5D8);
+    // JZ 0x1000:a5e1 (1000_A5D6 / 0x1A5D6)
+    if(ZeroFlag) {
+      // Jump converted to entry function call
+      if(JumpDispatcher.Jump(split_1000_A5E1_1A5E1, 0)) {
+        loadOffset = JumpDispatcher.NextEntryAddress;
+        goto entrydispatcher;
+      }
+      return JumpDispatcher.JumpAsmReturn!;
+    }
+    CheckExternalEvents(cs8, 0xA5DC);
+    // ADD DI,0x2000 (1000_A5D8 / 0x1A5D8)
+    // DI += 0x2000;
+    DI = Alu16.Add(DI, 0x2000);
+    CheckExternalEvents(cs8, 0xA5DE);
+    // LOOP 0x1000:a5c5 (1000_A5DC / 0x1A5DC)
+    if(--CX != 0) {
+      goto label_1000_A5C5_1A5C5;
+    }
+    CheckExternalEvents(cs8, 0xA5E0);
+    // JMP 0x1000:a5e7 (1000_A5DE / 0x1A5DE)
+    // Jump converted to non entry function call
+    if(JumpDispatcher.Jump(split_1000_A5E1_1A5E1, 0x1A5E7 - cs1 * 0x10)) {
       loadOffset = JumpDispatcher.NextEntryAddress;
       goto entrydispatcher;
     }
