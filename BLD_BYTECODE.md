@@ -93,7 +93,7 @@ Works as:
 | `e4` | -28 | `~0x1B` | WRITE_CHAR | 1 byte | Read byte from buffer, write as character via `fn0800_19BF` |
 | `e5` | -27 | `~0x1A` | ADD_CREDITS | 2 bytes (LE) | Add signed value to `tD370` (C-Bill credit counter). Uses `fn0FDC_19F6` for sign-extension. Calls `fn1631_1FDF` (state update). |
 | `e6` | -26 | `~0x19` | SET_CURSOR_XY | 2×2 bytes (LE) | Set cursor X (`tA44B`) and Y (`tA44D`). Each is a 2-byte signed value from buffer. Uses `fn0FDC_19F6` for sign-extension. |
-| `e7` | -25 | `65511` | CMP_CURSOR_X | 2 bytes (LE) | Read 2-byte value from buffer, compare with `tA44B` (current X coordinate). If NOT equal, skip next opcode. Conditional skip. |
+| `e7` | -25 | `65511` | CMP_CURSOR_X | 4 bytes (2×LE) | Read 2-byte comparison value from buffer, compare with `tA44B` (cursor X = menu selection). If equal: read next 2 bytes as LE jump target (absolute offset in BLD data buffer) and jump. If NOT equal: skip 2 bytes (advance past jump target). Used in shop menu option dispatching. Typically preceded by `c0` structural byte. |
 | `e8` | -24 | `~0x17` | RNG_CHECK | 1 byte | Call `fn207F_0BC0` (RNG). Mask result with operand byte. If `(RNG() & operand) == 0`, skip next opcode. Random conditional. |
 | `e9` | -23 | `~0x16` | CALL_ROOM_HANDLER | 1 byte | Read 1-byte operand, call `fn11B8_0D58` with it. Room/unit interaction handler. |
 | `ea` | -22 | `~0x15` | COND_STATE_ACTION | 1 byte | Read byte operand, store in `bp-4`. If `w3938 == 0`, call `fn0800_48B7` (conditional state action, e.g., item purchase). |
@@ -138,6 +138,32 @@ f8             ;   goto end; (skip past else)
                ; end:
 ```
 
+### Shop Item Data Blocks (`c0 e7`)
+
+In shop/service BLD content (type `c0 f5`), each menu item uses a `c0 e7` block for selection dispatch:
+
+```
+aa bb          menu option start marker
+[item name]    cipher-encoded text (menu option display name)
+bb             separator / next option marker
+...
+c0             structural prefix (separator between items)
+e7 [val] [jmp]  CMP_CURSOR_X: if A44B == val, jump to jmp (item handler)
+               else skip jmp bytes, fall through to next item
+```
+
+**Binary layout** (5 bytes after `c0`):
+| Offset | Size | Field | Description |
+|--------|------|-------|-------------|
+| `+0` | 1 | `c0` | Structural separator (no-op at opcode layer) |
+| `+1` | 1 | `e7` | `CMP_CURSOR_X` opcode = 0xE7 |
+| `+2` | 2 | `val` | 16-bit LE comparison value (menu option ID) |
+| `+4` | 2 | `jmp` | 16-bit LE jump target (absolute offset in BLD data buffer) |
+
+**Semantics**: At `fn0FDC_01C0`, `0xE7` reads the 2-byte value and compares with `tA44B` (cursor X, which encodes the menu selection). If equal, it reads the next 2 bytes as a jump target and branches there. If not equal, it skips those 2 bytes and continues linearly to the next option.
+
+**24 occurrences** across BLD files: WEAPON (4), ARMOR (2), COMSTAR (4), HOSPITAL (4), FROB (2), plus WEAPON2, REPAIR, BARRACKS, CITADEL, JAIL, LOUNGE, MAYOR, TRAINING (1 each).
+
 ## High-Level Dispatcher: `fn1CD3_0004` Cases
 
 Called from `fn0FDC_01C0` (via opcode 0xF5) and other functions.
@@ -149,10 +175,10 @@ The argument `wArg04` selects the interaction type.
 | `0x02` | SHOW_GREETING | Display room entry text. Check `bC724` (building type byte) for 0x4C or 0x57 to select greeting string. Call `fn1E56_03F5` with text offset. |
 | `0x03` | EXIT_BUILDING | Clear building state (`bC724=0xFFFF`, `bC620=0x08`). Restore world coordinates (X=3118, Y=0xC076). Reset NPC sprites with status 0x7C. |
 | `0x04` | SHOW_SHOP_ITEMS | Display 3 shop item names. Read from `aC618[loop] * 0x7D + 0x4B`. Format via `fn207F_3BB6`/`fn1F3D_00D5`. |
-| `0x05` | BUY_ITEM_BUYER | Show purchase prompt. Check price from `aC618[bD314]`. If index=4 special. Deduct `price+75` from `tD370`. Increment item count. |
-| `0x06` | SHOW_SELL_ITEMS | Check `w4FBA` flag. Display credits. Loop 3 inventory slots showing name/qty. `wE482` tracks count. If empty show "nothing to sell". |
-| `0x07` | SELL_ITEM | Get item selection via `fn1E56_0B5E(0x07)`. Get quantity via `fn1543_0CDE`. Remove from `aD374/aD376`, add credits to `dwD370`. |
-| `0x08` | BUY_ITEM_SELLER | Get item selection. Check stock. Get quantity. Remove from stock. Deduct cost. Display result. |
+| `0x05` | BUY_ITEM_SINGLE | Show single-item purchase prompt. Price = `C618[bD314] * 125 + 75`. If affordable: increment `C618[bD314]`, deduct price from `tD370`. Special text if type=4. |
+| `0x06` | SHOW_PLAYER_ITEMS | Check `w4FBA` flag. Display credits. Loop 3 item slots showing player-owned name/qty. `wE482` tracks count. If empty show "nothing to sell". |
+| `0x07` | BUY_ITEM_BULK | Bulk buy at 1 cr/unit. Get selection via `fn1E56_0B5E(0x07)`. Get quantity via `fn1543_0CDE` (capped by `tD370` credits). `aD374[sel] += qty`, `tD370 -= qty`. |
+| `0x08` | SELL_ITEM_BULK | Bulk sell at 1 cr/unit. Get selection. Get quantity via `fn1543_0CDE` (capped by `aD374[sel]` owned qty). `aD374[sel] -= qty`, `tD370 += qty`. |
 | `0x09` | HOSPITAL_HEAL | Read healing price from `w0178` or `w0168`. If affordable (check `tD372`/`tD370`): deduct cost, call `fn1631_1FDF` and `fn0FDC_13DE` to heal. |
 | `0x0A` | SHOW_CREDITS | Format and display `tD370`/`tD372` (32-bit credit value). Set `t37FE` flag. |
 | `0x0B` | BUY_QUANTITY | Purchase with quantity tracking. Read base price. Apply modifiers for bulk (0x06 or 0x09). If affordable: deduct, call `fn0FDC_15E6` (increment count). |

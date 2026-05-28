@@ -2,10 +2,11 @@
 
 ## 1. World Map Data Location
 - **Hypothesis**: Map data (125x125 tiles) should be in Segment `2A02`.
-- **Status**: Fog of War is at `2A02:C724`. The tile data itself might be loaded dynamically into `384B` (Heap) or exist in `2A02` (but dump was zero).
+- **Status (UPDATED)**: The `2A02:C724` address was originally hypothesized as "Fog of War data" but has been **corrected** — `C724` is a per-story-slot data array (stride `0x7D`) located `0x20` bytes before the `aC744[]` story state array at `0xC744`. The combat fog of war is at `DS:[0x55D8]→0x40B4`/`0x41D4` (twin 12×24 grids). World map visibility (2048 bytes, bit-packed 128×128) is persisted in save files at segment `0x3092`.
 - **Investigation Needed**: 
   - Trace `19EF:0BC0` deeper to see if other bits of `384B:4FC0` relate to map tiles.
   - Locate where `TRAINING.BLD` or `MAP.DAT` is loaded into memory.
+  - Tile data may be loaded dynamically into `384B` (Heap) or exist in `2A02`.
 
 ## 2. Tile Attributes & Terrain Collision
 - **Hypothesis**: `3000:32C6` contains tile properties (Movement cost, blocking).
@@ -16,17 +17,12 @@
   - Find the function that reads `3000:32C6` during movement (distinct from the Unit Damage check at `13DDC`).
 
 ## 3. .BLD File Internals (Scripting)
-- **Hypothesis**: `.BLD` files (TRAINING.BLD, etc.) contain bytecode or data structures that define room triggers.
-- **Status**: We know the filename list is at `3000:CC30`.
-- **Investigation Needed**:
-  - Locate the "Loader" function that reads these files.
-  - Analyze the file header/format.
-  - Determine how `TRAINING.BLD` signals "Training Complete" to the engine (likely setting a flag that `19EF:0BC0` reads).
+- **Hypothesis**: `.BLD` files contain bytecode/triggers for room interactions.
+- **Status (RESOLVED)**: Fully documented — 26 BLD files, substitution cipher text encoding, 26 opcodes (0xE4-0xFF), 4-layer interpreter. Full round-trip JSON conversion verified byte-identical. Story complete extracted. See `BLD_BYTECODE.md`, `decode_bld_interp.py`, `bld_json_converter.py`.
 
 ## 4. "Palace" Dialogue
 - **Hypothesis**: The "Palace" mentioned by the user is the "Citadel".
-- **Status**: Found "Citadel" strings. Did not find "Palace" string in memory.
-- **Theory**: The specific text might be in `CITADEL.BLD` or compressed.
+- **Status (RESOLVED)**: Story fully extracted — the "Citadel" is the training center. "Palace" may refer to a location in the game's world that was never implemented or is accessible via different context. No "Palace" text found in any of the 26 decoded BLD files or the story output.
 
 ## 5. Story State Byte at C79B / Eq_57354::aC744[].b0057
 - **Hypothesis (now mostly confirmed)**:
