@@ -177,6 +177,29 @@ Common C0-prefixed patterns (with actual opcode semantics):
 
 All absolute jumps in BLD bytecode (E7, E8, EC, F3, F8) use **fn0FDC_05F7** to read a 16-bit little-endian word that replaces the bytecode position counter — these are absolute offsets within the BLD data, not relative jumps.
 
+### BLD Data Decryption & Interpreter Base Offset
+
+All BLD data bytes at offset ≥0xA0 are decrypted in-place after loading. The decryption formula (confirmed from `fn0FDC_1D30` assembly at segment `0FDC:1D30`):
+```
+decrypted[0xA0 + bx] = ((raw[0xA0 + bx] + 41) & 0xFF) ^ 233   for bx = 0..8999
+```
+
+The bytecode interpreter `fn0FDC_01C0` reads from a **base offset of 0xA0** within the loaded BLD buffer — the first argument (SI register) is hardcoded as `0xA0`. Bytecode position 0 corresponds to memory address `segment:0xA0`. This means bytes at file offsets 0x00–0x9F (header/metadata area) are NEVER interpreted as bytecode by the in-game interpreter.
+
+**Important caveat for `bld_json_converter.py`**: The converter reads from file offset 0 and parses ALL bytes, including the 0x00–0x9F header region. Any opcode annotations (like 0xF5 SHOP_DISPATCH) at positions < 0xA0 are **false positives** — raw bytes that happen to match opcode values but are NOT part of the actual bytecode stream. Only the decrypted bytes at positions ≥ 0xA0 represent real bytecode.
+
+**SHOP_DISPATCH (0xF5) operand resolution**: The operand byte at bytecode position N reads the decrypted byte at `buffer[0xA0 + N + 1]` (1 byte past the 0xF5 opcode). This value is sign-extended and passed DIRECTLY as the case number to `fn1CD3_0004(case)`. It is NOT an indirect index into the buffer.
+
+Confirmed real SHOP_DISPATCH calls in TRAINING.BLD (decrypted):
+
+| Interpreter Pos | File Offset | Decrypted Case | Case Name |
+|---|---|---|---|
+| 2537 | 0x0A89 | 0x01 | ENTER_BUILDING |
+| 4013 | 0x104D | 0x02 | SHOW_GREETING |
+| 5588 | 0x1674 | 0x2B | (unknown) |
+| 6987 | 0x1BEB | 0x0C | CLOSE_ACTION |
+| 7117 | 0x1C6D | 0x03 | EXIT_BUILDING |
+
 **Menu system:** `9e bb bb` = header prompt, `aa bb` = first option, `bb` = subsequent option separators
 
 ### Four-Layer Interpreter Architecture
@@ -220,7 +243,7 @@ Layer 4: fn1E56_03F5 (1E56:03F5)
 | `0xF2` | ROOM_DESCRIPTION | 0 bytes | Render room description |
 | `0xF3` | SHOP_INTERACTION | 1 byte | Index into `D30C`, indirect dispatch |
 | `0xF4` | SET_STATE_VALUE | 2 bytes | `D30C[index] = value` |
-| `0xF5` | SHOP_DISPATCH | 1 byte | Call `fn1CD3_0004(operand)` |
+| `0xF5` | SHOP_DISPATCH | 1 byte | Read 1 decrypted operand byte, pass DIRECTLY as case to `fn1CD3_0004(case)`. NOT an indirect index — byte IS the case value. |
 | `0xF6` | CHECK_CONDITION | 0 bytes | Skip if `fn0800_1A13(1)` returns 0 |
 | `0xF7` | STATE_COND_CHECK | 1 byte | Skip if `D30C[index] == 0` |
 | `0xF8` | JUMP_FORWARD | 0 bytes | Skip 2 bytes (GOTO) |
@@ -281,8 +304,34 @@ For the complete opcode specification, opcode cross-reference table, and file-by
 - Finance: C-Bills + stock values (DasHas, Nasdiv, BakPhar)
 - Position (map X/Y coordinates)
 
-### Mech Data Format (125 bytes per 'Mech)
-Fields: Name (15 bytes), Tonnage, Armour (11 slots current+max), Internal Structure (8 slots current+max), Actuators (4 slots), EngineHeatSinks, Ammo (10 slots), WalkMove, JumpMove, Critical slots per location (7 per arm/torso, 2 per leg/center torso, 1 head)
+### Mech Data Format (125 bytes per 'Mech, stride 0x7D)
+```
+Offset  Size  Field                 Description
+------  ----  -----                 -----------
++0x00   16    Name                  Mech name (ASCIIZ, null-padded)
++0x10   1     Tonnage               Tonnage (uint8)
++0x11   11    CurrentArmour[11]     Current armour by location
++0x1C   8     CurrentStructure[8]   Current internal structure
++0x24   4     CurrentActuators[4]   Current actuator status
++0x28   1     EngineHeatSinks       Heat sink count
++0x29   10    CurrentAmmo[10]       Current ammo bins
++0x33   1     WalkMove              Walk MP
++0x34   1     JumpMove              Jump MP
++0x35   7     Critical_L_Arm[7]     Left arm criticals
++0x3C   7     Critical_L_Torso[7]   Left torso criticals
++0x43   7     Critical_R_Arm[7]     Right arm criticals
++0x4A   7     Critical_R_Torso[7]   Right torso criticals
++0x51   2     Critical_L_Leg[2]     Left leg criticals
++0x53   2     Critical_R_Leg[2]     Right leg criticals
++0x55   2     Critical_C_Torso[2]   Center torso criticals
++0x57   1     Critical_Head         Head criticals
++0x58   11    MaxArmour[11]         Maximum armour (template)
++0x63   8     MaxStructure[8]       Maximum structure (template)
++0x6B   4     MaxActuators[4]       Maximum actuators (template)
++0x6F   10    MaxAmmo[10]           Maximum ammo (template)
++0x79   4     Unknown[4]            Unknown/padding
+```
+Note: The `+0x29` ammo field is what combat code at segment `0x2A02` decrements. The overlapping struct-relative offset `+0x07` (code-base `C724+0x27`) serves dual purpose — last AI target preference entry in look-up context, first ammo decrement slot in combat context.
 
 ---
 
@@ -369,7 +418,7 @@ Fields: Name (15 bytes), Tonnage, Armour (11 slots current+max), Internal Struct
 - **Viewport system**: `fn207F_24D7` blitter handles planar EGA framebuffer. Case 0x00 clips to 80px left panel width. Case 0x02 clips to 40-column text width.
 - **Animation system (seg135D)**: 4-function dispatch (DISP/LOAD/INIT/CLEAR) for left panel location graphics. Called on BLD building entry.
 - **EGA planar layout**: 4 bit-planes, 40 bytes/plane/scanline, odd/even row interleaving with 0x2000 plane stride, row-pair stride 0x50 (80 bytes).
-- **Ammo**: Weapon instance byte `ES:[SI+0x2EE4]` (stride 0x11, read-only during combat) — bit 7 = infinite ammo flag; low 7 bits = initial remaining shots. Out-of-ammo check when count <= 1. **Actual decrement** on mech struct ammo bins (offset `+0x27` within 125-byte story slot at segment `0x3092`): players (combat units 0-3, story slots 0-3) `DEC [0x2A02:C74B + unit_id*125 + stage_counter]`, enemy mechs (combat units 12-15, story slots 4-7) `DEC [0x2A02:C363 + unit_id*125 + stage_counter]`, where stage_counter = [BP-0x42] (0..0xA). Enemies (units 4-11) use burst counter `INC [0x2A02:C5D4 + unit_id*0x11]` capped at 4. 0xFF sentinel = empty slot.
+- **Ammo**: Weapon instance byte `ES:[SI+0x2EE4]` (stride 0x11, read-only during combat) — bit 7 = infinite ammo flag; low 7 bits = initial remaining shots. Out-of-ammo check when count <= 1. **Actual decrement** on mech struct ammo bins at offset `+0x29` (struct-relative, code-base `C724+0x27`) in combat segment `0x2A02`: players (combat units 0-3, story slots 0-3) `DEC [0x2A02:C74B + unit_id*125 + stage_counter]`, enemy mechs (combat units 12-15, story slots 4-7) `DEC [0x2A02:C363 + unit_id*125 + stage_counter]`, where stage_counter = [BP-0x42] (0..0xA). Enemies (units 4-11) use burst counter `INC [0x2A02:C5D4 + unit_id*0x11]` capped at 4. 0xFF sentinel = empty slot.
 - **Combat fog of war**: Twin 12×24 grids at `DS:[0x55D8]→0x40B4` (Grid A) / `0x41D4` (Grid B), each 288 bytes. Init `0x02`=fogged. `0x00`=clear. Set by `fn183B_000A` in 12×24 double loop. Per-unit fog column reset on unit death. Movement-based fog clearing in `fn183B_193B`: resets unit's row to 0x02, then `fn1631_0006` steps along movement path, clearing cells. Fog check at `GridA[unit*0x18] == 0x02` — still-fogged units rendered (fog overlay masks).
 - **fn1631_0006 (LoS stepping)**: Core pathfinding tile-step. Uses 8-direction delta tables at `0x311A`-`0x313A`. Skill gate: if tile property at `+0x7AD[tile_index] >= t0150` (seg 0x558A), tile is blocking. Also checks neighbor tile for edge cases. Writes X/Y deltas to `t458E`/`t4590`.
 - **Two tile property tables**:
@@ -616,6 +665,7 @@ The full decoded story reveals details about Kurita's role beyond the basic inva
 - **EGA planar framebuffer**: 4 bit-planes, 40 bytes/plane/scanline. Odd/even row interleaving with `0x2000` plane stride. Row-pair stride = 80 bytes (`0x50`). `fn207F_24D7` has 4 cases: 0x00 (80px left, planar interleave), 0x02 (40px text, linear), 0x01 (160px, 4-way planar), default (320px full, linear).
 - **`tB764` pixel format flag**: At seg 246C. 0x00=CGA (0xB800), 0x02=VGA text (0xAC00), 0x03=VGA mode X (0xA000, stride 0x0A00), default=EGA planar (0xA000).
 - **Tile animation**: `fn0800_240B` implements 3-frame page swap via `w5800` counter (0→1→2→0). Source offset = `(w5800 << 7) + 54658`. Copies 4100 tiles × 128 bytes each frame via `fn207F_28A8`. Guarded by `w3988` flag. `fn0800_24C2` handles unit position updates on every 3rd frame.
+- **NPC world-map movement engine (`fn0800_24C2`)**: 8 story NPCs with waypoint-based wandering. Per-NPC movement delay timer `bD399[slot]` counts down each frame. On arrival at waypoint, picks random direction via `RNG() & 0x1F`, looks up new destination from table `0x4564`/`0x57D6`. Step-toward uses `fn0800_191B` + `fn1631_0006` (LoS tile-step). Direction/state packed nibble in `0xD398[slot]`. See TECHNICAL_ANALYSIS.md §18.
 - **fn1CD3_0004 dispatch cases 0x0D-0x18**: Full equip/unit management mapped — EQUIPMENT_MENU (0x0D), COUNT_UNITS (0x0E), EQUIP_SLOT5 (0x0F, 500cr), CHECK_SLOT5 (0x10), COUNT_STORY_SLOTS (0x11), DISPATCH_11B8 (0x12-0x14), EQUIP_SLOT6 (0x15, 500cr), CHECK_SLOT6 (0x16), EQUIP_CONSISTENCY (0x17), GARAGE_SERVICE (0x18, cost table at 0x4F6E).
 - **Arrow key handler `fn0800_218F`**: Decodes scancodes → (dx,dy) movement. Calls `fn207F_158C/163B` (vertical) or `fn207F_17C5/16E3` (horizontal). Renders 3 tiles under cursor via `fn0800_2DA8` + `fn207F_1DA8`. Each frame ends with `fn207F_1314` (cursor set) + `fn207F_1DF8` (tile index update).
 - **World map rendering `fn0800_2A93`**: Renders 64 tiles (0x40) centered on cursor for w4FBA=0. For w4FBA=2 (text), renders 8-wide character grid to 0xAC00 via `fn207F_0377`. Otherwise renders tiles to 0x246C:0x244B via `fn207F_28EB`.

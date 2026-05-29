@@ -2076,6 +2076,101 @@ CMP/ICN file (header: 2-byte LE size + 1-byte format)
       → fn207F_275C (VGA pixel writer with plane sequencing)
 ```
 
+---
+
+## 18. NPC World-Map Movement Engine
+
+### 18.1 Overview
+
+The game drives autonomous NPC movement through `fn0800_24C2` (segment `0800:24C2`), called every 3rd frame from the main game loop (`fn0800_0000`). It handles **8 story character slots** (indices 0-7) — named NPCs like Rick Atlas, Rex Pearce, and other plot-relevant characters that walk around the game world.
+
+Generic background NPCs (the ones walking around the training center compound) are part of the **tile animation system** (`fn0800_240B`) — they are drawn as animated tile sprites, not as independently moving units.
+
+### 18.2 Data Structures
+
+| Address | Size | Field | Description |
+|---------|------|-------|-------------|
+| `seg 0x538A : 0xD398[slot]` | 1 byte × 8 | Direction/state nibble | High nibble = BLD index (which building NPC is in). Low nibble = facing direction (0-7). Packed as `(bld_idx << 4) \| direction` |
+| `seg 0x538A : 0xD399[slot]` | 1 byte × 8 | Movement delay timer | Counts down each frame. When 0, NPC takes a step. Initialized to specific values per slot at game start. Reset to `~0x00` (0xFF) when slot 0 (`bD339`) triggers |
+| `0x4024[slot * 2]` | word × 8 | Destination X | Target X coordinate NPC is walking toward |
+| `0x4056[slot * 2]` | word × 8 | Destination Y | Target Y coordinate NPC is walking toward |
+| `0x4004[(slot+0x10) * 2]` | word × 8 | Current X | NPC's actual X position on the map |
+| `0x4036[(slot+0x10) * 2]` | word × 8 | Current Y | NPC's actual Y position on the map |
+| `seg 0x53CA : 0x4564[idx * 2]` | word × 8 | Waypoint X table | 8 destination X coordinates indexed by direction (0-7) |
+| `seg 0x53CC : 0x57D6[idx * 2]` | word × 8 | Waypoint Y table | 8 destination Y coordinates indexed by direction (0-7) |
+
+### 18.3 Movement Algorithm (`fn0800_24C2`)
+
+```
+For each NPC slot (0..7):
+  1. Check if NPC is active (non-zero at slot offset `0x1A` in story state)
+  2. Decrement movement timer `bD399[slot]`
+  3. IF timer just reached 0:
+     a. Read direction nibble from `0xD398[slot] >> 4`
+     b. Use direction as index into waypoint tables:
+        Destination X = `0x4564[direction * 2]`
+        Destination Y = `0x57D6[direction * 2]`
+        
+  4. IF NPC active (slot's `~0x2C66` offset != 0):
+     a. Save current cursor (A44B/A44D)
+     b. Call `fn0800_191B` to adjust cursor toward destination
+     c. Compare adjusted cursor X with NPC's current X (from `0x4004[(slot+0x10)*2]`)
+     d. Try moving toward destination by adjusting cursor + calling `fn0800_191B`
+        in each axis (X first, then Y)
+     e. Call `fn1631_0006` (LoS tile-step pathfinding) to validate the move
+     f. Update position arrays:
+        `0x4004[(slot+0x10)*2]` = new X
+        `0x4036[(slot+0x10)*2]` = new Y
+     g. Update direction-relative sprite offset for rendering
+        
+  5. IF NPC reached destination (current X/Y == waypoint X/Y):
+     a. Generate new random direction: `RNG() & 0x1F`
+     b. Extract low 3 bits as new direction: `al_407 = random & 0x07`
+     c. Update `0xD398[slot]`:
+        high nibble = old high nibble (BLD index preserved)
+        low nibble = new direction
+     d. Look up new waypoint from tables at `0x4564[dir*2]` / `0x57D6[dir*2]`
+     e. Reset destination in story state at `54164[slot*0x1A]`/`54166[slot*0x1A]`
+     f. Clear current position to 0 (NPC vanishes until next step)
+        
+  6. Restore original cursor (A44B/A44D)
+```
+
+### 18.4 Building Entry / NPC Detection
+
+When the player enters a building, code at `fn0FDC` (~line 1750) checks which NPCs are inside:
+
+1. For each NPC slot (0..7), checks `bD399[slot] != 0` as an activity flag
+2. Reads `0xD398[slot] >> 4 & 0x07` to get the NPC's BLD index
+3. If BLD index matches the building being entered:
+   - Marks NPC as present in this building
+   - Counts total matching NPCs
+4. If any NPCs present:
+   - Loads NPC dialogue text from BLD strings
+   - If multiple NPCs, presents selection menu
+   - Renders dialogue via `fn1E56_03F5`
+5. Special cases:
+   - If `bD339 != 0 && current_dir == 7 && selection == 0 && some_flag != 0`:
+     Sets `bD33A = 1`, resets `bD399[slot] = 0` (story trigger)
+   - If world map not active (`bD310 == 0`): loads additional room-specific text
+
+### 18.5 Key Observations
+
+- **No follow-player AI**: NPCs do not track or follow the player. They wander between fixed waypoints.
+- **No A* pathfinding**: Movement uses `fn1631_0006` (LoS tile-step, 8-direction delta tables), which only checks immediate tile blocking. NPCs can get stuck on obstacles.
+- **Building warping**: When NPCs enter buildings (BLD index matches), their world-map position clears to 0 and they "appear" inside via the BLD dialogue system.
+- **Movement granularity**: Position coordinates use sub-tile precision (similar to cursor at `0xA44B`/`0xA44D` with sub-pixel flags). Movement step size is controlled by `fn0800_191B` which wraps coordinates in ranges.
+- **Timer granularity**: `bD399` counts game frames (every 3rd frame = ~5 FPS at 60fps). Different slots may have different initial timer values, causing desynchronized movement.
+
+### 18.6 Known Gaps
+
+1. How NPC initial positions and BLD indices are assigned at game start
+2. Exact waypoint table contents (8 coordinate pairs × direction)
+3. How `fn0800_191B` cursor adjustment maps to grid-aligned NPC positions
+4. Interaction between NPC movement and combat initialization (`fn183B_000A`)
+
+---
+
 ### 17.13 Known Gaps
 
 1. Exact BLD index translation table at `0x4602` — not fully decoded
