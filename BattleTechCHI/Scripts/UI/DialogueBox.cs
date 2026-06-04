@@ -12,7 +12,7 @@ public partial class DialogueBox : Control
 {
     private RichTextLabel _textLabel = null!;
     private Label _narratorLabel = null!;
-    private Timer _typeTimer = null!;
+    private Godot.Timer _typeTimer = null!;
     private bool _waitingForInput;
 
     [Signal]
@@ -48,7 +48,7 @@ public partial class DialogueBox : Control
         AddChild(_textLabel);
 
         // Timer per effetto scrittura
-        _typeTimer = new Timer { OneShot = true };
+        _typeTimer = new Godot.Timer { OneShot = true };
         AddChild(_typeTimer);
         _typeTimer.Timeout += OnTypeTimeout;
 

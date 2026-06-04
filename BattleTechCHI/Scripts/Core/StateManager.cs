@@ -1,7 +1,6 @@
 using Godot;
 using BattleTechCHI.Data;
 using BattleTechCHI.Maps;
-using BattleTechCHI.Combat;
 
 namespace BattleTechCHI.Core;
 

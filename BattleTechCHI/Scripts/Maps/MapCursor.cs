@@ -8,7 +8,7 @@ namespace BattleTechCHI.Maps;
 /// </summary>
 public partial class MapCursor : Sprite2D
 {
-    private Timer _blinkTimer = null!;
+    private Godot.Timer _blinkTimer = null!;
     private bool _visible_state = true;
 
     public override void _Ready()
@@ -22,7 +22,7 @@ public partial class MapCursor : Sprite2D
                     : Colors.Transparent);
         Texture = ImageTexture.CreateFromImage(img);
 
-        _blinkTimer = new Timer { WaitTime = 0.4f, OneShot = false };
+        _blinkTimer = new Godot.Timer { WaitTime = 0.4f, OneShot = false };
         AddChild(_blinkTimer);
         _blinkTimer.Timeout += () =>
         {

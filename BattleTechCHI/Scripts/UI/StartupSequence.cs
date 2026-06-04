@@ -12,7 +12,7 @@ public partial class StartupSequence : Node2D
     public delegate void StartupCompleteEventHandler();
 
     private TextureRect? _imageRect;
-    private Timer? _timer;
+    private Godot.Timer? _timer;
     private int _phase;
 
     public override void _Ready()
@@ -26,7 +26,7 @@ public partial class StartupSequence : Node2D
         };
         AddChild(_imageRect);
 
-        _timer = new Timer { OneShot = true };
+        _timer = new Godot.Timer { OneShot = true };
         AddChild(_timer);
         _timer.Timeout += OnTimerTimeout;
 

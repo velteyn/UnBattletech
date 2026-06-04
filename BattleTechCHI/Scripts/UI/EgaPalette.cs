@@ -9,7 +9,7 @@ namespace BattleTechCHI.UI;
 public static class EgaPalette
 {
     // Palette EGA standard: 16 colori
-    private static readonly Color[] StandardPalette = new[]
+    public static readonly Color[] StandardPalette = new[]
     {
         new Color(0x00, 0x00, 0x00), // 0 Black
         new Color(0x00, 0x00, 0xAA), // 1 Blue
