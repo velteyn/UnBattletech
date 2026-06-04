@@ -577,7 +577,7 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 
 ## Still Unknown / Gaps
 
-1. **SoundBlaster/PC Speaker data** — Segment 204B handles interrupt 0x08/0x1C, but format of sound/music data is unknown
+1. ~~**SoundBlaster/PC Speaker data** — Segment 204B handles interrupt 0x08/0x1C, but format of sound/music data is unknown~~ **WONT_DO**: Irrelevant for reconstruction, replaceable with modern audio
 2. **ANM animation file mapping** — How segment 135D maps animation IDs to specific .ANM files
 3. **Exact tile dimensions and animation frame mapping** in segment 0x3092 tile buffer
 4. **Complete BLD index translation table** at `0x4602` — only partial decode

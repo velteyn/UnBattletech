@@ -654,66 +654,424 @@ LRM and SRM weapons fire as a **single aggregated salvo** — per-missile hit lo
 ```
 // Read per-missile damage and shots/cluster column index
 damage_per_missile = ES:[SI + 0x2EE3]       // 0x01=LRM, 0x02=SRM (b0000 of weapon instance)
-shots_byte        = ES:[SI + 0x2EE4]        // column index into cluster hits table (bit 7 = infinite)
+cluster_col        = ES:[SI + 0x2EE4]        // column index into cluster hits table (bit 7 = infinite)
 
 if (bit 7 SET): → skip cluster table, use energy weapon path (direct damage)
-if (shots_byte <= 1): → skip cluster table (single-shot weapon)
+if (cluster_col <= 1): → skip cluster table (single-shot weapon)
 
 // Cluster hits table lookup
-roll_2d6 = fn0800_19DD()                    // 2D6 (2-12)
-index    = roll_2d6 * 7 + shots_byte        // row*7 + column
-hits     = cluster_table[index]             // bytes at segment [0x566C] : offset 0x2E5E
-total_damage = damage_per_missile * hits    // single aggregated value
+Call 0000:30DD (2D6 roll)                  // 2D6 (2-12)
+index    = 2D6 * 7 + cluster_col            // row*7 + column (row=2D6 result, col=low7 of 0x2EE4)
+ES = UInt16[DS, 0x566C]                     // cluster table segment
+hits     = UInt8[ES, (BX + 0x2E5E)]        // number of missiles that hit
+total_damage = damage_per_missile * hits    // single aggregated value → [BP-0x7C]
 ```
 
 Key points:
 - **Cluster table** at `DS:[0x566C]→0x2E5E`: 7-byte stride per row (column index 0-6), 11 rows (2D6=2..12)
-- **Result**: single total damage value → one hit location (not per-missile)
-- **Ammo**: The `shots_byte` (0x2EE4 & 0x7F) doubles as the cluster table column index and is NOT decremented (weapon instance table is read-only). Actual ammo consumption happens on the mech struct ammo bins (see §6.5)
+- **Result**: single total damage value → applied to ONE hit location (not per-missile distribution)
+- **Ammo**: The `cluster_col` (0x2EE4 & 0x7F) doubles as cluster table column index and is NOT decremented (weapon instance table is read-only). Actual ammo consumption happens on the mech struct ammo bins (see §6.5)
 - **Energy weapons** (bit 7 set): skip cluster table entirely, using a different direct-damage path
 
 #### 6.7 Hit Determination (lines 4696-4708)
 
 ```
-roll_2d6()
+Call 0000:30DD (2D6 to-hit roll)
 if (roll < TN)  → MISS
 if (roll >= TN) → HIT
 ```
 
 **On MISS** (line 4709-4734):
-- Display miss message (string at 0x3EDE in data segment)
+- Display miss message (string at segment 0x3EDE)
 - Set damage = 0
 - Check if unit has returning fire capability
 
 **On HIT** (line 4953-4985):
-- Display hit message (string at 0x3EE7)
-- Call damage application with [BP-0x60] (hit location / variance from RNG & 0x8 table)
+- Display hit message (string at segment 0x3EE7)
+- Call damage application with [BP-0x60] (hit location offset from RNG & 0x8 table)
 - Set [BP-0x56] = 1 (hit flag)
 
-#### 6.8 RNG Usage in Hit Location (lines 4586-4607)
+#### 6.8 Hit Location Selection (lines 4586-4607, 4367-4450)
 
-Before the to-hit check, RNG is used for hit location:
+The hit location offset is determined by two complementary paths:
+
+**Path A — RNG-driven variant** (for combat units, lines 4586-4607):
 ```
-rng_byte = RNG()
-index = rng_byte & 0x8    // 0 or 8 — selects one of 2 table entries
-hit_location_mod = ES:[index + 0x2E43]  // from a 2-entry table
-[BP-0x60] = hit_location_mod            // passed to damage function
+Call unknown_19EF_0BC0_1AAB0 (RNG)
+BX = AX & 0x8    // 0 or 8 — selects one of 2 table entries
+ES = UInt16[DS, 0x566A]
+AL = UInt8[ES, BX + 0x2E43]  // 2-entry hit location offset table
+AH = 0
+[BP-0x60] = AX  // hit location offset within 125-byte struct
 ```
 
-This selects between 2 hit location variants (or damage variance modifiers).
+**Path B — Weapon-to-location mapping** (for enemy mechs slots 0xC-0xF, lines 4367-4450):
+```
+BX = [BP-0x28]  // unit ID (0xC-0xF for enemy mechs)
+ES = UInt16[DS, 0x563C]
+AL = UInt8[ES, BX + 0x396C]  // weapon-to-body-part mapping table
+if AL == -1 (0xFF):
+    ES = UInt16[DS, 0x5666]
+    AL = UInt8[ES, BX + 0x45B6]  // fallback mapping
+[BP-0x46] = AL
+BX = [BP-0x46] - [BP-0x60]  // compute difference from current slot
+// ... continues with slot comparison/validation
+```
+
+The two-entry table at `DS:[0x566A]→0x2E43` encodes 2 possible hit locations per target type. RNG & 0x8 picks one, providing 50/50 variance. The hit location offset `[BP-0x60]` indexes into the 125-byte story slot struct, pointing to the specific armor/internal field at `C724 + unit_id*125 + offset`.
 
 ---
 
-### 7. FIRE PHASE
+### 7. COMPLETE COMBAT DAMAGE APPLICATION PIPELINE
 
-**Function:** `unknown_19EF_1886_1B776`
-**File:** `GeneratedCode19.cs` (lines 2382-2472)
-**Segment:Offset:** 19EF:1886 (linear 0x1B776)
+**File:** `GeneratedCode13.cs` (segment 1000, function starting ~0x4C00)
+**Key variables on stack frame:**
 
-Iterates **9 body part / weapon mount pairs**, each spaced 0x40 (64) bytes apart:
+| BP Offset | Variable | Description |
+|-----------|----------|-------------|
+| `-0x0C` | unit_id | Target unit slot (combat index 0-23, mapped to story slot) |
+| `-0x28` | combat_slot | Original combat loop iteration slot |
+| `-0x30` | target_number | To-hit target number (TN, built earlier in phase) |
+| `-0x34` | ammo_counter | Remaining shots counter for multi-shot/volley |
+| `-0x48` | weapon_slot | Weapon mount/body part index (stage counter, 0-10) |
+| `-0x52` | armor_value | Current armor value at the hit location (read from struct) |
+| `-0x56` | hit_flag | Set to 1 if attack hit, 0 if miss |
+| `-0x60` | loc_offset | Hit location offset within 125-byte mech struct |
+| `-0x7C` | damage | Damage accumulator (per-missile damage × cluster hits) |
 
-| Iteration | SI (source) | DI (dest) | Likely Body Location |
-|-----------|-------------|-----------|---------------------|
+**Overall flow:**
+
+```
+Weapon Instance Loading (§7.1)
+  │
+  ├─► Non-cluster weapon (§7.2a): damage = per-missile damage
+  └─► Cluster weapon (§7.2b): damage = per-missile × cluster_table[2D6*7 + col]
+  │
+  ▼
+To-Hit Check (§7.3): 2D6 vs TN
+  │
+  ├─► MISS: damage = 0, display miss message
+  │
+  └─► HIT: display hit message
+  │
+  ▼
+Hit Location Selection (§7.4): via RNG + 2-entry table at [0x566A]:0x2E43
+  │
+  ▼
+Armor Read (§7.5): armor = story_struct[C724 + unit_id*125 + loc_offset]
+  │
+  ▼
+CMP damage vs armor
+  │
+  ├─► damage <= armor (§7.6 Normal Path):
+  │     story_struct.armor -= damage
+  │     if loc in [0x1C-0x23]: call critical_handler(unit, loc)
+  │     damage = 0
+  │
+  └─► damage > armor (§7.7 Overkill Path):
+        excess = damage - armor
+        story_struct.armor = 0
+        if loc in [0x1C-0x23]: call critical_handler(unit, loc)
+        damage = excess
+  │
+  ▼
+Slot Advance (§7.11): loc_offset = advance(loc_offset)
+  │
+  ▼
+  CMP damage, 0
+  │
+  ├─► damage > 0 → LOOP back to Armor Read (§7.5) with next location
+  │
+  └─► damage == 0 → DONE
+```
+
+---
+
+#### 7.1 Weapon Instance Loading (lines 4586-4648)
+
+Sets up weapon data and computes base damage per missile:
+
+```
+    FarCall to 0000:30DD (2D6 roll)
+    ── used as initial seed/RNG consume ──
+
+    RNG → BX &= 0x8 → read hit location variant from [0x566A]:0x2E43
+    ── [BP-0x60] = hit location offset (see §7.4) ──
+
+    // Weapon data access
+    SI = [BP-0x48] * 0x11    // weapon_slot × 17-byte stride
+    ES = UInt16[DS, 0x5652]   // weapon instance segment
+
+    // Infinite ammo check
+    TEST ES:[SI + 0x2EE4], 0x80
+    if NZ → skip (infinite ammo, e.g. energy weapons)
+
+    // Base per-missile damage
+    AL = ES:[SI + 0x2EE3]      // damage per missile (0x01 LRM, 0x02 SRM)
+    AH = 0
+    [BP-0x7C] = AX             // store as initial damage
+
+    // Cluster weapon check
+    CMP ES:[SI + 0x2EE4], 1
+    JBE → skip cluster table (single-shot weapon)
+```
+
+**Weapon instance table** at `DS:[0x5652]` (stride 0x11 = 17 bytes):
+
+| Offset | Field | Description |
+|--------|-------|-------------|
+| `+0x00` (0x2EE4) | ammo_type | Bit 7 = infinite ammo, low 7 = remaining shots / cluster column index |
+| `+0x01` (0x2EE5) | heat | Low nibble (`& 0x0F`) = heat per shot |
+| (other fields) | name/damage/range | Copied from master weapon table at init |
+
+---
+
+#### 7.2a Damage Value — Non-Cluster Weapons (lines 4636-4648)
+
+For weapons with `0x2EE4 <= 1` (single-shot, non-cluster):
+- Base damage = `ES:[SI + 0x2EE3]` (per-missile damage field)
+- Stored directly to `[BP-0x7C]`
+
+#### 7.2b Damage Value — Cluster Weapons (lines 4649-4693)
+
+For weapons with `0x2EE4 > 1` (LRM, SRM, multi-shot):
+
+```
+    FarCall to 0000:30DD (2D6 roll)    → AX = 2..12
+    CX = 7
+    IMUL CX                              → AX = 2D6 * 7 (row index into cluster table)
+    ES = UInt16[DS, 0x5652]              ← weapon instance segment (reload)
+    BL = ES:[SI + 0x2EE4]               ← cluster column index (low 7 bits)
+    BH = 0
+    BX += AX                             → BX = column + 2D6*7
+    ES = UInt16[DS, 0x566C]              ← cluster table segment
+    AL = ES:[BX + 0x2E5E]               ← number of hits from table
+    AH = 0
+    IMUL [BP-0x7C]                       → total = hits × per_missile_damage
+    [BP-0x7C] = AX
+```
+
+**Cluster hits table** at `DS:[0x566C]→0x2E5E`:
+
+```
+    Rows:    11 rows indexed by 2D6-2 (2,3,4,...,12)
+    Columns: 7 columns indexed by weapon subtype (0-6)
+    Stride:  7 bytes per row
+    Cell:    uint8 = number of missiles that hit
+
+    Total damage = cell_value × per_missile_damage
+    Applied as single value to ONE hit location
+```
+
+---
+
+#### 7.3 To-Hit Check (lines 4694-4708)
+
+```
+    FarCall to 0000:30DD (2D6 roll)     → AX = 2..12
+    CMP AX, [BP-0x30]                   ← compare with TN (target number)
+    JL → MISS
+    JMP → HIT
+```
+
+**On MISS** (lines 4709-4734):
+```
+    Display miss message (segment 0x3EDE)
+    [BP-0x56] = 0    ← miss flag
+    [BP-0x7C] = 0    ← zero damage
+    Check unit visibility at ES:[0x5662]:0x32AE[unit]
+    → if visible, set up return fire check
+```
+
+**On HIT** (lines 4953-4985):
+```
+    Display hit message (segment 0x3EE7)
+    [BP-0x56] = 1    ← hit flag
+    → falls through to damage application
+```
+
+---
+
+#### 7.4 Hit Location Selection (lines 4586-4607 and 4367-4450)
+
+[Duplicate of §6.8 — see above for details]
+
+The hit location offset `[BP-0x60]` selects which field within the 125-byte mech struct receives damage. It indexes into the armor+internal array at `C724 + unit_id*125 + offset`.
+
+---
+
+#### 7.5 Armor Read and Damage Application Entry (lines 5040-5079)
+
+```
+    AX = 0x7D
+    IMUL [BP-0x0C]                 → unit_id * 125
+    BX = AX
+    ADD BX, [BP-0x60]              → BX = unit_id*125 + hit_location_offset
+    ES = UInt16[DS, 0x5648]        ← story data segment
+    AL = ES:[BX + 0xC724]          ← current armor value at hit location
+    AH = 0
+    [BP-0x52] = AX                 ← save armor value
+
+    CMP [BP-0x7C], AX              ← compare damage vs armor
+    JLE → normal damage path (§7.6)
+    JMP → overkill damage path (§7.7)
+```
+
+The base address `0xC724` is the start of the story slot state array (Eq_107947, stride 0x7D). The 125-byte struct stores 11 armor locations (starting at offset 0x11 in the struct), 8 internal structure slots (offset 0x1C), and ammo bins (offset 0x27). The hit location offset `[BP-0x60]` indexes into these:
+- `0x00-0x10`: Name/slot metadata (not armor)
+- `0x11-0x1B`: CurrentArmour[11] (11 bytes, locations 0-10)
+- `0x1C-0x23`: CurrentStructure[8] (8 bytes, locations 0-7)
+- `0x24-0x27`: Actuators[4]
+- `0x28`: EngineHeatSinks
+- `0x29-0x32`: CurrentAmmo[10]
+
+The comparison at line 5070 uses offset range 0x1C-0x23 and 0x1F/0x20 for special handling, confirming these as internal structure slots.
+
+---
+
+#### 7.6 Normal Damage Path (damage <= armor, lines 5080-5168)
+
+```
+    // At label 0x5116:
+    CMP [BP-0x7C], [BP-0x52]   → if damage == armor:
+        // Exact armor depletion: check if hit location is internal structure
+        CMP [BP-0x60], 0x1C    → structure slot 0?
+        JZ → set flag
+        CMP [BP-0x60], 0x21    → structure slot 5?
+        JNZ → skip
+        // Set internal damage flag at [0x5676]:0x3986
+        ES = UInt16[DS, 0x5676]
+        ES:[0x3986] = 1
+
+    // Apply damage subtraction
+    AL = [BP-0x7C]             ← damage value
+    CX = AX
+    BX = unit_id * 0x7D + [BP-0x60]
+    ES = UInt16[DS, 0x5648]
+    ES:[BX + 0xC724] -= CL     ← subtract damage from armor
+
+    [BP-0x7C] = 0              ← reset damage accumulator
+
+    // Critical/internal damage check
+    CMP [BP-0x60], 0x1C
+    JL → skip (not internal structure)
+    CMP [BP-0x60], 0x23
+    JG → skip (not internal structure)
+    // Range [0x1C-0x23]: internal structure hit
+    PUSH [BP-0x60]
+    PUSH [BP-0x0C]             ← unit_id
+    CALL ghidra_guess_1000_0BBB_10BBB  ← critical/destruction handler
+    ADD SP, 4
+
+    // Post-critical check
+    CMP [BP-0x60], 0x1F
+    JZ → continue_special
+    CMP [BP-0x60], 0x20
+    JZ → continue_special
+    JMP → exit_path
+```
+
+---
+
+#### 7.7 Overkill/Overflow Damage Path (damage > armor, lines 5269-5402)
+
+```
+    // At label 0x51C4:
+    AX = [BP-0x52]                 ← original armor value
+    [BP-0x7C] -= AX                ← excess = damage - armor (carries to next slot)
+
+    // Zero out armor at this location
+    BX = unit_id * 0x7D + [BP-0x60]
+    ES = UInt16[DS, 0x5648]
+    ES:[BX + 0xC724] = 0           ← armor destroyed
+
+    // Check if this location had armor > 0 (was worth processing)
+    CMP [BP-0x52], 0
+    JZ → skip_critical              ← no armor to begin with
+
+    // Same internal structure check as normal path:
+    CMP [BP-0x60], 0x1C
+    JZ → call_critical
+    CMP [BP-0x60], 0x21
+    JNZ → skip_critical
+
+    // Set internal damage flag for structure slots
+    ES = UInt16[DS, 0x5676]
+    ES:[0x3986] = 1
+
+    // Call critical/destruction handler for range [0x1C-0x23]
+    PUSH [BP-0x60]
+    PUSH [BP-0x0C]
+    CALL ghidra_guess_1000_0BBB_10BBB
+    ADD SP, 4
+
+    // After critical: check for mech destruction
+    PUSH [BP-0x60]
+    CALL ghidra_guess_1000_0B32_10B32   ← advance to next slot
+    ADD SP, 2
+    [BP-0x60] = AX                       ← new hit location
+
+    // Destruction check branch:
+    CMP [BP-0x28], 0              ← combat slot 0?
+    JZ → check_mech_destroyed
+    JMP → exit
+
+    // If target's combat slot is 0 AND [BP+0x6] != 0 → unit destroyed
+    // Calls ghidra_guess_0000_EAEE_0EAEE for destruction handling
+```
+
+---
+
+#### 7.8 Damage Overflow Loop (lines 5403-5414)
+
+After both normal and overkill paths converge at `label_1000_524A_1524A`:
+
+```
+    CMP [BP-0x7C], 0              ← check remaining damage
+    JZ → exit (all damage applied)
+
+    // Still have damage — loop back to apply to next slot
+    JMP → label_1000_50C3_150C3   ← re-enter damage loop
+```
+
+The loop entry at `0x50C3` (line 4986):
+```
+    AX = 0x7D
+    IMUL [BP-0x0C]               → unit_id * 125 stride
+    BX = AX
+    ES = UInt16[DS, 0x5648]
+    CMP ES:[BX + 0xC724], 0xFF   ← check sentinel (0xFF = slot end)
+    JNZ → continue
+    JMP → exit (no more valid slots)
+
+    CMP [BP-0x48], 0xB           ← weapon slot counter == 0xB?
+    JNZ → skip_special
+    // Special handling for slot 0xB:
+    ES = UInt16[DS, 0x5674]
+    ES:[BX + 0xD576] = 3         ← set some status flag
+    [BP-0x34] = 0                ← reset counter
+    [BP-0x7C] = 0                ← clear remaining damage
+
+    // Falls through to armor read at §7.5 with new [BP-0x60]
+```
+
+The overflow loop allows damage to **punch through** armor into internal structure, and from one body part to the next. A weapon that does 25 damage to a location with 8 armor will:
+1. Armor = 0 (8 absorbed)
+2. Excess = 17 → applied to next location (internal structure at offset 0x1C+)
+3. If internal structure is depleted, continues to next slot
+
+---
+
+#### 7.9 Critical Hit Propagation (Grid Adjacency)
+
+**Function:** `unknown_19EF_11BB_1B0AB`
+**File:** `GeneratedCode18.cs` (lines 4354-4653)
+**Segment:Offset:** 19EF:11BB (linear 0x1B0AB)
+
+Called from `unknown_19EF_1886_1B776` which iterates 9 body part pairs:
+
+| Iteration | SI (source) | DI (dest) | Body Location |
+|-----------|-------------|-----------|---------------|
 | 1 | 0x564 | 0x324 | Right Arm |
 | 2 | 0x5A4 | 0x364 | Right Leg |
 | 3 | 0x5E4 | 0x3A4 | Right Torso |
@@ -724,62 +1082,132 @@ Iterates **9 body part / weapon mount pairs**, each spaced 0x40 (64) bytes apart
 | 8 | 0x724 | 0x4E4 | Left Torso |
 | 9 | 0x764 | 0x524 | Center Torso (rear) |
 
-Each pair calls `unknown_19EF_11BB_1B0AB` to process grid adjacency/status for that location.
-
----
-
-### 8. GRID ADJACENCY / CRITICAL HIT TRANSFER
-
-**Function:** `unknown_19EF_11BB_1B0AB`
-**File:** `GeneratedCode18.cs` (lines 4354-4653)
-**Segment:Offset:** 19EF:11BB (linear 0x1B0AB)
-
-**Parameters (registers):**
-- `SI` = source pointer into a 6x6 grid (base offset)
-- `DI` = destination output pointer
-
-**Structure:**
-- Processes a grid with width = 8 (based on ±1, ±8 offsets)
-- 6×6 inner loop (`CX`, `DX` = 0x6 each)
+**Structure:** 6×6 grid with width 8 (±1, ±8 neighbor offsets)
 
 **Operations per cell:**
 1. Reads byte at `[SI]`, `[SI-1]`, `[SI+1]`, `[SI-8]`, `[SI+8]`
 2. Compares current cell value with neighbors
 3. Sets bits in `[DI]`:
-   - Bit 0x8 = high-bit flag (damaged/destroyed?)
+   - Bit 0x8 = destroyed status
    - Bit 0x4 = neighbor match
-   - Bit 0x2 = secondary flag
+   - Bit 0x2 = secondary/transfer flag
 
-**Purpose:** This is the critical hit transfer algorithm — when a location is destroyed, damage/effects propagate to adjacent slots. The 6x6 grid represents the critical slot layout per body location (mechs have 6-8 critical slots in each location in tabletop).
+**Purpose:** When a critical slot is destroyed (e.g., an ammo bin or gyro), the grid propagates destruction status to adjacent slots within the same body location. The 6×6 grid maps to the critical slot layout (BattleTech mechs have 6-12 critical slots per location).
 
 Also called by helper sub-functions:
-- `unknown_19EF_12BA_1B1AA`
-- `unknown_19EF_12F2_1B1E2`
-- `unknown_19EF_12D9_1B1C9`
+- `unknown_19EF_12BA_1B1AA` — single-slot grid evaluation
+- `unknown_19EF_12F2_1B1E2` — multi-slot comparison
+- `unknown_19EF_12D9_1B1C9` — slot scroll/rotate variant
 
 ---
 
-### 9. DAMAGE APPLICATION
+#### 7.10 VGA Impact Visual Effect
 
 **Function:** `unknown_19EF_18EF_1B7DF`
 **File:** `GeneratedCode19.cs` (lines 2509+)
 **Segment:Offset:** 19EF:18EF (linear 0x1B7DF)
 
-**Flow:**
-1. **RNG call** (`unknown_19EF_0BC0_1AAB0`) for hit location roll
-2. **Reads cursor/target position** at `0xA44B` (X), `0xA44D` (Y)
-3. **Coordinate to video memory conversion:**
-   - `AX = (Y >> 1) & 0x7 + 2 << 3` → grid Y cell
-   - `BX = (X >> 1) & 0x7 + 2`
-   - Result + offset 0x7AD → stored at 0x9ED (screen buffer position)
-4. **13-iteration loop** (`CX = 0xD`):
-   - Likely draws impact animation or applies splash damage in a column
-   - Checks `TEST [0xA44D], 0x1` and `TEST [0xA44B], 0x1` (odd/even pixel)
-5. **VGA hardware acceleration** (when graphics mode `DS:0xB764 == 2`):
-   - Programs VGA Set/Reset register (`0x3CE`, value `0x205`)
-   - Programs Bit Mask register (`0x3CE`, value `0x8`)
-   - Values at `0xA452`, `0xA454`, `0xA456` are drawing parameters
-6. **Registers damage** in the unit state arrays
+This is called **after** damage is applied, to render the visual impact effect:
+
+```
+    DS = 0x1DDC
+    DI = 0x34 + 0x244B = 0x247F  ← screen buffer offset
+    [0xA452] = 8                  ← drawing width
+    [0xA454] = 0x994              ← Y coordinate parameter
+    [0xA456] = 0x494              ← X coordinate parameter
+
+    // VGA hardware acceleration (mode X, when tB764 == 2):
+    DX = 0x3CE                    ← VGA Graphics Controller port
+    AX = 0x205                    ← Set/Reset register: set bit 0 (plane 0)
+    OUT DX, AX
+    AX = 0x8                      ← Bit Mask register
+    OUT DX, AX
+
+    // 13-iteration loop (CX = 0xD):
+    for i in 0..12:
+        // Read/write to video memory at cursor position
+        // Uses A44B/A44D packed coordinates
+        // Draws impact sprite frame
+
+    // Cleanup: restore VGA registers
+```
+
+**Purpose:** Draws the weapon impact animation at the cursor/target position using VGA hardware acceleration (Set/Reset and Bit Mask registers at port 0x3CE). The 13 iterations likely correspond to a splash/explosion sequence or frame animation.
+
+---
+
+#### 7.11 Slot Advance Function
+
+**Function:** `ghidra_guess_1000_0B32_10B32`
+**File:** `GeneratedCode10.cs` (lines 4074+)
+**Segment:Offset:** 1000:0B32 (linear 0x10B32)
+
+Called with the current hit location offset as argument, returns the next location to process:
+
+```
+    // Jump table dispatch based on input offset:
+    if offset in [0x11..0x18]:     ← armor slots 0-7
+        return offset + 0xB        ← maps to corresponding internal structure slot
+
+    offset -= 0x19                 ← after armor range
+    if offset > 0xA:
+        return original_value      ← out of range, return unchanged
+
+    // For offsets 0x19-0x23 (internal structure range):
+    BX = offset * 2
+    switch CS:[BX + 0x118E]:       ← jump table at code segment
+        case ...: return next_offset
+```
+
+**Purpose:** Determines the sequence of body locations that excess damage flows through. When armor at `offset 0x11` is depleted, the next damage goes to `offset 0x11+0xB = 0x1C` (the corresponding internal structure). Within the internal structure range (0x1C-0x23), a jump table defines the traversal order.
+
+---
+
+#### 7.12 Phase 3 Combat Stage Function — `unknown_19EF_1DF8_1BCE8` and Variants
+
+**File:** `GeneratedCode19.cs` (lines 1192-1462) — function `unknown_19EF_158C_1B47C`
+
+This is the **primary damage phase function** (Phase 3 in the combat loop). It:
+
+1. Decrements the cursor/phase counter at `0xA44D` (see §7.13)
+2. On counter underflow (AL goes negative):
+   - Resets counter: AH -= 0x10, AL = 0x7F → writes back to `0xA44D`
+   - Calls `unknown_19EF_0BFB_1AAEB` for each of the 9 body part pairs
+   - Calls `unknown_19EF_1886_1B776` (critical transfer) on iterations 3 and 9
+   - Writes animation/sparkle data to `0x9F3` buffer:
+     ```
+     [0x9F3] = 0x100 or 0x706     ← sparkle/animation type
+     [0x9F5] = 0x01               ← animation frame
+     Coordinates packed from A44B/A44D:
+         AL = ((A44D | A44B) >> 8) - 0x11
+     ```
+
+The 0x9F3 buffer is consumed by the rendering code in `GeneratedCode2.cs` (segment 0170), which iterates 3 entries, reads `0x9F3`/`0x9F6`/`0x9F3`, draws damage sparkles, and sets each consumed entry to 0xFF.
+
+The sibling functions handle specific phase transitions:
+- `unknown_19EF_163B_1B52B` — increments the `0xA44D` counter (phase advance, edge detection)
+- `unknown_19EF_16E3_1B5D3` — decrements the `0xA44B` counter (X coordinate adjust)
+- `unknown_19EF_17C5_1B6B5` — increments the `0xA44B` counter (X coordinate adjust)
+
+---
+
+#### 7.13 The 0xA44B/0xA44D Packed Cursor/Counter Register
+
+The pair `DS:[0xA44B]` and `DS:[0xA44D]` serves dual purpose:
+
+**As cursor coordinates (world map/text mode):**
+| Register | Low Byte | High Byte |
+|----------|----------|-----------|
+| `0xA44B` | Sub-tile X | Tile column X |
+| `0xA44D` | Sub-tile Y | Tile row Y |
+
+Grid coordinate extraction: `tile_x = (A44B & 0x7F) >> 1` (range 0-63)
+                          `tile_y = (A44D & 0x7F) >> 1`
+
+**As phase/action counters (combat mode):**
+- `0xA44D` low byte = combat sub-phase counter (decremented by phase function)
+- `0xA44B` low byte = action/weapon slot counter
+- Overflow handling: when low byte underflows (sign flag), high byte decrements by 0x10, low byte resets to 0x7F
 
 ---
 
@@ -915,19 +1343,348 @@ The game implements a simplified version of the tabletop BattleTech rules:
 | **Weapon Attack** | Per-body-part weapon mounts checked via 9-location loop (0x564 stride 0x40) | Confirmed |
 | **To-Hit Roll** | 2D6 roll via `ghidra_guess_0000_30DD_030DD` (rejection-sampled D6 1-6). TN = base (action_code*2+4) + skill (popcount of story state bits) + terrain (tile property at 0x32C6 + 1) + heat (thresholds at 8/13/17/24 → +1 each) + story state (+2 if citadel attacked). Roll < TN = miss | CONFIRMED |
 | **Hit Location** | 9 body part pairs processed in `unknown_19EF_1886_1B776` (RA, RL, RT, HD, CT, LA, LL, LT, CTR). RNG & 0x8 selects 1 of 2 hit location variants | Confirmed |
-| **Damage** | Weapon damage stat from table + damage value computed from unit state data (divided by 5) + hit location modifier | Partially |
+| **Damage** | Full pipeline: weapon instance load → per-missile damage → cluster hits table (2D6×7 + col → segment 0x566C:0x2E5E) → total = hits × per-missile → armor subtraction at `C724 + unit_id*125 + offset` → overflow to next slot | Fully mapped (§7) |
 | **Critical Hits** | Grid adjacency `unknown_19EF_11BB_1B0AB` handles slot→slot transfer | Confirmed |
 | **Heat** | Heat thresholds at `ES:[BX+0x6E]` (player) or `0x66` (enemy). 8/13/17/24 → cumulative +1 TN penalty each. Heat pool at `ES:[BX+0x92]` (player) / `0x8A` (enemy) accumulates weapon heat from instance byte `0x2EE5 & 0x0F` | Confirmed |
 | **Ammo** | Weapon instance byte `ES:[SI+0x2EE4]` (stride 0x11): bit 7 = infinite ammo, low 7 bits = initial count. Read-only during combat (CMP check only). **Actual decrement** on mech struct: `0x2A02:C74B + unit_id*125 + stage_counter` for players, `0x2A02:C5D4 + unit_id*0x11` burst cap for enemies. 0xFF = empty bin sentinel | Confirmed |
 | **AI Targeting** | Data-driven: story state properties 0x33-0x55 encode target preferences. `ghidra_guess_1000_0AB2_10AB2` selects n-th valid target matching stage counter | Confirmed |
 | **Destruction** | Unit status at 0x406A set to 0 when destroyed | Confirmed |
 
+#### 7.14 Mech Destruction / Kill Chain
+
+The game uses a multi-layered destruction system spanning critical hit propagation, ammo explosion, overkill marking, fog clear, and unit removal. Three key functions implement this pipeline:
+
+---
+
+##### 7.14.1 Critical/Structure Damage Handler — `ghidra_guess_1000_0BBB_10BBB`
+
+**File:** `GeneratedCode10.cs:4185-4584`
+**Segment:Offset:** 1000:0BBB (linear 0x10BBB)
+
+Parameters: `[BP+0x6]` = unit_id, `[BP+0x8]` = location_offset (0x11-0x23 range, structure area of the 125-byte mech record)
+
+```
+[BP-0x4] = 0           ; already_destroyed flag
+[BP-0xA] = 1           ; ammo explosion multiplier (starts at 1)
+
+BX = unit_id * 0x7D + location_offset
+ES = [0x558E]          ; story data segment
+
+if ES:[BX + 0xC724] == 0:       ; location already at 0?
+    [BP-0x4] = 1                ; mark already destroyed
+
+roll = ghidra_guess_0000_30DD_030DD()   ; 2D6 roll (2-12)
+
+if roll >= 8:
+    [BP-0xA] = (roll - 8) / 2 + 1       ; multiplier: 8→1, 10→2, 12→3
+
+; Ammo explosion check
+if [0x2E38] != 0 AND [BP-0xA] > 0:
+    unknown_17C6_0281_17EE1(4)          ; explosion visual effect
+    display_string(seg=DS, offset=0x315E) ; "ammo explosion" text
+    ES = [0x55B4]
+    ES:[0x4586] = 1                     ; mark ammo explosion happened
+
+; --- Overkill propagation (already-destroyed location) ---
+if [BP-0x4] != 0:
+    [BP-0xA] = 0                        ; no explosion multiplier
+    iter_start = [BX + 0x316E]          ; read from location→iteration table
+    iter_count = [BX + 0x3176]          ; number of slots to process
+    for i in 0..iter_count:
+        addr = unit_id * 0x7D + iter_start + i + 0xC724
+        ES = 0x2A02                     ; combat segment
+        if ES:[BX] != 0:
+            ES:[BX] |= 0x80             ; set bit 7 = destroyed marker
+
+    ; Special nibble clears for CT/Head destruction:
+    BX = unit_id * 0x7D
+    ES = [0x558E]
+    switch location_offset:
+        0x1C (CT):  ES:[BX + 0xC748] &= 0x0F   ; clear high nibble (actuator 0)
+        0x1E (Head): ES:[BX + 0xC748] &= 0xF0  ; clear low nibble (actuator 0)
+        0x21:       ES:[BX + 0xC749] &= 0x0F   ; clear high nibble (actuator 1)
+        0x23:       ES:[BX + 0xC749] &= 0xF0   ; clear low nibble (actuator 1)
+
+; Post-handling
+if [BP-0xA] == 0:
+    EXIT                                    ; no explosion, done
+else:
+    normalized = [BP+0x8] - 0x1C
+    if normalized <= 7:
+        jump_table CS:[BX + 0x15E2]         ; location-specific follow-up
+```
+
+**Key details:**
+- The `[0x2E38]` flag gates ammo explosions — when non-zero and a 2D6 roll ≥ 8 occurs, the ammo explosion visual+text fires and `ES:[0x4586]` is set to 1.
+- The overkill path (`[BP-0x4] != 0`) handles a location already at 0 HP receiving additional damage. It marks every slot in the range `iter_start..iter_start+iter_count` with bit 7 (0x80 = destroyed marker) in the combat segment at `0x2A02`.
+- `0xC748` and `0xC749` are at offsets `0x24` and `0x25` from the per-unit data base within the story slot — these correspond to the `CurrentActuators[4]` field. The nibble clears ensure that when CT or Head structure is destroyed, the corresponding actuator data is zeroed.
+- Location offsets 0x1C (CT) and 0x1E (Head) correspond to the first two bytes of the 8-byte internal structure array within the 125-byte mech record at offset 0xC724.
+
+---
+
+##### 7.14.2 Overkill/Destruction Flow (Caller in GeneratedCode13.cs)
+
+**File:** `GeneratedCode13.cs:5140-5390`
+
+This is the main combat loop's damage application path. After armor is depleted at offsets 0x11-0x18 and damage overflows to structure offsets 0x1C-0x23:
+
+```
+; --- First critical handler call ---
+if [BP-0x60] in range 0x1C..0x23:
+    ghidra_guess_1000_0BBB_10BBB(loc_offset=[BP-0x60], unit_id=[BP-0xC])
+
+; --- Special story state property handling ---
+if [BP-0x60] == 0x1F OR [BP-0x60] == 0x20:   ; story state props
+    BX = unit_id * 0x7D + [BP-0x60]
+    ES = [0x5648]
+    if ES:[BX + 0xC724] == 0:                  ; property byte just zeroed?
+        ghidra_guess_0000_F565_0F565([BP-0x28])  ; special handler
+        [BP-0x3A] = 1
+        ES = [0x564C]
+        ES:[0x4586] = 0                         ; clear ammo explosion flag
+        if [BP-0x28] == 0 AND [BP+0x6] != 0:   ; target is slot 0 AND frame OK
+            ghidra_guess_0000_EAEE_0EAEE()      ;  ← CLEAR WHOLE FOG GRID
+
+; --- Second pass: zero the byte and check again ---
+[BP-0x7C] -= [BP-0x52]                          ; subtract damage accumulator
+BX = unit_id * 0x7D + [BP-0x60]
+ES = [0x5648]
+ES:[BX + 0xC724] = 0                            ; explicitly zero the structure byte
+
+if [BP-0x52] > 0 AND ([BP-0x60] == 0x1C OR [BP-0x60] == 0x21):
+    ES = [0x5676]
+    ES:[0x3986] = 1                             ; CT destroyed flag
+
+; --- Second critical handler call (for overkill) ---
+if [BP-0x60] in range 0x1C..0x23:
+    ghidra_guess_1000_0BBB_10BBB(loc_offset=[BP-0x60], unit_id=[BP-0xC])
+
+; --- Slot advance for next body part ---
+AX = ghidra_guess_1000_0B32_10B32(loc_offset=[BP-0x60])
+[BP-0x60] = AX                                  ; advance to next location
+
+if ES:[0xE484] != 0:                            ; story property 0x20 completed?
+    ghidra_guess_0000_F565_0F565([BP-0x28])     ; trigger follow-up
+```
+
+**Destruction trigger conditions:**
+1. A structure location in range 0x1C-0x23 takes damage → first `0BBB` call
+2. If location is 0x1F or 0x20 (story state properties), the byte being zeroed triggers special handling:
+   - `ghidra_guess_0000_F565_0F565` is called with the target combat slot
+   - `ES:[0x4586]` is cleared (reset ammo explosion flag)
+   - **Fog grid is fully cleared** when target is slot 0 (player's primary target) and frame condition is met
+3. The byte is explicitly zeroed in the story data segment
+4. If CT (0x1C or 0x21): global CT destroyed flag at `ES:[0x3986]` is set
+5. Second `0BBB` call marks all overkill targets
+6. Slot advance function moves to next body part
+7. If `ES:[0xE484] != 0` (story property 0x20 multi-step complete): follow-up trigger
+
+---
+
+##### 7.14.3 Fog Grid Clear on Kill — `ghidra_guess_0000_EAEE_0EAEE`
+
+**File:** `GeneratedCode9.cs:3444-3534`
+**Segment:Offset:** 0000:EAEE (linear 0xEAEE)
+
+Parameters: none (self-contained)
+
+```
+; Stack frame setup
+unknown_19EF_2FDC_1CECC(4)     ; stack check
+
+; Double loop: clear all 24×24 = 576 fog cells
+for row in 0..0x17 (0 to 23):
+    for col in 0..0x17 (0 to 23):
+        ES = [0x5542]                     ; combat fog segment selector
+        ES:[row * 0x18 + col + 0x40B4] = 0   ; set cell to "clear"
+```
+
+**Key details:**
+- This clears **both** fog grids at once (Grid A and Grid B both reside within the same 24×24 region, or the function covers the entire fog segment region)
+- Called **only** when the destruction logic detects a kill on combat slot 0 in specific conditions (frame count check)
+- After this call, all previously fogged units become visible on the battlefield
+
+---
+
+##### 7.14.4 Unit Kill Handler — `ghidra_guess_0000_EB34_0EB34`
+
+**File:** `GeneratedCode9.cs:3536-4243+`
+**Segment:Offset:** 0000:EB34 (linear 0xEB34)
+
+Parameters: `[BP+0x6]` = unit_id
+
+Called from `GeneratedCode12.cs:727` in the combat phase dispatch when specific unit type conditions are met:
+
+```
+; Phase 1: Store AI target preferences to local array
+for offset in 0x33..0x56 (12 bytes = AI target pref table):
+    val = ES:[BX + 0xC724]              ; from story data
+    val &= 0x7F                         ; strip destroyed bit
+    if val in range 0x10..0x20:         ; valid target slot?
+        local_array[i++] = val
+
+; Phase 2: Story state checks
+if ES:[BX + 0xC79B] == 1:               ; b0057 = 1 (citadel attacked)
+    display_string(0x292D)               ; "destroyed" text variant
+    unknown_18AD_0259_18D29()           ; sound/effect
+    unknown_17C6_0388_17FE8()           ; state cleanup
+
+if ES:[BX + 0xC79B] == 2:               ; b0057 = 2 (post-attack)
+    display_string(0x2964)               ; different text variant
+    unknown_18AD_0259_18D29()
+    unknown_17C6_0388_17FE8()
+    goto exit
+
+; Phase 3: Death processing
+display_string(0x29A3)                   ; death message
+ghidra_guess_1000_3224_13224(unit_id, 1) ; clear unit state
+fn(local_array) → computes X/Y params   ; position for death animation
+ES:[0x56] = computed_value               ; death animation param 1
+ES:[0x52] = other_value                  ; death animation param 2
+unknown_17C6_0281_17EE1(5)              ; explosion visual 2
+unknown_17C6_0004_17C64(0)              ; reset
+unknown_17C6_0388_17FE8()               ; cleanup
+unknown_0170_28A2_03FA2()               ; render update
+display_string(0x29BE)                   ; death text
+
+; Phase 4: Per-combat-slot cleanup
+for slot in 0..0xB (12 combat slots):
+    ES = [0x5552]
+    ES:[0x37FE] = 1 or 8 or 2           ; death animation type
+    weapon_idx = local_array[0] & 0x7F
+    display_weapon_name(weapon_idx)      ; "destroyed by X"
+    ES:[0x3748] = 0xB                    ; animation timer
+
+    if bit 7 of local_array[0] set:
+        display_string(0x29D9)           ; "Destroyed!" text
+        ES = [0x554A]
+        ES:[slot + 0x3800] = 0xFF        ; mark slot dead in combat
+    else:
+        ; Ammo/inventory cleanup path...
+```
+
+**Call site** (`GeneratedCode12.cs:700-727`):
+Called when `[BP-0xA] >= 4` (combat unit type threshold) AND one of:
+- `[BP-0xC] == 2` (enemy mech type)
+- `[BP-0xC] == 6` (player unit type)
+- `[BP-0xA] >= 4 AND [BP-0xC] == 4` (enemy infantry type)
+
+**Key details:**
+- Extracts AI target preference table (offsets 0x33-0x56) into a local buffer — this identifies which enemy units the killed unit was targeting
+- Checks story state `b0057` (at `0xC79B`) for citadel-attack phase to select death text variant
+- Computes animation parameters from the target preference array — used for death animation positioning
+- Sets per-combat-slot destroyed markers at `ES:[0x3800 + slot]` to `0xFF` for the killed unit
+- The `ES:[0x37FE]` value (1/8/2) controls which death animation type plays
+- `w4FBA` check influences animation type — world map (0) forces type 2 animation
+
+---
+
+##### 7.14.5 Complete Destruction Sequence Summary
+
+```
+Phase 1: Critical Handler
+  └→ ghidra_guess_1000_0BBB_10BBB(unit_id, loc_offset)
+      ├─ Check if structure byte already 0
+      ├─ Roll 2D6 for ammo explosion check (≥8 → mult 1-3)
+      ├─ Ammo explosion visual + text (if enabled)
+      ├─ Overkill: mark combat segment slots with bit 7
+      └─ CT/Head: clear actuator nibbles at 0xC748/0xC749
+
+Phase 2: Post-damage processing
+  ├─ If story state (0x1F/0x20) zeroed: call F565 handler
+  ├─ Clear ES:[0x4586] (ammo explosion flag)
+  ├─ If slot 0 killed: ghidra_guess_0000_EAEE_0EAEE()
+  │     └─ Clear 24×24 fog grid to 0
+  ├─ Zero the structure byte at story data segment
+  ├─ If CT (0x1C/0x21): set ES:[0x3986] = 1
+  └─ Second call to 0BBB for overkill marking
+
+Phase 3: Slot advance
+  └─ ghidra_guess_1000_0B32_10B32 → next body part
+
+Phase 4: Unit kill handler (conditionally)
+  └─ ghidra_guess_0000_EB34_0EB34(unit_id)
+      ├─ Snapshot AI target preferences
+      ├─ Check story state for death text variant
+      ├─ Display death message + animation
+      ├─ Set ES:[0x37FE] death animation type (1/2/8)
+      ├─ Display "destroyed by [weapon]" text
+      └─ Mark unit slot as 0xFF (dead) in combat segment
+```
+
+#### 7.15 Facing / Firing Arcs — NOT IMPLEMENTED in Combat
+
+**File:** All combat source files (GeneratedCode10-19.cs)
+**Status:** Confirmed absent — the game has **no facing direction or firing arc enforcement**
+
+The game's combat system does **not** implement the tabletop BattleTech facing/arc rules at all. Here is the exhaustive evidence:
+
+**1. The 9 body-part loop (`unknown_19EF_1886_1B776`) is NOT a weapon fire loop**
+
+The function at `19EF:1886` (linear 0x1B776) iterates 9 SI/DI source-destination pairs, but each iteration calls `unknown_19EF_11BB_1B0AB` which is a **grid adjacency / critical transfer function**:
+
+| Iteration | SI | DI | Label | What happens |
+|-----------|-----|-----|-------|-------------|
+| 1 | 0x564 | 0x324 | RA | 6×6 grid, reads `[SI]`, compares with `[SI±1]`, `[SI±8]`, writes bitmask to `[DI]` |
+| 2 | 0x5A4 | 0x364 | RL | Same cellular-automaton adjacency check |
+| 3 | 0x5E4 | 0x3A4 | RT | Same |
+| 4 | 0x624 | 0x3E4 | HD | Same |
+| 5 | 0x664 | 0x424 | CT | Same |
+| 6 | 0x6A4 | 0x464 | LA | Same |
+| 7 | 0x6E4 | 0x4A4 | LL | Same |
+| 8 | 0x724 | 0x4E4 | LT | Same |
+| 9 | 0x764 | 0x524 | CTR | Same |
+
+Each call processes a **6×6 grid with stride 8**, performing 4-direction neighbor comparison, OR-ing bits (0x8/0x4/0x2/0x1) into `[DI]`. This is a cellular automaton that propagates critical hit damage between adjacent body-part slots. No weapon damage, to-hit rolls, or range checks exist in this function.
+
+**2. No facing-direction variable exists per combat unit**
+
+The only direction variable in the game is for **NPC world-map sprite rendering** ([`TECHNICAL_ANALYSIS.md §18`]) — high nibble of `ES:[0xD398]` = BLD index, low nibble = facing direction (0-7). This is never read during combat.
+
+The unit status field at `0x406A` is purely a **dead/alive flag** (0 = inactive, non-zero = active). No direction bits are stored or checked anywhere in the combat code.
+
+The death animation type at `ES:[0x37FE]` (values 1, 2, 8, 0xE, 0xF) controls **explosion visual type**, not facing direction.
+
+**3. Targeting function has zero facing checks**
+
+`ghidra_guess_1000_0934_10934` (the targeting/state check function) only checks:
+- Unit coordinates (`ES:[SI+0x4004]`, `ES:[SI+0x4036]`)
+- Weapon range from instance table (`[BX+0x2EE7]`, `[SI+0x2EE6]`)
+- Ammo state (`[SI+0x2EE4]` bit 7 = infinite)
+
+**No call to any angle/direction function; no comparison of unit position vs target position for arc compliance.**
+
+**4. The movement direction function is used only for pathfinding**
+
+`unknown_19EF_0971_1A861` computes 8-direction vectors between source and destination. It is called in:
+- `ghidra_guess_1000_160E_1160E` (LoS ray-cast) — for stepping tiles along the path
+- Combat movement phase — for determining path, not for arc enforcement
+
+The direction returned is used for tile stepping, NOT for checking whether a target is within a firing arc.
+
+**5. Weapon iteration is per-slot, not per-arc**
+
+Weapon instance table at `0x2EE4` has stride 0x11 (17 bytes per weapon). The targeting function reads exactly ONE weapon slot per invocation (the slot matching the target unit index). There is no iteration over all weapon mounts for a unit.
+
+**6. AI target selection ignores facing**
+
+`ghidra_guess_1000_0AB2_10AB2` selects targets purely from a story-state preference table (offsets 0x33-0x55, values 0x10-0x20 = target_slot+1). No angular or positional filtering.
+
+**Conclusion:** The game's combat is a simplified 8-direction grid system where:
+- Any weapon can fire at any target within range and LoS
+- The 9 body-part pairs are for critical hit grid propagation, NOT weapon mount processing
+- No torso twist / facing arc / rear arc rules exist
+- Movement direction only affects pathfinding, not weapon availability
+
+---
+
 ### 15. KNOWN GAPS (STILL UNVERIFIED)
 
 1. ~~**Damage grouping:** How cluster weapons (LRM/SRM) distribute their multiple shots~~ **RESOLVED**: LRM/SRM fire as single aggregated salvo. 2D6 + cluster hits table at `DS:[0x566C]→0x2E5E` determines number of hits. Total damage = per_missile_damage (at 0x2EE3) × cluster_result, applied to ONE hit location. No per-missile distribution. See §6.6.
 2. ~~**Ammo decrement instruction:** Where the ammo count is decremented~~ **RESOLVED**: Weapon instance table at `0x5652:0x2EE4` is read-only. Ammo decrement on the story slot mech struct (segment `0x3092`, stride 125, ammo at offset `+0x27`): players (combat units 0-3, story slots 0-3) at `0x2A02:C74B + unit_id*125 + stage_counter`, enemy mechs (combat units 12-15, story slots 4-7) at `0x2A02:C363 + unit_id*125 + stage_counter`. Enemies (units 4-11) use a burst counter at `0x2A02:C5D4 + unit_id*0x11` capped at 4. See §6.5 Ammo Check.
 3. ~~**Heat dissipation:** The heat sink logic between combat turns — how unit heat pool at `0x92`/`0x8A` decreases between rounds or after combat~~ **RESOLVED**: `ghidra_guess_1000_0673_10673` copies heat pool to penalty accumulator (0x6E) and clears pool to zero at end of each round. No gradual dissipation
-4. **Facing / firing arcs:** Whether torso twist restricts which weapons can fire (9 body-part loop in `19EF:1886` processes all weapon mounts, but arc restrictions are unknown)
+4. ~~**Facing / firing arcs:** Whether torso twist restricts which weapons can fire~~ **RESOLVED**: **Not implemented.** The 9 body-part loop `unknown_19EF_1886_1B776` is a critical hit grid-adjacency propagator (cellular automaton on 6×6 grid with stride 8), NOT a weapon fire loop. No facing-direction variable exists for combat units. The targeting function `ghidra_guess_1000_0934_10934` checks only range, LoS, and ammo — no arc check. AI target selection is purely data-driven from story state preference table. Movement direction is only used for pathfinding tile-stepping. See §7.15.
+5. ~~**Complete damage pipeline:** How to-hit, cluster hits, armor subtraction, damage overflow, and VGA effects chain together~~ **RESOLVED**: Full pipeline documented in §7. The to-hit check (2D6 vs TN at 0x4FC2), cluster table lookup (0x4F9F-0x4FC2), armor read (0x50F5-0x510E), damage subtraction (0x5133-0x5147), overkill/overflow (0x51C4-0x5250), slot advance via jump table (0x0B32), and VGA impact effect (0x18EF) are all mapped. Key discovery: damage overflow loops back to apply excess to the next body part via `ghidra_guess_1000_0B32_10B32`.
 5. **Prone/knockdown:** Whether mechs can fall and how they recover
 6. **Fog of war (RESOLVED):** Combat fog is at `DS:[0x55D8]→0x40B4`/`0x41D4` (twin 12×24 grids, init 0x02=fogged, cleared by LoS to 0x00). Blocks target acquisition and tile rendering. World map visibility is a separate bit-packed 128×128 grid (2048 bytes in save files). The `2A02:C724` reference is NOT fog — it's a per-story-slot data array (stride 0x7D) before `aC744[]`.
 7. ~~**AI stage counter (`[BP-0x42]`):** How this increments through combat sub-phases~~ **RESOLVED**: Counter (0-11) selects n-th valid target from preference table at story state offsets 0x33-0x55. Stage 0xB = special end-of-round processing. 0xC = exit marker.
@@ -2175,9 +2932,140 @@ When the player enters a building, code at `fn0FDC` (~line 1750) checks which NP
 
 1. Exact BLD index translation table at `0x4602` — not fully decoded
 2. How MAP1 terrain tiles update to MAP11 after attack — likely a second tile property table gated by `b0057`
-3. The `0xC0` prefix combined with specific sub-bytes (`c0 e8`, `c0 da`, etc.) — exact semantic at bytecode level needs further investigation
+3. ~~The `0xC0` prefix combined with specific sub-bytes (`c0 e8`, `c0 da`, etc.) — exact semantic at bytecode level needs further investigation~~ **RESOLVED**: `0xC0` is a pure no-op/structural separator. The byte following `0xC0` is the actual opcode (0xE4-0xFF). All `c0 xx` patterns are simply `C0` (skipped) + actual opcode. See CONTEXT.md §4 (BLD Bytecode Format) for details.
 4. Animation tile selection in seg 135D — how individual animation frames map to specific CMP/ICN tiles
 5. `tB764 mode 0x03` (VGA mode X) — used in combat/stat screens? Stride 0x0A00 is unusual and only referenced in `fn207F_275C`
 6. `w3988` animation guard — what sets this flag and when does animation pause?
 7. `w37FE` text mode flag — read in many places but exact semantics not fully traced
 8. Combat/stat screen rendering — confirmed to use w4FBA 0+2+3 combos rather than modes 4-6, but exact screen layout for stats/combat UI not mapped
+
+---
+
+## 19. AMMO LIFECYCLE & ITEM-TO-UNIT BRIDGE
+
+### Corrected Ammo Offsets
+
+The mech struct at `C724` (0x7D stride per slot) stores ammo at:
+
+| Field | Struct Offset | Code Offset | Width | Description |
+|-------|--------------|-------------|-------|-------------|
+| CurrentAmmo | +0x27 | `C74B` | 10 bytes | Per-weapon-slot ammo count (one per weapon, 0xFF = energy/infinite) |
+| MaxAmmo | +0x6B | `C78F` | 10 bytes | Maximum capacity from mech template |
+
+**Correction vs earlier documentation**: Struct table had +0x29/+0x6F; actual code confirms +0x27/+0x6B.
+
+### Three Independent Systems
+
+The game uses **three completely separate subsystems** for tracking items and ammo:
+
+#### System A: `aD374` (Global Player Inventory, `DS:0xD374`)
+- Tracks **equipment items** (infantry weapons, armor suits, etc.) owned by the player
+- Per-item-type quantity array: `ui32 aD374[]` (stride 4 bytes)
+- Per-item-type data array: `uint16 aD376[]` (stride 2 bytes)
+- Modified by fn1CD3_0004 shop cases:
+  - 0x06 (SHOW_PLAYER_ITEMS) — reads aD374 for display
+  - 0x07 (BUY_ITEM_BULK) — `aD374[sel] += qty`, `tD370 -= qty` (1 cr/unit)
+  - 0x08 (SELL_ITEM_BULK) — `aD374[sel] -= qty`, `tD370 += qty`
+- 32-bit credits at `tD370`/`tD372` (low/high words)
+
+#### System B: Per-Unit Equip Slots (`C61D`/`C61E`, `DS:0xC61D`)
+- Two single-byte counters per unit slot (8 units)
+- `C61D[slot]` = equip slot 5 (case 0x0F EQUIP_SLOT5, cost 500 cr)
+- `C61E[slot]` = equip slot 6 (case 0x15 EQUIP_SLOT6, cost 500 cr)
+- Flag bits at `C624[slot]`: bit 0 = slot 5 populated, bit 1 = slot 6 populated
+- Purpose: track which equipment/upgrade slots a unit has purchased
+- **NOT connected to ammo bins or aD374**
+
+#### System C: Per-Mech Ammo Bins (`C724+0x27..0x32`, 10 bytes per slot)
+- Tracks current ammo counts for up to 10 weapon systems per mech
+- Initialized from mech templates
+- Decremented by combat code
+- Reloaded via fn11B8_194A (garage/repair screen)
+- **0xFF sentinel** = energy weapon / infinite ammo (skip decrement in combat)
+
+### Ammo Initialization Flow
+
+```
+EXE mech templates (125-byte structs embedded in binary)
+  │
+  ├─ fn0DAB_0D3D (0DAB:0D3D) — Random encounter enemy mechs
+  │   Source: 3 far pointers at [0x5436]:0x2DF8 (LOCUST/WASP/STINGER)
+  │   Target: C724 + slot*0x7D for slots 4-7 (enemy story slots)
+  │   Selection: RNG % 3
+  │
+  ├─ fn11B8_104E (11B8:104E) — COMMANDO (case 0x1E dispatch)
+  │   Source: [0x54D6]:0x467 (segment ptr + 1127)
+  │   Target: C724 + first_free_slot*0x7D
+  │
+  ├─ fn1CD3_0004 case 0x01 (ENTER_BUILDING) — Big struct init
+  │   Copies 0x3959 bytes from template segment to C724
+  │   Sets up multiple story slots at once
+  │
+  ├─ fn1CD3_0004 case 0x23 (NEW_GAME_INIT) — Full game init
+  │   Calls fn11B8_137F → fn11B8_1441 → fn0FDC_0629 → fn11B8_104E
+  │   Sets up Chameleon via template copy
+  │
+  └─ 0x22 memset at 0000:747C-74BD — Default fill
+      Writes 0x22 (34) to all struct bytes 0..0x54 for slots 0-3
+      Overwritten by template copies above
+```
+
+### Ammo Decrement in Combat
+
+Combat code at segment `0x2A02`:
+
+```
+Player mechs:  DEC byte ptr [0x2A02:C74B + unit*0x7D + stage_counter]
+Enemy mechs:   DEC byte ptr [0x2A02:C363 + unit*0x7D + stage_counter]
+Enemy infantry: INC word ptr [0x2A02:C5D4 + unit*0x11] (burst counter, capped at 4)
+```
+
+- `stage_counter` = combat phase counter `[BP-0x42]` (0..0xB)
+  - Stages 0-1 → struct offsets +0x27/+0x28 (actuator bytes, not ammo — **ammo starts at +0x29**)
+  - Stages 2-0xB → struct offsets +0x29..+0x32 (ammo bytes 0-9)
+- `0xFF` sentinel check: if byte == 0xFF, skip decrement (energy/infinite ammo)
+- Weapon type check: weapon instance byte at `[SI+0x2EE4]` bit 7 = infinite flag; low 7 bits = initial shots
+
+### Ammo Reload (Garage/Tech Screen)
+
+Function at `fn11B8_194A` (`UNBTECH_11B8.c:1720-1835`):
+
+```
+For each weapon slot (0-9) where weapon type != invalid:
+  1. Read current ammo:  es->C74B[slot + unit*0x7D]
+  2. Read max ammo:      es->C78F[slot + unit*0x7D]
+  3. If current == max:  skip (already full)
+  4. Calculate capacity: max - current
+  5. Get unit price:     table_0x2046[weapon_type] (or 2 for type 0x18)
+  6. Prompt quantity via fn1543_0CDE()
+  7. For each unit reloaded:
+     a. Check tD370 >= unit_price
+     b. INC byte at C74B[slot + unit*0x7D]
+     c. tD370 -= unit_price
+     d. fn1631_1FDF() redraw credits display
+```
+
+**Key observations:**
+- Reload directly modifies per-unit ammo bins — no intermediate inventory
+- Reload deducts directly from `tD370` credits — **never touches aD374**
+- Price comes from weapon type lookup table, not from shop inventory
+
+### Resolution: No Bridge Exists
+
+**The `aD374` global inventory and per-unit mech ammo bins are entirely independent systems.**
+
+| Operation | Affects aD374 | Affects C74B ammo | Affects tD370 |
+|-----------|:---:|:---:|:---:|
+| Shop: buy item (case 0x07) | +qty | — | −qty |
+| Shop: sell item (case 0x08) | −qty | — | +qty |
+| Equip slot 5/6 (case 0x0F/0x15) | — | — | −500 |
+| Mech template init | — | writes initial | — |
+| Combat firing | — | −1 per shot | — |
+| Garage ammo reload | — | +1 per unit | −unit_price |
+
+This means:
+1. **Ammo** is tracked solely per-mech, initialized from templates, and reloaded by paying credits at the garage
+2. **Equipment items** (weapons, armor, inventory objects) are tracked globally in aD374
+3. **Equip slots** (C61D/C61E) are purchased upgrades (500 cr each) that enable unit capabilities
+
+The original question ("how does aD374 connect to mech ammo bins?") was based on an incorrect assumption. There is no connection — ammo is managed entirely through the mech struct + credits, bypassing aD374 entirely.

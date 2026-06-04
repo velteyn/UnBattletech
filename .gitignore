@@ -1,1 +1,6 @@
-*.pyc
+*.deb
+spice86/obj/
+java_project/*.class
+**/*.userprefs
+**/bin/
+**/obj/

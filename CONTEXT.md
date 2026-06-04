@@ -375,23 +375,62 @@ Note: The `+0x29` ammo field is what combat code at segment `0x2A02` decrements.
 - Returns 0 (blocked) or non-zero (LoS clear)
 - Special case: training dummy (ID 0xD) always targetable in combat
 
-### Fire Phase (`unknown_19EF_1886_1B776`)
-- Iterates 9 body part/weapon mount pairs (SI stride 0x40, DI stride 0x40):
-  0x564→0x324 (RA), 0x5A4→0x364 (RL), 0x5E4→0x3A4 (RT), 0x624→0x3E4 (HD),
-  0x664→0x424 (CT), 0x6A4→0x464 (LA), 0x6E4→0x4A4 (LL), 0x724→0x4E4 (LT),
-  0x764→0x524 (CT rear)
-- Each pair calls grid adjacency function
+### Critical Hit Propagation — `unknown_19EF_1886_1B776` + `unknown_19EF_11BB_1B0AB`
 
-### Grid Adjacency / Critical Transfer (`unknown_19EF_11BB_1B0AB`)
-- 6×6 inner loop, grid width = 8 (offsets ±1, ±8)
-- Bitwise OR/XOR on `[SI]`, `[SI±1]`, `[SI±8]` → sets bits 0x8/0x4/0x2 in `[DI]`
-- Hypers: critical hit transfer between adjacent slots
+**NOT a fire/weapon loop.** The 9 body-part pairs are processed as a cellular-automaton grid adjacency propagator:
+
+| Iteration | SI | DI | Label |
+|-----------|-----|-----|-------|
+| 1 | 0x564 | 0x324 | RA |
+| 2 | 0x5A4 | 0x364 | RL |
+| 3 | 0x5E4 | 0x3A4 | RT |
+| 4 | 0x624 | 0x3E4 | HD |
+| 5 | 0x664 | 0x424 | CT |
+| 6 | 0x6A4 | 0x464 | LA |
+| 7 | 0x6E4 | 0x4A4 | LL |
+| 8 | 0x724 | 0x4E4 | LT |
+| 9 | 0x764 | 0x524 | CTR |
+
+Per-pair algorithm:
+- Reads byte at `[SI]`, compares with neighbors `[SI±1]`, `[SI±8]` (stride 8 → 8-wide grid)
+- Writes 4-direction bitmask to `[DI]`: bit 0x8=left, 0x4=down, 0x2=right, 0x1=up
+- This is a cellular automaton pattern: dead/undamaged cells propagate their status to adjacent cells
+
+**The game has NO facing/firing arc enforcement.** See TECHNICAL_ANALYSIS.md §7.15 for complete evidence.
 
 ### Damage Application (`unknown_19EF_18EF_1B7DF`)
 - RNG call for hit location → cursor coords → video memory address conversion
 - 13-iteration loop for impact/damage (splash radius?)
 - VGA hardware programming (Set/Reset + Bit Mask at 0x3CE) for impact VFX
 - Registers damage in unit state arrays
+
+### Mech Destruction / Kill Chain (Fully Mapped — §7.14 of TECHNICAL_ANALYSIS.md)
+
+The destruction sequence is a 4-phase pipeline:
+
+**Phase 1 — Critical Handler `ghidra_guess_1000_0BBB_10BBB` (1000:0BBB):**
+- Checks if structure byte at `ES:[0x558E→BX+0xC724]` is already 0 (overkill)
+- Rolls 2D6 for ammo explosion: multiplier = `(roll-8)/2+1` for rolls ≥ 8 (range 1-3)
+- If `[0x2E38]` ≠ 0 AND multiplier > 0: triggers explosion VFX + "ammo explosion" text, sets `ES:[0x4586]=1`
+- **Overkill path** (when byte already 0): marks combat segment slots with bit 7 (0x80 = destroyed) at `0x2A02`, clears actuator nibbles at `0xC748`/`0xC749` for CT (0x1C), Head (0x1E), and offsets 0x21/0x23
+
+**Phase 2 — Post-Damage Processing (GeneratedCode13.cs:5140-5268):**
+- If story state properties (0x1F/0x20) zeroed: calls `ghidra_guess_0000_F565_0F565` special handler, clears `ES:[0x4586]`
+- If target is combat slot 0 AND frame condition met: **calls `ghidra_guess_0000_EAEE_0EAEE`** which clears the entire 24×24 fog grid (`ES:[0x5542→0x40B4]` = 0) via a double loop
+- Zeroes the structure byte, sets `ES:[0x3986]=1` for CT destruction (offsets 0x1C/0x21)
+- Calls critical handler a second time for overkill marking
+
+**Phase 3 — Slot Advance:**
+- `ghidra_guess_1000_0B32_10B32` returns the next body part offset in the damage traversal sequence
+
+**Phase 4 — Unit Kill Handler `ghidra_guess_0000_EB34_0EB34` (0000:EB34):**
+- Called from combat phase dispatch when unit type matches (enemy mech type 2, player type 6, etc.)
+- Snapshots AI target preferences (offsets 0x33-0x56) into local buffer
+- Checks story state `b0057` (`0xC79B`) for death text variant selection
+- Computes death animation parameters, plays explosion VFX
+- Displays death message + "destroyed by [weapon]" text
+- Marks unit combat slot as `0xFF` at `ES:[0x554A→0x3800+slot]`
+- Death animation type controlled by `ES:[0x37FE]` (1/2/8), influenced by `w4FBA`
 
 ### RNG (`unknown_19EF_0BC0_1AAB0`)
 - 3-byte state at `384B:4FC0-4FC2`, LFSR variant
@@ -416,7 +455,16 @@ Note: The `+0x29` ammo field is what combat code at segment `0x2A02` decrements.
 - **Main game loop (`fn0800_0000`)**: 6-phase architecture — Input → Key Dispatch → Timer → Economy → Animation+Render+Border → BLD. Runs while `w0152==0`. Screen refresh driven by `w014A` flag.
 - **Rendering pipeline**: 3-pass compositing — Pass 1 = right panel content (`fn207F_18EF`, 13×12 tile grid centered on cursor), Pass 2 = left panel border (`fn1F3D_06C3`), Pass 3 = menu/text overlay (`fn1E56_03F5` in BLD phase).
 - **Viewport system**: `fn207F_24D7` blitter handles planar EGA framebuffer. Case 0x00 clips to 80px left panel width. Case 0x02 clips to 40-column text width.
-- **Animation system (seg135D)**: 4-function dispatch (DISP/LOAD/INIT/CLEAR) for left panel location graphics. Called on BLD building entry.
+- **Animation system (seg135D)**: Tile-animation dispatch for left-panel/animated tiles. NOT called on building entry — triggered from arrow key handler (`fn0800_218F` → `fn0800_1C12`) when cursor moves over tiles with `+0x7AD` property values `0x7E`/`0x7F`/`0x80` and `bD346==0`.
+- **`fn135D_0AB6` (animation dispatch, linear `0xD786`)**: Searches a 12-entry table at `DGROUP:0x247A` for a match against `(arg2 & 0x7E)` (Field0, X coordinate even part) and `arg3` (Field2, Y coordinate). On match, returns `Field4-1`, `Field6-1`, `Field8-1` as animation frame/page parameters. When `wArg08 >= 0`, accesses table entry directly by index instead of searching. Table layout (5 × 12 bytes, offset from DGROUP base):
+  - `0x247A`: Field0 (12 bytes, X-coordinate even parts, matched as `arg2 & 0x7E`)
+  - `0x2486`: Field2 (12 bytes, Y-coordinates, matched directly against `arg3`)
+  - `0x2492`: Field4 (12 bytes, animation parameter 1)
+  - `0x249E`: Field6 (12 bytes, animation parameter 2)
+  - `0x24AA`: Field8 (12 bytes, animation parameter 3)
+- **Dispatch table population**: Table memory at `DGROUP:0x247A` is dynamically written at runtime and overlaid with other data structures (shared memory region). Contents change based on game mode/map context. `fn135D_0004` iterates entries 0-10 and processes active animations. The EXE image does not contain table-initializer data, confirming runtime population.
+- **`fn135D_0004` (init function)**: Called during game/building initialization. Saves story slot data, clears equipment slots, sets up rendering context (viewport cursor at `0x0C06:0xC07E`), loads tile data, draws border, then calls `fn0FDC_0008(0x17)` to load BLD file 23. After BLD load, iterates dispatch entries 0-10: for each entry where flag at `[DGROUP:0x54FA segment + entry + 0xD34F]` is non-zero, calls `fn135D_0AB6(wArg04=0, wArg06=0, wArg08=entry_index)` to process animation.
+- **`fn135D_01E9` / `fn135D_0913` / `fn135D_0980` / `fn135D_03AA` / `fn135D_0288` / `fn135D_02A8` / `fn135D_04AB` / `fn135D_02D2` / `fn135D_055A`**: Other segment 135D functions handling different tile property values (0x94 for `fn135D_079C`, 0x8C/0x8D for `fn135D_0980`, 0xB6/0xB7 for `fn135D_03AA`, 0xF5 for `fn135D_01E9`, ≥0xF6 for `fn135D_0288`, 131/0xA5-0xA7 for `fn135D_02A8`, 77 for `fn135D_04AB`, 0x3A/0x3D for `fn135D_02D2`, 0x28 for `fn135D_055A`) — dispatched from `fn0800_1C12` based on tile property at `+0x7AD[tile_index]`.
 - **EGA planar layout**: 4 bit-planes, 40 bytes/plane/scanline, odd/even row interleaving with 0x2000 plane stride, row-pair stride 0x50 (80 bytes).
 - **Ammo**: Weapon instance byte `ES:[SI+0x2EE4]` (stride 0x11, read-only during combat) — bit 7 = infinite ammo flag; low 7 bits = initial remaining shots. Out-of-ammo check when count <= 1. **Actual decrement** on mech struct ammo bins at offset `+0x29` (struct-relative, code-base `C724+0x27`) in combat segment `0x2A02`: players (combat units 0-3, story slots 0-3) `DEC [0x2A02:C74B + unit_id*125 + stage_counter]`, enemy mechs (combat units 12-15, story slots 4-7) `DEC [0x2A02:C363 + unit_id*125 + stage_counter]`, where stage_counter = [BP-0x42] (0..0xA). Enemies (units 4-11) use burst counter `INC [0x2A02:C5D4 + unit_id*0x11]` capped at 4. 0xFF sentinel = empty slot.
 - **Combat fog of war**: Twin 12×24 grids at `DS:[0x55D8]→0x40B4` (Grid A) / `0x41D4` (Grid B), each 288 bytes. Init `0x02`=fogged. `0x00`=clear. Set by `fn183B_000A` in 12×24 double loop. Per-unit fog column reset on unit death. Movement-based fog clearing in `fn183B_193B`: resets unit's row to 0x02, then `fn1631_0006` steps along movement path, clearing cells. Fog check at `GridA[unit*0x18] == 0x02` — still-fogged units rendered (fog overlay masks).
@@ -682,7 +730,7 @@ The full decoded story reveals details about Kurita's role beyond the basic inva
 
 ### Still Unknown / Needs Investigation
 - Complete memory layout and data structure map
-- Sound/music data (SoundBlaster config found but format unknown)
+- Sound/music data (SoundBlaster config found but format unknown) — **WONT_DO**: irrelevant for reconstruction, replaceable with modern audio
 - Character skill and level-up mechanics
 - Save/load implementation details
 - Many function-purposes in Reko decompilation (~1400+ functions, mostly unlabeled)
@@ -696,7 +744,7 @@ The full decoded story reveals details about Kurita's role beyond the basic inva
 2. **Full memory map**: Cross-reference Spice86 dumps with Reko struct definitions to build complete variable map
 3. **Animation format**: Fully document the .ANM XOR-delta format and EGA animation bit-shift algorithm
 4. **AI logic**: Trace AI decision trees in combat (target selection, movement priorities)
-5. **Sound**: Investigate SoundBlaster/PC Speaker interrupt handler at segment 204B
+5. ~~**Sound**: Investigate SoundBlaster/PC Speaker interrupt handler at segment 204B~~ **WONT_DO**: Not needed for reconstruction — replaceable with modern sounds
 6. **HEAT DISSIPATION** → **RESOLVED**: Pool → penalty accumulator → cleared each round. See TECHNICAL_ANALYSIS.md §16.
 7. **Data-driven recreation**: Port weapon/mech/map data from reversed structures into the Java prototype (or a more modern framework like Godot/Unity)
 8. **Play through and trace**: Use Spice86 with targeted breakpoints to map story progression for all missions
@@ -707,7 +755,7 @@ The full decoded story reveals details about Kurita's role beyond the basic inva
 13. **fn1CD3_0004 case 0x05 C618[bD314]++ anomaly**: Increment after buy possibly indicates C618 stores packed (type << N | count) rather than pure type.
 14. ~~**Screen composition pipeline**~~ **RESOLVED**: 3-pass compositing confirmed (right panel fn207F_18EF → left border fn1F3D_06C3 → text overlay fn1E56_03F5 in BLD phase). Arrow handler fn0800_218F is separate partial render.
 15. **Tile buffer layout**: Segment 0x3092 tile buffer structure partially mapped — 4100 tiles × 128 bytes stride, 3 pages (w5800 × 0x80 offset, formula `(frame<<7)+54658`). Individual tile dimensions and animation frame mapping unknown. `fn207F_28A8` is 128-byte memcpy, not VGA hardware.
-16. **Segment 135D animation dispatch**: Trace how ANM files map to specific animation IDs used in room graphics. 4-function dispatch (DISP/LOAD/INIT/CLEAR) partially understood.
+16. ~~**Segment 135D animation dispatch**~~ **RESOLVED**: Dispatch function at linear `0xD786` (`fn135D_0AB6`). 12-entry table at `DGROUP:0x247A` (5 fields × 12 bytes). Matches `(arg2 & 0x7E)` against Field0, `arg3` against Field2. Triggered by arrow key movement over tiles with `+0x7AD` property `0x7E`/`0x7F`/`0x80`. Table is dynamically populated (runtime writes, no EXE initializer). Memory region at `0x247A-0x24B5` is overlaid/shared with other data structures. Init function `fn135D_0004` iterates entries 0-10 processing active animations flagged at `DGROUP:0x54FA:0xD34F+entry`. .ANM→dispatch mapping still pending.
 17. **w3988 animation guard flag**: What sets this flag? When is animation paused? Found in `fn0800_240B` (guards page swap) and `fn0800_2DA8` (writes 0x01 after tile render).
 18. ~~**Combat/stat screen layout**~~ **RESOLVED**: `fn0800_3D40` (option 6 in SPACE menu) is interactive modal screen with own input loop via `fn0800_3FAE`. Full 8-phase rendering mapped — BTSTATS.CMP background, 3×3 subtile unit data, fog overlay, direction text, bottom bar animation, sparkle effect. w4FBA read-only in sub-function `fn0800_45C2`. No CMP/ICN/BLD loading.
 19. ~~**BLD shop `e7` block merge**~~ **RESOLVED**: `c0 e7` is C0 (no-op) + E7 opcode with `[2B compare_val] [2B LE abs_jump]` format. C0 precedes ALL opcodes (E4-FF) equally as a structural separator.
