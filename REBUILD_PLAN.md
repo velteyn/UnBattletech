@@ -2,8 +2,8 @@
 
 **Engine:** Godot 4 (C#)
 **Repo:** `Reversing/AIATTEMPT`
-**Stato RE:** 🟢 90% completo
-**Stato Engine:** 🔴 0% (da iniziare)
+**Stato RE:** 🟢 95% completo
+**Stato Engine:** 🟡 Phase 0-1 (~1150 linee C#): scaffold, data models, loader, palette, game loop, input, save
 
 ---
 
