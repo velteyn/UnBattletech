@@ -243,19 +243,7 @@ public partial class BldInterpreter : Node
 
     private void DispatchCase(byte caseVal)
     {
-        GD.Print($"  dispatch case 0x{caseVal:X2}");
-        switch (caseVal)
-        {
-            case 0x01: GD.Print("    -> ENTER_BUILDING"); break;
-            case 0x02: GD.Print("    -> SHOW_GREETING"); break;
-            case 0x03: GD.Print("    -> EXIT_BUILDING"); break;
-            case 0x04: GD.Print("    -> OPEN_MENU"); break;
-            case 0x07: GD.Print("    -> BUY_ITEM"); break;
-            case 0x08: GD.Print("    -> SELL_ITEM"); break;
-            case 0x0C: GD.Print("    -> CLOSE_ACTION"); break;
-            case 0x0D: GD.Print("    -> COMBAT_ENCOUNTER"); break;
-            default: GD.Print($"    -> case 0x{caseVal:X2} (TBD)"); break;
-        }
+        Fn1CD3Dispatcher.Dispatch(caseVal);
     }
 
     private void CallRoomHandler(byte handlerIdx)
