@@ -4,7 +4,7 @@
 
 This is an extensive reverse engineering effort targeting **BattleTech: The Crescent Hawk's Inception**, a 1988 MS-DOS 16-bit real-mode game by Infocom. The original executable `BTECH.EXE` was unpacked to `UNBTECH.EXE`. The project aims to fully understand the game's internals — code, data formats, game logic — to produce comprehensive documentation enabling a full rewrite with modern technologies.
 
-**Current status:** RE ~95% complete — all major systems understood (BLD bytecode, combat, maps, story, economy, world map). Engine rebuild underway in **Godot 4 + C#** (`BattleTechCHI/`). Phase 0-1 implemented: project scaffold, data models, MapLoader, BldLoader, RLE decompressor, EGA palette, GameLoop, StateManager, InputHandler, SaveManager, StartupSequence (~1150 lines C#).
+**Current status:** RE ~95% complete — all major systems understood (BLD bytecode, combat, maps, story, economy, world map). Engine rebuild underway in **Godot 4 + C#** (`BattleTechCHI/`). Phase 0-2 implemented: scaffold, data models, loaders, RLE decompressor, EGA palette, game loop, state machine, input, save/load, tile rendering, world map viewport, local map viewer, border panel (~1776 lines C#).
 
 ---
 
@@ -631,29 +631,34 @@ BattleTechCHI/
 ├── Scripts/
 │   ├── Main.cs                # Entry: Node2D → GameLoop
 │   ├── Core/
-│   │   ├── GameLoop.cs        # Init → input → update → render
-│   │   ├── StateManager.cs    # w4FBA mode, 3-layer state machine
-│   │   ├── InputHandler.cs    # WASD/frecce, SPACE, F1-F10, 1-4
-│   │   └── SaveManager.cs     # Save/Load formato GAME1-6
+│   │   ├── GameLoop.cs        # Init → input → update → render, coordina tutti i subsystems
+│   │   ├── StateManager.cs     # w4FBA mode, 3-layer state machine
+│   │   ├── InputHandler.cs     # WASD/frecce, SPACE, F1-F10, 1-4
+│   │   └── SaveManager.cs      # Save/Load formato GAME1-6
 │   ├── Data/
-│   │   ├── GameEnums.cs       # GameMode, MapFormat, BldOpcode, NarrativeMode
-│   │   ├── GameState.cs       # Stato globale + StorySlot
-│   │   ├── DataModels.cs      # BldScript, MapData, MechDef, WeaponSlot
-│   │   ├── WeaponData.cs      # 33 armi tabellate
-│   │   └── CipherDecoder.cs   # Traduzione cipher BLD → testo
+│   │   ├── GameEnums.cs        # GameMode, MapFormat, BldOpcode, NarrativeMode
+│   │   ├── GameState.cs        # Stato globale + StorySlot
+│   │   ├── DataModels.cs       # BldScript, MapData, MechDef, WeaponSlot
+│   │   ├── WeaponData.cs       # 33 armi tabellate
+│   │   └── CipherDecoder.cs    # Traduzione cipher BLD → testo
 │   ├── Maps/
-│   │   ├── MapLoader.cs       # Carica .MTP (BlockFormat/LinearFormat)
-│   │   └── RleDecompressor.cs # Decompressione .CMP/.ICN/.ANM (Format 01/02)
+│   │   ├── MapLoader.cs        # Carica .MTP (BlockFormat/LinearFormat)
+│   │   ├── RleDecompressor.cs  # Decompressione .CMP/.ICN/.ANM (Format 01/02)
+│   │   ├── TileManager.cs      # Carica tileset BMP, fornisce texture per tile ID
+│   │   ├── WorldMapData.cs     # Dati world map 64×64, visibilità 128×128, POI
+│   │   ├── WorldMapView.cs     # TileMap viewport 8×8 con fog of war
+│   │   └── LocalMapView.cs     # TileMap viewport per MAP1-14.MTP
 │   ├── BLD/
-│   │   └── BldLoader.cs       # Carica e decripta .BLD
+│   │   └── BldLoader.cs        # Carica e decripta .BLD
 │   └── UI/
-│       ├── EgaPalette.cs      # Palette EGA 16 colori + custom asset
-│       └── StartupSequence.cs # INFOCOM → BTTITLE → gioco
+│       ├── EgaPalette.cs       # Palette EGA 16 colori + custom asset
+│       ├── BorderPanel.cs      # Pannello sinistro 80px + bordo EGA
+│       └── StartupSequence.cs  # INFOCOM → BTTITLE → gioco
 └── Scenes/
     └── Main.tscn
 ```
 
-**Status**: Phase 0-1 (~1150 lines). Core systems implemented but not yet rendering anything visible.
+**Status**: Phase 0-2 (~1776 lines). Core systems + tile rendering + world map + border panel implemented.
 
 ---
 
@@ -823,23 +828,24 @@ The full decoded story reveals details about Kurita's role beyond the basic inva
 4. **AI logic**: Trace AI decision trees in combat (target selection, movement priorities)
 5. ~~**Sound**: Investigate SoundBlaster/PC Speaker interrupt handler at segment 204B~~ **WONT_DO**: Not needed for reconstruction — replaceable with modern sounds
 6. **HEAT DISSIPATION** → **RESOLVED**: Pool → penalty accumulator → cleared each round. See TECHNICAL_ANALYSIS.md §16.
-7. ~~**Data-driven recreation**~~ **IN PROGRESS**: Godot 4 + C# engine started. Phase 0-1 core systems done. Next: Phase 2 (tile rendering + world map display) and Phase 3 (BLD bytecode interpreter).
-8. ~~**World Map unknown origin**~~ **RESOLVED**: 64×64 tile grid embedded in EXE at `0x246C:0x244B`. Partially procedural — template data (76 unique tile IDs) modified at runtime by visibility, story, encounters. See Section 6.
-9. **Play through and trace**: Use Spice86 with targeted breakpoints to map story progression for all missions
-9. ~~**fn183B_28DB analysis**~~ **RESOLVED**: Enemies at random offsets from (26,12). No terrain modifier.
-10. ~~**AI stage counter phase dispatch**~~ **RESOLVED**: Counter 0-11 selects nth target from preference table.
-11. ~~**Facing / firing arcs**~~ **RESOLVED**: No arc enforcement. 8-direction grid combat, `unknown_19EF_1886` is critical transfer, not fire loop.
-12. **Item-to-unit ammo bridge**: How `aD374` global item quantities connect to per-unit mech ammo bins at offset `+0x27` in the 125-byte struct. Follow equip dispatch cases 0x0F/0x0E/0x10/0x15/0x16.
-13. **fn1CD3_0004 case 0x05 C618[bD314]++ anomaly**: Increment after buy possibly indicates C618 stores packed (type << N | count) rather than pure type.
-14. ~~**Screen composition pipeline**~~ **RESOLVED**: 3-pass compositing confirmed (right panel fn207F_18EF → left border fn1F3D_06C3 → text overlay fn1E56_03F5 in BLD phase). Arrow handler fn0800_218F is separate partial render.
-15. ~~**Tile buffer layout**~~ **RESOLVED**: World map tile buffer fully mapped — 64×64 grid at `0x246C:0x244B`, source template at `0x246C:0x42F6`. See Section 6 and WORLD_MAP_FINDINGS.md.
-16. ~~**Segment 135D animation dispatch**~~ **RESOLVED**: Dispatch function at linear `0xD786` (`fn135D_0AB6`). 12-entry table at `DGROUP:0x247A` (5 fields × 12 bytes). Matches `(arg2 & 0x7E)` against Field0, `arg3` against Field2. Triggered by arrow key movement over tiles with `+0x7AD` property `0x7E`/`0x7F`/`0x80`. Table is dynamically populated (runtime writes, no EXE initializer). Memory region at `0x247A-0x24B5` is overlaid/shared with other data structures. Init function `fn135D_0004` iterates entries 0-10 processing active animations flagged at `DGROUP:0x54FA:0xD34F+entry`. .ANM→dispatch mapping still pending.
-17. **w3988 animation guard flag**: What sets this flag? When is animation paused? Found in `fn0800_240B` (guards page swap) and `fn0800_2DA8` (writes 0x01 after tile render).
-18. ~~**Combat/stat screen layout**~~ **RESOLVED**: `fn0800_3D40` (option 6 in SPACE menu) is interactive modal screen with own input loop via `fn0800_3FAE`. Full 8-phase rendering mapped — BTSTATS.CMP background, 3×3 subtile unit data, fog overlay, direction text, bottom bar animation, sparkle effect. w4FBA read-only in sub-function `fn0800_45C2`. No CMP/ICN/BLD loading.
-19. ~~**BLD shop `e7` block merge**~~ **RESOLVED**: `c0 e7` is C0 (no-op) + E7 opcode with `[2B compare_val] [2B LE abs_jump]` format. C0 precedes ALL opcodes (E4-FF) equally as a structural separator.
-20. ~~**w4FBA mode transitions**~~ **RESOLVED**: Confirmed **never changes dynamically** — set once at startup from keys 1-4 only. No BLD opcode or function changes w4FBA.
-21. ~~**fn0800_051B phases**~~ **RESOLVED**: 5 phases mapped — Player slots 0-7 → NPC slots 16-23 → Story slots 0-3 → Position arrays → World map mechs. Visibility computed from tile property at `+0x7AD` (infantry→0x32B2, mechs→0x32AE).
-22. ~~**Two tile property tables**~~ **RESOLVED**: `+0x7AD` (1 byte/tile, seg 246C, LoS blocking + visibility + movement cost factor) vs `0x32C6` (stride 0x30, seg 55DC, terrain TN modifier + packed coords). Resolved previous incorrect "4-byte per-tile record" characterization.
-23. ~~**fn1E56_0D1D**~~ **RESOLVED**: Pure scancode remapper. No w4FBA side effects.
-24. ~~**BLD bytecode 0xC0 prefix semantics**~~ **RESOLVED**: C0 is a pure no-op (structural separator), NOT a control prefix. Byte after C0 is the actual opcode 0xE4-0xFF. All C0 patterns (`c0 e8`, `c0 e7`, etc.) are simply C0 + actual opcode. E7 and E8 formats corrected with proper absolute jump semantics.
-25. ~~**World Map data source**~~ **RESOLVED**: 64×64 tile grid embedded in EXE at code segment `0x246C:0x244B`. No separate file. Template data has 76 unique initial tile values; runtime modifies 82% of positions. See Section 6 and WORLD_MAP_FINDINGS.md.
+3. ~~**Data-driven recreation**~~ **IN PROGRESS**: Godot 4 + C# engine started. Phase 1 done (core systems), Phase 2 done (tile rendering + world map viewport). Next: Phase 3 (BLD bytecode interpreter).
+4. ~~**World Map unknown origin**~~ **RESOLVED**: 64×64 tile grid embedded in EXE at `0x246C:0x244B`. See Section 6.
+5. ~~**Phase 2 (tile rendering)**~~ **DONE**: WorldMapView, LocalMapView, TileManager, WorldMapData, BorderPanel.
+6. **Play through and trace**: Use Spice86 with targeted breakpoints to map story progression for all missions
+7. ~~**fn183B_28DB analysis**~~ **RESOLVED**: Enemies at random offsets from (26,12).
+8. ~~**AI stage counter phase dispatch**~~ **RESOLVED**: Counter 0-11 selects nth target.
+9. ~~**Facing / firing arcs**~~ **RESOLVED**: No arc enforcement.
+10. **Item-to-unit ammo bridge**: How `aD374` connects to ammo bins.
+11. **fn1CD3_0004 case 0x05 C618[bD314]++ anomaly**: Packed type vs count.
+12. ~~**Screen composition pipeline**~~ **RESOLVED**: 3-pass compositing.
+13. ~~**Tile buffer layout**~~ **RESOLVED**: 64×64 world map tile buffer.
+14. ~~**Segment 135D animation dispatch**~~ **RESOLVED**. .ANM→dispatch mapping still pending.
+15. **w3988 animation guard flag**: What sets it?
+16. ~~**Combat/stat screen layout**~~ **RESOLVED**.
+17. ~~**BLD shop `e7` block merge**~~ **RESOLVED**.
+18. ~~**w4FBA mode transitions**~~ **RESOLVED**.
+19. ~~**fn0800_051B phases**~~ **RESOLVED**.
+20. ~~**Two tile property tables**~~ **RESOLVED**.
+21. ~~**fn1E56_0D1D**~~ **RESOLVED**.
+22. ~~**BLD bytecode 0xC0 prefix semantics**~~ **RESOLVED**.
+23. ~~**World Map data source**~~ **RESOLVED**.

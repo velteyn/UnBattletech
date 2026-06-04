@@ -3,7 +3,7 @@
 **Engine:** Godot 4 (C#)
 **Repo:** `Reversing/AIATTEMPT`
 **Stato RE:** 🟢 95% completo
-**Stato Engine:** 🟡 Phase 0-1 (~1150 linee C#): scaffold, data models, loader, palette, game loop, input, save
+**Stato Engine:** 🟡 Phase 2 (~1776 linee C#): tile rendering, world map viewport, local map viewer, border panel, input→render loop
 
 ---
 
