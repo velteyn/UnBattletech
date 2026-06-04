@@ -239,7 +239,8 @@ All offsets are relative to the data segment base (`DS` register, typically segm
 | `0x5364` | ! | `t5364` | Weapon/data pointer |
 | `0x5378` | ! | `t5378` | Weapon/data pointer |
 | `0x537A` | ! | `t537A` | Weapon/data pointer |
-| `0x538A` | 2 | `ptr538A` | Pointer to segment data |
+| `0x538A` | 2 | `ptr538A` | **Pointer to world map viewport segment** (contains array data at D457, D497, D4D7, D517) |
+| `0x53C6` | 2 | `ptr53C6` | **Pointer to world map tile buffer segment** (resolves dynamically) |
 | `0x5436` | 2 | `t5436` | Segment pointer for mech tables |
 | `0x5460` | 2 | `t5460` | Segment pointer for BLD translation table |
 | `0x5588` | 2 | `t5588` | Segment pointer for tile properties |
@@ -333,7 +334,20 @@ All offsets are relative to the data segment base (`DS` register, typically segm
 |---------|--------|------|-------------|
 | `[0x3092]` | `0x04F9` | 2048 bytes | **World Map Visibility** (bit-packed 128×128 grid, persisted in save files) |
 
-### 11. TILE PROPERTIES
+### 11. WORLD MAP TILE BUFFER
+
+| Location | Size | Description |
+|----------|-----:|-------------|
+| `246C:244B` (linear 0x26B0B) | 4096 | **World Map Tile Buffer** (64×64 grid, 1 byte/tile ID) |
+| `246C:42F6` | 4096 | **World Map Source Template** (base terrain, copied to 244B at init) |
+| `DS:[ptr538A]:D457` | 64 | Viewport tile data array (tile IDs + packed flags) |
+| `DS:[ptr538A]:D497` | 64 | Viewport packed screen X data |
+| `DS:[ptr538A]:D4D7` | 64 | Viewport Y world coordinates |
+| `DS:[ptr538A]:D517` | 64 | Viewport X world coordinates |
+| `DS:[ptr538A]:D557` | 2 | Viewport next slot index |
+| `DS:[ptr538A]:CB0C` | 2048 | **World Map Visibility bitmask** (128×128 bit-packed) |
+
+### 12. TILE PROPERTIES
 
 | Segment | Offset | Size | Description |
 |---------|--------|------|-------------|
@@ -341,7 +355,7 @@ All offsets are relative to the data segment base (`DS` register, typically segm
 | `246C` | `0x7AD` | 1 per tile | **Tile property table** (LoS blocking, terrain visibility, movement cost factor) |
 | `3000` | `0xCC30` | var | **BLD filename list** (array of .BLD file entries) |
 
-### 12. SHOP / INVENTORY DATA (Offset 0xD300-0xD400)
+### 13. SHOP / INVENTORY DATA (Offset 0xD300-0xD400)
 
 | Offset | Size | Name | Description |
 |--------|------|------|-------------|

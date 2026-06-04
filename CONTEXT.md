@@ -49,8 +49,16 @@ Key memory regions identified in data segment `3000` and others:
 
 | Address Range | Purpose | Source |
 |---------------|---------|--------|
-| `3000:32C6` | Tile properties (movement cost, blocking) | discoveries.asm |
+| `3000:32C6` | Tile properties (movement cost, blocking, terrain TN mod) | discoveries.asm |
 | `3000:CC30` | .BLD filename list | discoveries.asm |
+| `0x246C:0x244B` | **World Map Tile Buffer** (4096 bytes = 64×64 grid, 1 byte/tile) | WORLD_MAP_FINDINGS.md |
+| `0x246C:0x42F6` | World Map Source Template (copied to tile buffer at init) | WORLD_MAP_FINDINGS.md |
+| `DS:[0x538Ah]→0xD457` | Viewport tile data array (64 entries, tile IDs + flags) | WORLD_MAP_FINDINGS.md |
+| `DS:[0x538Ah]→0xD497` | Viewport packed screen X data (64 entries) | WORLD_MAP_FINDINGS.md |
+| `DS:[0x538Ah]→0xD4D7` | Viewport Y world coordinates (64 entries) | WORLD_MAP_FINDINGS.md |
+| `DS:[0x538Ah]→0xD517` | Viewport X world coordinates (64 entries) | WORLD_MAP_FINDINGS.md |
+| `DS:[0x538Ah]→0xCB0C` | World Map Visibility (2048 bytes, bit-packed 128×128, also in save at 0x04F9) | WORLD_MAP_FINDINGS.md |
+| `0x246C:0x7AD` | Per-tile property table (256 entries: LoS blocking, terrain visibility) | WORLD_MAP_FINDINGS.md |
 | `0xC79B` (in struct at `DS:0x558E`) | Story state byte (b0057 of `Eq_107947`) | TECHNICAL_ANALYSIS.md |
 | `0xA44B` | Unit X coordinate / cursor X | TECHNICAL_ANALYSIS.md |
 | `0xA44D` | Unit Y coordinate / cursor Y | TECHNICAL_ANALYSIS.md |
@@ -502,22 +510,73 @@ Fields per weapon (17 bytes): Name(10), Damage, Shots?, Heat, SoundEffect?, Rang
 
 ---
 
-## 6. GAME'S WORLD MAPS
+## 6. WORLD MAP SYSTEM
 
-| File | Location | Notes |
-|------|----------|-------|
-| MAP1.MTP | Training Center / Citadel | Player start |
-| MAP2.MTP | Main City | Chameleon training, Arena |
-| MAP3.MTP | Small outpost/village | |
-| MAP4.MTP | Large industrial city | |
-| MAP5-8.MTP | Medium settlements | |
-| MAP9.MTP | Outpost | |
-| MAP10.MTP | Medium settlement | |
-| MAP11.MTP | Destroyed Training Center | Post-attack state |
-| MAP12.MTP | Large city/base | |
-| MAP13.MTP | Medium settlement | |
-| MAP14.MTP | Cave / Underground complex | |
-| MAP15.MTP | Star Map | 32x24 special format |
+The game has **two distinct map layers**: the **overworld map** (Pacifica island) and **local maps** (indoor/city areas).
+
+### 6a. Overworld Map (Pacifica)
+
+- **Grid**: 64×64 tiles (4096 bytes at `0x246C:0x244B`), 1 byte per tile, each indexing MAP.ICN tileset.
+- **Terrain**: Hand-crafted template of Pacifica island (~17.7% water, ~49.5% land, ~26.4% urban, ~6.4% roads).
+- **Source**: Data is **embedded in the EXE** at the tile buffer address — no separate world map file exists. The EXE pre-initializes 76 unique tile values forming the base terrain; at runtime ~82% are modified by game state.
+- **Dynamic modifications**: Visibility (128×128 bit-packed grid), story progression (e.g., Citadel destruction swaps tiles), encounter placement writes to viewport arrays.
+- **Identified POIs**: Training Center/Citadel at ~(26,5), Main City at ~(28,10), large southern city at ~(33,49), island cache at ~(55,8), plus 8+ other settlements.
+- **Visibility**: 128×128 bit-packed grid (2048 bytes at `DS:[0x538Ah]→0xCB0C`, also persisted in save games at `0x3092:0x04F9`). Each world map tile (64×64) has 2×2 visibility bits.
+- **Render flow**: `fn0800_48B7` clears and sets up the tile buffer → `fn0800_1AFD` copies source template from `0x246C:0x42F6` → game state overrides → `fn0800_051B` calls `fn0800_2A93` to render an 8×8 tile viewport on screen.
+- **Tileset**: MAP.ICN (~94 tiles). Tile IDs 0-93 index directly into this tileset; values > 93 may load from ANIMATE.ICN, BTTLTECH.ICN, or palette variants.
+
+### 6b. Local Maps (MAP1-15.MTP)
+
+These are separate files for city interiors, special areas, and the star map. They are loaded when entering a location from the overworld.
+
+| File | Location | Format | Notes |
+|------|----------|--------|-------|
+| MAP1.MTP | Training Center / Citadel | BlockFormat | Player start |
+| MAP2.MTP | Main City | BlockFormat | Chameleon training, Arena |
+| MAP3.MTP | Small outpost/village | LinearFormat | |
+| MAP4.MTP | Large industrial city | LinearFormat | |
+| MAP5-8.MTP | Medium settlements | LinearFormat | |
+| MAP9.MTP | Outpost | LinearFormat | |
+| MAP10.MTP | Medium settlement | LinearFormat | |
+| MAP11.MTP | Destroyed Training Center | BlockFormat | Post-attack state |
+| MAP12.MTP | Large city/base | BlockFormat | |
+| MAP13.MTP | Medium settlement | BlockFormat | |
+| MAP14.MTP | Cave / Underground complex | BlockFormat | |
+| MAP15.MTP | Star Map | LinearFormat | 32×24 special format |
+
+### 6c. World Map Coordinate System
+
+```
+Tile X = (wA44B & 0x7F) >> 1   → 0-63
+Tile Y = (wA44D & 0x7F) >> 1   → 0-63
+Tile index = Y * 64 + X         → offset in tile buffer
+```
+
+Save game coordinates at offsets `0x0F45`/`0x0F47` encode sub-tile position in the low 7 bits.
+
+### 6d. Key World Map Functions
+
+| Function | Address | Role |
+|----------|---------|------|
+| `fn0800_2A93` | `0800:2A93` | World map tile renderer — reads 64 tiles, positions on screen |
+| `fn0800_48B7` | `0800:48B7` | State machine init — clears tile buffer, sets up source pointers |
+| `fn0800_1AFD` | `0800:1AFD` | Copies tile data from source (`0x246C:0x42F6`) to display buffer |
+| `fn0800_051B` | `0800:051B` | Main unit processing — calls tile renderer, initializes unit data |
+| `fn183B_27C9` | `183B:27C9` | Writes encounter placement to viewport arrays |
+| `fn207F:28EB` | `207F:28EB` | Tile blit to framebuffer |
+| `fn207F:23EC` | `207F:23EC` | Block memory copy (used by fn0800_1AFD) |
+
+---
+
+## 7. RENDERING & GRAPHICS PIPELINE
+
+- **Resolution**: 320x200 (standard DOS VGA/EGA Mode 13h-like)
+- **Palette**: 16-color EGA (with per-asset swaps for title/Infocom/endgame screens)
+- **EGA planar**: 4 bit-planes per pixel (Blue=0, Green=1, Red=2, Intensity=3)
+- **Decompression path**: CMP/ICN → RLE decompress (Format01/02) → nibble-to-pixel → planar convert → bitmap
+- **Sprite extraction**: From MECHSHAP.CMP (sub-rectangle coordinates in 8-pixel tile units)
+- **Map rendering**: 16x16 tiles from tile sets, drawn to 320-wide bitmap
+- **Animation**: XOR-based delta frames via EGA animation bit-shifting (4 left-shift-and-rotate operations per pixel)
 
 ---
 

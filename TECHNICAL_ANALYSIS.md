@@ -3069,3 +3069,125 @@ This means:
 3. **Equip slots** (C61D/C61E) are purchased upgrades (500 cr each) that enable unit capabilities
 
 The original question ("how does aD374 connect to mech ammo bins?") was based on an incorrect assumption. There is no connection — ammo is managed entirely through the mech struct + credits, bypassing aD374 entirely.
+
+---
+
+## 20. WORLD MAP SYSTEM
+
+The game has two distinct map layers: the **overworld map** (Pacifica island continent) and **local maps** (indoor/city areas from .MTP files). The local maps are documented in sections 1 and 6 of CONTEXT.md. This section covers the overworld.
+
+### 20.1 Tile Buffer
+
+| Field | Value |
+|-------|-------|
+| **Segment:Offset** | `0x246C:0x244B` |
+| **Linear address** | `0x26B0B` (Spice86 memory dump) |
+| **Size** | 4096 bytes |
+| **Grid dimensions** | 64 × 64 tiles (1 byte per tile) |
+| **Unique tile IDs (runtime)** | 93 |
+| **Value range** | 0x00 – 0xFF |
+| **Tile source** | MAP.ICN (~94 tiles, tile ID 0-93 direct index; values >93 via variants/other ICNs) |
+
+At runtime, the tile buffer segment is loaded from the pointer at `DS:[0x53C6h]`. In the captured memory dump this resolves to segment `0xF187` (linear `0xF3CBB`). However, the actual tile buffer data used for display is at segment `0x246C:0x244B`.
+
+### 20.2 Data Flow
+
+```
+EXE embedded initial data (76 unique tile values, base template)
+     │
+fn0800_48B7 (state machine init, clears tile buffer)
+     │
+fn0800_1AFD (copies from source 0x246C:0x42F6 → display 0x246C:0x244B)
+     │
+Game state overrides:
+  ├─ Visibility grid (DS:[0x538Ah]→0xCB0C, 2048 bytes, 128×128 bit-packed)
+  ├─ Story progression (e.g., Citadel destruction swaps tiles)
+  └─ Encounter placement (fn183B_27C9 → viewport arrays)
+     │
+fn0800_051B (called every frame from main loop)
+     │
+fn0800_2A93 (renderer: reads 64 tiles from buffer → 8×8 tile viewport)
+```
+
+### 20.3 Visibility Grid
+
+- **Address**: `DS:[0x538Ah]→0xCB0C` (also persisted at `0x3092:0x04F9` in save files)
+- **Format**: 2048 bytes, bit-packed 128×128 grid
+- **Each world map tile (64×64)**: has 2×2 visibility bits
+- **Effect**: Controls which terrain/city tiles are revealed
+
+### 20.4 Viewport Arrays (segment from DS:[0x538Ah])
+
+| Offset | Size | Content |
+|--------|------|---------|
+| `0xD457` | 64 | Per-viewport-tile data (tile IDs with packed flags) |
+| `0xD497` | 64 | Packed position/screen X data (viewport tile X + cursor offset) |
+| `0xD4D7` | 64 | Y-component of world coordinates per tile |
+| `0xD517` | 64 | X-component of world coordinates per tile |
+| `0xD557` | 2 | Pointer/counter: next slot index into above arrays |
+
+### 20.5 Coordinate System
+
+```
+Tile X = (wA44B & 0x7F) >> 1   → range 0-63
+Tile Y = (wA44D & 0x7F) >> 1   → range 0-63
+Tile index = Y * 64 + X         → offset in 4096-byte tile buffer
+```
+
+Save game coordinates at offsets `0x0F45`/`0x0F47` encode sub-tile position in the low 7 bits.
+
+### 20.6 Terrain Composition (from runtime tile buffer)
+
+| Category | Tile Count | Percentage |
+|----------|-----------:|-----------:|
+| Water (tile 0x00) | 727 | 17.7% |
+| Land/ground (various) | 2,027 | 49.5% |
+| City/building | 1,080 | 26.4% |
+| Roads | 262 | 6.4% |
+
+### 20.7 Identified Points of Interest
+
+| # | Location | Center (X,Y) | Likely Identity |
+|---|----------|-------------|-----------------|
+| 1 | Training Center area | (26, 5) | Citadel + Training (MAP1) |
+| 2 | Main city hub | (28, 10) | Barracks, shops, ComStar (MAP2) |
+| 3 | East-central settlement | (32, 18) | Town cluster (MAP3/4 type) |
+| 4 | Northwest settlement | (10, 10) | Small outpost |
+| 5 | Southeast island | (55, 8) | Island town, cache |
+| 6 | West coast town | (9, 21) | Outpost |
+| 7 | Central village | (42, 25) | Outpost |
+| 8-10 | Southern coastal towns | (5,49),(5,54),(5,59) | Row of towns |
+| 11 | Large southern city | (33, 49) | Major southern settlement |
+
+### 20.8 Key Functions
+
+| Function | Address | Role |
+|----------|---------|------|
+| `fn0800_2A93` | `0800:2A93` | World map tile renderer — reads 64 tiles, positions on screen |
+| `fn0800_48B7` | `0800:48B7` | State machine init — clears tile buffer, sets up source pointers |
+| `fn0800_1AFD` | `0800:1AFD` | Copies tile data from source (`0x246C:0x42F6`) to display buffer |
+| `fn0800_051B` | `0800:051B` | Main unit processing — calls tile renderer, initializes unit data |
+| `fn183B_27C9` | `183B:27C9` | Writes encounter placement to viewport arrays `0xD457`/`0xD497`/`0xD4D7`/`0xD517` |
+| `fn207F:28EB` | `207F:28EB` | Tile blit to framebuffer |
+| `fn207F:23EC` | `207F:23EC` | Block memory copy (used by fn0800_1AFD) |
+
+### 20.9 Is the World Map Procedural?
+
+**Partially.**
+
+- The **base terrain** (water vs land, ground types, road network) is **pre-defined** in the EXE's initial data at the tile buffer address. 76 unique tile values form the template.
+- **82.5% of positions** (3,378/4,096) are modified at runtime by game state:
+  - Visibility grid (`0xCB0C`) controls what tiles are "explored"
+  - Story progression modifies building tiles (e.g., destroyed Citadel after attack)
+  - Encounter placement writes specific tile values into viewport arrays
+- ~17 new tile types appear at runtime beyond the EXE's 76 base values, through game state modifications
+
+**Conclusion**: The world map is a **static template modified by dynamic game state**. No separate world map file exists because the data is embedded directly in the executable and modified in-place.
+
+### 20.10 Tile ID Mapping
+
+The tile buffer values (0-255, with 93 unique at runtime) directly index MAP.ICN's tile graphics. Values >93 have property entries at `0x246C:0x7AD` (256-entry table), suggesting the game supports additional tile types beyond the base 94. These may come from:
+- Palette manipulation / re-coloring of base tiles
+- Additional tiles loaded from ANIMATE.ICN, BTTLTECH.ICN, or other ICN files
+
+**For Godot reconstruction**: Replicate the 64×64 tile grid as a TileMap (or 2D array), load MAP.ICN tiles as atlas, implement cursor→tile coordinate mapping, and add the 128×128 visibility grid as Fog of War.
