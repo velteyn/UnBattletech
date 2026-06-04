@@ -658,7 +658,7 @@ BattleTechCHI/
     └── Main.tscn
 ```
 
-**Status**: Phase 0-2 (~1776 lines). Core systems + tile rendering + world map + border panel implemented.
+**Status**: Phase 0-3.1 (~2350 lines). Core systems + tile rendering + world map + BLD bytecode interpreter (26 opcodes) + DialogueBox UI + LocationMapper + MapCursor.
 
 ---
 
