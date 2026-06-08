@@ -4,19 +4,18 @@ using BattleTechCHI.Core;
 
 namespace BattleTechCHI.BLD;
 
-/// <summary>
-/// Interprete del bytecode BLD (26 opcode 0xE4-0xFF).
-/// Legge il buffer decriptato dal BldLoader ed esegue le istruzioni
-/// che controllano dialoghi, negozi, story progression, combattimenti.
-/// </summary>
 public partial class BldInterpreter : Node
 {
     private GameState _state = null!;
+    private StateManager _stateManager = null!;
     private BldScript? _script;
 
     private int _ip;
     private string _currentText = "";
     private NarrativeMode _currentNarrativeMode = NarrativeMode.ThirdPerson;
+
+    private bool _waitingForInput;
+    private bool _running;
 
     [Signal]
     public delegate void TextRenderedEventHandler(string text, NarrativeMode mode);
@@ -27,23 +26,38 @@ public partial class BldInterpreter : Node
     [Signal]
     public delegate void InterpreterCompleteEventHandler();
 
+    [Signal]
+    public delegate void SpriteRequestedEventHandler(int spriteId);
+
+    public bool IsRunning => _running;
+    public bool WaitingForInput => _waitingForInput;
+
     public void LoadAndRun(BldScript script)
     {
         _script = script;
         _ip = 0;
         _currentText = "";
         _currentNarrativeMode = NarrativeMode.ThirdPerson;
+        _waitingForInput = false;
+        _running = true;
 
         var gl = GetNode<GameLoop>("/root/GameLoop");
         _state = gl.State;
+        _stateManager = gl.StateManager;
 
-        GD.Print($"BLD Interpreter: running {script.Name} ({script.RawBytes.Length} bytes)");
-        Run();
+        GD.Print($"BLD: running {script.Name} ({script.RawBytes.Length} bytes)");
+        ProcessNext();
     }
 
-    private void Run()
+    /// <summary>
+    /// Process a batch of opcodes until we hit one that needs input,
+    /// or until the script ends.
+    /// </summary>
+    public void ProcessNext()
     {
-        if (_script == null) return;
+        if (!_running || _script == null) return;
+        if (_waitingForInput) return;
+
         var buf = _script.RawBytes;
         int base_ = _script.InterpreterBase;
 
@@ -54,44 +68,53 @@ public partial class BldInterpreter : Node
 
             byte b = buf[filePos];
 
-            // 0x00-0x7F = cipher text direct to renderer
+            // 0x00-0x7F = cipher text
             if (b < 0x80) { HandleTextByte(b); _ip++; continue; }
 
-            // 0x80-0xC3: structural markers / narrative mode switches
-            if (b >= 0x80 && b <= 0xC3)
+            // Narrative markers (specific byte values; 0x80-0x96 are uppercase cipher text)
+            switch (b)
             {
-                switch (b)
-                {
-                    case 0x9E: _currentNarrativeMode = NarrativeMode.ThirdPerson; break;
-                    case 0x9C: _currentNarrativeMode = NarrativeMode.CharacterSpeech; break;
-                    case 0x9B: _currentNarrativeMode = NarrativeMode.PlayerThought; break;
-                    case 0x9F: _currentNarrativeMode = NarrativeMode.PlayerAction; break;
-                    case 0xA5: _currentNarrativeMode = NarrativeMode.Continuation; break;
-                    case 0xA0: HandleTextByte(b); break;
-                }
-                _ip++;
-                continue;
+                case 0x9E: _currentNarrativeMode = NarrativeMode.ThirdPerson; _ip++; continue;
+                case 0x9C: _currentNarrativeMode = NarrativeMode.CharacterSpeech; _ip++; continue;
+                case 0x9B: _currentNarrativeMode = NarrativeMode.PlayerThought; _ip++; continue;
+                case 0x9F: _currentNarrativeMode = NarrativeMode.PlayerAction; _ip++; continue;
+                case 0xA5: _currentNarrativeMode = NarrativeMode.Continuation; _ip++; continue;
+                case 0xA0: HandleTextByte(b); _ip++; continue; // space
+                case 0x9D: _ip++; continue; // unknown marker, skip
             }
 
-            // 0xC0 = structural separator (no-op, next byte is real opcode)
-            if (b == 0xC0) { _ip++; continue; }
+            // 0xC0 structural separator; 0xBA rparen; 0xBB separator
+            if (b == 0xC0 || b == 0xBA || b == 0xBB) { _ip++; continue; }
+
+            // 0x80-0xE3: cipher text (uppercase 0x80-0x96 etc.) and gap bytes
+            if (b < 0xE4) { HandleTextByte(b); _ip++; continue; }
 
             // Opcode range 0xE4-0xFF
-            if (b >= 0xE4)
-            {
-                _ip++;
-                if (!ExecuteOpcode((BldOpcode)b)) break;
-                continue;
-            }
-
-            _ip++; // skip unknown
+            _ip++;
+            bool shouldYield = ExecuteOpcode((BldOpcode)b);
+            if (shouldYield) return; // yielded for input or mode change
+            continue;
         }
 
-        EmitSignal(SignalName.InterpreterComplete);
+        // End of script
+        if (_running)
+            Finish();
+    }
+
+    /// <summary>
+    /// Resume interpreter after input (called from GameLoop when InputReady fires).
+    /// </summary>
+    public void ResumeAfterInput()
+    {
+        _waitingForInput = false;
+        ProcessNext();
     }
 
     private void HandleTextByte(byte b) => _currentText += CipherDecoder.DecodeByte(b);
 
+    /// <summary>
+    /// Execute one opcode. Returns true if the interpreter should yield (wait for input / mode changed).
+    /// </summary>
     private bool ExecuteOpcode(BldOpcode opcode)
     {
         if (_script == null) return false;
@@ -152,11 +175,13 @@ public partial class BldInterpreter : Node
                 break;
 
             case BldOpcode.CheckFlagEB:
-                if (!_state.Milestone) ReadWord(out _);
+                if (ReadWord(out short ebJump))
+                    if (_state.Milestone) _ip = ebJump;
                 break;
 
             case BldOpcode.CheckFlagEC:
-                if (!_state.TrainingComplete) ReadWord(out _);
+                if (ReadWord(out short ecJump))
+                    if (_state.TrainingComplete) _ip = ecJump;
                 break;
 
             case BldOpcode.UnitCheckLoop:
@@ -200,7 +225,17 @@ public partial class BldInterpreter : Node
                 break;
 
             case BldOpcode.ShopDispatch:
-                if (ReadByte(out byte caseVal)) { FlushText(); DispatchCase(caseVal); }
+                if (ReadByte(out byte caseVal))
+                {
+                    FlushText();
+                    var newMode = DispatchCase(caseVal);
+                    if (newMode.HasValue)
+                    {
+                        _stateManager.SetMode(newMode.Value);
+                        Finish();
+                        return true;
+                    }
+                }
                 break;
 
             case BldOpcode.CheckCondition:
@@ -219,31 +254,49 @@ public partial class BldInterpreter : Node
                 break;
 
             case BldOpcode.DrawSprite:
-                if (ReadByte(out byte sid)) GD.Print($"  draw_sprite({sid}) — TBD");
+                if (ReadByte(out byte sid))
+                {
+                    GD.Print($"  draw_sprite({sid})");
+                    EmitSignal(SignalName.SpriteRequested, sid);
+                }
                 break;
 
             case BldOpcode.AdvanceInput:
-                FlushText(); break;
+                FlushText();
+                _waitingForInput = true;
+                return true; // yield: wait for keypress
 
             case BldOpcode.RenderText:
-                FlushText(); break;
+                FlushText();
+                _waitingForInput = true;
+                return true; // yield: wait for keypress
 
             case BldOpcode.SetFont2: break;
             case BldOpcode.SetFont: ReadByte(out _); break;
 
             case BldOpcode.StopInterpreter:
-                FlushText(); return false;
+                FlushText();
+                Finish();
+                return true;
 
             default:
                 GD.Print($"  unknown opcode {opcode} (0x{(byte)opcode:X2}) at IP={_ip}");
                 break;
         }
-        return true;
+        return false;
     }
 
-    private void DispatchCase(byte caseVal)
+    private void Finish()
     {
-        Fn1CD3Dispatcher.Dispatch(caseVal);
+        _running = false;
+        _waitingForInput = false;
+        EmitSignal(SignalName.InterpreterComplete);
+    }
+
+    private GameMode? DispatchCase(byte caseVal)
+    {
+        var shop = _script != null ? ShopRegistry.Get(_script.Name) : null;
+        return Fn1CD3Dispatcher.Dispatch(caseVal, _state, shop);
     }
 
     private void CallRoomHandler(byte handlerIdx)

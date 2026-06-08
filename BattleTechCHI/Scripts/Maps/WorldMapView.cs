@@ -38,7 +38,7 @@ public partial class WorldMapView : TileMap
         _state = gl.State;
 
         // Carica tileset MAP.ICN per la world map
-        var mapPath = ProjectSettings.GlobalizePath("res://Assets/MAP.bmp");
+        var mapPath = ProjectSettings.GlobalizePath("res://Assets/MAP.png");
         var tileSet = _tileManager.LoadTileSet("MAP", mapPath, 16, 16);
 
         if (tileSet != null)
@@ -49,7 +49,7 @@ public partial class WorldMapView : TileMap
         else
         {
             // Fallback: create a simple colored tileset
-            GD.PrintErr("MAP.bmp not found, using fallback tileset");
+            GD.PrintErr("MAP.png not found, using fallback tileset");
             CreateFallbackTileset();
         }
 

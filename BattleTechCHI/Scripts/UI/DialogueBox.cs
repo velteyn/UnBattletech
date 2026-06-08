@@ -12,8 +12,10 @@ public partial class DialogueBox : Control
 {
     private RichTextLabel _textLabel = null!;
     private Label _narratorLabel = null!;
+    private TextureRect _spriteDisplay = null!;
     private Godot.Timer _typeTimer = null!;
     private bool _waitingForInput;
+    private bool _hasSprite;
 
     [Signal]
     public delegate void InputReadyEventHandler();
@@ -28,7 +30,24 @@ public partial class DialogueBox : Control
         };
         AddChild(bg);
 
-        // Etichetta narratore (in alto)
+        // Sprite/bitmap display (top-right corner, 80x80, hidden until DrawSprite)
+        _spriteDisplay = new TextureRect
+        {
+            Position = new Vector2(320 - 88, 4),
+            Size = new Vector2(80, 80),
+            ExpandMode = (TextureRect.ExpandModeEnum)2,
+            StretchMode = (TextureRect.StretchModeEnum)2,
+            Visible = false
+        };
+        var spriteBg = new ColorRect
+        {
+            Color = new Color(0, 0, 0, 0.5f),
+            Size = new Vector2(80, 80)
+        };
+        _spriteDisplay.AddChild(spriteBg);
+        AddChild(_spriteDisplay);
+
+        // Etichetta narratore (in alto a sinistra)
         _narratorLabel = new Label
         {
             Position = new Vector2(4, 2),
@@ -56,6 +75,31 @@ public partial class DialogueBox : Control
     }
 
     /// <summary>
+    /// Show a sprite/bitmap in the top-right corner.
+    /// </summary>
+    public void ShowSprite(Texture2D? texture)
+    {
+        if (texture != null)
+        {
+            _spriteDisplay.Texture = texture;
+            _spriteDisplay.Visible = true;
+            _hasSprite = true;
+        }
+        else
+        {
+            _spriteDisplay.Visible = false;
+            _hasSprite = false;
+        }
+    }
+
+    public void ClearSprite()
+    {
+        _spriteDisplay.Texture = null;
+        _spriteDisplay.Visible = false;
+        _hasSprite = false;
+    }
+
+    /// <summary>
     /// Mostra un testo con l'indicatore del narratore appropriato.
     /// </summary>
     public void ShowText(string text, NarrativeMode mode)
@@ -64,6 +108,20 @@ public partial class DialogueBox : Control
         _textLabel.Text = FormatText(text, mode);
         _waitingForInput = false;
         Visible = true;
+        // Shrink text area if sprite is shown
+        if (_hasSprite)
+            _textLabel.Size = new Vector2(220, 160);
+        else
+            _textLabel.Size = new Vector2(304, 160);
+    }
+
+    /// <summary>
+    /// Nasconde la dialog box e resetta lo sprite.
+    /// </summary>
+    public new void Hide()
+    {
+        Visible = false;
+        ClearSprite();
     }
 
     /// <summary>
@@ -87,6 +145,11 @@ public partial class DialogueBox : Control
                 EmitSignal(SignalName.InputReady);
             }
         }
+    }
+
+    public override void _ExitTree()
+    {
+        ClearSprite();
     }
 
     private static string GetNarratorPrefix(NarrativeMode mode) => mode switch

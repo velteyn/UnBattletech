@@ -1,4 +1,5 @@
 using Godot;
+using System.IO;
 
 namespace BattleTechCHI.UI;
 
@@ -31,16 +32,18 @@ public partial class StartupSequence : Node2D
         _timer.Timeout += OnTimerTimeout;
 
         // Start with INFOCOM
-        ShowTitle("INFOCOM.bmp");
+        ShowTitle("INFOCOM.png");
     }
 
     private void ShowTitle(string filename)
     {
-        // TODO Phase 7: caricare le BMP originali da Assets/
-        // var path = ProjectSettings.GlobalizePath("res://Assets/" + filename);
-        // if (File.Exists(path))
-        //     _imageRect!.Texture = ImageTexture.CreateFromImage(Image.LoadFromFile(path));
-        
+        var path = ProjectSettings.GlobalizePath("res://Assets/" + filename);
+        if (File.Exists(path))
+        {
+            var img = Image.LoadFromFile(path);
+            if (img != null)
+                _imageRect!.Texture = ImageTexture.CreateFromImage(img);
+        }
         _timer!.Start(2.0);
     }
 
@@ -50,7 +53,7 @@ public partial class StartupSequence : Node2D
         switch (_phase)
         {
             case 1:
-                ShowTitle("BTTITLE.bmp");
+                ShowTitle("BTTITLE.png");
                 break;
             case 2:
                 EmitSignal(SignalName.StartupComplete);

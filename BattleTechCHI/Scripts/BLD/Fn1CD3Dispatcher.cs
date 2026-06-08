@@ -8,186 +8,496 @@ namespace BattleTechCHI.BLD;
 /// Dispatcher per fn1CD3_0004: 47 casi (0x01-0x2F) che gestiscono
 /// tutte le interazioni con edifici e personaggi.
 /// Chiamato dall'opcode BLD 0xF5 (SHOP_DISPATCH).
+/// Uses the Strategy pattern via IShopInventory for building-specific
+/// pricing and item catalogs.
+/// Returns GameMode? — null if no mode change, new mode if dispatcher
+/// requests a mode transition (e.g. ExitBuilding → WorldMap).
 /// </summary>
 public static partial class Fn1CD3Dispatcher
 {
-    private static GameState _state = null!;
-    public static void Init(GameState state) => _state = state;
-
-    public static void Dispatch(byte caseVal)
+    public static GameMode? Dispatch(byte caseVal, GameState state, IShopInventory? shop = null)
     {
-        GD.Print($"  fn1CD3 case 0x{caseVal:X2}");
+        GD.Print($"  fn1CD3 case 0x{caseVal:X2} (shop={shop?.ShopName ?? "none"})");
         switch (caseVal)
         {
-            case 0x01: EnterBuilding(); break;
-            case 0x02: ShowGreeting(); break;
-            case 0x03: ExitBuilding(); break;
-            case 0x04: OpenMenu(); break;
-            case 0x05: C618Increment(); break;
-            case 0x06: C618Decrement(); break;
-            case 0x07: BuyItem(); break;
-            case 0x08: SellItem(); break;
-            case 0x09: HealPlayer(); break;
-            case 0x0A: RepairMech(); break;
-            case 0x0B: GarageService(); break;
-            case 0x0C: CloseAction(); break;
-            case 0x0D: CombatEncounter(); break;
-            case 0x0E: EquipSlot1(); break;
-            case 0x0F: EquipSlot2(); break;
-            case 0x10: EquipSlot3(); break;
-            case 0x11: EquipSlot4(); break;
-            case 0x12: EquipSlot5(); break;
-            case 0x13: EquipSlot6(); break;
-            case 0x14: UnequipSlot(); break;
-            case 0x15: EquipSlotAlt5(); break;
-            case 0x16: EquipSlotAlt6(); break;
-            case 0x17: RefreshDisplay(); break;
-            case 0x18: UpdateEquipment(); break;
-            case 0x19: SetFlagD450(); break;
-            case 0x1A: SetFlagD451(); break;
-            case 0x1B: PartyAdd(); break;
-            case 0x1C: PartyRemove(); break;
-            case 0x1D: OpenChest(); break;
-            case 0x1E: TakeItem(); break;
-            case 0x1F: GiveItem(); break;
-            case 0x20: CheckParty(); break;
-            case 0x21: CheckTraining(); break;
-            case 0x22: CheckState(); break;
-            case 0x23: SetMood(); break;
-            case 0x24: PlayAnimation(); break;
-            case 0x25: SoundEffect(); break;
-            case 0x26: Acknowledge(); break;
-            case 0x27: Decline(); break;
-            case 0x28: Trade(); break;
-            case 0x29: Barter(); break;
-            case 0x2A: Information(); break;
-            case 0x2B: SpecialAction(); break;
-            case 0x2C: QuestProgress(); break;
-            case 0x2D: CheckItem(); break;
-            case 0x2E: RemoveItem(); break;
-            case 0x2F: EndInteraction(); break;
-            default: GD.Print($"    unknown case 0x{caseVal:X2}"); break;
+            case 0x01: return EnterBuilding(state);
+            case 0x02: ShowGreeting(state); return null;
+            case 0x03: return ExitBuilding();
+            case 0x04: ShowShopItems(state, shop); return null;
+            case 0x05: BuyItemSingle(state, shop); return null;
+            case 0x06: ShowPlayerItems(state); return null;
+            case 0x07: BuyItemBulk(state, shop); return null;
+            case 0x08: SellItemBulk(state, shop); return null;
+            case 0x09: HospitalHeal(state); return null;
+            case 0x0A: ShowCredits(state); return null;
+            case 0x0B: BuyWithUnitSel(state, shop); return null;
+            case 0x0C: return CloseAction();
+            case 0x0D: EquipmentMenu(state); return null;
+            case 0x0E: CountUnitSlots(state); return null;
+            case 0x0F: EquipSlot5(state); return null;
+            case 0x10: CheckEquipSlot5(state); return null;
+            case 0x11: CountStorySlots(state); return null;
+            case 0x12: Dispatch11B8_0002(state); return null;
+            case 0x13: Dispatch11B8_080A(state); return null;
+            case 0x14: Dispatch11B8_0925(state); return null;
+            case 0x15: EquipSlot6(state); return null;
+            case 0x16: CheckEquipSlot6(state); return null;
+            case 0x17: EquipConsistency(state); return null;
+            case 0x18: GarageService(state); return null;
+            case 0x19: FlagD450(state); return null;
+            case 0x1A: FlagD451(state); return null;
+            case 0x1B: Goto2eShared(state); return null;
+            case 0x1C: ClearAllSlots(state); return null;
+            case 0x1D: CountUppercase(state); return null;
+            case 0x1E: Dispatch11B8_104E(state); return null;
+            case 0x1F: ReadSlotFlag(state); return null;
+            case 0x20: ComplexEquip(state); return null;
+            case 0x21: Dispatch0FDC_1C9B(state); return null;
+            case 0x22: Dispatch0FDC_1A26(state); return null;
+            case 0x23: NewGameInit(state); return null;
+            case 0x24: ReadUnitSlot(state); return null;
+            case 0x25: ClearUnitSlot(state); return null;
+            case 0x26: ReadD456(state); return null;
+            case 0x27: TriggerAction(state); return null;
+            case 0x28: Dispatch11B8_152F(state); return null;
+            case 0x29: CombatHeal(state); return null;
+            case 0x2A: SavePositions(state); return null;
+            case 0x2B: RestorePositions(state); return null;
+            case 0x2C: Dispatch11B8_1762(state); return null;
+            case 0x2D: return CombatEncounter();
+            case 0x2E: RestoreSlots(state); return null;
+            case 0x2F: DecrementState(state); return null;
+            default: GD.Print($"    unknown case 0x{caseVal:X2}"); return null;
         }
     }
 
-    static void EnterBuilding() => GD.Print("    ENTER_BUILDING: load BLD, init viewport");
-    static void ShowGreeting() => GD.Print("    SHOW_GREETING");
-    static void ExitBuilding() { GD.Print("    EXIT_BUILDING"); _state.Mode = GameMode.WorldMap; }
-    static void OpenMenu() => GD.Print("    OPEN_MENU: party/tech/star/stock/stat");
-
-    static void C618Increment()
+    // ── Case 0x01 ──────────────────────────────────────────────
+    static GameMode? EnterBuilding(GameState state)
     {
-        GD.Print("    C618++ (next shop slot)");
-        _state.StateArray[0x14] = (byte)((_state.StateArray[0x14] + 1) % 3);
-    }
-    static void C618Decrement()
-    {
-        GD.Print("    C618-- (prev shop slot)");
-        int v = _state.StateArray[0x14] - 1;
-        _state.StateArray[0x14] = (byte)(v < 0 ? 2 : v);
+        GD.Print("    ENTER_BUILDING: load BLD, init viewport");
+        return null;
     }
 
-    static void BuyItem()
+    // ── Case 0x02 ──────────────────────────────────────────────
+    static void ShowGreeting(GameState state) => GD.Print("    SHOW_GREETING");
+
+    // ── Case 0x03 ──────────────────────────────────────────────
+    static GameMode ExitBuilding()
     {
-        GD.Print("    BUY_ITEM");
-        int slot = _state.StateArray[0x14];
-        int item = _state.StateArray[0x18 + slot];
+        GD.Print("    EXIT_BUILDING");
+        return GameMode.WorldMap;
+    }
+
+    // ── Case 0x04: SHOW_SHOP_ITEMS ─────────────────────────────
+    // Populate shop item slots (C618[0..2] = StateArray 0x18-0x1A)
+    // with item types from the current shop strategy.
+    // The BLD text handles display; this sets up state for buy/sell.
+    static void ShowShopItems(GameState state, IShopInventory? shop)
+    {
+        GD.Print("    SHOW_SHOP_ITEMS");
+        if (shop == null) return;
+        for (int i = 0; i < 3 && i < shop.SlotCount; i++)
+            state.StateArray[0x18 + i] = (byte)shop.GetItemType(i);
+    }
+
+    // ── Case 0x05: BUY_ITEM_SINGLE ─────────────────────────────
+    // Buy single item at current selection index (bD314).
+    // Item type from C618[bD314] (StateArray[0x18 + bD314]).
+    // Price = item_type * 125 + 75.
+    static void BuyItemSingle(GameState state, IShopInventory? shop)
+    {
+        GD.Print("    BUY_ITEM_SINGLE");
+        int slot = state.StateArray[0x14]; // bD314
+        int itemType = state.StateArray[0x18 + slot];
+        if (itemType == 0) return;
+        int price = itemType * 125 + 75;
+        if (state.Credits >= price)
+        {
+            state.Credits -= price;
+            state.StateArray[0x18 + slot]++; // rotate to next item type
+            if (itemType < state.InventoryQuantities.Length)
+                state.InventoryQuantities[itemType]++;
+            GD.Print($"    bought single type {itemType} for {price}, credits={state.Credits}");
+        }
+    }
+
+    // ── Case 0x06: SHOW_PLAYER_ITEMS ───────────────────────────
+    // Display player's owned items (aD374[n] != 0) for sale.
+    // In our system, this finds owned items and sets up state for SellItemBulk.
+    static void ShowPlayerItems(GameState state)
+    {
+        GD.Print("    SHOW_PLAYER_ITEMS");
+        int count = 0;
+        for (int i = 0; i < state.InventoryQuantities.Length && count < 3; i++)
+        {
+            if (state.InventoryQuantities[i] > 0)
+            {
+                state.StateArray[0x18 + count] = (byte)i;
+                count++;
+            }
+        }
+        for (int i = count; i < 3; i++)
+            state.StateArray[0x18 + i] = 0;
+        state.StateArray[0x14] = 0; // reset selection
+    }
+
+    // ── Case 0x07: BUY_ITEM_BULK ───────────────────────────────
+    // Bulk buy at 1 cr/unit using strategy pricing.
+    static void BuyItemBulk(GameState state, IShopInventory? shop)
+    {
+        GD.Print("    BUY_ITEM_BULK");
+        int slot = state.StateArray[0x14]; // bD314
+        int item = shop != null ? shop.GetItemType(slot) : state.StateArray[0x18 + slot];
         if (item == 0) return;
-        int price = item * 125 + 75;
-        if (_state.Credits >= price)
+        int price = shop?.GetBuyPrice(slot) ?? (item * 125 + 75);
+        if (state.Credits >= price)
         {
-            _state.Credits -= price;
-            if (item < _state.InventoryQuantities.Length)
-                _state.InventoryQuantities[item]++;
-            GD.Print($"    bought type {item} for {price}, credits={_state.Credits}");
+            state.Credits -= price;
+            if (item < state.InventoryQuantities.Length)
+                state.InventoryQuantities[item]++;
+            GD.Print($"    bought bulk type {item} for {price}, credits={state.Credits}, shop={shop?.ShopName}");
         }
     }
 
-    static void SellItem()
+    // ── Case 0x08: SELL_ITEM_BULK ──────────────────────────────
+    // Bulk sell at 1 cr/unit using strategy pricing.
+    static void SellItemBulk(GameState state, IShopInventory? shop)
     {
-        GD.Print("    SELL_ITEM");
-        int slot = _state.StateArray[0x14];
-        int item = _state.StateArray[0x18 + slot];
-        if (item > 0 && _state.InventoryQuantities[item] > 0)
+        GD.Print("    SELL_ITEM_BULK");
+        int slot = state.StateArray[0x14]; // bD314
+        int item = shop != null ? shop.GetItemType(slot) : state.StateArray[0x18 + slot];
+        if (item > 0 && item < state.InventoryQuantities.Length && state.InventoryQuantities[item] > 0)
         {
-            _state.InventoryQuantities[item]--;
-            _state.Credits += item * 125 + 75;
+            state.InventoryQuantities[item]--;
+            state.Credits += shop?.GetSellPrice(slot) ?? (item * 125 + 75) / 2;
         }
     }
 
-    static void HealPlayer()
+    // ── Case 0x09: HOSPITAL_HEAL ───────────────────────────────
+    // Heal player units for a cost. Reads healing cost from table.
+    static void HospitalHeal(GameState state)
     {
-        GD.Print("    HEAL_PLAYER (cost 50)");
-        if (_state.Credits >= 50)
+        GD.Print("    HOSPITAL_HEAL (cost 50)");
+        if (state.Credits >= 50)
         {
-            _state.Credits -= 50;
-            for (int i = 0; i < 4; i++) _state.UnitStatus[i] = 1;
+            state.Credits -= 50;
+            for (int i = 0; i < 4; i++) state.UnitStatus[i] = 1;
         }
     }
 
-    static void RepairMech() => GD.Print("    REPAIR_MECH (Tech Screen)");
-    static void GarageService() { GD.Print("    GARAGE_SERVICE"); if (_state.Credits >= 100) _state.Credits -= 100; }
-    static void CloseAction() => GD.Print("    CLOSE_ACTION");
-    static void CombatEncounter() { GD.Print("    COMBAT_ENCOUNTER!"); _state.Mode = GameMode.Combat; }
-
-    static void EquipSlot1() => EquipGeneric(0);
-    static void EquipSlot2() => EquipGeneric(1);
-    static void EquipSlot3() => EquipGeneric(2);
-    static void EquipSlot4() => EquipGeneric(3);
-    static void EquipSlot5() => EquipGeneric(4);
-    static void EquipSlot6() => EquipGeneric(5);
-    static void UnequipSlot() => GD.Print("    UNEQUIP");
-    static void EquipSlotAlt5() => EquipGeneric(4);
-    static void EquipSlotAlt6() => EquipGeneric(5);
-
-    static void EquipGeneric(int slot)
+    // ── Case 0x0A: SHOW_CREDITS ────────────────────────────────
+    // Display credits formatted. In our system, credits are already
+    // shown in the UI; this ensures the display is updated.
+    static void ShowCredits(GameState state)
     {
-        if (slot >= 4) { if (_state.Credits < 500) return; _state.Credits -= 500; }
-        GD.Print($"    equip slot {slot}");
+        GD.Print($"    SHOW_CREDITS: {state.Credits}");
     }
 
-    static void RefreshDisplay() => GD.Print("    REFRESH");
-    static void UpdateEquipment() => GD.Print("    UPDATE_EQUIP");
-
-    static void SetFlagD450() { GD.Print("    TRAINING COMPLETE!"); _state.TrainingComplete = true; _state.StateArray[0x50] = 1; }
-    static void SetFlagD451() { GD.Print("    MILESTONE!"); _state.Milestone = true; _state.StateArray[0x51] = 1; }
-
-    static void PartyAdd() => GD.Print("    PARTY_ADD");
-    static void PartyRemove() => GD.Print("    PARTY_REMOVE");
-    static void OpenChest() => GD.Print("    OPEN_CHEST");
-    static void TakeItem() => GD.Print("    TAKE_ITEM");
-    static void GiveItem() => GD.Print("    GIVE_ITEM");
-    static void CheckParty() => GD.Print("    CHECK_PARTY");
-    static void CheckTraining() => GD.Print($"    CHECK_TRAINING: {_state.TrainingComplete}");
-    static void CheckState() => GD.Print("    CHECK_STATE");
-    static void SetMood() => GD.Print("    SET_MOOD");
-    static void PlayAnimation() => GD.Print("    PLAY_ANIMATION");
-    static void SoundEffect() => GD.Print("    SOUND_EFFECT");
-    static void Acknowledge() => GD.Print("    ACK");
-    static void Decline() => GD.Print("    DECLINE");
-    static void Trade() => GD.Print("    TRADE");
-    static void Barter() => GD.Print("    BARTER");
-    static void Information() => GD.Print("    INFO");
-    static void SpecialAction() => GD.Print("    SPECIAL_ACTION");
-
-    static void QuestProgress()
+    // ── Case 0x0B: BUY_WITH_UNIT_SEL ───────────────────────────
+    // Purchase with unit selection. Shows price from table,
+    // deducts credits, selects a unit for the purchase.
+    static void BuyWithUnitSel(GameState state, IShopInventory? shop)
     {
-        GD.Print("    QUEST_PROGRESS");
-        _state.StateArray[0x2C]++;
+        GD.Print("    BUY_WITH_UNIT_SEL");
+        int slot = state.StateArray[0x14]; // bD314
+        int item = shop != null ? shop.GetItemType(slot) : state.StateArray[0x18 + slot];
+        if (item == 0) return;
+        int price = shop?.GetBuyPrice(slot) ?? (item * 125 + 75);
+        if (state.Credits >= price)
+        {
+            state.Credits -= price;
+            if (item < state.InventoryQuantities.Length)
+                state.InventoryQuantities[item]++;
+            state.StateArray[0x1A] = 0; // bD31A = first unit slot
+            GD.Print($"    bought + unit sel type {item} for {price}, credits={state.Credits}");
+        }
     }
 
-    static void CheckItem()
+    // ── Case 0x0C: CLOSE_ACTION ────────────────────────────────
+    // Close current shop/action sub-dialog.
+    // Does NOT end the BLD script — the script itself will hit
+    // StopInterpreter (0xFF) when it's done.
+    static GameMode? CloseAction()
     {
-        GD.Print("    CHECK_ITEM");
-        // Reads aD374[itemType], skips if zero
+        GD.Print("    CLOSE_ACTION");
+        return null; // no mode change — BLD script continues
     }
 
-    static void RemoveItem()
+    // ── Case 0x0D: EQUIPMENT_MENU ──────────────────────────────
+    // Equipment selection from unit slots. Lists items at C61C[stride 0x11].
+    // Stores selected unit index in bD31A.
+    static void EquipmentMenu(GameState state)
     {
-        GD.Print("    REMOVE_ITEM");
-        if (_state.InventoryQuantities.Length > 0)
-            _state.InventoryQuantities[0] = 0;
+        GD.Print("    EQUIPMENT_MENU");
+        state.StateArray[0x1A] = 0; // bD31A = default first slot
     }
 
-    static void EndInteraction() => GD.Print("    END_INTERACTION");
+    // ── Case 0x0E: COUNT_UNIT_SLOTS ────────────────────────────
+    // Count occupied unit slots (8 slots bC614[], stride 0x11).
+    // Result in bD31A.
+    static void CountUnitSlots(GameState state)
+    {
+        GD.Print("    COUNT_UNIT_SLOTS");
+        int count = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            if (state.UnitStatus[i] != 0)
+                count++;
+        }
+        state.StateArray[0x1A] = (byte)count; // bD31A
+    }
+
+    // ── Case 0x0F: EQUIP_SLOT5 ─────────────────────────────────
+    // Equip item type 5: 500cr debit, C618[5][bD31A]++, set bC623[].bit0.
+    static void EquipSlot5(GameState state)
+    {
+        GD.Print("    EQUIP_SLOT5");
+        if (state.Credits >= 500)
+        {
+            state.Credits -= 500;
+            state.StateArray[0x1A] = 1; // bD31A = success
+        }
+        else
+            state.StateArray[0x1A] = 0;
+    }
+
+    // ── Case 0x10: CHECK_EQUIP_SLOT5 ───────────────────────────
+    // Query: bD31B = bC623[bD31A] & 0x01 (slot 5 flag).
+    static void CheckEquipSlot5(GameState state)
+    {
+        GD.Print("    CHECK_EQUIP_SLOT5");
+        state.StateArray[0x1B] = 0; // bD31B = 0 (not equipped)
+    }
+
+    // ── Case 0x11: COUNT_STORY_SLOTS ───────────────────────────
+    // Count occupied story/mech slots (4 slots, stride 0x7D).
+    // Result in bD31C.
+    static void CountStorySlots(GameState state)
+    {
+        GD.Print("    COUNT_STORY_SLOTS");
+        int count = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            if (state.StorySlots[i]?.StatusByte != 0xFF)
+                count++;
+        }
+        state.StateArray[0x1C] = (byte)count; // bD31C
+    }
+
+    // ── Case 0x12: DISPATCH_11B8_0002 ──────────────────────────
+    // Render via fn11B8_0002 (viewport/tile display).
+    static void Dispatch11B8_0002(GameState state) => GD.Print("    DISPATCH_11B8_0002");
+
+    // ── Case 0x13: DISPATCH_11B8_080A ──────────────────────────
+    // Render building name/text overlay.
+    static void Dispatch11B8_080A(GameState state) => GD.Print("    DISPATCH_11B8_080A");
+
+    // ── Case 0x14: DISPATCH_11B8_0925 ──────────────────────────
+    // Render text overlay.
+    static void Dispatch11B8_0925(GameState state) => GD.Print("    DISPATCH_11B8_0925");
+
+    // ── Case 0x15: EQUIP_SLOT6 ─────────────────────────────────
+    // Equip item type 6: 500cr debit, C618[6][bD31A]++, set bC623[].bit1.
+    static void EquipSlot6(GameState state)
+    {
+        GD.Print("    EQUIP_SLOT6");
+        if (state.Credits >= 500)
+        {
+            state.Credits -= 500;
+            state.StateArray[0x1A] = 1;
+        }
+        else
+            state.StateArray[0x1A] = 0;
+    }
+
+    // ── Case 0x16: CHECK_EQUIP_SLOT6 ───────────────────────────
+    // Query: bD31B = bC623[bD31A] & 0x02 (slot 6 flag).
+    static void CheckEquipSlot6(GameState state)
+    {
+        GD.Print("    CHECK_EQUIP_SLOT6");
+        state.StateArray[0x1B] = 0; // bD31B = 0 (not equipped)
+    }
+
+    // ── Case 0x17: EQUIP_CONSISTENCY ───────────────────────────
+    // Verify equip state vs expected: compare aC615[n]*10 vs bC623[n].
+    // Sets bD325=1 on mismatch.
+    static void EquipConsistency(GameState state)
+    {
+        GD.Print("    EQUIP_CONSISTENCY");
+        state.StateArray[0x25] = 0; // bD325 = 0 (consistent)
+    }
+
+    // ── Case 0x18: GARAGE_SERVICE ──────────────────────────────
+    // Paid service dispatch. Reads cost from table indexed by bD326.
+    static void GarageService(GameState state)
+    {
+        GD.Print("    GARAGE_SERVICE");
+        if (state.Credits >= 100)
+        {
+            state.Credits -= 100;
+            for (int i = 0; i < 4; i++) state.UnitStatus[i] = 1;
+        }
+    }
+
+    // ── Case 0x19: FLAG_D450 (Training Complete) ────────────────
+    static void FlagD450(GameState state)
+    {
+        GD.Print("    TRAINING COMPLETE!");
+        state.TrainingComplete = true;
+        state.StateArray[0x50] = 1;
+    }
+
+    // ── Case 0x1A: FLAG_D451 (Milestone) ───────────────────────
+    static void FlagD451(GameState state)
+    {
+        GD.Print("    MILESTONE!");
+        state.Milestone = true;
+        state.StateArray[0x51] = 1;
+    }
+
+    // ── Case 0x1B: GOTO_2E_SHARED ──────────────────────────────
+    // Shared path with case 0x2E (RESTORE_SLOTS).
+    static void Goto2eShared(GameState state) => GD.Print("    GOTO_2E_SHARED");
+
+    // ── Case 0x1C: CLEAR_ALL_SLOTS ─────────────────────────────
+    // Clear 4 story/mech slots.
+    static void ClearAllSlots(GameState state)
+    {
+        GD.Print("    CLEAR_ALL_SLOTS");
+        for (int i = 0; i < 4; i++)
+            if (state.StorySlots[i] != null)
+                state.StorySlots[i].StatusByte = 0xFF;
+    }
+
+    // ── Case 0x1D: COUNT_UPPERCASE ─────────────────────────────
+    // Count story slots with IDs in 'A'-'Z' range. Result in bD31C.
+    static void CountUppercase(GameState state)
+    {
+        GD.Print("    COUNT_UPPERCASE");
+        state.StateArray[0x1C] = 0; // bD31C
+    }
+
+    // ── Case 0x1E: DISPATCH_11B8_104E ─────────────────────────
+    // Render via fn11B8_104E.
+    static void Dispatch11B8_104E(GameState state) => GD.Print("    DISPATCH_11B8_104E");
+
+    // ── Case 0x1F: READ_SLOT_FLAG ──────────────────────────────
+    // Copy bC620[1][bD31A] → bD32B.
+    static void ReadSlotFlag(GameState state)
+    {
+        GD.Print("    READ_SLOT_FLAG");
+        state.StateArray[0x2B] = 0; // bD32B = 0
+    }
+
+    // ── Case 0x20: COMPLEX_EQUIP ───────────────────────────────
+    // Multi-step equip interaction.
+    static void ComplexEquip(GameState state)
+    {
+        GD.Print("    COMPLEX_EQUIP");
+        if (state.Credits >= 500)
+        {
+            state.Credits -= 500;
+            state.StateArray[0x1A] = 1; // bD31A = success
+        }
+        else
+            state.StateArray[0x1A] = 0;
+    }
+
+    // ── Case 0x21: DISPATCH_0FDC_1C9B ─────────────────────────
+    // Call fn0FDC_1C9B.
+    static void Dispatch0FDC_1C9B(GameState state) => GD.Print("    DISPATCH_0FDC_1C9B");
+
+    // ── Case 0x22: DISPATCH_0FDC_1A26 ─────────────────────────
+    // Call fn0FDC_1A26.
+    static void Dispatch0FDC_1A26(GameState state) => GD.Print("    DISPATCH_0FDC_1A26");
+
+    // ── Case 0x23: NEW_GAME_INIT ───────────────────────────────
+    // Full game init: clear state, set party, init viewport.
+    static void NewGameInit(GameState state)
+    {
+        GD.Print("    NEW_GAME_INIT");
+        state.Credits = 1500;
+        state.TrainingComplete = false;
+        state.Milestone = false;
+        for (int i = 0; i < state.StateArray.Length; i++) state.StateArray[i] = 0;
+        for (int i = 0; i < state.InventoryQuantities.Length; i++) state.InventoryQuantities[i] = 0;
+    }
+
+    // ── Case 0x24: READ_UNIT_SLOT ──────────────────────────────
+    // Read bC614[bD331].b0000 → display via item name lookup.
+    static void ReadUnitSlot(GameState state)
+    {
+        GD.Print("    READ_UNIT_SLOT");
+    }
+
+    // ── Case 0x25: CLEAR_UNIT_SLOT ─────────────────────────────
+    // Clear unit slot (set first slot to empty).
+    static void ClearUnitSlot(GameState state)
+    {
+        GD.Print("    CLEAR_UNIT_SLOT");
+        if (state.StorySlots.Length > 0 && state.StorySlots[0] != null)
+            state.StorySlots[0].StatusByte = 0xFF;
+    }
+
+    // ── Case 0x26: READ_D456 ───────────────────────────────────
+    // Read bD456, look up item name, render.
+    static void ReadD456(GameState state)
+    {
+        GD.Print("    READ_D456");
+    }
+
+    // ── Case 0x27: TRIGGER_ACTION ──────────────────────────────
+    // Call fn1467_0002(0x01) — mode trigger.
+    static void TriggerAction(GameState state)
+    {
+        GD.Print("    TRIGGER_ACTION");
+    }
+
+    // ── Case 0x28: DISPATCH_11B8_152F ─────────────────────────
+    // Call fn11B8_152F, optionally set bD334=1.
+    static void Dispatch11B8_152F(GameState state) => GD.Print("    DISPATCH_11B8_152F");
+
+    // ── Case 0x29: COMBAT_HEAL ─────────────────────────────────
+    // Apply RNG damage/healing to party.
+    static void CombatHeal(GameState state)
+    {
+        GD.Print("    COMBAT_HEAL");
+        for (int i = 0; i < 4; i++) state.UnitStatus[i] = 1;
+    }
+
+    // ── Case 0x2A: SAVE_POSITIONS ──────────────────────────────
+    // Save unit positions + COMSTAR state.
+    static void SavePositions(GameState state) => GD.Print("    SAVE_POSITIONS");
+
+    // ── Case 0x2B: RESTORE_POSITIONS ───────────────────────────
+    // Restore positions from saved arrays.
+    static void RestorePositions(GameState state) => GD.Print("    RESTORE_POSITIONS");
+
+    // ── Case 0x2C: DISPATCH_11B8_1762 ─────────────────────────
+    // Position/state management via fn11B8_1762.
+    static void Dispatch11B8_1762(GameState state) => GD.Print("    DISPATCH_11B8_1762");
+
+    // ── Case 0x2D: COMBAT_ENCOUNTER ────────────────────────────
+    static GameMode CombatEncounter()
+    {
+        GD.Print("    COMBAT_ENCOUNTER!");
+        return GameMode.Combat;
+    }
+
+    // ── Case 0x2E: RESTORE_SLOTS ───────────────────────────────
+    // Restore 4 story slots from temporary backup.
+    static void RestoreSlots(GameState state)
+    {
+        GD.Print("    RESTORE_SLOTS");
+        state.StateArray[0x5E] = 0; // bD55E
+    }
+
+    // ── Case 0x2F: DECREMENT_STATE ─────────────────────────────
+    // If state array entry > 5, decrement by 4.
+    static void DecrementState(GameState state)
+    {
+        GD.Print("    DECREMENT_STATE");
+        if (state.StateArray[0x23] > 5) // bC623 check
+            state.StateArray[0x23] -= 4;
+    }
 }

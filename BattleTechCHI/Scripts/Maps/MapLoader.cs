@@ -43,12 +43,56 @@ public static class MapLoader
         pos += 0x100;
 
         // Variabili fisse (0x20 + 0x20 + 0x20 + 0x20 + 0x10 + 0x08 = 0x98 byte)
-        var variable8 = bytes.AsSpan(pos, 0x20); pos += 0x20;
-        var variable9 = bytes.AsSpan(pos, 0x20); pos += 0x20;
-        var variable10 = bytes.AsSpan(pos, 0x20); pos += 0x20;
-        var variable11 = bytes.AsSpan(pos, 0x20); pos += 0x20;
-        var variable12 = bytes.AsSpan(pos, 0x10); pos += 0x10;
-        var variable13 = bytes.AsSpan(pos, 0x08); pos += 0x08;
+        var block0 = bytes.AsSpan(pos, 0x20); pos += 0x20;
+        var block1 = bytes.AsSpan(pos, 0x20); pos += 0x20;
+        var block2 = bytes.AsSpan(pos, 0x20); pos += 0x20;
+        var block3 = bytes.AsSpan(pos, 0x20); pos += 0x20;
+        var block4 = bytes.AsSpan(pos, 0x10); pos += 0x10;
+        var block5 = bytes.AsSpan(pos, 0x08); pos += 0x08;
+
+        // Parse NPC positions from blocks 0-1 (first 8 word-pairs, low byte masked)
+        int mapW = data.Width;
+        int mapH = data.Height;
+        int coordMaskX = mapW - 1;
+        int coordMaskY = mapH - 1;
+        int maxNpc = 8;
+
+        var npcPositions = new System.Collections.Generic.List<(int, int)>();
+        for (int i = 0; i < maxNpc; i++)
+        {
+            int x = block0[i * 2] & coordMaskX;
+            int y = block1[i * 2] & coordMaskY;
+            if (x != 0 || y != 0)
+                npcPositions.Add((x, y));
+            else
+                npcPositions.Add((0, 0));
+        }
+        data.NpcPositions = npcPositions.ToArray();
+
+        // Parse building positions from blocks 2-3
+        var bldPositions = new System.Collections.Generic.List<(int, int)>();
+        for (int i = 0; i < maxNpc; i++)
+        {
+            int x = block2[i * 2] & coordMaskX;
+            int y = block3[i * 2] & coordMaskY;
+            if (x != 0 || y != 0)
+                bldPositions.Add((x, y));
+            else
+                bldPositions.Add((0, 0));
+        }
+        data.BuildingPositions = bldPositions.ToArray();
+
+        // Parse NPC-to-building mapping from block 4 (first 8 bytes)
+        var npcToBld = new int[maxNpc];
+        for (int i = 0; i < maxNpc && i < block4.Length; i++)
+            npcToBld[i] = block4[i];
+        data.NpcToBuilding = npcToBld;
+
+        // Parse building-to-NPC mapping from block 4 (second 8 bytes)
+        var bldToNpc = new int[maxNpc];
+        for (int i = 0; i < maxNpc && (i + 8) < block4.Length; i++)
+            bldToNpc[i] = block4[i + 8];
+        data.BuildingToNpc = bldToNpc;
 
         // Tile data: tutto ciò che rimane
         int remaining = bytes.Length - pos;

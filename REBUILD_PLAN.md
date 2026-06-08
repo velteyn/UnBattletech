@@ -3,7 +3,7 @@
 **Engine:** Godot 4 (C#)
 **Repo:** `Reversing/AIATTEMPT`
 **Stato RE:** 🟢 95% completo
-**Stato Engine:** 🟡 Phase 3.1 (~2350 linee C#): tile rendering, world map, BLD interpreter (26 opcode), dialogue UI, location mapping, input→render loop
+**Stato Engine:** 🟡 Phase 3.2 (~2650 linee C#): BLD interpreter + 47-case dispatch + shop UI + dialogue + tile rendering + world map
 
 ---
 

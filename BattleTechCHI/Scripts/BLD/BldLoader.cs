@@ -26,9 +26,16 @@ public static class BldLoader
         script.FileType = raw[0];
         script.InteractionCount = raw[1];
         // signature 4 byte: ee c6 eb ea
-        // type code 2 byte + subtype 1 byte = 3 byte
         script.TypeCode = raw[6] << 8 | raw[7];
         script.SubType = raw[8];
+
+        // Interpreter base depends on content type:
+        //   shop/service (0xC0F5): 3 extra subtype bytes at 8-10, script at 11
+        //   dialogue/story (0xC0EC): script starts immediately at offset 8
+        if (script.TypeCode == 0xC0F5)
+            script.InterpreterBase = 11;
+        else
+            script.InterpreterBase = 8;
 
         // Decrypt bytes from offset 0xA0
         var decrypted = new byte[raw.Length];
@@ -40,13 +47,15 @@ public static class BldLoader
     }
 
     /// <summary>
-    /// Decripta i byte del BLD in-place: ((byte + 41) & 0xFF) ^ 233
+    /// Decripta i byte del BLD in-place.
+    /// Original encryption: ((plain + 41) & 0xFF) ^ 233
+    /// Inverse (decryption): ((cipher ^ 233) - 41) & 0xFF
     /// </summary>
     public static void DecryptInPlace(byte[] data)
     {
         for (int i = 0xA0; i < data.Length; i++)
         {
-            data[i] = (byte)(((data[i] + 41) & 0xFF) ^ 233);
+            data[i] = (byte)((data[i] ^ 233) - 41);
         }
     }
 

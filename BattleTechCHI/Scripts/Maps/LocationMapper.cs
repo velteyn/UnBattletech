@@ -79,4 +79,18 @@ public static class LocationMapper
         }
         return null;
     }
+
+    /// <summary>
+    /// Restituisce la prima posizione world map associata a un mapId locale.
+    /// Usata per calcolare il punto di uscita dalla local map verso la world map.
+    /// </summary>
+    public static (int tileX, int tileY)? GetWorldTileForMap(int mapId)
+    {
+        for (int i = 0; i < Locations.Length; i++)
+        {
+            if (Locations[i].mapId == mapId)
+                return (Locations[i].tileX, Locations[i].tileY);
+        }
+        return null;
+    }
 }

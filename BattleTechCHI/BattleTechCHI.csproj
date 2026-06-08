@@ -4,9 +4,13 @@
     <RootNamespace>BattleTechCHI</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Runner/**" />
     <Compile Remove="Tests/**" />
+    <None Include="Runner/**" />
     <None Include="Tests/**" />
   </ItemGroup>
 </Project>
