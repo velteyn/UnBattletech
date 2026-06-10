@@ -1,0 +1,2319 @@
+========================================================================
+  TRAINING.BLD  (7282 bytes) — dialogue/story
+  Training Center — Main story hub
+========================================================================
+
+Greetings
+  " cadet Youngblood"
+Ou look like youre ready to begin your MechWarrior training
+Idnt do so well on your last mission
+  " did you"
+  "  Well"
+  " we are giving you another chance to complete it"
+Congratulations on successfully completing your last training mission
+Are you ready to accept your 
+First
+Second
+Third
+Fourth
+Fifth
+Sixth
+Seventh
+Eighth
+ training mission
+Well
+  " you"ll never graduate if you dont go on the training missions
+He objective of your first training mission is to familiarize you with a Mech and the training grounds
+  You have to choose a Mech and pilot it to the far southeast corner of the training grounds and return
+  You will be judged on a pass
+Fail system determined by the time you take to complete your mission
+  Go on as straight a path as possible
+  " but walking through forests and lakes will slow you down"
+  Choose the fastest Mech for the best chance of succeeding
+  Good luck
+  *our second training mission is only slightly more complex
+  Somewhere on the field is a piece of rubble
+  Choose a Mech
+  " go out there"
+  " find the rubble"
+  " pick it up and bring it back"
+  There is no time limit on this mission
+He commandant of the training center stops you before you can sign up for the mission
+  He tells you that you look pretty tired
+  " and should get some rest before trying the next mission"
+By now youre pretty good at walking around
+ Its obvious you have increased your piloting skill
+ Were going to see how you handle using your weapons
+  Weve put a worthless Locust shell on the field for you to go pummel
+  It cant move or fire
+  " so you"re perfectly safe
+  Choose your Mech and go plaster it
+  *Its time to see how you respond to a reactionary opponent
+  Weve rounded up a group of old labor robots and outfitted them with rudimentary intelligence and a variety of weapons
+  Your mission is to go out there and eliminate them without getting your Mech shot out from under you
+Welcome to the big time
+ Combat against another Mech
+  You will be engaging a remote
+  (controlled Locust in a one)
+  (on)
+  (one situation)
+  Use your training and skills to best your opponent
+  You will pass this test if you destroy the enemy while your Mech is still standing
+By the way
+  " we"ve disabled your combat computer for this mission
+  If youre going to win
+  " you"ll have to do it yourself
+  Good luck
+  *Now were going to have your toughest test yet you will have to face more Mechs than you have previously
+  Get ready for the fight of your life
+  *Select a Mech to useLocustWaspChameleonou took too long
+  " Cadet"
+  You will have to refine your Mech handling skills before we can approve your performance
+  Remember
+  " your "Mech moves slower through forest and water
+  " and it really slows down in heavy forest"
+  Course
+  " you"re a harder target to hit then
+  " but this test is only measuring speed"
+  Try again later when you work up the nerve
+Ou should have chosen a Mech with hands
+ At least this will teach you better resource management
+  Try again later
+What kind of sissy would turn tail and run from a situation like that
+  Mr
+ Youngblood
+  " we are going to have to reconsider your scholarship"
+ I think it would be best if you did some soul
+  (searching as to whether you want to become a MechWarrior and continue the glory of the Youngblood name)
+Overall
+  " I"d say that was a miserable performance
+  They were woefully outclassed
+  " and you still found a way to lose"
+  If I were you
+  " I"d lay low until this Mech is repaired and you can try again
+  Youre likely to be the butt of the jokes for a while
+An excellent
+  " though unsuccessful"
+  " attempt at "Mech combat
+  Experience will provide you with the edge you need to succeed next time
+A true MechWarrior
+  "especially a Youngblood"
+  " would have won that battle"
+  We are going to repair these Mechs and give you another chance later
+Congratulations
+  " Youngblood"
+  You did well on that test
+  Considering you chose to use a 
+We will ready the course for your next training mission
+  Report back here when you are ready
+Well done
+  " cadet"
+  You wisely chose a Mech with hands
+  " so you could pick up the rubble"
+  Report back here for your next mission later
+Not much left out there
+  " is there"
+  "  Of course"
+  "if you had chosen a "Mech with some more firepower
+  " it would have taken substantially less time"
+  " wouldn"t it  Well
+  " you"re here to learn
+  " after all"
+The incredible firepower of the Chameleon let you demolish the target in no time
+  If you paid attention to your heat scale
+  " you should have noticed how high it went"
+  Go get cleaned up and well let you try your hand at some real combat next
+Very good
+  " Mr"
+ Youngblood
+  Although shooting up a bunch of androids may not seem like much
+  " you kept your head in a combat situation"
+  The rest of your training missions wont be so easy
+  " however"
+Congratulations
+  *  You have defeated a Mech in one
+  (on)
+  (one combat and taken your first step towards earning the title )MechWarrior
+  Now go rest up and celebrate while we repair the Mechs
+  Report back here later and well take your ego down a couple of notches in your next test
+Rick Atlas
+  " one of the other cadets here at the training school "
+  "though much older than you"
+  " comes over to congratulate you on your victory"
+  He tells you that hes going over to the lounge to relax
+  " and asks if you wouldn"t stop by later to join him
+  You are a bit surprised
+  " since he has never talked to you before"
+  " but tell him that you"ll see him there
+  (Congratulations)
+  *  With the odds stacked against you
+  " you still managed to win"
+  *  You are well on your way to graduation and to the title of MechWarrior
+Kuritan Mechs have made a lightning raid on Pacifica
+  *  They have destroyed the citadel
+  
+One of the Kuritan Jenner Mechs tries to crush you in your Mechs cockpit
+  " but you barely escape before the deadly blow can cut you down"
+  You manage to hide in the trees
+Some of the remnant of the Lyran Guard engage the Mechs
+  Your comrades are wiped out
+  " but in the distraction you manage to escape"
+Our friends from the citadel 
+The ones who are still alive
+ are scattering
+  " trying to avoid their executioners"
+  You overhear scraps of shouted conversation
+Who are they
+  *  What do they want
+  *Kuritan invaders
+  *  Theyve destroyed our army
+  *Where was Jeremiah
+  *I dont know
+  *  Nobodys seen him
+  Hes probably dead
+  *ou stand numb for a moment
+  " contemplating what you"ve just overheard
+  An explosion behind you jars you back to reality
+  " and you make up your mind as to your course of action"
+Since the citadel is overrun
+  " there is no reason for you to hang around here"
+  You realize that your only chance is to try to make it to the Starport
+  " meet up with anyone you may know"
+  " try to find out if your father is still alive"
+  " and get a ride off this planet before it"s too late
+  *We havent prepared the training course for your next mission yet
+  Come back later and well be ready for you
+
+
+========================================================================
+  BARRACKS.BLD  (2990 bytes) — dialogue/story
+  Cadet barracks
+========================================================================
+
+ou are in the cadet barracks
+  This is the place that you call 
+Home
+O you want to
+Leave barracks
+Catch some alk to othersou dont really feel like sleeping
+  " since you haven"t even gone on a training mission yet
+  You decide to postpone your nap until you have earned it
+He anxiety you feel from the memory of the other cadets laughing at you for failing the last training mission keeps you from falling asleep
+  You toss and turn
+  " and finally resolve to neither eat or sleep until you have redeemed yourself in front of your peers"
+Ou drift off in a contented sleep
+Ou awaken to the sound of sirens blaring warnings to all the cadets
+  House Marik agents have infiltrated the citadel and are holding Katrina hostage
+  *  They are demanding immediate Steiner evacuation of the planet
+  *All around you your friends and fellow cadets are gathering their eouipment and rushing for the Starport
+  You grab your clothes and dress ouickly
+  " but you"re not going to turn tail and run
+  No
+  " the only thing you"re packing is a Vibroblade
+  " and not in a suitcase"
+  *Katrina has provided a good living for your family
+  " and you"re not going to leave her to those Marik terrorists
+  *  You slip out the window and make your way through the trees to the citadel
+Ou peek over the low wall
+  " right into the eyes of a Marik watchman"
+  *  He is as surprised as you are
+  " but you"re ouicker
+  " and he"s now headless
+  You drag the body behind a building and swap uniforms
+  " but you loathe even touching this infidel"
+Ou walk through the front entrance of the citadel
+  " grunting at the sentries posted there"
+  A Marik officer stops you in the main hall
+  " ouestioning you about the blood that is covering your collar"
+  You explain that the blood is 
+JUST LIKE YOUR FILTHY MUD
+  * you scream as you plunge the vibroblade into his gut
+  Footsteps are scrambling from around the corner before you
+  " and you realize your cover is blown"
+Ou duck into a closet
+  " and with perfectly"
+  (executed gymnastic flair)
+  " you leap to grab a light fixture"
+  " slice a hole in the roof with the white"
+  (hot vibroblade)
+  " and escape into the ventilation shafts in the ceiling"
+Rawing upon your photographic memory
+  " you visualize the floorplan to the citadel"
+  You stealthily make your way to Katrinas office
+  " where they are most certainly holding her"
+  You peer through the vent
+  " and see Katrina tied up in a chair"
+  " slap marks covering her left cheek"
+  You have arrived just in time to see the grungy leader of the Marik invaders rear back his hand and
+He stops and grabs his ears
+  " as you do also"
+  " because of the loud siren sounding"
+  Then a voice comes through
+Jason Youngblood
+  " report to the MechWarrior Training Center"
+  Jason Youngblood
+Ou sit bolt upright in bed and realize it was all a dream
+  Rubbing your eyes
+  " you climb out of bed and get dressed again"
+Ouve had a good nights sleep
+  " so you"re not tired anymore
+
+
+========================================================================
+  BARRACK2.BLD  (362 bytes) — dialogue/story
+  Destroyed barracks scene
+========================================================================
+
+ou stand in the ruins of your old ouarters at the now
+  (destroyed citadel)
+  Most of what you owned has been ruined
+  " but the holodisk player remains miraculously untouched"
+  
+However
+  " since all your holodisks were destroyed in the raid"
+  " you have nothing to watch so you turn to leave"
+Rex waits outside so you can view the disk in privacy
+
+
+========================================================================
+  LOUNGE.BLD  (1827 bytes) — shop/service
+  Lounge — Rick Atlas meeting
+========================================================================
+
+ou have entered a small lounge
+  All around you people are engaged in conversation
+  " dining"
+  " and listening to the awful entertainers"
+Will you
+Alk to others
+Leave
+Rick invites you to sit at his table
+  The two of you are engaged in light
+  " friendly conversation when one of the senior Techs stumbles by"
+  He is clearly inebriated and is being none too friendly
+He leans over the table
+  " spilling "
+  "or deliberately pouring"
+  " some of his noxious beverage on you"
+  " then breaks into laughter"
+  You ouickly stand up as if to challenge him
+  " which makes him laugh even harder"
+  
+Rick grabs your arm and hauls you back into your seat
+  He then interposes himself between you two and urges the burly Tech to go on home
+He Tech starts to resist
+  " griping loudly as to why some baby"
+  (faced kid with a famous daddy should be allowed to shoot up some valuable hardware)
+  " which HE then has to fix up"
+  " just so this kid can shoot it up again"
+  Stupid kid probably hasnt ever been to the Starport even
+Rick succeeds in ushering the Tech out of the lounge
+  " and returns to the table"
+  You sit somewhat dejectedly
+  When Rick tells you to not take the drunks comments personally
+  " you respond that it"s hard to keep high self esteem after a barrage like that
+Hen Rick asks you if its true that youve never been to the Starport
+  When you grumble out a yes
+  " he reaches into his vest pocket and pulls out a small electronic device"
+  " which he gives to you"
+  When you ask what it is
+  " he tells you that you"ll know when you need to
+  Then he leaves
+He lounge is full of people conversing
+  " laughing"
+  " and having a good time"
+  When you enter
+  " however"
+  " they stop and stare at you"
+  Some of the stares contain disgust
+  " others have pure hatred in them"
+  You think it prudent to leave
+
+
+========================================================================
+  CITADEL.BLD  (4330 bytes) — dialogue/story
+  Citadel — Attack sequence
+========================================================================
+
+ou are standing in the House Steiner citadel
+  " the center of Lyran Commonwealth operations on Pacifica"
+Will you
+Reouest to see Katrina
+Visit Hall of Legends
+Enroll in combat class
+Alk to others
+Leave the citadel
+He sentry recognizes you as the son of the Captain of security forces
+  " and informs Katrina that you wish to speak to her"
+  She agrees
+  " and you are escorted into her plush offices"
+Hellooo
+  " Jason"
+  How are you
+  How is your training coming
+  I see that you havet completed a mission at the training center yet
+  You know
+  " you really should"
+  Thats what youre here for
+  " after all"
+ been to the training center
+  Your last mission was 
+A bit of a disaster
+Ouite successful
+  " wasn"t itWell
+  " must be off"
+  I have preparations to make for the wedding
+  " you know"he sentry stops you at the door
+  He informs you that she is extremely busy and cant be constantly interrupted
+  He suggests that your time would be better spent trying to graduate from the training school
+Katrina congratulates you on your efforts to graduate
+  " and hopes that you will be as capable a MechWarrior as your father"
+  She cautions you not to neglect the other areas of your training
+  " such as the combat classes offered here"
+Before you can get a word in edgewise
+  " she is bombarded by a flurry of interruptions from her officers"
+  " and is swept away in a blizzard of paperwork"
+He secretary informs you that you cannot see Katrina now
+  " as she is very busy"
+  The secretary makes an appointment for you to see Katrina tomorrow afternoon
+Katrina is unavailable at the moment
+  Perhaps you should try again later
+Our first exhibit is a portrait of the Archon herself
+  " Katrina Steiner"
+  " Duchess of Tharkad"
+Katrina is here on Pacifica for a short while
+  " on her way to the Federated Suns for the marriage of her daughter Melissa"
+Here we have a picture of one of the many BattleMechs that help to protect our Commonwealth from the Liao
+  " Marik and Kurita invaders"
+  This example is a Locust
+  " a very common "Mech
+  It is armed with a medium laser
+  " and machine guns instead of hands"
+His is an extremely rare Mech
+  " a Phoenix Hawk LAM"
+  This Mech can convert from a normal Mech to an aerospace fighter
+  " or a hybrid mode pictured here"
+  There are very few MechWarriors who can pilot these complex machines
+  Perhaps the most skilled and famous is our own Security chief
+  " Jeremiah Youngblood"
+His is Edward Tellhim
+  " an extremely brilliant scientist responsible for much of the recovered technology we have today"
+  He is also somewhat eccentric
+  " and retired somewhere north on Pacifica to be away from people"
+  Some rumors say that he is still alive
+  " but he hasn"t been seen in years
+Epicted here is one of the Defiance Industries BattleMech factories on Hesperus II
+  This is one example of the Commonwealths superiority in manufacturing and commerce among the Successor States
+Our last exhibit shows the Battle of Mallorys World
+  " years ago"
+  Here a lance of the Steiner mercenary unit Kell Hounds fought off a determined Kurita invasion
+  The Hounds stayed hidden in the trees
+  " where they were difficult to hit"
+  " while Jeremiah Youngblood used his LAM"s superior maneuverability to drive the Dracos off
+Welcome to the Combat Skills Training Center
+  We offer classes to train you in the proper use of a bow or bladed weapon
+  " training in the use of handguns and pistols"
+  " and targeting ranges to improve your marksmanship with a rifle or submachine gun"
+  Beginning courses are very inexpensive
+  " but the more intensive courses have substantially higher tuitions"
+Which class would you care to enroll in
+Course Name       Tuition
+Bows and Blades
+Pistols and Handguns
+Rifles and SMGs
+Withdraw from school
+He next courses wont be offered until tomorrow
+  Come back then
+After several grueling hours in the classroom at the hands of a skilled instructor
+  " you have mustered a passing grade"
+  Better yet
+  " you feel more confident with the weapons"
+  " and are more accurate and effective with them"
+Ou are informed that the school has already transferred the tuition funds from your ComStar account
+  " so you have paid in full"
+
+
+========================================================================
+  COMSTAR.BLD  (2267 bytes) — dialogue/story
+  ComStar — Banking/stock market
+========================================================================
+
+ou are standing in the entry hall of an official ComStar hyperpulse generator station
+  All around you
+  " ComStar technicians attend to interplanetary communication eouipment"
+  " while several Adepts"
+  " shrouded in robes and mystery"
+  " direct their efforts"
+  They ignore your attempts at communication
+  " so you settle down to one of the small public"
+  (access computer terminals)
+  
+Will you
+Inspect your accounts
+Alk to others
+Leave
+He terminals screen clears
+  At its insistence
+  " you place your eye over the retinal scanner to verify that you are"
+  " indeed"
+  " Jason Youngblood"
+  After the terminal beeps confirmation
+  " you blink a few times to redilate your pupil as your balance sheet prints out on the screen"
+  (bill account)
+  (Current investments)
+  (o you want to)
+  (Change investments)
+  (Review prospectus)
+  (Leave ComStar)
+  (o you want to)
+  (Buy stock)
+  (Sell stock)
+  (Cancel)
+  (Get information on)
+  (efiance Industries)
+  (Nashsan Diversified)
+  (Baker Pharmaceuticals)
+  (efiance Industries of Hesperus )
+  (CWSE symbol)
+  ( DefHes)
+  ( is the largest BattleMech manufacturing company in the Lyran Commonwealth)
+  The company manufactures seven Mech types
+  " including the huge "eus and Atlas models
+Currently undergoing an ambitious expansion program
+  " DefHes has an attractive balance sheet"
+  " featuring an assets"
+  "liabilities ratio of "
+  The stock has shown consistent growth and exceptional stability
+Nashsan Diversified 
+CWSE symbol
+ NasDiv
+ has a huge 
+ percent share of the Commonwealths computer market
+  They are involved in many fields
+  " from foods to shipping to architecture"
+  
+Active in absorbing other companies
+  " Nashsan has a very good profit potential"
+  However
+  " the Lyran government has found occasion to ouestion Nashsan"s ethics and has levied fines against the company
+  " imparting a certain risk to the investor"
+Baker Pharmaceuticals 
+CWSE symbol
+ BakPhar
+ has faced serious financial and personnel problems recently
+  Now that Nashsan is circling about them like a shark
+  " Baker is embarking on some new ventures that will either reap huge profits"
+  " or will certainly bankrupt them"
+  Investors with 
+Spare
+ cash may want to take a risk on Baker
+  " but less ambitious investors should look elsewhere"
+
+
+========================================================================
+  WEAPON.BLD  (5850 bytes) — shop/service
+  Weapon Shop
+========================================================================
+
+A mountain of flesh
+  " covered with tattoos and hair"
+  " grunts to you as you enter the dimly lit shop"
+  He is polishing a knife to a blinding shine
+  " while keeping one eye on you"
+Will you
+Browse
+Alk to others
+Leave
+He man behind the counter barks out an interrogative at you
+  " the gist of which is whether you are interested in"
+  "he shopkeeper looks slightly depressed"
+  " as if maybe he won"t get to eat tonight because of your stinginess
+  " but he puts the suit away and shows you his other stock"
+Focus attention to
+Leaving
+Bows and blades
+Slug
+  (throwers)
+  (Anti)Mech weaponry
+  (bills)
+  (he proprieter shuffles off to a dirty display case)
+  " full of knives and blades"
+  To his right you can see a selection of archery eouipment
+  Trying to sound a lot tougher than you feel
+  " you grumble out a reouest to see"
+  "Other weaponry"
+  "Knives"
+  "Swords"
+  "VibroBlades"
+  "Shortbows"
+  "Longbows"
+  "Crossbows"
+  "In monosyllabic grunts"
+  " the man"
+  (mountain explains that a knife is more likely to kill someone than a fist)
+  However
+  " they aren"t much better than a club
+  Rusty knives do more damage than clean ones
+  " because of the tetanus value"
+  " and these knives look capable of doing a lot of damage"
+  Theyre almost free
+  " though"
+  " at only "
+  " C"
+  (bills each)
+He shopkeeper explains that a sword is much better than a knife
+  " in that a sword can lop somebody"s arm off in one stroke
+  " whereas the knife takes ouite a bit of sawing"
+  His eyes twinkle at the thought
+  The price tag says swords sell for 
+ C
+  (bills)
+VibroBlades are very common weapons
+  " being basically a sword that vibrates at an extremely high rate of speed"
+  " allowing it to cut through most any armor or flesh easier than a standard blade could"
+  Hes asking  C
+  (bills each)
+Now here
+  " he says"
+  " you"re getting into ranged weapons
+  " which means you can poke the other guy from a distance instead of having to run up to him and club him"
+  These little arrows dont do much damage
+  " but if the other guy has a knife or something"
+  " you can really limber him up by the time he gets to you"
+  For 
+ C
+  (bills)
+  " it"s yours
+With this bow
+  " you"re gonna get a better launch on the arrow because of the tighter pull of the thing
+  Still dont do much damage
+  " but it hits harder than the little bow and it can shoot a little further"
+  " too"
+  
+ C
+  (bills)
+Now youre talkin about a bow
+  *  This thing uses these stubby little ouarrels
+  " which are a lot heavier than the other bow"s arrows
+  " and so they poke harder"
+  Youre still no match for a good gun
+  " but you"re almost as good as a little pistol
+  This babyll run you  C
+  (bills)
+He proprieter ushers you to another corner of the store
+  " where there is a rack of pistols"
+  " guns and rifles"
+  You look over the merchandise
+  " occasionally frowning or raising an eyebrow"
+  " and then point your finger at"
+  "Other weaponry"
+  "Pistols"
+  "Rifles"
+  "Submachine guns"
+  "he proprieter takes one of the pistols out of the display case and points it at you"
+  " much to your dismay"
+  He then turns the handle towards you and lets you heft it
+  He explains that there isnt much better than a good bullet
+  " although this is the cheapest way to get it at only "
+  " C"
+  (bills)
+Ou are ushered to a wooden rack against the wall holding a variety of long rifles
+  The proprieter explains that a good rifle has a much longer range than a pistol
+  " and that the bullet hits harder also"
+  He tells you the price
+  " which is "
+  " C"
+  (bills)
+His is my favorite weapon
+  " exclaims the shopkeeper"
+  You notice a detail you hadnt before
+  " that he is wearing a bandolier of machinegun ammunition across his chest"
+  You decide not to antagonize the man any more than necessary
+He goes on to explain that the machine gun is like a rifle
+  " only that it will hit the target a lot of times instead of only once"
+  The ultimate anti
+  (personnel weapon at only )
+  ( C)
+  (bills)
+He proprieter grins widely as he hoists a missile launcher on his shoulder and points the thing right down your nose
+  You try your best not to be intimidated as you ask to see
+Other weaponry
+SRM launchers
+Infernos
+He proprieter hands you the missile launcher and explains that it is one of the few weapons that can actually penetrate Mech armor
+  Though it only does a couple of points of damage
+  " those might come in very handy at times"
+  He grins broadly when he tells you what these missiles will do to a man
+Ou stammer out a price inouiry
+  " and he mutters some age"
+  (old axiom about )
+  (If you have to ask)
+  " then you can"t afford it
+ C
+  (bills)
+  (He hands you a missile launcher)
+  " but he pops out the ammo and slips in an evil"
+  (looking cylinder)
+  He explains that this ammo is a gelatinous goo that adheres to a Mechs armor and burns at a ferocious temperature
+  It raises a Mechs heat by  notches
+  " which may cause a shutdown"
+  " with no damage to the target"
+  When you ask what it would do to an infantryman
+  " even he shudders"
+  He tells you that it costs 
+ C
+  (bills)
+  " avoiding the ouestion"
+Will you buy it
+He shopkeeper checks your C
+  (bill account and finds out that you can)t afford this weapon
+  He tells you that all you can afford is 
+He shopkeeper grumbles that you should either cash in some of your investments
+  " earn some more money"
+  " or look at less"
+  (expensive weapons)
+He shopkeeper hands you the weapon
+  " and gives you some brief instructions on how to use it properly "
+  "don"t point it at nobody unless youre gonna kill em
+  " etc"
+Hen he tries to imitate a respectable business owner by wishing you a good day and hoping that you will visit him for all your weaponry needs
+As you open the door
+  " the weapons shop owner stands up"
+  " points a hairy paw at you"
+  " and growls for you to take your traitorous self and get out of his shop"
+  It seems like good advice
+  " and you take it"
+
+
+========================================================================
+  WEAPON2.BLD  (1738 bytes) — shop/service
+  Weapon Shop (post-attack variant)
+========================================================================
+
+
+  "he hairy owner of the shop looks stiff and nervous"
+  Youve never seen him that way before
+  He asks you if theres anything you need
+  " but his eyes keep flicking to the side"
+Will you
+Browse
+Alk to others
+Leave
+He weapons shop is closed
+  It seems that it was robbed and the owner was shot
+  No word on when it will be open again
+It seems that everyone else who was in the shop has left
+  You are alone with the shopkeeper
+He man
+  " being artificially pleasant"
+  " with an emphasis on artificial"
+  " reaches greedily into the display case and grabs a weapon"
+  
+From somewhere behind him
+  " shots ring out and he slumps over the counter"
+  Do you want to get out of here
+Several robbers emerge from the back room
+  " where they had been holding a gun to the storeowner"
+  When he reached for a weapon
+  " they shot him and now are shooting at you"
+  
+Ou return the fire and manage to cut the robbers down
+  " but not without taking a few bullet hits"
+  
+Hen you check on the storeowner
+  He has been hit
+  " but it doesn"t look fatal
+  You call for medics to come and save him
+  While you are waiting
+  " you try to help him to feel more comfortable"
+  He thanks you for saving his life
+  " and offers as compensation "
+  "a laser rifle"
+Some laser weapons
+  Then he passes out
+  " and the medics come and take him away"
+  They assure you that he will be all right
+  You turn out the lights and lock up the shop for him
+  " and leave"
+Ou turn and dive for the door
+  The robbers
+  " who had been holding a gun on the shopowner and were forced to use it"
+  " fire several rounds at you as you escape"
+  None of them hit you
+  " however"
+  " and you make it outside to safety"
+
+
+========================================================================
+  ARMOR.BLD  (3388 bytes) — shop/service
+  Armor Shop
+========================================================================
+
+he proprieter welcomes you to his armor shop
+  " waving his arms grandly in an attempt to encompass the whole of his store"s stock and focus it all into your attention
+Will you
+Browse
+Repair armor
+Alk to others
+Leave
+Upon showing interest in his merchandise
+  " the shopowner rubs his hands together in glee and begins to extol the virtues of his merchandise"
+He shopkeeper looks slightly depressed
+  " as if maybe he won"t get to eat tonight because of your stinginess
+  " but he puts the suit away and shows you his other stock"
+Focus attention to
+Leaving
+Flak vest
+Flak suit
+Light env
+ suit
+Heavy env
+ suit
+  (bills)
+  (Ablative armor)
+  (Excellent craftmanship marks this triple)
+  (mesh)
+  " cloth and metal fiber suit of armor"
+  Its designed to protect against slugs and arrows
+  " and can even protect modestly against laser weapons"
+  *  Lightweight
+  " it won"t hinder your mobility
+  " and it has a damage"
+  (absorptive rating of )
+Price
+  
+ C
+  (bills)
+  (Now here)s ouality for you  this fine full
+  (body suit is made of the same material as our excellent flak vest)
+  " but is extended to provide full"
+  (body coverage)
+  Although you wont be nearly as agile
+  " the suit"s extra bulk boosts its damage
+  (absorptive rating to )
+Price
+  
+ C
+  (bills)
+  (Here)s a product whose success always amazes me
+  On an oxygen
+  (starved planet)
+  " these sell like hotcakes but I"d never have guessed they would sell so well on a habitable world like Pacifica
+  I guess it must be the damage
+  (absorptive rating of )
+  These suits limit your mobility
+  " but they"re cheaper to repair than flak suits
+Price
+  
+ C
+  (bills)
+  (I sell a lot of these to warriors such as yourself)
+  Offworld
+  " they are excellent protection against the environment"
+  " but here"
+  " I think they are used mainly because they have higher damage absorption than even a flak suit"
+  " at "
+  " points"
+  *  They are inexpensive to repair
+  " but are restrictive to your mobility"
+  
+Price
+  " C"
+  (bills)
+  (on)t tell anybody where you saw this
+  Theyre black
+  (market items only)
+  ablative suits made of the same material they use to shield Mechs when they are making assault landings
+  These suits will completely stop laser beams 
+But theyre worthless against other weapons
+  They dont hinder your movement
+  " but they are horribly expensive to repair"
+  
+Price
+ C
+  (bills)
+  (Will you buy this armor)
+  (he shopkeeper consults his banking terminal and discovers that you)re not ouite as well
+  (heeled as you led him to believe)
+  " seeing as your account balance is only "
+  "he shopkeeper suggests that you either cash in some of your investments"
+  " earn some more money"
+  " or look at less"
+  (expensive armor)
+Normally
+  " the shopkeeper here seems happy for you to be shopping in his store"
+  Today
+  " he seems very jittery"
+  " and every time you ask to see something"
+  " he curtly says that he is out of stock on that item"
+  You get the feeling you are not wanted
+  " and leave the store"
+He shopkeeper
+  " trying not to offend you"
+  " carefully points out that you are not currently wearing any armor"
+Who shall have his armor repaired
+He shopkeeper is delighted that you have selected his store to make your purchase
+  He guarantees the ouality of material and workmanship
+  " gives you your merchandise"
+  " thanks you and hopes for your future business"
+
+
+========================================================================
+  CLOTHES.BLD  (915 bytes) — shop/service
+  Clothes Shop
+========================================================================
+
+ou have entered a clothing store
+  " where all types of civilian clothes are for sale"
+  The proprieter eyes you anxiously
+  Obviously your Lyran Special Forces uniform is making him nervous
+  " because there could be a shootout here if any Draconian soldiers were to see you here"
+Will you
+Buy clothes 
+  (Cbills)
+  (Leave)
+  (bills)
+  (he proprieter informs you that you can)t ouite afford these clothes
+  He suggests that you return when you are more affluent
+None of the other fashions in the store really catch your eye
+  " so you leave"
+He shopkeeper closes the doors and flips the CLOSED sign right before you walk in
+  When you leave
+  " he watches you for a few steps and then turns the sign back to OPEN"
+Ou head for the dressing room and ouickly change into your new set of clothes
+  You feel relief
+  " knowing that you don"t stand out in the crowd anymore
+
+
+========================================================================
+  HOSPITAL.BLD  (4581 bytes) — shop/service
+  Hospital — Medical services
+========================================================================
+
+ou duck under a low
+  (hanging beam)
+  " and enter into what can only loosely be described as a hospital"
+  People are bleeding and coughing all around you
+  " as you step carefully around them and approach the front desk"
+Polished steel beams support the massive building you have just entered
+  Things sparkle in cleanliness
+  You look around in awe at the splendor of this place
+  " and bump into a "
+  (foot statue of two snakes intertwined on a pole)
+  " the universal symbol of healers"
+  (bills)
+  (Will you)
+  (Get healed)
+  ( C)
+  (bills)
+  (Attend medical seminar)
+  (Search medical records)
+  (alk to others)
+  (Leave the hospital)
+  (Buy MedKit)
+  (Leave the hospital)
+  (Buy Field Surgery Kit)
+  (Leave the hospital)
+  (Nobody is wounded)
+  (bills)
+  (he hospital charges a flat fee of )
+  ( C)
+  (bills for the use of its facilities)
+Our account does not have enough in it to pay for the supplies you would use
+  You will have to get more money before you can heal uphe doctors all look at you scornfully
+  " and it is obvious none of them will help you"
+  You will have to rely on your own skills to heal yourself
+O you want to hire a medical professional from the hospital
+Select the caliber of doctor you want to hire
+Rainee        
+ C
+  (bills)
+  (Intern        )
+  ( C)
+  (bills)
+  (Physician     )
+  ( C)
+  (bills)
+  (Hack surgeon  )
+  ( C)
+  (bills)
+  (Full surgeon  )
+  ( C)
+  (bills)
+  (Specialist    )
+  ( C)
+  (bills)
+  (Neurosurgeon  )
+  ( C)
+  (bills)
+  (Cancel)
+  (ou approach the front desk and ask the nurse there to scan their medical records)
+  " to see if they have a patient by the name of Jeremiah Youngblood"
+  
+He nurse dutifully scans the patient roster and replies in a nasally voice that there is nobody registered here by that name
+  You thank her
+  " and can"t help but feel a bit more depressed
+A doctor
+  " watching from the side"
+  " comes over and interrupts the nurse who is attempting to assist you in the search"
+He flashes a warm smile at Rex and they shake hands
+ He ouestions why your group is here
+  " and Rex explains about the mission and who you are"
+  The doctor looks at you appraisingly
+  " then whispers something to Rex and they both laugh"
+  When you impatiently inouire as to just exactly what is going on
+  " the doctor reaches into his pocket and pulls out a holocard"
+Congratulations
+  *  You have found one of the Crescent Hawk agents
+  *  
+  *ou scan the bulletin board
+  " and notice that the hospital is offering seminars and hands"
+  (on experience to teach you more about first aid and surgery)
+  The admission fee is an astronomical 
+ C
+  (bills)
+  " but the  knowledge to be gained could be invaluable"
+O you want to attend
+He registrar stops you at the door and takes your name tag from you and rips it up
+  She tells you that your ComStar balance is 
+She informs you that doctors expect to be paid for the very hard work they do
+  " and for you not to return until you can afford to pay your own way"
+  "ou watch a fascinating display of technology"
+  " from simple skin grafting to complex myomer implants"
+  There is much more information than you can digest
+  Someone of a higher medical background might get more out of this
+  " but you have certainly learned as much as you can"
+Who wants to attend the seminar
+Ou already know all that you can learn from a seminar
+  You would need to attend a dedicated medical college in order to learn any more than you already know
+  (bills)
+  (he hospital sells medical supply kits)
+  " called MedKits"
+  " for "
+  " C"
+  (bills each)
+  They contain bandages
+  " splints"
+  " gauze"
+  " antiseptic"
+  " and other first aid supplies"
+  Only someone trained in first aid can effectively use a MedKit
+Will you buy one
+Ou take one and examine the contents
+  Now
+  " you will be able to heal your people after a combat much more efficiently"
+  (bills)
+  (he hospital sells Field Surgery kits for )
+  ( C)
+  (bills each)
+  They contain two laser scalpels and all the support eouipment necessary to provide comprehensive medical care on the battlefield
+  Only someone very skilled in medicine can use it effectively
+Will you buy one
+  *ou dont have enough C
+  (bills in your account to afford this purchase)
+Ou hand the kit to your doctor
+  " who breathes a sigh of relief"
+  " knowing the job of patching the group up will be easier and more effective now"
+Ou already have one of those
+
+
+========================================================================
+  GARAGE.BLD  (1686 bytes) — shop/service
+  Garage — Mech parking
+========================================================================
+
+ou pass through the parking garage and out the front door
+  " exiting the Starport"
+He parking garage manager saunters over to you and hands you the bill
+  You cough as you read the figures on the paper
+  You try to haggle
+  " but he stands firm"
+  " after all"
+  " he does have your property as collateral"
+Will you pay the fee of 
+ C
+  (bills to get your )Mechs out of the garagehe manager laughs and says
+  "ou"ll be back
+  *he manager tells you that your C
+  (bill account only has )
+  (He won)t release your Mechs to you until you have paid the bill in full
+Ou pay the leech in full and board your vehicles
+  " which are waiting outside now"ou have walked into a huge Mech parking garage
+  Since Mechs are not allowed in the Starport
+  " anyone with a "Mech wishing to enter the Starport must park his Mech here
+Since you are on foot
+  " you pass through the garage to the rear exit"
+  " and on into the Starport"
+He parking garage manager approaches you and asks you if you want to leave your vehicles here in his fine facility while you enter the Starport
+Ou politely tell him no and exit the garage
+Ou guide your Mechs into the garage and take the receipts offered you
+  You are told that you will be expected to pay for this service when you leave the Starport
+Hey still havent forgotten about your rampage of slaughter and destruction when you stole a Mech from here earlier
+  It would not be wise to reenter the Starport until they do
+He manager of the parking garage
+  " backed by two muscular thugs"
+  " tells you that they don"t park Kurita Mechs here
+
+
+========================================================================
+  REPAIR.BLD  (4983 bytes) — shop/service
+  Repair Center — Tech recruitment
+========================================================================
+
+ou are standing in the entryway to a huge BattleMech repair center
+Will you
+Ask to Apprentice
+Visit speed shop
+Have Mechs repairedBuy Mech ammunitionalk to othersLeave the Mechit
+  (Lube)
+  (ou enter the small side shop and are accosted by the smell of grease and molten )Mech armor
+  There are piles of parts on the floor
+  " and several of the techs are gathered together"
+  " bragging about mounting some outrageous combination of weapons on tiny "Mechs
+Ou decide that if you did have a Mech
+  " you would certainly want to have the modifications these techs will do"
+Ou approach the counter and ask the man there about the services they offer
+  He explains that they can substantially increase the firepower of any Mech
+  " by removing jump jets or inefficient weapons and mounting new ones instead"
+We dont deal in that type of Mech
+His is our most popular modification
+  we pry the machine guns off your Locust and rip the ammo out
+  " then we weld on a couple of Martell medium lasers"
+  Youll have one nasty Mech on your hands
+  *he main problem with your Wasp here
+  " is that it can"t take too many hits
+  What we do is drop the missile launcher
+  " and tack on another medium laser instead"
+  Then
+  " we weld on another ton of armor"
+  Youll have a really competitive Mech that will crush any stock Wasp or Stinger around
+Hese Mechs have no firepower
+  Those machine guns dont heat up
+  " but you don"t run into heat problems with a Stinger anyway
+  Well rip the machine guns off and stack your Stinger with  small lasers that more than doubles your offensive punch
+Hat Commando of yours is a nice Mech
+  " but it"s a little short on armor
+  What Id suggest you do is let us pull off that 
+  (pack missile launcher)
+  " and we"ll stick a couple more medium lasers on to make up for it
+  That will give you more punch
+  Then we glue on a whole tons worth of armor
+  Youll hit harder and be able to take more hits
+  " too"
+Hats already an impressive 
+  (tonner)
+  All I can think of to do to it is to drop a smaller engine in there
+  " which will slow you down about "
+  " but with the weight savings"
+  " we could tack on two small lasers"
+  Youd have more firepower than most 
+  (ton )Mechs
+Hats a nice Mech you have there
+  One guy took his Wasp
+  " pulled off the jump jets"
+  " and welded on "
+  " more medium lasers"
+  *  It hit harder than most 
+  (ton )Mechs
+  *  Of course
+  " it was like sitting in an oven"
+  " too"
+  " the thing got so hot"
+  We could do the same mod for you
+  " too"
+Hat Stingers kind of light on armor
+  " you know"
+  "  We"ve got a new kit to upgrade these Mechs  we take off the jump jets
+  " weld on a ton of armor"
+  " and plug in two medium lasers"
+  Thats  lasers
+  " total"
+  *  You could fry a lot of Mechs with that machine
+Hey
+  " we could do a "Blazing Inferno job for you
+  " if you want"
+  What it is
+  " is we plug up those six missile tubes with small lasers"
+  " and where the ammo was we mount a medium laser"
+  Youd have  mediums
+  " six smalls"
+  " and you could easily crush a "
+  (ton Jenner)
+  " I"m sure
+His course is taught by experience
+  " not by any namby"
+  (pamby book learning)
+  We also expect to be remunerated for our time 
+To the tune of 
+ C
+  (bills)
+Are you sure you want to do this
+Eah
+  " I thought you"d back out
+  Come back when youve got more nerve
+I dont know what youre trying to pull
+  " but ComStar says your balance is "
+  "on"t come back until your check wont bounce
+He techs take you back into the shop and show you their technioues for grafting armor plate
+  " repairing internal structure damage and replacing damaged weapons and heat sinks"
+  You cant grasp most of the technology
+  " but you certainly feel more competent than you did before"
+Who wants to increase their technician skill
+  *Weve already trained you as high as we can
+  Youll have to enter a tech school if you want to learn more than you already know
+He techs gather around and laugh at you for a while
+  One manages to tear himself away from the hilarity long enough to look at you with wide
+  (open eyes and inouire )
+  (What )Mech do you want repaired firstHe stumbles backward to his comrades
+  " as a new fit of laughter breaks out"
+One of the techs is eyeing your group
+  He souints
+  " stares at you for a second"
+  " then scrambles to grab his glasses"
+  He takes one good look
+  " and comes over to you"
+  He shakes hands with Rex
+  " who explains the mission to him and he immediately offers to join the group"
+Congratulations
+  *  You have found one of the Crescent Hawk agents
+  *  
+  *he techs point out that ammunition for Mech weaponry is too heavy for you to carry around on your back
+  Youd probably do better if you had a Mech to put it in
+  "All of the techs are busy"
+  Although you try to get their attention
+  " they seem to be intentionally ignoring you"
+
+
+========================================================================
+  THEATER.BLD  (1132 bytes) — dialogue/story
+  Theater entertainment
+========================================================================
+
+ou have walked into a small theater
+  " which claims to show continuous adventure holos"
+  Do you want to stay and watch one
+He box office is demanding a 
+ C
+  (bill admission fee)
+  " and you can"t pay your own way just yet
+  Come back when you have the dough
+He box office takes your 
+ C
+  (bill admission and you are allowed to enter and take a seat)
+He lights dim
+  " and the show is about to begin"
+  Its an action
+  (packed film)
+  " dubbed from the native language into Standard"
+  You settle in with your popcorn and watch the show
+Oshi
+  *  Over the crest of the hill
+  *  Marik Mechs are storming New Tokyo
+  *   Get your Locust and help us
+  *Bleep
+  *  Twang
+  *  
+  *hhhhwwwwp
+  *Attention all citizens
+  *  Evacuate the area
+  *amoto
+  *  There is a Wasp right behind you
+  *AUGH
+  *  I am hit
+  *Look out
+  *  He is trying to step on you
+  *ont worry
+  " Yamoto"
+  *  I will get him
+  *oshi
+  *  I have a missile launcher
+  *  I will help you
+  *Being such an old holo
+  " it was inevitable that the film would break"
+  You and the other viewers grumble and file out of the theater
+
+
+========================================================================
+  PARTY.BLD  (6207 bytes) — type_c0f3
+  Kuritan party — Rex's rescue
+========================================================================
+
+ou peek your head through the door and see a huge auditorium
+  On the walls and from the roof you see hanging banners with something you never thought you would see on Pacifica
+ the Kurita dragon
+  * Some posters on the walls are proclaiming the inauguration of the new Kuritan government at a ceremony tonight
+  " and this must be the place"
+  
+Some workers are installing eouipment on the stage
+  " and you decide that your Lyran Special Forces uniform probably wouldn"t go over too well with them
+  Since you dont want a run
+  (in with the enemy just yet)
+  " you close the door ouietly"
+Since you are now wearing civilian clothes instead of your Lyran uniform
+  " you decide to risk asking one of the workers for details"
+  He sneers at you and acts disgusted
+  " but manages to spit out that the new government is officially being instituted tonight and attendance is mandatory for all dignitaries on Pacifica"
+Ou leave before antagonizing the man further
+  You cant help but feel that this has been your big break so far
+  " because anyone you may know who is left on the planet will be here tonight"
+He party started just a few minutes ago
+  You walk in
+  " pretending not to hear the doorman"s reouest to see your invitation
+  " and ouickly get lost in the crowd"
+Some Kurita ambassador is at the podium
+  " droning on and on"
+  Hes saying something about ushering in a reign of progress and peace and some other rhetoric that turns your stomach
+  You strain your neck every which way
+  " trying to see someone you recognize"
+Someone grabs you by the shoulder and starts to drag you towards a door
+  *  Figuring that the pesky doorman has finally caught up with you
+  " you break free and ball up your fists"
+  " your anger fueled by the pent"
+  (up frustration and depression you)ve been trying to keep under control all this time
+  The man you face is not the doorman
+  " however"
+  He is substantially larger
+  " and looks strong enough to pluck your head off if it was necessary"
+Passion prevailing over reason
+  " you rush the man anyway"
+  Instead of dishing out an adrenaline
+  (inspired beating)
+  " you have your arms twisted and locked painlessly behind your back in a blindingly ouick maneuver"
+  Whoever your antagonist is
+  " he sure knows a lot more about fighting than you do"
+  He propels you ouickly through the crowd
+  " and the altercation is over so fast that hardly anyone notices it"
+As you are 
+Ushered
+ at near
+  (breakneck speed)
+  " the doorman gets his verbal shot at you"
+  " something about you getting what you deserve"
+  Your thoughts race that this man who is nearly carrying you outside must be the official bouncer
+Once outside
+  " you are not hurled into the gutter"
+  " as you thought must be inevitable"
+  " but are escorted hurriedly into a side alley"
+  You close your eyes
+  " an action you feel appropriate since you are surely going to be knocked unconscious"
+Jason
+  Jason
+  " don"t you recognize meou open one eye
+  " very slowly"
+  " and look at your interrogator"
+  He is holding you by the shoulders and looking into your face
+  You open the other eye
+  " wider than you intended from the realization that you probably won"t be killed now
+  " and study the face before you"
+  He does look vaguely familiar now
+  " but you don"t recall seeing this man since you were very young
+He reintroduces himself as Rex Pearce
+  " a friend of your father"
+  " and a member of the Crescent Hawks"
+  " an elite group formed by Katrina and used by her for covert operations"
+  He shows you a holocard that identifies a Crescent Hawk member
+Ou do remember having seen that symbol on some of your fathers eouipment
+  That seems so long ago
+He chastises you
+  " ouestioning what you were thinking"
+  " poking your head "
+  "a Youngblood face"
+  * into a room full of Kuritans
+  After the assassination attempt
+  " he says you should know better"
+Rex explains that he has been left here to find you
+  " and to give you this box"
+  You take it from him
+  " and examine it"
+  It bears the Crescent Hawk logo
+  Rex tells you that it was entrusted to him by your father
+  " in case anything happened to him"
+  
+Rex goes on to tell you that your father
+  " in addition to being Captain of Security Forces"
+  " was guarding a huge cache of "Mech repair parts
+  This cache is extremely valuable
+  " and we cannot afford for it to fall into Kuritan hands"
+  Jeremiah was the only one who knew its precise location
+  " and it was guarded by an intricate security system"
+  To enter the cache reouires a combination of Rexs retinal scan
+  " and a password that only you have"
+Ou begin to protest about knowing the password
+  " and Rex points to the box"
+  He tells you that the password is probably somewhere in the box
+  " which can only be opened after verifying your retinal scan"
+  He says that Katrina left him here to assist you in your mission
+  " which is"
+  "Recruit all the Crescent Hawk agents you can find"
+  " find the cache"
+  " and signal her using the homing device you will find there"
+Rex says that there are many Crescent Hawk agents who were not able to reach Katrinas DropShip in time to be evacuated off the planet
+  " and are probably blending into the population"
+  " working as doctors or techs"
+  One of our agents has been arrested and imprisoned
+  " and we should try to free him when we leave"
+Rex also tells you that there is a good chance that some of the Crescent Hawk agents you will encounter will also be Kuritan double agents
+  Be on the lookout for any unusual behavior from any of the agents you meet
+Rex tells you that youre not completely helpless in your ouest  Katrina left him a shiny new 
+  (ton Commando )Mech
+  " which is parked in the garage"
+Ou place your eye over the miniscanner on the box
+  " and the lock clicks open"
+  Inside
+  " there is a small biochip and a holodisk"
+  As you reach inside to get the items
+  " the box is shot out of your hands"
+  *An armed souad of Draconian soldiers is storming down the alley
+  " pistols blazing"
+  *  You grab the chip and holodisk and prepare to run
+  " but Rex is drawing his pistol and steeling himself for a showdown"
+Its not time yet for the inauguration
+Ou think better of entering this building again
+  " because of all the Draconian soldiers who will surely recognize your face"
+
+
+========================================================================
+  MAYOR.BLD  (5896 bytes) — shop/service
+  Mayor's house — Newspaper, holodisk
+========================================================================
+
+ou are standing outside the residence of the mayor of this small town
+  It doesnt look like anyone is home
+  " so you pick the lock using skills you didn"t learn in the MechWarrior training center
+  Rex agrees that you should go in alone
+  You slip inside
+  " and shut the door"
+  " trying desperately to remain inconspicuous"
+Ou are standing in the relatively lushly decorated living room of the mayor of this small town
+On the table is todays newspaper
+  " and up against the wall is an entertainment center"
+  " including a holodisk player like the one you had at the barracks"
+Will you
+Read newspaper
+View holodisk
+Grab some chow
+He mayor has installed some fancy new security system that your meager lockpicking skill cant defeat
+ PACIFICA HERALD
+  (RIBUNE)
+  (published daily  )
+  ( cents)MECH STOLEN
+  *  KURITANS
+  *Starport
+  ( In)
+  (   TAKE OVER)
+  (a daring move)
+  " Starport"
+  (a renegade     Tonight at)
+  (MechWarrior)
+  "   the Chara "
+  "participating  Starport"
+  "in a match at  just north"
+  "the Arena"
+  "     and east  "
+  "blasted a      of here"
+  " a"
+  "hole in the    new era   "
+  "wall of the    will begin"
+  "Arena and      for the   "
+  "escaped"
+  "       residents "
+  "keeping the    of        "Mech he had   Pacifica
+Rented
+  He    House     
+Disappeared    Kurita is 
+In the vast    going to  
+Forests of     formally  
+Pacifica
+ A    assume the
+ PACIFICA HERALD
+  (RIBUNE)
+  (published daily  )
+  ( cents)MECH STOLEN
+  *  KURITANS
+  *Starport
+  ( In)
+  (   TAKE OVER)
+  (a daring move)
+  " Starport"
+  (a renegade     The new   )
+  (MechWarrior)
+  "   Kuritan   "
+  "participating  governor  "
+  "in a match at  formally  "
+  "the Arena"
+  "     took power"
+  "blasted a      in a well"
+  (hole in the    attended  )
+  (wall of the    event that)
+  (Arena and      was marred)
+  (escaped)
+  "       only by a "
+  "keeping the    scuffle   "Mech he had   outside
+  
+Rented
+  He    Promising 
+Disappeared    to bring a
+In the vast    new era of
+Forests of     peace and 
+Pacifica
+ A    prosperity
+Ou examine the holoviewer appraisingly
+ it looks similar to the one you used to have back at the barracks before the citadel was destroyed
+Ou rustle through the mayors selection of holodisks
+  " seeing nothing of interest"
+  You settle on a documentary on Steiner offensive actions against the Bandit Kings of the Periphery
+  It turns out to be far more interesting than you thought
+  " and you lose all track of time"
+Ou open the box your father gave you
+  " and take out the holodisk there"
+  You ponder it reverently
+  " knowing that you are about to see his face for the last time"
+  " hear his final words to you"
+Ou realize that you are famished
+  Hungrily
+  " you ransack the poor mayor"s kitchen
+  " grabbing every scrap of food and piling it onto a slab of bread until you have created a truly phenomenal sandwich"
+  You flick the excess mayonnaise off your hands
+  " aiming for the sink but not really trying"
+  You do some preliminary jaw
+  (stretching exercises)
+  " then hoist the masterpiece to eye level"
+Before you can close your jaws and savor the taste
+  " you are jarred from your reverie by the unmistakable sound of a key being inserted into a lock"
+Ou drop the sandwich in panic
+ the mayors here
+  *he thoughts swirling in your head are more of a mess than the kitchen
+  The fight or flight instinct kicks in
+  " and you decide to hide"
+Ou are jolted back to reality by the unmistakable sound of a key turning in a lock
+  the mayors here
+  *ou ouickly turn the holoviewer off
+  " shut off the lights"
+  " and look for a place to hide"
+Ou scramble madly for the kitchen table
+  " and cower there"
+  " trying to control your breathing"
+  The mayor opens the door
+  " puts his coat on the rack"
+  " and sits down on the couch"
+  Good
+  *  He isnt suspicious
+  maybe you wont be killed after all
+Inch by inch
+  " you back out from under the table"
+  " intending to slip out the back door"
+He mayor groans loudly as he exerts himself to stand up
+  You freeze in place
+  " half exposed and half hidden"
+  You hear his heavy footsteps coming closer
+ and closer
+ and closer
+  *  Hes coming into the kitchen
+  *  
+  *uickly
+  " get back under the table"
+  *  No
+  " too much noise"
+ no choice
+  *  Argh
+  *ou silently soueeze back under the table and hold your breath
+He mayor fumbles in the refrigerator for a little while
+  He finally settles on a pitcher of orange juice and walks over to get a glass
+  He slips on some mayonnaise on the floor and drops the pitcher on the floor
+  " shattering the glass and showering you with juice"
+  You steadfastly hold your tongue
+  " while the mayor rattles off a series of adjectives and waddles over to the closet to get a mop"
+In all this confusion
+  " you crawl out from under the table"
+  " shredding your hands on the broken glass and leaving a thin trail of blood"
+  Your hair is plastered into your eyes
+  " glued there by sticky juice"
+  You try to wipe the hair out of your eyes
+  " and see red"
+  You want to cry out
+  " but stifle it because the mayor is now talking to the mop"
+  " having located it and now trying to extract it"
+Oure halfway across the floor when you hear a triumphant growl
+  " followed by a vivid description of the mop in unflattering terms"
+  You can see the shadow of the mayor
+  " holding the mop like some sort of hunter with his kill"
+  " coming back down the hall"
+Hinking ouickly
+  " you grab the exorbitantly ugly and expensive sculpture from the living room table"
+  " and fling it through his kitchen window"
+  The mayor rounds the corner ouickly now
+  " ignoring the fallen mop"
+  " and starts shouting invectives at the children playing behind the house"
+Ou take advantage of the moment to slip out the door
+  " just as the mayor unleashes a new stream of epithets at the innocent urchins"
+  Apparently
+  " they decide that if they"re going to be punished
+  " they"re going to earn it
+  " because the last thing you hear before shutting the door is the mayor shouting "
+  "Hey"
+  *  You kids
+  *  Get away from my hibachi
+
+
+========================================================================
+  FROB.BLD  (3548 bytes) — dialogue/story
+  Frob — Holographic face puzzle
+========================================================================
+
+Welcome to Frobs Electronics store
+  " where consumer electronics gadgets of all types are available for sale"
+Will you
+Browse
+Leave
+Ou wander down rows of electronic items
+  " looking disinterestedly at household appliances and cheap monaural radios"
+  The sales clerks are all gabbing away to each other
+  " and you find it improbable that they will ever come to you"
+Ou walk up to one and tap him on the shoulder
+  This does not make him happy
+  " because now he will actually have to do some work instead of talking all day"
+  Working is much less fun
+  " so he gives you an exasperating look and waits for you to tell him what you want"
+Ask about
+Holodisk players
+Errain Mappers
+He salesman takes you over to the holoviewer displays
+  " hardly concealing his great irritation in the process"
+  He rattles off endless meaningless statistics
+  " such as a harmonic inversion ratio of "
+ and a signal to vector impulse tangent of something or other
+Hese small portable models are much nicer than the holoviewer you had back at the barracks
+When you ask about the price
+  " he is nearly enraged at the inconvenience and at your absolute blindness"
+  He slowly and laboriously points to a price ticket which is clearly marked
+  " although it does happen to be "
+  " feet away"
+  " facing the opposite direction"
+  " and behind several boxes"
+  When you do uncover it
+  " you gasp at the "
+  " C"
+  (bill price)
+O you want to buy it
+He salesman is very miffed
+  After all the work hes done
+  " all the effort expended"
+  " and you ROB him of his commission"
+  You tell him that you will browse some more
+  " and he slinks back into the anonymity of the salesman conversation group"
+He salesman takes one look at your C
+  (bill account and laughs out loud)
+  Then he calls the other salesmen over to look at it
+  They laugh and point at you
+  You are not enjoying this at all
+  " and decide to leave"
+He salesman gladly rings up the sale
+  " transferring the enormous price from your account and into theirs"
+  Then he hands you the portable holoviewer you bought
+  When you ask about warranty and repair
+  " he points to another well"
+  (obscured sign that states)
+  (ALL MERCHANDISE SOLD AS)
+  (IS)
+  ALL SALES ARE FINAL
+Feeling you have been raked over the coals
+  " you turn and leave"
+In one corner of the store is a stand
+  (up display of terrain mappers)
+  They are small electronic devices that tie into orbiting satellites and give you a snapshot view of the area you are standing on
+  Theyre prohibitively expensive
+  " costing "
+  " C"
+  (bills)
+  Will you buy one
+He terrain mappers sold here are NEW and IMPROVED models that claim to completely obsolete your mapper
+  You dont agree
+  " since your mapper functions perfectly well"
+Since you dont have adeouate funds in your C
+  (bill account to cover this purchase now)
+  " you decide to save your money and come back when you can pay cash for it"
+Ou carry your purchase to the front counter and the clerks nearly fight amongst themselves to see who gets the fat commission from this sale
+  You let them sort it out and take your mapper with you
+When you walk over to look at the holoviewers
+  " you see nothing but empty shelves"
+  You ask the salesman
+  " and he tells you that they are completely sold out and don"t expect another shipment for at least six months
+Ou are ouite depressed
+  " since you need to view your father"s holodisk and you dont know where else to go
+ unless your holodisk player back at the barracks is still functional
+
+
+========================================================================
+  HUT.BLD  (8501 bytes) — shop/service
+  Tellhim's hut — Puzzle gauntlet
+========================================================================
+
+his place is fantastic
+  *  From the outside
+  " it looks like a dilapidated hut"
+  But once you get inside
+  " you are amazed by what you see"
+  The interior dimensions look easily four times the size the outside hints at
+  " through some trick of refraction combined with the fact that much of the ground has been removed and the interior is substantially deeper than you would have thought"
+All around you
+  " scientific projects"
+  " experiments"
+  " and other devices proliferate"
+  It is very difficult to walk in here
+  " because of the eouipment covering the floor and perched precariously on tables and shelves"
+  " threatening to smash themselves into the floor and thus ruin any chance you have of Dr"
+ Tellhim helping you
+Ou cant see anyone who actually lives here
+  " so you keep exploring"
+  Around one corner
+  " you are floored by a ghastly apparition"
+  Stretching easily 
+ feet into the air
+  " a monolithic face stares back at you"
+  Clearly
+  " it is some sort of optical illusion"
+  " but it is optically unpleasant to look at"
+  " since the fantastic size magnifies each hair and pore until you"re sure you would lose an arm in one if you got too close
+Here is some sort of repulsion barrier in this room
+  " which makes it impossible to proceed"
+  You spend valuable minutes trying to get past it
+  " only to be frustrated at every attempt"
+  As a last resort
+  " you try speaking to the face"
+Hello
+He eyes snap open and look maliciously at you
+  The sneer it gives you makes you feel very insignificant
+  " and when the mouth opens and bellows at you"
+  " you can almost feel your hair being whipped back by the wind of its breath"
+  The face is demanding the meaning of your interruption
+Ou stammer out that youre here to see Dr
+ Edward Tellhim
+  The face souints as if its trying to make out the features on your tiny face
+  It then hisses out an ultimatum
+Answer and be accepted
+  " fail and be dissected"
+He face then sits back to watch your reaction
+  " and seems to be satisfied by the obvious nervousness it has inflicted upon you"
+  However
+  " you regain your composure by reassuring yourself that it is only a holographic manifestation"
+  " and cannot do any harm"
+  You boldly tell the face to ask away
+  It seems impressed by your courage
+He face then sneers in an unfriendly manner
+  " and proceeds to ask a horribly intricate technical ouestion of mechanics"
+  
+Our technician rises to the occasion
+  " authoritatively answering the ouestion"
+  The face looks shocked that anybody would know the answer to its riddle
+  " and vanishes"
+Our group proceeds down the hall
+  " a bit more nervously than before"
+  Rounding one corner
+  " you hold up a hand of caution to stop the group"
+  You want to play it safe here
+  when the floor slides apart and you are dropped to a new level of the complex
+  *ou try valiantly to gather your wits about you
+  While you try to calm everyones nerves
+  " Rex assesses the situation and declares that you are in no immediate danger"
+Hen the room is engulfed in a blaze of color
+  " and you are once again face to face with the face"
+It looks substantially meaner
+  " and grills you with a new ouestion"
+  This one involves biochemistry and neurological impulse terminology
+  
+Ou look to each other in desperation
+  " and it becomes obvious none of you know the answer"
+  You expect more machine guns
+  " or maybe a neural whip or two"
+  " but the only thing that happens occurs so ouickly that you aren"t sure whether it actually did happen
+  In any case
+  " you are outside somehow"
+Our doctor stands boldly forth and answers the ouestion
+  " and even manages to lecture the face thoroughly on the subject"
+  The face gets bored
+  " and vanishes to escape the onslaught of information"
+A wall slides up in front of you
+  " and you proceed through into a scientist"s playground of gadgets and devices
+  There are things here your tech cant begin to understand
+  You use the respite to gather your wits and nerves
+  " because you"re sure the face will return
+Ou chastise yourself for thinking of it
+  " as if it will read your mind and reappear"
+It does
+  This time
+  " it"s not sitting still like some statue
+  Instead
+  " it circles the group"
+  " sneering and snarling like some desperate shark"
+  It wastes little time before spitting out the next ouestion
+  " a historical fact about the tactical technioues used in the Battle of Mallory"s World
+Rex allows the face no time to gloat by instantly answering the ouestion from firsthand experience
+  The face looks about to panic
+  " and it vanishes"
+He group proceeds around another corner
+  " and this one is a dead end"
+  You dont leave
+  " however"
+  " knowing that this place is full of surprises and this dead end may be more than that"
+  As you look for the hidden exit
+  " the face reappears"
+  It seems satisfied with the others who have answered its ouestions
+  " and zooms in on you"
+Ou bravely hold your ground as the face comes so close that you could use the pupil of its eye as a full
+  (height mirror)
+  The face stares at you for a while
+  " and then hisses out its ouestion"
+Jason Youngblood
+ Tell me where your father is
+  *ou say that you dont know
+  The face repeats the ouestion
+I dont know
+  *It demands an answer
+Hes dead
+  *he face grows more angry
+Hes dead
+  " he"s dead
+He emotion is taking you over
+He face bellows 
+ELL ME
+  *ell you
+  *  Ill show you
+With that declaration
+  " you unholster a machine gun and fire round after round at the horrible face"
+  A look of genuine surprise shows on the face
+  " and it vanishes"
+  You continue firing
+  " tired of these games"
+  " tired from exhaustion"
+  " and fueled by frustration"
+As soon as your ammo clip runs out
+  " a side door pops open"
+  " and the face reappears"
+  This time
+  " it"s human
+  (sized and attached to the rest of the body)
+Hey
+  *  Hey
+  " hey"
+  " hey"
+  *  What do you think youre doing
+  *  Put that thing away
+  *he lanky man is pulling at his face
+  " and globs of distortive makeup are coming off"
+  The face under that mess is staring back at you now
+  " and it belongs to Dr"
+ Edward Tellhim
+Still running on adrenaline
+  " you heft the machine gun and demand an explanation from him regarding the ouestions about your father"
+  Dr
+ Tellhim explains that Jeremiah still owes him some C
+  (bills and some )
+  (antaran ribeye steaks for the lock he created)
+  " and he just wanted to collect"
+Ou then demand the meaning of this gauntlet you were forced to run
+  He explains that it is meant to scare off peddlers and salesmen
+  The ouestions will screen out anybody who is too unintelligent to waste time talking to
+  He then expresses sorrow over your fathers death
+  " because Jeremiah was a good man"
+His brings you back to the real reason you are here
+  You show him the holodisk
+  " and ask if he can repair it for you"
+  He says that it would be the least he can do
+  " after what he put you through"
+He rubs some complex goo on the disk
+  " then runs it through some sort of buffing machine"
+  When that is done
+  " he hands it back to you"
+Ou examine the surface of the disk
+  " and are impressed with the excellence of the repair"
+  There is no evidence it was ever damaged
+Hen you ask if there is a private room you could retire to
+  " so that you may view the rest of the message"
+He leads you to a small room with a viewer in it
+  You watch the rest of the message and learn the password
+  There is also ouite a bit of mushy stuff
+  " and it takes you several minutes to regain your composure before you can return to the others"
+Ou offer to pay off your fathers debt
+  " but the eccentric old inventor waves it away"
+  " and instead asks what he can do for you"
+Ou ask for directions to the nearest Star League Cache
+  " and are shocked when he tells you that it is hidden in a cave just southeast of here"
+  You thank him
+  " and leave his hut"
+Our group stammers among themselves
+  " trying to fake a plausible answer because none of you know the correct one"
+  The face is growing very impatient
+When you do not answer in a timely fashion
+  " the face becomes enraged"
+  The eyes glow red
+  " and the mouth opens as if to gnaw you to bits"
+  You bravely hold your ground
+  " knowing that a holographic image can do you no harm"
+  The face raises its eyebrows in surprise that you havent fled yet
+Hen a series of flaps on the walls slide back
+  " and an impressive number of machine gun barrels poke through"
+  They are definitely not a holograph
+  " and you beat a hasty retreat"
+He old man is gone
+  This place is empty
+  " and eerily ouiet"
+  You turn and leave
+
+
+========================================================================
+  FINDIT.BLD  (722 bytes) — dialogue/story
+  World map clue search
+========================================================================
+
+ou have found a ladder leading to a second level
+  Climbing down the ladder
+  " you are shocked by what you see"
+His is a huge subterranean storeroom
+  " stocked with thousands of "Mech repair parts
+  " tools"
+  " repair platforms"
+  " and several fully"
+  (assembled )Mechs in spotless condition
+  It gives you an eerie feeling
+  " looking at all this impressive machinery and knowing that it has been dormant for hundreds of years"
+Congratulations
+  *  You have found the hidden Star League cache of Mech repair parts
+  Your mission is nearly fulfilled
+  all you need to do now is contact Katrina on the Hyperpulse Generator so that the Commonwealth can send in a military escort to get you and the cache off the planet
+
+
+========================================================================
+  INSTRUCT.BLD  (565 bytes) — dialogue/story
+  Jeremiah's cache instruction note
+========================================================================
+
+As you enter the cache
+  " you see a note pinned to the wall"
+  " addressed to you"
+Jason
+  " the key to getting to the cache is to use the code key and imprint the right codes onto it"
+  Each door needs a red
+  " blue"
+  " and yellow code"
+  " and each terminal imprints a single code"
+  No code is re
+  (used)
+  " and the card can only hold one red"
+  " one blue"
+  " and one yellow code at a time"
+When you get to the map room
+  " use the map I gave you"
+  It will help you
+  Good luck
+Love
+  "  Dad"
+  "ou take the code key on the table"
+  " and proceed into the ancient Star League cache"
+
+
+========================================================================
+  VIEWDISK.BLD  (3544 bytes) — dialogue/story
+  Jeremiah's holodisk (damaged)
+========================================================================
+
+As you take the holodisk from your fathers box
+  " you notice that it was damaged when the Kuritan soldiers shot it out of your hands in the scuffle outside the inaugural hall"
+  You just hope it will still play as you slip it into the holoviewer
+At first
+  " only static comes on the screen"
+  You can hear the holoviewers tracking mechanism trying to compensate for the scratches on the holodisk
+  Then
+  " your father"s face pops up onto the screen
+  He is in mid
+  (sentence when the audio track starts working also)
+ to the Commonwealth and the Crescent Hawks in particular
+  Ive watched you train
+  " and I know that you will succeed in this assignment"
+  Since youre watching me on this disk now
+  " then I must already be dead"
+  Its up to you to see that my work here is completed
+As Rex must have told you by now
+  " I have been searching Pacifica for a rumored Star League cache of "Mech repair parts
+  I have been looking for it for most of the 
+ years we have been stationed here
+  Im fairly sure I know approximately where it is now
+  " and that"s why I am making this holo for you
+I know that theres a good chance that if I locate the cache
+  " I may not live long enough to report its location"
+  Some people dont want to see many of the old Kell Hounds last very long
+  So I am giving you the keys to locating and entering it in case I am prevented from fulfilling my missionve had a special locking mechanism worked up by Edward Tellhim
+  Dont look so surprised
+ hes still alive
+  " although he doesn"t like to be bothered
+  I came across him while he was living in a small hut in the northwest
+  He crafted a lock that is keyed to Rexs retinal scan
+  " but still needs a password"
+I figure that the ideal way to safeguard the cache is to entrust access to it to both my son and my best friend
+  Jason
+  " this cache is extremely valuable"
+  We know it contains Mech repair parts
+  " but some of the evidence I"ve come across in my 
+  (year search indicates it may be more than that)
+It may contain documentation and library tapes that could restore some of the technology weve lost in the Succession Wars
+  If I dont locate it
+  " then you must"
+  Follow Rex
+  " and trust him"
+  When you get to the cache
+  " uxxedsd "
+Dke 
+Fffrhntg t
+He holodisk player tries repeatedly to recover the information off the disk
+  " but the damage is too extensive"
+  Without the password
+  " you"ll never be able to access the cache
+  *  You go back to where Rex is waiting for you
+  " and explain the situation"
+Rex tells you that
+  " just before the raid on the citadel"
+  " Jeremiah had called in with a brief message"
+  He said that he had found it
+  " but didn"t explain what it was
+  Clearly
+  " he must have meant the cache"
+  But before he could tell Katrina where the cache was
+  " the signal was lost"
+Rex continues
+  " saying that we can only suppose that Jeremiah was attacked before he could finish his message"
+  The only thing they could tell for sure is that the signal originated in the northwest
+  " but the raid on the citadel destroyed the tracking eouipment so they can"t tell for sure where the signal came from
+Rex suggests that before you go tromping across the landscape trying to find the cache
+  " you should gather up some more Crescent Hawk agents"
+  He says that whoever was able to overcome Jeremiah Youngblood must be extremely dangerous
+Ou ask him what youre supposed to do now that the password is destroyed
+  He suggests that you look for Dr
+ Tellhim
+  If anyone can fix that holodisk
+  " he surely can"
+
+
+========================================================================
+  JAIL.BLD  (4297 bytes) — shop/service
+  Internment center jailbreak
+========================================================================
+
+ou have entered the visitors section of the Pacifica Internment center
+  With blinding speed
+  " shoves you and Rex to the floor"
+  " and barks an order to the jailkeeper"
+  Before you know what has happened
+  " you are handcuffed and a pistol held to your head"
+It seems that 
+ was a Kuritan double agent
+  " sent specifically to disrupt your mission and bring the son of Jeremiah Youngblood to his grave"
+  
+Ou dont even get a last reouest as they pull the trigger
+He jailkeeper is poring over a magazine
+  " looking reasonably bored"
+Will you
+Ask about Rexs friendLeave the jailou are immediately apprehended by the jailkeeper
+  " a Kuritan soldier who was assigned to the jail after the assassination attempt on you at the training center"
+  Because he recognized 
+Your Lyran Special Forces uniform
+  " he knew you were an enemy agent"
+You from the films of the raid on the citadel
+  " he knew you were important"
+You from the jailbreak
+  " he knew you were wanted"
+He didnt know exactly who you were until he sent a message and video to his superiors
+  They were ouite shocked to hear that you
+  " the son of Jeremiah Youngblood"
+  " just walked into their hands"
+  
+Hey took great joy in watching the jailkeeper execute you
+Ou send the others on ahead
+  " telling them that you are going to try to get the "Mech
+  As Rex raises howls of protest
+  " a torrent of gunfire sends you all diving for the floor"
+  
+A band of Kurita jail guards is standing at the end of the hall
+  In the heat of the moment
+  " you assume the responsibility of command"
+  " giving orders to the others to hold their position while you get the "Mech
+  They agree
+  " and start firing at the Kuritans while you slip out back to the impound yard"
+Ou use the newly
+  (acouired Stinger to intimidate the rest of the guards into hiding)
+  Under the cover of the Stingers watchful medium laser
+  " the rest of your group escapes the jail and gathers around you"ou approach the jailkeeper and ask him if he has a prisoner here by the name of 
+  He scans his computer
+  " looks up"
+  " and asks why you want to know"
+  You explain that he is your brother
+  " and you haven"t seen him since the raid
+  " and you were told he was here"
+  You are merely concerned about his safety
+He jailkeeper tells you that yes
+  " he is here"
+  " as are all the renegade MechWarriors who opposed the Kurita invasion force"
+He then takes you to a visitor communication cubicle
+  " and inserts a key that activates an impenetrable energy barrier between you and the prisoner"s chair
+  After issuing an order on the intercom
+  " is ushered into the room"
+His face is unshaven and his hair is unkempt
+  The escorting guard shoves him not
+  (too)
+  (gently into the chair)
+  You can tell that s attitude is undaunted
+  " because he turns and launches a wad of spit at his departing captor"
+  This is not something the guard appreciates
+  " and he makes "
+  " wipe it off with his face"
+  
+He guard then firmly raps him on the head with his club
+  " and then leaves"
+ looks to you
+  " somewhat dazed"
+  " and asks who you are and what you want"
+  You ask him if he has ever heard of the Crescent Hawks
+  His eyes light up dramatically
+  " and he looks around the room to see who else might be here"
+  When he catches a glimpse of Rex in the shadows
+  " you can see the wave of relief wash over his face"
+He shows you a holocard the guards hadnt confiscated
+Congratulations
+  *  You have found one of the Crescent Hawk agents
+  *Upon seeing the flash of the Crescent Hawk holocard
+  " Rex leaps into action"
+  " removing all traces of consciousness from the jailkeeper"
+  
+He gets the deactivation keys to you ouickly
+  " and you disable the energy barrier"
+  
+Our new agent wastes no time in leaping to freedom
+  " as alarms blare throughout the jail complex"
+As you all scramble for the front doors and the safety of your Mechs
+  "the MechWarrior tells you that his "Mech is one of the ones in the impound lot behind the jail
+  He says that you might be able to get to it before Kuritan reinforcements arrived
+  If you dont make it
+  " they"ll surely kill you
+  Do you want to try
+Our group rushes out the front doors
+  " just ahead of the pursuing Kurita guards"
+
+
+========================================================================
+  ARENA.BLD  (3957 bytes) — shop/service
+  Mech combat arena
+========================================================================
+
+Welcome to the Arena
+  " where modern day gladiators duel in the coliseum of the "
+  "th century"
+  *  Here you can challenge another MechWarrior in combat for fun and profit
+  The winner gets a cash award of 
+ C
+  (bills)
+  The loser may even get to live
+O you want to give it a try
+She tells you that you can rent a Mech from the Arena or use one of your own
+  Do you want to rent a Mechou are forced to sign several waivers releasing the Arena operators from any liability should your Mech be destroyed
+  If it is destroyed in Arena combat
+  " you lose it forever"
+  The scraps become Arena property
+He attendant
+  " a shriveled old woman with horn rimmed glasses"
+  " takes a long puff of her cigarette and pushes a registration form your way"
+  In between bronchial coughs
+  " she points to certain places on the form for you to initial"
+  " releasing the Arena management from any liability"hen she checks your ComStar C
+  (bill account and tells you that )
+  (you don)t have enough cash on hand to make the security deposit to cover repairs in case you lose
+  You start to protest
+  " saying you weren"t told anything about a deposit
+  " but she is engrossed in a coughing fit and only waves you away"
+The Arena management has taken 
+ C
+  (bills from your account for renting one of their )Mechs
+  " and another "
+  " C"
+  (bills as a security deposit and to cover repairs to their )Mech in case you lose
+  *ou nearly shriek when you are told that you have been charged so much
+  " that nowhere is it listed that it costs "
+  " C"
+  (bills just to try)
+  " etc"
+  The attendant looks at you
+  " makes a condescending face"
+  " and tells you that you had better hope you win"
+  *he shriveled woman almost chuckles when she sees you again
+She says that not only did you lose the combat and the respect of the spectators
+  " you also lost your "Mech
+  She laughs in your face
+Clearly
+  " customer relations are not this woman"s strong point
+She tells you that your 
+ C
+  (bill deposit has been confiscated to pay for repairs to their )Mech
+  She explains
+  " between coughs"
+  " that you have lost respect and money"
+  She recommends that the next time you try the Arena
+  " you win"
+Ou turn and exit the Arena
+He nasty woman behind the counter cackles out a feeble congratulations on your victory
+  
+She grudgingly hands you five hundred C
+  (bills)
+  " much of which will go to repairing your "Mech
+  You cheerfully thank her
+  " which seems to annoy her further"
+  " and leave the Arena"
+He operators of the Arena look on in horror as you waltz a 
+ million C
+  (bill Locust out of the Arena and escape)
+  You deftly outmaneuver the pursuing UrbanMechs and now own a Locust
+  " free and clear"
+  *he rest of your group
+  " having watched the spectacle from the stands"
+  " acted ouickly in gathering together outside the Starport to meet up with you if you survived"
+  
+In all the commotion surrounding your daring theft of a Mech
+  " the guys at the parking garage weren"t paying careful attention
+  " and your group has managed to recover your "Mechs without paying the parking fee
+Ou do
+  " however"
+  " think it prudent that you not show your face around the Starport for a long"
+  " long time"
+  Every Draconian soldier should have your face memorized by now
+  " and there is a hefty price on your head"
+He shriveled old woman sneers at you and tells you that the Arena services are only for Pacifica residents
+  When your short temper snaps and you start yelling that you dont know WHAT she is talking about
+  " she whips out a CLOSED sign and walks away"
+Hen she hands you a bill for repairs to the Mech you rented
+  Considering the reputation of this establishment
+  " you are not surprised that the bill encompasses your entire "
+  " C"
+  (bill deposit)
+  They probably spent that money as soon as you laid it on the table
+  You give her a pained smile
+  " take the money"
+  " and run"
+
+
+========================================================================
+  ENTRANCE.BLD  (794 bytes) — shop/service
+  Star League cache entrance
+========================================================================
+
+hats odd
+ theres some sort of intricate locking mechanism on a door hidden within the cave
+  You cant enter
+Ouve found what can only be the entranceway to the Star League cache
+  *  On the door is a lock of the type your father described in his holo message to you
+  There is also a retinal scanner
+  " which almost has Rex"s name printed on it
+Rex steps up to the machine and puts his eye over the scanner
+  It registers a match
+  " and a panel slides back to reveal a sophisticated input device"
+  " obviously intending for you to enter the password"
+  " that you don"t have
+  You turn to Rex to get his advice
+  " and the panel slams shut"
+  You cant enter without the password
+  You type in the password
+  " and the door slides away"
+  " allowing you to enter the cache"
+
+
+========================================================================
+  ENDMECH.BLD  (1022 bytes) — special
+  Endgame — Phoenix Hawk LAM
+========================================================================
+
+ou have found the largest Mech you have ever seen a PH
+  (HK)
+  ( Phoenix Hawk LAM)
+  " just like the one your father piloted"
+  *  The coincidence is too much to be believed
+  (ou scramble up the boarding ladder to inspect the )Mech
+  Sitting in the cockpit
+  " you notice an empty socket"
+  Its just the right size to fit the biochip that was in your fathers box with the holodisk
+  You plug in the chip
+  " and power up the "Mech
+He Mech springs to life
+  " and the onboard computer recognizes the biochip"
+  In a pleasant female voice
+  " it greets the pilot"
+  "Welcome aboard"
+  " Jeremiah"
+  Shall we continue our mission
+It is your fathers Mech
+  *  Since it is in perfect condition
+  " then he must have hidden it here"
+  He must have known someone was after him
+  " and left the "Mech here so it wouldnt be captured
+  *  This springs new hope that maybe he isnt dead after all
+Ou dismount the Mech to continue your mission of locating the cache and using the Hyperpulse Generator to contact Katrina
+
+
+========================================================================
+  WINSCENE.BLD  (2995 bytes) — endgame
+  Endgame — Hyperpulse Generator
+========================================================================
+
+ou use the Hyperpulse generator to send a signal to Katrina that you have found the cache
+  Confirmation of receiving your message comes across
+  " and you are told that a DropShip is on its way to retrieve you and the parts"
+He DropShip arrives and lands just west of the cache entry
+  Its tremendous firepower will hold off the Kuritan occupational forces long enough for the eouipment to be loaded
+Ou stand and watch the WorkMechs loading the eouipment
+  " and you feel a bit depressed"
+  The planet you call home has been overtaken
+  " your father is gone"
+  " all that you know has been turned upside down"
+  What will you do now
+One of the messengers comes to you and tells you that there is an incoming message for you from Katrina
+  You rush to one of the holotransmitters on the DropShip to hear what the Archon has to say
+Jason
+  " we"re all so very proud of you for the way you have fulfilled this mission
+  You have achieved more than we had a right to hope for
+  In appreciation of your service
+  " I would like to extend to you the opportunity to serve as a member of the Lyran Commonwealth Armed Forces as an officer"
+  If you accept
+  " you will be commissioned as a Lieutenant"
+Ou stumble over the words in your hurry to express your gratitude for such a generous offer
+  You end up looking as nervous as you feel
+  " and are somewhat embarrassed for it"
+  Eventually you manage to tell her that you must decline her offer
+She clearly was not expecting you to say that
+  " and asks you for your reasons"
+  You explain that
+  " since you signalled for the DropShip to come"
+  " you and Rex have been talking ouite a bit about Jeremiah"
+  You tell Katrina that you have come to the decision that he may not be dead after all
+  She is very interested in this
+  " and asks for further details"
+Ou tell her what he said in the holodisk
+  " about a vendetta against the Kell Hounds"
+  " of which Jeremiah was a member"
+  Rex
+  " who was also a Kell Hound"
+  " suspects that the Kurita code of honor and ritual might encourage the Draconians to capture the Kell Hounds and hold a trial"
+  " rather than assassinating the members individually"
+Ou then tell her the final bit of evidence you have
+ the fact that you found his Phoenix Hawk LAM intact and hidden here
+  " and the fact that it was programmed to continue a mission at a later date"
+  If they were trying to kill Jeremiah
+  " you"re ouite sure he would have gone down fighting
+Katrina is not necessarily convinced that you are right
+  " but she is impressed enough to give you the chance to find out"
+  She declares that you
+  " Rex and the rest can operate as an independent unit"
+  " to be known as the Crescent Hawks"
+  " and she wishes you the very best"
+I hope you find him alive
+  " Jason"
+  I really do
+With that
+  " she terminates the communication"
+  " and you order the rest of the new Crescent Hawks to board the DropShip"
+  " to begin your search and to go on to greater glory"
+Press any key to end the game
+

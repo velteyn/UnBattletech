@@ -1,0 +1,1562 @@
+{
+  "filename": "LOUNGE.BLD",
+  "size": 1827,
+  "header": {
+    "file_type": 33,
+    "paragraphs": 7,
+    "signature": "eec6ebea",
+    "content_type": "c0f5",
+    "content_type_name": "shop/service",
+    "subtype": 165
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "2107eec6ebeac0f5",
+      "type": "header",
+      "annotation": "type=21 paragraphs=7 sig=eec6ebea content=shop/service subtype=a5"
+    },
+    {
+      "offset": 8,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 9,
+      "size": 1,
+      "bytes": "b4",
+      "type": "marker",
+      "annotation": "price:105"
+    },
+    {
+      "offset": 10,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 11,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 14,
+      "size": 29,
+      "bytes": "73a0585f7663a0635e7463726364a05fa0715b5f5c5ca05c5d735e6563",
+      "type": "text",
+      "decoded": "u have entered a small lounge"
+    },
+    {
+      "offset": 43,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 44,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 45,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 46,
+      "size": 49,
+      "bytes": "7f5c5ca05f725d735e64a0675d73a070635d705c63a05f7263a0635e655f656364a0575ea0615d5e766372715f74575d5e",
+      "type": "text",
+      "decoded": "All around you people are engaged in conversation"
+    },
+    {
+      "offset": 95,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 96,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 97,
+      "size": 6,
+      "bytes": "64575e575e65",
+      "type": "text",
+      "decoded": "dining"
+    },
+    {
+      "offset": 103,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 104,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 105,
+      "size": 39,
+      "bytes": "5f5e64a05c577174635e575e65a0745da0745863a05f7566735ca0635e746372745f575e637271",
+      "type": "text",
+      "decoded": "and listening to the awful entertainers"
+    },
+    {
+      "offset": 144,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 145,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 146,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 147,
+      "size": 8,
+      "bytes": "95575c5ca0675d73",
+      "type": "text",
+      "decoded": "Will you"
+    },
+    {
+      "offset": 155,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 156,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 157,
+      "size": 14,
+      "bytes": "945f5c59a0745da05d7458637271",
+      "type": "text",
+      "decoded": "Talk to others"
+    },
+    {
+      "offset": 171,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 172,
+      "size": 5,
+      "bytes": "7c635f7663",
+      "type": "text",
+      "decoded": "Leave"
+    },
+    {
+      "offset": 177,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 178,
+      "size": 5,
+      "bytes": "e7c836c0ce",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=14024 jump\u2192[CEC0]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        14024,
+        52928
+      ]
+    },
+    {
+      "offset": 183,
+      "size": 1,
+      "bytes": "c5",
+      "type": "unknown",
+      "annotation": "u_c5"
+    },
+    {
+      "offset": 184,
+      "size": 3,
+      "bytes": "f4bbc5",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE bb c5",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        187,
+        197
+      ]
+    },
+    {
+      "offset": 187,
+      "size": 2,
+      "bytes": "f3bc",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=bc",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        188
+      ]
+    },
+    {
+      "offset": 189,
+      "size": 2,
+      "bytes": "f59e",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=9e",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        158
+      ]
+    },
+    {
+      "offset": 191,
+      "size": 1,
+      "bytes": "02",
+      "type": "control",
+      "annotation": "break_02"
+    },
+    {
+      "offset": 192,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 193,
+      "size": 4,
+      "bytes": "e8c0c0f4",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[F4C0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        62656
+      ]
+    },
+    {
+      "offset": 197,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 198,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 199,
+      "size": 3,
+      "bytes": "f49ec0",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE 9e c0",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        158,
+        192
+      ]
+    },
+    {
+      "offset": 202,
+      "size": 3,
+      "bytes": "ebec92",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [92EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        37612
+      ]
+    },
+    {
+      "offset": 205,
+      "size": 35,
+      "bytes": "576159a0575e7657746371a0675d73a0745da0715774a05f74a0585771a0745f625c63",
+      "type": "text",
+      "decoded": "ick invites you to sit at his table"
+    },
+    {
+      "offset": 240,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 241,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 242,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 243,
+      "size": 35,
+      "bytes": "945863a074755da05d66a0675d73a05f7263a0635e655f656364a0575ea05c57655874",
+      "type": "text",
+      "decoded": "The two of you are engaged in light"
+    },
+    {
+      "offset": 278,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 279,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 280,
+      "size": 62,
+      "bytes": "667257635e645c67a0615d5e766372715f74575d5ea07558635ea05d5e63a05d66a0745863a071635e575d72a09463615871a07174735b625c6371a06267",
+      "type": "text",
+      "decoded": "friendly conversation when one of the senior Techs stumbles by"
+    },
+    {
+      "offset": 342,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 343,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 344,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 345,
+      "size": 55,
+      "bytes": "7863a05771a0615c635f725c67a0575e636272575f746364a05f5e64a05771a06263575e65a05e5d5e63a0745d5da0667257635e645c67",
+      "type": "text",
+      "decoded": "He is clearly inebriated and is being none too friendly"
+    },
+    {
+      "offset": 400,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 401,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 402,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 403,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 405,
+      "size": 3,
+      "bytes": "ec7863",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [6378]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25464
+      ]
+    },
+    {
+      "offset": 408,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 409,
+      "size": 20,
+      "bytes": "5c635f5e71a05d766372a0745863a0745f625c63",
+      "type": "text",
+      "decoded": "leans over the table"
+    },
+    {
+      "offset": 429,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 430,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 431,
+      "size": 9,
+      "bytes": "7170575c5c575e65a0",
+      "type": "text",
+      "decoded": "spilling "
+    },
+    {
+      "offset": 440,
+      "size": 1,
+      "bytes": "98",
+      "type": "marker",
+      "annotation": "noop_98"
+    },
+    {
+      "offset": 441,
+      "size": 23,
+      "bytes": "5d72a064635c576263725f74635c67a0705d7372575e65",
+      "type": "text",
+      "decoded": "or deliberately pouring"
+    },
+    {
+      "offset": 464,
+      "size": 1,
+      "bytes": "97",
+      "type": "marker",
+      "annotation": "noop_97"
+    },
+    {
+      "offset": 465,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 466,
+      "size": 35,
+      "bytes": "715d5b63a05d66a0585771a05e5d68575d7371a062637663725f6563a05d5ea0675d73",
+      "type": "text",
+      "decoded": "some of his noxious beverage on you"
+    },
+    {
+      "offset": 501,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 502,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 503,
+      "size": 25,
+      "bytes": "7458635ea06272635f5971a0575e745da05c5f736558746372",
+      "type": "text",
+      "decoded": "then breaks into laughter"
+    },
+    {
+      "offset": 528,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 529,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 530,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 531,
+      "size": 43,
+      "bytes": "875d73a06f735761595c67a071745f5e64a07370a05f71a05766a0745da061585f5c5c635e6563a058575b",
+      "type": "text",
+      "decoded": "You ouickly stand up as if to challenge him"
+    },
+    {
+      "offset": 574,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 575,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 576,
+      "size": 33,
+      "bytes": "7558576158a05b5f596371a058575ba05c5f736558a06376635ea0585f72646372",
+      "type": "text",
+      "decoded": "which makes him laugh even harder"
+    },
+    {
+      "offset": 609,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 610,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 611,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 612,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 613,
+      "size": 53,
+      "bytes": "92576159a065725f6271a0675d7372a05f725ba05f5e64a0585f735c71a0675d73a0625f6159a0575e745da0675d7372a071635f74",
+      "type": "text",
+      "decoded": "Rick grabs your arm and hauls you back into your seat"
+    },
+    {
+      "offset": 666,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 667,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 668,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 669,
+      "size": 81,
+      "bytes": "7863a07458635ea0575e746372705d716371a058575b71635c66a06263747563635ea0675d73a074755da05f5e64a07372656371a0745863a06273725c67a094636158a0745da0655da05d5ea0585d5b63",
+      "type": "text",
+      "decoded": "He then interposes himself between you two and urges the burly Tech to go on home"
+    },
+    {
+      "offset": 750,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 751,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 752,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 753,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 755,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 758,
+      "size": 23,
+      "bytes": "63a094636158a071745f727471a0745da0726371577174",
+      "type": "text",
+      "decoded": "e Tech starts to resist"
+    },
+    {
+      "offset": 781,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 782,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 783,
+      "size": 34,
+      "bytes": "65725770575e65a05c5d73645c67a05f71a0745da0755867a0715d5b63a0625f6267",
+      "type": "text",
+      "decoded": "griping loudly as to why some baby"
+    },
+    {
+      "offset": 817,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 818,
+      "size": 82,
+      "bytes": "665f616364a0595764a075577458a05fa0665f5b5d7371a0645f646467a071585d735c64a06263a05f5c5c5d756364a0745da071585d5d74a07370a0715d5b63a0765f5c735f625c63a0585f7264755f7263",
+      "type": "text",
+      "decoded": "faced kid with a famous daddy should be allowed to shoot up some valuable hardware"
+    },
+    {
+      "offset": 900,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 901,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 902,
+      "size": 27,
+      "bytes": "7558576158a07883a07458635ea0585f71a0745da0665768a07370",
+      "type": "text",
+      "decoded": "which HE then has to fix up"
+    },
+    {
+      "offset": 929,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 930,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 931,
+      "size": 38,
+      "bytes": "5a737174a0715da074585771a0595764a0615f5ea071585d5d74a05774a07370a05f655f575e",
+      "type": "text",
+      "decoded": "just so this kid can shoot it up again"
+    },
+    {
+      "offset": 969,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 970,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 971,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 972,
+      "size": 24,
+      "bytes": "917473705764a0595764a070725d625f625c67a0585f715e",
+      "type": "text",
+      "decoded": "Stupid kid probably hasn"
+    },
+    {
+      "offset": 996,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 997,
+      "size": 32,
+      "bytes": "74a063766372a06263635ea0745da0745863a091745f72705d7274a06376635e",
+      "type": "text",
+      "decoded": "t ever been to the Starport even"
+    },
+    {
+      "offset": 1029,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1030,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1031,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1032,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 1034,
+      "size": 3,
+      "bytes": "ec9257",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5792]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22418
+      ]
+    },
+    {
+      "offset": 1037,
+      "size": 50,
+      "bytes": "6159a07173616163636471a0575ea07371586372575e65a0745863a094636158a05d7374a05d66a0745863a05c5d735e6563",
+      "type": "text",
+      "decoded": "ck succeeds in ushering the Tech out of the lounge"
+    },
+    {
+      "offset": 1087,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1088,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1089,
+      "size": 24,
+      "bytes": "5f5e64a072637473725e71a0745da0745863a0745f625c63",
+      "type": "text",
+      "decoded": "and returns to the table"
+    },
+    {
+      "offset": 1113,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1114,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1115,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1116,
+      "size": 27,
+      "bytes": "875d73a0715774a0715d5b6375585f74a064635a63617463645c67",
+      "type": "text",
+      "decoded": "You sit somewhat dejectedly"
+    },
+    {
+      "offset": 1143,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1144,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1145,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1146,
+      "size": 41,
+      "bytes": "9558635ea092576159a074635c5c71a0675d73a0745da05e5d74a0745f5963a0745863a06472735e59",
+      "type": "text",
+      "decoded": "When Rick tells you to not take the drunk"
+    },
+    {
+      "offset": 1187,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1188,
+      "size": 21,
+      "bytes": "71a0615d5b5b635e7471a0706372715d5e5f5c5c67",
+      "type": "text",
+      "decoded": "s comments personally"
+    },
+    {
+      "offset": 1209,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1210,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1211,
+      "size": 19,
+      "bytes": "675d73a0726371705d5e64a074585f74a05774",
+      "type": "text",
+      "decoded": "you respond that it"
+    },
+    {
+      "offset": 1230,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1231,
+      "size": 57,
+      "bytes": "71a0585f7264a0745da059636370a058576558a071635c66a063717463635ba05f66746372a05fa0625f72725f6563a05c575963a074585f74",
+      "type": "text",
+      "decoded": "s hard to keep high self esteem after a barrage like that"
+    },
+    {
+      "offset": 1288,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1289,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1290,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1291,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 1293,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 1296,
+      "size": 22,
+      "bytes": "635ea092576159a05f715971a0675d73a05766a05774",
+      "type": "text",
+      "decoded": "en Rick asks you if it"
+    },
+    {
+      "offset": 1318,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1319,
+      "size": 15,
+      "bytes": "71a074727363a074585f74a0675d73",
+      "type": "text",
+      "decoded": "s true that you"
+    },
+    {
+      "offset": 1334,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1335,
+      "size": 29,
+      "bytes": "7663a05e63766372a06263635ea0745da0745863a091745f72705d7274",
+      "type": "text",
+      "decoded": "ve never been to the Starport"
+    },
+    {
+      "offset": 1364,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1365,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1366,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1367,
+      "size": 23,
+      "bytes": "9558635ea0675d73a06572735b625c63a05d7374a05fa0",
+      "type": "text",
+      "decoded": "When you grumble out a "
+    },
+    {
+      "offset": 1390,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1391,
+      "size": 3,
+      "bytes": "676371",
+      "type": "text",
+      "decoded": "yes"
+    },
+    {
+      "offset": 1394,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1395,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1396,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1397,
+      "size": 71,
+      "bytes": "5863a072635f61586371a0575e745da0585771a076637174a0705d61596374a05f5e64a070735c5c71a05d7374a05fa0715b5f5c5ca0635c636174725d5e5761a0646376576163",
+      "type": "text",
+      "decoded": "he reaches into his vest pocket and pulls out a small electronic device"
+    },
+    {
+      "offset": 1468,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1469,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1470,
+      "size": 21,
+      "bytes": "7558576158a05863a06557766371a0745da0675d73",
+      "type": "text",
+      "decoded": "which he gives to you"
+    },
+    {
+      "offset": 1491,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1492,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1493,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1494,
+      "size": 23,
+      "bytes": "9558635ea0675d73a05f7159a075585f74a05774a05771",
+      "type": "text",
+      "decoded": "When you ask what it is"
+    },
+    {
+      "offset": 1517,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1518,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1519,
+      "size": 21,
+      "bytes": "5863a074635c5c71a0675d73a074585f74a0675d73",
+      "type": "text",
+      "decoded": "he tells you that you"
+    },
+    {
+      "offset": 1540,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1541,
+      "size": 24,
+      "bytes": "5c5ca0595e5d75a07558635ea0675d73a05e636364a0745d",
+      "type": "text",
+      "decoded": "ll know when you need to"
+    },
+    {
+      "offset": 1565,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1566,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1567,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1568,
+      "size": 14,
+      "bytes": "9458635ea05863a05c635f766371",
+      "type": "text",
+      "decoded": "Then he leaves"
+    },
+    {
+      "offset": 1582,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1583,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1584,
+      "size": 3,
+      "bytes": "f49dbf",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE 9d bf",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        157,
+        191
+      ]
+    },
+    {
+      "offset": 1587,
+      "size": 4,
+      "bytes": "e8ccc5ec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=cc jump\u2192[ECC5]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        204,
+        60613
+      ]
+    },
+    {
+      "offset": 1591,
+      "size": 39,
+      "bytes": "945863a05c5d735e6563a05771a066735c5ca05d66a070635d705c63a0615d5e76637271575e65",
+      "type": "text",
+      "decoded": "The lounge is full of people conversing"
+    },
+    {
+      "offset": 1630,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1631,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1632,
+      "size": 8,
+      "bytes": "5c5f736558575e65",
+      "type": "text",
+      "decoded": "laughing"
+    },
+    {
+      "offset": 1640,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1641,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1642,
+      "size": 22,
+      "bytes": "5f5e64a0585f76575e65a05fa0655d5d64a074575b63",
+      "type": "text",
+      "decoded": "and having a good time"
+    },
+    {
+      "offset": 1664,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1665,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1666,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1667,
+      "size": 14,
+      "bytes": "9558635ea0675d73a0635e746372",
+      "type": "text",
+      "decoded": "When you enter"
+    },
+    {
+      "offset": 1681,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1682,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1683,
+      "size": 7,
+      "bytes": "585d7563766372",
+      "type": "text",
+      "decoded": "however"
+    },
+    {
+      "offset": 1690,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1691,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1692,
+      "size": 26,
+      "bytes": "74586367a071745d70a05f5e64a071745f7263a05f74a0675d73",
+      "type": "text",
+      "decoded": "they stop and stare at you"
+    },
+    {
+      "offset": 1718,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1719,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1720,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1721,
+      "size": 34,
+      "bytes": "915d5b63a05d66a0745863a071745f726371a0615d5e745f575ea064577165737174",
+      "type": "text",
+      "decoded": "Some of the stares contain disgust"
+    },
+    {
+      "offset": 1755,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1756,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1757,
+      "size": 31,
+      "bytes": "5d7458637271a0585f7663a070737263a0585f74726364a0575ea07458635b",
+      "type": "text",
+      "decoded": "others have pure hatred in them"
+    },
+    {
+      "offset": 1788,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1789,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1790,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1791,
+      "size": 29,
+      "bytes": "875d73a07458575e59a05774a070727364635e74a0745da05c635f7663",
+      "type": "text",
+      "decoded": "You think it prudent to leave"
+    },
+    {
+      "offset": 1820,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1821,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1822,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1823,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 1825,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1826,
+      "size": 1,
+      "bytes": "ed",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP"
+    }
+  ]
+}

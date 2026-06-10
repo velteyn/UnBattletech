@@ -1,0 +1,5095 @@
+{
+  "filename": "HOSPITAL.BLD",
+  "size": 4581,
+  "header": {
+    "file_type": 227,
+    "paragraphs": 17,
+    "signature": "eec6ebea",
+    "content_type": "c0f5",
+    "content_type_name": "shop/service",
+    "subtype": 200
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "e311eec6ebeac0f5",
+      "type": "header",
+      "annotation": "type=e3 paragraphs=17 sig=eec6ebea content=shop/service subtype=c8"
+    },
+    {
+      "offset": 8,
+      "size": 1,
+      "bytes": "c8",
+      "type": "unknown",
+      "annotation": "u_c8"
+    },
+    {
+      "offset": 9,
+      "size": 1,
+      "bytes": "e2",
+      "type": "unknown",
+      "annotation": "u_e2"
+    },
+    {
+      "offset": 10,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 11,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 14,
+      "size": 18,
+      "bytes": "73a064736159a0735e646372a05fa05c5d75",
+      "type": "text",
+      "decoded": "u duck under a low"
+    },
+    {
+      "offset": 32,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 33,
+      "size": 12,
+      "bytes": "585f5e65575e65a062635f5b",
+      "type": "text",
+      "decoded": "hanging beam"
+    },
+    {
+      "offset": 45,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 46,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 47,
+      "size": 63,
+      "bytes": "5f5e64a0635e746372a0575e745da075585f74a0615f5ea05d5e5c67a05c5d5d71635c67a06263a0646371617257626364a05f71a05fa0585d717057745f5c",
+      "type": "text",
+      "decoded": "and enter into what can only loosely be described as a hospital"
+    },
+    {
+      "offset": 110,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 111,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 112,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 113,
+      "size": 47,
+      "bytes": "90635d705c63a05f7263a0625c636364575e65a05f5e64a0615d736558575e65a05f5c5ca05f725d735e64a0675d73",
+      "type": "text",
+      "decoded": "People are bleeding and coughing all around you"
+    },
+    {
+      "offset": 160,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 161,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 162,
+      "size": 61,
+      "bytes": "5f71a0675d73a071746370a0615f726366735c5c67a05f725d735e64a07458635ba05f5e64a05f7070725d5f6158a0745863a066725d5e74a064637159",
+      "type": "text",
+      "decoded": "as you step carefully around them and approach the front desk"
+    },
+    {
+      "offset": 223,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 224,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 225,
+      "size": 4,
+      "bytes": "e8d8bfec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=d8 jump\u2192[ECBF]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        216,
+        60607
+      ]
+    },
+    {
+      "offset": 229,
+      "size": 71,
+      "bytes": "905d5c5771586364a0717463635ca062635f5b71a0717370705d7274a0745863a05b5f7171577663a06273575c64575e65a0675d73a0585f7663a05a737174a0635e7463726364",
+      "type": "text",
+      "decoded": "Polished steel beams support the massive building you have just entered"
+    },
+    {
+      "offset": 300,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 301,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 302,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 303,
+      "size": 29,
+      "bytes": "9458575e6571a071705f72595c63a0575ea0615c635f5e5c575e637171",
+      "type": "text",
+      "decoded": "Things sparkle in cleanliness"
+    },
+    {
+      "offset": 332,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 333,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 334,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 335,
+      "size": 52,
+      "bytes": "875d73a05c5d5d59a05f725d735e64a0575ea05f7563a05f74a0745863a071705c635e645d72a05d66a074585771a0705c5f6163",
+      "type": "text",
+      "decoded": "You look around in awe at the splendor of this place"
+    },
+    {
+      "offset": 387,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 388,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 389,
+      "size": 16,
+      "bytes": "5f5e64a062735b70a0575e745da05fa0",
+      "type": "text",
+      "decoded": "and bump into a "
+    },
+    {
+      "offset": 405,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 406,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 407,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 408,
+      "size": 47,
+      "bytes": "665d5d74a071745f747363a05d66a074755da0715e5f596371a0575e7463727475575e6364a05d5ea05fa0705d5c63",
+      "type": "text",
+      "decoded": "foot statue of two snakes intertwined on a pole"
+    },
+    {
+      "offset": 455,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 456,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 457,
+      "size": 31,
+      "bytes": "745863a0735e57766372715f5ca071675b625d5ca05d66a058635f5c637271",
+      "type": "text",
+      "decoded": "the universal symbol of healers"
+    },
+    {
+      "offset": 488,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 489,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 490,
+      "size": 3,
+      "bytes": "f0c0d6",
+      "type": "opcode",
+      "annotation": "SET_TEXT_MARGINS c0 d6",
+      "opcode": 240,
+      "opcode_name": "SET_TEXT_MARGINS",
+      "operands": [
+        192,
+        214
+      ]
+    },
+    {
+      "offset": 493,
+      "size": 3,
+      "bytes": "ec819b",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [9B81]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        39809
+      ]
+    },
+    {
+      "offset": 496,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 501,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 502,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 503,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 504,
+      "size": 2,
+      "bytes": "f3ba",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=ba",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        186
+      ]
+    },
+    {
+      "offset": 506,
+      "size": 3,
+      "bytes": "f0c0b9",
+      "type": "opcode",
+      "annotation": "SET_TEXT_MARGINS c0 b9",
+      "opcode": 240,
+      "opcode_name": "SET_TEXT_MARGINS",
+      "operands": [
+        192,
+        185
+      ]
+    },
+    {
+      "offset": 509,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 512,
+      "size": 8,
+      "bytes": "95575c5ca0675d73",
+      "type": "text",
+      "decoded": "Will you"
+    },
+    {
+      "offset": 520,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 521,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 522,
+      "size": 10,
+      "bytes": "856374a058635f5c6364",
+      "type": "text",
+      "decoded": "Get healed"
+    },
+    {
+      "offset": 532,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 533,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 534,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 535,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 536,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 537,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 538,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 539,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 544,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 545,
+      "size": 22,
+      "bytes": "7f7474635e64a05b636457615f5ca071635b575e5f72",
+      "type": "text",
+      "decoded": "Attend medical seminar"
+    },
+    {
+      "offset": 567,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 568,
+      "size": 22,
+      "bytes": "91635f726158a05b636457615f5ca07263615d726471",
+      "type": "text",
+      "decoded": "Search medical records"
+    },
+    {
+      "offset": 590,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 591,
+      "size": 14,
+      "bytes": "945f5c59a0745da05d7458637271",
+      "type": "text",
+      "decoded": "Talk to others"
+    },
+    {
+      "offset": 605,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 606,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 607,
+      "size": 1,
+      "bytes": "db",
+      "type": "unknown",
+      "annotation": "u_db"
+    },
+    {
+      "offset": 608,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 609,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 610,
+      "size": 1,
+      "bytes": "42",
+      "type": "transparent",
+      "annotation": "byte_42"
+    },
+    {
+      "offset": 611,
+      "size": 1,
+      "bytes": "c2",
+      "type": "marker",
+      "annotation": "noop_c2"
+    },
+    {
+      "offset": 612,
+      "size": 3,
+      "bytes": "ec7c63",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [637C]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25468
+      ]
+    },
+    {
+      "offset": 615,
+      "size": 16,
+      "bytes": "5f7663a0745863a0585d717057745f5c",
+      "type": "text",
+      "decoded": "ave the hospital"
+    },
+    {
+      "offset": 631,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 632,
+      "size": 5,
+      "bytes": "e7c7f2c2fb",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=-3385 jump\u2192[FBC2]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        -3385,
+        64450
+      ]
+    },
+    {
+      "offset": 637,
+      "size": 1,
+      "bytes": "b7",
+      "type": "marker",
+      "annotation": "price:111"
+    },
+    {
+      "offset": 638,
+      "size": 1,
+      "bytes": "a1",
+      "type": "marker",
+      "annotation": "noop_a1"
+    },
+    {
+      "offset": 639,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 640,
+      "size": 3,
+      "bytes": "eebbe0",
+      "type": "opcode",
+      "annotation": "SPEND_CREDITS bb e0",
+      "opcode": 238,
+      "opcode_name": "SPEND_CREDITS",
+      "operands": [
+        187,
+        224
+      ]
+    },
+    {
+      "offset": 643,
+      "size": 1,
+      "bytes": "cf",
+      "type": "unknown",
+      "annotation": "u_cf"
+    },
+    {
+      "offset": 644,
+      "size": 3,
+      "bytes": "ec8273",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [7382]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        29570
+      ]
+    },
+    {
+      "offset": 647,
+      "size": 8,
+      "bytes": "67a07b6364795774",
+      "type": "text",
+      "decoded": "y MedKit"
+    },
+    {
+      "offset": 655,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 656,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 657,
+      "size": 1,
+      "bytes": "db",
+      "type": "unknown",
+      "annotation": "u_db"
+    },
+    {
+      "offset": 658,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 659,
+      "size": 1,
+      "bytes": "c1",
+      "type": "marker",
+      "annotation": "noop_c1"
+    },
+    {
+      "offset": 660,
+      "size": 1,
+      "bytes": "36",
+      "type": "transparent",
+      "annotation": "byte_36"
+    },
+    {
+      "offset": 661,
+      "size": 1,
+      "bytes": "c2",
+      "type": "marker",
+      "annotation": "noop_c2"
+    },
+    {
+      "offset": 662,
+      "size": 3,
+      "bytes": "ec7c63",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [637C]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25468
+      ]
+    },
+    {
+      "offset": 665,
+      "size": 16,
+      "bytes": "5f7663a0745863a0585d717057745f5c",
+      "type": "text",
+      "decoded": "ave the hospital"
+    },
+    {
+      "offset": 681,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 682,
+      "size": 5,
+      "bytes": "e7c9f2c2fb",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=-3383 jump\u2192[FBC2]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        -3383,
+        64450
+      ]
+    },
+    {
+      "offset": 687,
+      "size": 1,
+      "bytes": "b7",
+      "type": "marker",
+      "annotation": "price:111"
+    },
+    {
+      "offset": 688,
+      "size": 1,
+      "bytes": "a1",
+      "type": "marker",
+      "annotation": "noop_a1"
+    },
+    {
+      "offset": 689,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 690,
+      "size": 3,
+      "bytes": "eebbc6",
+      "type": "opcode",
+      "annotation": "SPEND_CREDITS bb c6",
+      "opcode": 238,
+      "opcode_name": "SPEND_CREDITS",
+      "operands": [
+        187,
+        198
+      ]
+    },
+    {
+      "offset": 693,
+      "size": 1,
+      "bytes": "be",
+      "type": "marker",
+      "annotation": "price:125"
+    },
+    {
+      "offset": 694,
+      "size": 1,
+      "bytes": "e0",
+      "type": "unknown",
+      "annotation": "u_e0"
+    },
+    {
+      "offset": 695,
+      "size": 1,
+      "bytes": "cf",
+      "type": "unknown",
+      "annotation": "u_cf"
+    },
+    {
+      "offset": 696,
+      "size": 3,
+      "bytes": "ec8273",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [7382]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        29570
+      ]
+    },
+    {
+      "offset": 699,
+      "size": 19,
+      "bytes": "67a08657635c64a091737265637267a0795774",
+      "type": "text",
+      "decoded": "y Field Surgery Kit"
+    },
+    {
+      "offset": 718,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 719,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 720,
+      "size": 3,
+      "bytes": "ec7c63",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [637C]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25468
+      ]
+    },
+    {
+      "offset": 723,
+      "size": 16,
+      "bytes": "5f7663a0745863a0585d717057745f5c",
+      "type": "text",
+      "decoded": "ave the hospital"
+    },
+    {
+      "offset": 739,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 740,
+      "size": 5,
+      "bytes": "e7ccf2c2fb",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=-3380 jump\u2192[FBC2]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        -3380,
+        64450
+      ]
+    },
+    {
+      "offset": 745,
+      "size": 1,
+      "bytes": "b7",
+      "type": "marker",
+      "annotation": "price:111"
+    },
+    {
+      "offset": 746,
+      "size": 1,
+      "bytes": "a1",
+      "type": "marker",
+      "annotation": "noop_a1"
+    },
+    {
+      "offset": 747,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 748,
+      "size": 3,
+      "bytes": "eebbc6",
+      "type": "opcode",
+      "annotation": "SPEND_CREDITS bb c6",
+      "opcode": 238,
+      "opcode_name": "SPEND_CREDITS",
+      "operands": [
+        187,
+        198
+      ]
+    },
+    {
+      "offset": 751,
+      "size": 1,
+      "bytes": "be",
+      "type": "marker",
+      "annotation": "price:125"
+    },
+    {
+      "offset": 752,
+      "size": 1,
+      "bytes": "1f",
+      "type": "transparent",
+      "annotation": "byte_1f"
+    },
+    {
+      "offset": 753,
+      "size": 1,
+      "bytes": "bd",
+      "type": "marker",
+      "annotation": "rbracket"
+    },
+    {
+      "offset": 754,
+      "size": 1,
+      "bytes": "e0",
+      "type": "unknown",
+      "annotation": "u_e0"
+    },
+    {
+      "offset": 755,
+      "size": 1,
+      "bytes": "cf",
+      "type": "unknown",
+      "annotation": "u_cf"
+    },
+    {
+      "offset": 756,
+      "size": 3,
+      "bytes": "f497c0",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE 97 c0",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        151,
+        192
+      ]
+    },
+    {
+      "offset": 759,
+      "size": 2,
+      "bytes": "f3d5",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=d5",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        213
+      ]
+    },
+    {
+      "offset": 761,
+      "size": 2,
+      "bytes": "f5c7",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=c7",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        199
+      ]
+    },
+    {
+      "offset": 763,
+      "size": 1,
+      "bytes": "d3",
+      "type": "unknown",
+      "annotation": "u_d3"
+    },
+    {
+      "offset": 764,
+      "size": 1,
+      "bytes": "c1",
+      "type": "marker",
+      "annotation": "noop_c1"
+    },
+    {
+      "offset": 765,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 768,
+      "size": 17,
+      "bytes": "7e5d625d6467a05771a0755d735e646364",
+      "type": "text",
+      "decoded": "Nobody is wounded"
+    },
+    {
+      "offset": 785,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 786,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 787,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 789,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 790,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 791,
+      "size": 3,
+      "bytes": "ebf0c0",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [C0F0]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        49392
+      ]
+    },
+    {
+      "offset": 794,
+      "size": 1,
+      "bytes": "d6",
+      "type": "unknown",
+      "annotation": "u_d6"
+    },
+    {
+      "offset": 795,
+      "size": 3,
+      "bytes": "ec819b",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [9B81]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        39809
+      ]
+    },
+    {
+      "offset": 798,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 803,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 804,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 805,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 806,
+      "size": 2,
+      "bytes": "f3ba",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=ba",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        186
+      ]
+    },
+    {
+      "offset": 808,
+      "size": 3,
+      "bytes": "f0c0c0",
+      "type": "opcode",
+      "annotation": "SET_TEXT_MARGINS c0 c0",
+      "opcode": 240,
+      "opcode_name": "SET_TEXT_MARGINS",
+      "operands": [
+        192,
+        192
+      ]
+    },
+    {
+      "offset": 811,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 814,
+      "size": 33,
+      "bytes": "63a0585d717057745f5ca061585f72656371a05fa0665c5f74a0666363a05d66a0",
+      "type": "text",
+      "decoded": "e hospital charges a flat fee of "
+    },
+    {
+      "offset": 847,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 848,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 849,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 850,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 851,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 852,
+      "size": 35,
+      "bytes": "62575c5c71a0665d72a0745863a0737163a05d66a0577471a0665f61575c5774576371",
+      "type": "text",
+      "decoded": "bills for the use of its facilities"
+    },
+    {
+      "offset": 887,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 888,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 889,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 890,
+      "size": 1,
+      "bytes": "dd",
+      "type": "unknown",
+      "annotation": "u_dd"
+    },
+    {
+      "offset": 891,
+      "size": 1,
+      "bytes": "c7",
+      "type": "unknown",
+      "annotation": "u_c7"
+    },
+    {
+      "offset": 892,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 893,
+      "size": 1,
+      "bytes": "ba",
+      "type": "marker",
+      "annotation": "rparen"
+    },
+    {
+      "offset": 894,
+      "size": 1,
+      "bytes": "c4",
+      "type": "unknown",
+      "annotation": "u_c4"
+    },
+    {
+      "offset": 895,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 898,
+      "size": 75,
+      "bytes": "7372a05f61615d735e74a0645d6371a05e5d74a0585f7663a0635e5d736558a0575ea05774a0745da0705f67a0665d72a0745863a0717370705c576371a0675d73a0755d735c64a0737163",
+      "type": "text",
+      "decoded": "ur account does not have enough in it to pay for the supplies you would use"
+    },
+    {
+      "offset": 973,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 974,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 975,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 976,
+      "size": 54,
+      "bytes": "875d73a075575c5ca0585f7663a0745da0656374a05b5d7263a05b5d5e6367a06263665d7263a0675d73a0615f5ea058635f5ca07370",
+      "type": "text",
+      "decoded": "You will have to get more money before you can heal up"
+    },
+    {
+      "offset": 1030,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1031,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1032,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 1034,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1035,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1036,
+      "size": 1,
+      "bytes": "de",
+      "type": "unknown",
+      "annotation": "u_de"
+    },
+    {
+      "offset": 1037,
+      "size": 1,
+      "bytes": "c7",
+      "type": "unknown",
+      "annotation": "u_c7"
+    },
+    {
+      "offset": 1038,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1039,
+      "size": 2,
+      "bytes": "f5a5",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=a5",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        165
+      ]
+    },
+    {
+      "offset": 1041,
+      "size": 1,
+      "bytes": "d4",
+      "type": "unknown",
+      "annotation": "u_d4"
+    },
+    {
+      "offset": 1042,
+      "size": 1,
+      "bytes": "c4",
+      "type": "unknown",
+      "annotation": "u_c4"
+    },
+    {
+      "offset": 1043,
+      "size": 4,
+      "bytes": "e819c4ec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=19 jump\u2192[ECC4]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        25,
+        60612
+      ]
+    },
+    {
+      "offset": 1047,
+      "size": 38,
+      "bytes": "945863a0645d61745d7271a05f5c5ca05c5d5d59a05f74a0675d73a071615d725e66735c5c67",
+      "type": "text",
+      "decoded": "The doctors all look at you scornfully"
+    },
+    {
+      "offset": 1085,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1086,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1087,
+      "size": 44,
+      "bytes": "5f5e64a05774a05771a05d6276575d7371a05e5d5e63a05d66a07458635ba075575c5ca058635c70a0675d73",
+      "type": "text",
+      "decoded": "and it is obvious none of them will help you"
+    },
+    {
+      "offset": 1131,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1132,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1133,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1134,
+      "size": 57,
+      "bytes": "875d73a075575c5ca0585f7663a0745da072635c67a05d5ea0675d7372a05d755ea07159575c5c71a0745da058635f5ca0675d737271635c66",
+      "type": "text",
+      "decoded": "You will have to rely on your own skills to heal yourself"
+    },
+    {
+      "offset": 1191,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1192,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1193,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 1195,
+      "size": 1,
+      "bytes": "db",
+      "type": "unknown",
+      "annotation": "u_db"
+    },
+    {
+      "offset": 1196,
+      "size": 1,
+      "bytes": "c4",
+      "type": "unknown",
+      "annotation": "u_c4"
+    },
+    {
+      "offset": 1197,
+      "size": 3,
+      "bytes": "ec845d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D84]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23940
+      ]
+    },
+    {
+      "offset": 1200,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1201,
+      "size": 57,
+      "bytes": "675d73a0755f5e74a0745da058577263a05fa05b636457615f5ca070725d66637171575d5e5f5ca066725d5ba0745863a0585d717057745f5c",
+      "type": "text",
+      "decoded": "you want to hire a medical professional from the hospital"
+    },
+    {
+      "offset": 1258,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 1259,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1260,
+      "size": 3,
+      "bytes": "f6f1c4",
+      "type": "opcode",
+      "annotation": "CHECK_CONDITION \u2192 [C4F1]",
+      "opcode": 246,
+      "opcode_name": "CHECK_CONDITION",
+      "operands": [
+        50417
+      ]
+    },
+    {
+      "offset": 1263,
+      "size": 3,
+      "bytes": "f4cac0",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE ca c0",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        202,
+        192
+      ]
+    },
+    {
+      "offset": 1266,
+      "size": 4,
+      "bytes": "e8cec6ec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ce jump\u2192[ECC6]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        206,
+        60614
+      ]
+    },
+    {
+      "offset": 1270,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1271,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1272,
+      "size": 45,
+      "bytes": "91635c636174a0745863a0615f5c57626372a05d66a0645d61745d72a0675d73a0755f5e74a0745da058577263",
+      "type": "text",
+      "decoded": "Select the caliber of doctor you want to hire"
+    },
+    {
+      "offset": 1317,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 1318,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1319,
+      "size": 15,
+      "bytes": "94725f575e6363a0a0a0a0a0a0a0a0",
+      "type": "text",
+      "decoded": "Trainee        "
+    },
+    {
+      "offset": 1334,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 1335,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1336,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1337,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1338,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1339,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1344,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1345,
+      "size": 14,
+      "bytes": "775e7463725ea0a0a0a0a0a0a0a0",
+      "type": "text",
+      "decoded": "Intern        "
+    },
+    {
+      "offset": 1359,
+      "size": 1,
+      "bytes": "af",
+      "type": "marker",
+      "annotation": "price:40"
+    },
+    {
+      "offset": 1360,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1361,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1362,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1363,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1364,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1365,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1370,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1371,
+      "size": 14,
+      "bytes": "905867715761575f5ea0a0a0a0a0",
+      "type": "text",
+      "decoded": "Physician     "
+    },
+    {
+      "offset": 1385,
+      "size": 1,
+      "bytes": "af",
+      "type": "marker",
+      "annotation": "price:40"
+    },
+    {
+      "offset": 1386,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 1387,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1388,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1389,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1390,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1391,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1396,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1397,
+      "size": 14,
+      "bytes": "785f6159a071737265635d5ea0a0",
+      "type": "text",
+      "decoded": "Hack surgeon  "
+    },
+    {
+      "offset": 1411,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 1412,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1413,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1414,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1415,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1416,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1417,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1422,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1423,
+      "size": 14,
+      "bytes": "86735c5ca071737265635d5ea0a0",
+      "type": "text",
+      "decoded": "Full surgeon  "
+    },
+    {
+      "offset": 1437,
+      "size": 1,
+      "bytes": "b4",
+      "type": "marker",
+      "annotation": "price:105"
+    },
+    {
+      "offset": 1438,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1439,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1440,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1441,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1442,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1443,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1448,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1449,
+      "size": 14,
+      "bytes": "91706361575f5c577174a0a0a0a0",
+      "type": "text",
+      "decoded": "Specialist    "
+    },
+    {
+      "offset": 1463,
+      "size": 1,
+      "bytes": "b6",
+      "type": "marker",
+      "annotation": "price:109"
+    },
+    {
+      "offset": 1464,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1465,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1466,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1467,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1468,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1469,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1474,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1475,
+      "size": 14,
+      "bytes": "7e6373725d71737265635d5ea0a0",
+      "type": "text",
+      "decoded": "Neurosurgeon  "
+    },
+    {
+      "offset": 1489,
+      "size": 1,
+      "bytes": "b5",
+      "type": "marker",
+      "annotation": "price:107"
+    },
+    {
+      "offset": 1490,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 1491,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1492,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1493,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1494,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1495,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 1500,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1501,
+      "size": 6,
+      "bytes": "815f5e61635c",
+      "type": "text",
+      "decoded": "Cancel"
+    },
+    {
+      "offset": 1507,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1508,
+      "size": 5,
+      "bytes": "e7caf4c3ea",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=-2870 jump\u2192[EAC3]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        -2870,
+        60099
+      ]
+    },
+    {
+      "offset": 1513,
+      "size": 1,
+      "bytes": "c3",
+      "type": "marker",
+      "annotation": "noop_c3"
+    },
+    {
+      "offset": 1514,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1515,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 1516,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 1517,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 1518,
+      "size": 1,
+      "bytes": "bc",
+      "type": "marker",
+      "annotation": "lbracket"
+    },
+    {
+      "offset": 1519,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 1520,
+      "size": 1,
+      "bytes": "d2",
+      "type": "unknown",
+      "annotation": "u_d2"
+    },
+    {
+      "offset": 1521,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 1522,
+      "size": 1,
+      "bytes": "c8",
+      "type": "unknown",
+      "annotation": "u_c8"
+    },
+    {
+      "offset": 1523,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 1524,
+      "size": 1,
+      "bytes": "db",
+      "type": "unknown",
+      "annotation": "u_db"
+    },
+    {
+      "offset": 1525,
+      "size": 1,
+      "bytes": "c4",
+      "type": "unknown",
+      "annotation": "u_c4"
+    },
+    {
+      "offset": 1526,
+      "size": 3,
+      "bytes": "f4cabf",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE ca bf",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        202,
+        191
+      ]
+    },
+    {
+      "offset": 1529,
+      "size": 4,
+      "bytes": "e8cec6f4",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ce jump\u2192[F4C6]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        206,
+        62662
+      ]
+    },
+    {
+      "offset": 1533,
+      "size": 1,
+      "bytes": "ca",
+      "type": "unknown",
+      "annotation": "u_ca"
+    },
+    {
+      "offset": 1534,
+      "size": 1,
+      "bytes": "c2",
+      "type": "marker",
+      "annotation": "noop_c2"
+    },
+    {
+      "offset": 1535,
+      "size": 4,
+      "bytes": "e8cec6f4",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ce jump\u2192[F4C6]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        206,
+        62662
+      ]
+    },
+    {
+      "offset": 1539,
+      "size": 1,
+      "bytes": "ca",
+      "type": "unknown",
+      "annotation": "u_ca"
+    },
+    {
+      "offset": 1540,
+      "size": 1,
+      "bytes": "c1",
+      "type": "marker",
+      "annotation": "noop_c1"
+    },
+    {
+      "offset": 1541,
+      "size": 4,
+      "bytes": "e8cec6f4",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ce jump\u2192[F4C6]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        206,
+        62662
+      ]
+    },
+    {
+      "offset": 1545,
+      "size": 1,
+      "bytes": "ca",
+      "type": "unknown",
+      "annotation": "u_ca"
+    },
+    {
+      "offset": 1546,
+      "size": 1,
+      "bytes": "c4",
+      "type": "unknown",
+      "annotation": "u_c4"
+    },
+    {
+      "offset": 1547,
+      "size": 4,
+      "bytes": "e8cec6f4",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ce jump\u2192[F4C6]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        206,
+        62662
+      ]
+    },
+    {
+      "offset": 1551,
+      "size": 1,
+      "bytes": "ca",
+      "type": "unknown",
+      "annotation": "u_ca"
+    },
+    {
+      "offset": 1552,
+      "size": 1,
+      "bytes": "c3",
+      "type": "marker",
+      "annotation": "noop_c3"
+    },
+    {
+      "offset": 1553,
+      "size": 4,
+      "bytes": "e8cec6f4",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ce jump\u2192[F4C6]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        206,
+        62662
+      ]
+    },
+    {
+      "offset": 1557,
+      "size": 1,
+      "bytes": "ca",
+      "type": "unknown",
+      "annotation": "u_ca"
+    },
+    {
+      "offset": 1558,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 1559,
+      "size": 4,
+      "bytes": "e8cec6f4",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ce jump\u2192[F4C6]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        206,
+        62662
+      ]
+    },
+    {
+      "offset": 1563,
+      "size": 1,
+      "bytes": "ca",
+      "type": "unknown",
+      "annotation": "u_ca"
+    },
+    {
+      "offset": 1564,
+      "size": 1,
+      "bytes": "c5",
+      "type": "unknown",
+      "annotation": "u_c5"
+    },
+    {
+      "offset": 1565,
+      "size": 4,
+      "bytes": "e8cec6f3",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=ce jump\u2192[F3C6]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        206,
+        62406
+      ]
+    },
+    {
+      "offset": 1569,
+      "size": 1,
+      "bytes": "c8",
+      "type": "unknown",
+      "annotation": "u_c8"
+    },
+    {
+      "offset": 1570,
+      "size": 4,
+      "bytes": "e8c0c0eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[EBC0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        60352
+      ]
+    },
+    {
+      "offset": 1574,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 1577,
+      "size": 79,
+      "bytes": "73a05f7070725d5f6158a0745863a066725d5e74a064637159a05f5e64a05f7159a0745863a05e73727163a07458637263a0745da071615f5ea07458635772a05b636457615f5ca07263615d726471",
+      "type": "text",
+      "decoded": "u approach the front desk and ask the nurse there to scan their medical records"
+    },
+    {
+      "offset": 1656,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1657,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1658,
+      "size": 64,
+      "bytes": "745da0716363a05766a074586367a0585f7663a05fa0705f7457635e74a06267a0745863a05e5f5b63a05d66a07a6372635b575f58a0875d735e65625c5d5d64",
+      "type": "text",
+      "decoded": "to see if they have a patient by the name of Jeremiah Youngblood"
+    },
+    {
+      "offset": 1722,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1723,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1724,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1725,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1726,
+      "size": 2,
+      "bytes": "f5c8",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=c8",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        200
+      ]
+    },
+    {
+      "offset": 1728,
+      "size": 1,
+      "bytes": "06",
+      "type": "control",
+      "annotation": "break_06"
+    },
+    {
+      "offset": 1729,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 1730,
+      "size": 2,
+      "bytes": "f3be",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=be",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        190
+      ]
+    },
+    {
+      "offset": 1732,
+      "size": 2,
+      "bytes": "f5be",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=be",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        190
+      ]
+    },
+    {
+      "offset": 1734,
+      "size": 1,
+      "bytes": "37",
+      "type": "transparent",
+      "annotation": "byte_37"
+    },
+    {
+      "offset": 1735,
+      "size": 1,
+      "bytes": "c5",
+      "type": "unknown",
+      "annotation": "u_c5"
+    },
+    {
+      "offset": 1736,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 1739,
+      "size": 123,
+      "bytes": "63a05e73727163a06473745766735c5c67a071615f5e71a0745863a0705f7457635e74a0725d71746372a05f5e64a07263705c576371a0575ea05fa05e5f715f5c5c67a0765d576163a074585f74a07458637263a05771a05e5d625d6467a072636557717463726364a058637263a06267a074585f74a05e5f5b63",
+      "type": "text",
+      "decoded": "e nurse dutifully scans the patient roster and replies in a nasally voice that there is nobody registered here by that name"
+    },
+    {
+      "offset": 1862,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1863,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1864,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1865,
+      "size": 13,
+      "bytes": "875d73a074585f5e59a0586372",
+      "type": "text",
+      "decoded": "You thank her"
+    },
+    {
+      "offset": 1878,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1879,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1880,
+      "size": 7,
+      "bytes": "5f5e64a0615f5e",
+      "type": "text",
+      "decoded": "and can"
+    },
+    {
+      "offset": 1887,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1888,
+      "size": 36,
+      "bytes": "74a058635c70a0627374a06663635ca05fa0625774a05b5d7263a0646370726371716364",
+      "type": "text",
+      "decoded": "t help but feel a bit more depressed"
+    },
+    {
+      "offset": 1924,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1925,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1926,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1927,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 1929,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1930,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1931,
+      "size": 2,
+      "bytes": "f5c9",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=c9",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        201
+      ]
+    },
+    {
+      "offset": 1933,
+      "size": 1,
+      "bytes": "ff",
+      "type": "opcode",
+      "annotation": "EXIT",
+      "opcode": 255,
+      "opcode_name": "EXIT"
+    },
+    {
+      "offset": 1934,
+      "size": 1,
+      "bytes": "b7",
+      "type": "marker",
+      "annotation": "price:111"
+    },
+    {
+      "offset": 1935,
+      "size": 3,
+      "bytes": "f4c9bf",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE c9 bf",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        201,
+        191
+      ]
+    },
+    {
+      "offset": 1938,
+      "size": 3,
+      "bytes": "ec7fa0",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [A07F]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        41087
+      ]
+    },
+    {
+      "offset": 1941,
+      "size": 6,
+      "bytes": "645d61745d72",
+      "type": "text",
+      "decoded": "doctor"
+    },
+    {
+      "offset": 1947,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1948,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1949,
+      "size": 22,
+      "bytes": "755f746158575e65a066725d5ba0745863a071576463",
+      "type": "text",
+      "decoded": "watching from the side"
+    },
+    {
+      "offset": 1971,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1972,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1973,
+      "size": 81,
+      "bytes": "615d5b6371a05d766372a05f5e64a0575e7463727273707471a0745863a05e73727163a075585da05771a05f7474635b7074575e65a0745da05f7171577174a0675d73a0575ea0745863a071635f726158",
+      "type": "text",
+      "decoded": "comes over and interrupts the nurse who is attempting to assist you in the search"
+    },
+    {
+      "offset": 2054,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2055,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2056,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 2058,
+      "size": 3,
+      "bytes": "ec7863",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [6378]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25464
+      ]
+    },
+    {
+      "offset": 2061,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2062,
+      "size": 48,
+      "bytes": "665c5f71586371a05fa0755f725ba0715b575c63a05f74a0926368a05f5e64a074586367a071585f5963a0585f5e6471",
+      "type": "text",
+      "decoded": "flashes a warm smile at Rex and they shake hands"
+    },
+    {
+      "offset": 2110,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2111,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2112,
+      "size": 35,
+      "bytes": "7863a06f73637174575d5e71a0755867a0675d7372a065725d7370a05771a058637263",
+      "type": "text",
+      "decoded": "He ouestions why your group is here"
+    },
+    {
+      "offset": 2147,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2148,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2149,
+      "size": 50,
+      "bytes": "5f5e64a0926368a06368705c5f575e71a05f625d7374a0745863a05b577171575d5ea05f5e64a075585da0675d73a05f7263",
+      "type": "text",
+      "decoded": "and Rex explains about the mission and who you are"
+    },
+    {
+      "offset": 2199,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2200,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2201,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2202,
+      "size": 36,
+      "bytes": "945863a0645d61745d72a05c5d5d5971a05f74a0675d73a05f7070725f5771575e655c67",
+      "type": "text",
+      "decoded": "The doctor looks at you appraisingly"
+    },
+    {
+      "offset": 2238,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2239,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2240,
+      "size": 50,
+      "bytes": "7458635ea07558577170637271a0715d5b637458575e65a0745da0926368a05f5e64a074586367a0625d7458a05c5f736558",
+      "type": "text",
+      "decoded": "then whispers something to Rex and they both laugh"
+    },
+    {
+      "offset": 2290,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2291,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2292,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2293,
+      "size": 64,
+      "bytes": "9558635ea0675d73a0575b705f7457635e745c67a0575e6f73577263a05f71a0745da05a737174a063685f61745c67a075585f74a05771a0655d575e65a05d5e",
+      "type": "text",
+      "decoded": "When you impatiently inouire as to just exactly what is going on"
+    },
+    {
+      "offset": 2357,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2358,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2359,
+      "size": 59,
+      "bytes": "745863a0645d61745d72a072635f61586371a0575e745da0585771a0705d61596374a05f5e64a070735c5c71a05d7374a05fa0585d5c5d615f7264",
+      "type": "text",
+      "decoded": "the doctor reaches into his pocket and pulls out a holocard"
+    },
+    {
+      "offset": 2418,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2419,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2420,
+      "size": 2,
+      "bytes": "e9da",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=da",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        218
+      ]
+    },
+    {
+      "offset": 2422,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 2423,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 2424,
+      "size": 3,
+      "bytes": "ebec81",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [81EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        33260
+      ]
+    },
+    {
+      "offset": 2427,
+      "size": 14,
+      "bytes": "5d5e65725f74735c5f74575d5e71",
+      "type": "text",
+      "decoded": "ongratulations"
+    },
+    {
+      "offset": 2441,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 2442,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2443,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2444,
+      "size": 46,
+      "bytes": "875d73a0585f7663a0665d735e64a05d5e63a05d66a0745863a08172637161635e74a0785f7559a05f65635e7471",
+      "type": "text",
+      "decoded": "You have found one of the Crescent Hawk agents"
+    },
+    {
+      "offset": 2490,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 2491,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2492,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2493,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2494,
+      "size": 1,
+      "bytes": "d7",
+      "type": "unknown",
+      "annotation": "u_d7"
+    },
+    {
+      "offset": 2495,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 2496,
+      "size": 4,
+      "bytes": "e8c0c0db",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[DBC0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        56256
+      ]
+    },
+    {
+      "offset": 2500,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 2501,
+      "size": 1,
+      "bytes": "c1",
+      "type": "marker",
+      "annotation": "noop_c1"
+    },
+    {
+      "offset": 2502,
+      "size": 1,
+      "bytes": "06",
+      "type": "control",
+      "annotation": "break_06"
+    },
+    {
+      "offset": 2503,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 2504,
+      "size": 1,
+      "bytes": "d8",
+      "type": "unknown",
+      "annotation": "u_d8"
+    },
+    {
+      "offset": 2505,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 2506,
+      "size": 1,
+      "bytes": "06",
+      "type": "control",
+      "annotation": "break_06"
+    },
+    {
+      "offset": 2507,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 2508,
+      "size": 4,
+      "bytes": "e83bc5eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=3b jump\u2192[EBC5]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        59,
+        60357
+      ]
+    },
+    {
+      "offset": 2512,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 2515,
+      "size": 25,
+      "bytes": "73a071615f5ea0745863a062735c5c6374575ea0625d5f7264",
+      "type": "text",
+      "decoded": "u scan the bulletin board"
+    },
+    {
+      "offset": 2540,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2541,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2542,
+      "size": 59,
+      "bytes": "5f5e64a05e5d74576163a074585f74a0745863a0585d717057745f5ca05771a05d66666372575e65a071635b575e5f7271a05f5e64a0585f5e6471",
+      "type": "text",
+      "decoded": "and notice that the hospital is offering seminars and hands"
+    },
+    {
+      "offset": 2601,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 2602,
+      "size": 59,
+      "bytes": "5d5ea0636870637257635e6163a0745da074635f6158a0675d73a05b5d7263a05f625d7374a06657727174a05f5764a05f5e64a071737265637267",
+      "type": "text",
+      "decoded": "on experience to teach you more about first aid and surgery"
+    },
+    {
+      "offset": 2661,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2662,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2663,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2664,
+      "size": 37,
+      "bytes": "945863a05f645b577171575d5ea0666363a05771a05f5ea05f7174725d5e5d5b57615f5ca0",
+      "type": "text",
+      "decoded": "The admission fee is an astronomical "
+    },
+    {
+      "offset": 2701,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 2702,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 2703,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 2704,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2705,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 2706,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 2707,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 2712,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2713,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2714,
+      "size": 51,
+      "bytes": "627374a0745863a0a0595e5d755c63646563a0745da06263a0655f575e6364a0615d735c64a06263a0575e765f5c735f625c63",
+      "type": "text",
+      "decoded": "but the  knowledge to be gained could be invaluable"
+    },
+    {
+      "offset": 2765,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2766,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 2767,
+      "size": 21,
+      "bytes": "845da0675d73a0755f5e74a0745da05f7474635e64",
+      "type": "text",
+      "decoded": "Do you want to attend"
+    },
+    {
+      "offset": 2788,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 2789,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2790,
+      "size": 3,
+      "bytes": "f6daba",
+      "type": "opcode",
+      "annotation": "CHECK_CONDITION \u2192 [BADA]",
+      "opcode": 246,
+      "opcode_name": "CHECK_CONDITION",
+      "operands": [
+        47834
+      ]
+    },
+    {
+      "offset": 2793,
+      "size": 4,
+      "bytes": "e8c0c0f3",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[F3C0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        62400
+      ]
+    },
+    {
+      "offset": 2797,
+      "size": 1,
+      "bytes": "be",
+      "type": "marker",
+      "annotation": "price:125"
+    },
+    {
+      "offset": 2798,
+      "size": 2,
+      "bytes": "f5be",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=be",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        190
+      ]
+    },
+    {
+      "offset": 2800,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 2801,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 2802,
+      "size": 2,
+      "bytes": "f3d6",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=d6",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        214
+      ]
+    },
+    {
+      "offset": 2804,
+      "size": 2,
+      "bytes": "f5bd",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=bd",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        189
+      ]
+    },
+    {
+      "offset": 2806,
+      "size": 1,
+      "bytes": "87",
+      "type": "text",
+      "decoded": "Y"
+    },
+    {
+      "offset": 2807,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 2808,
+      "size": 2,
+      "bytes": "f3d3",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=d3",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        211
+      ]
+    },
+    {
+      "offset": 2810,
+      "size": 3,
+      "bytes": "ebf5be",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [BEF5]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        48885
+      ]
+    },
+    {
+      "offset": 2813,
+      "size": 1,
+      "bytes": "ca",
+      "type": "unknown",
+      "annotation": "u_ca"
+    },
+    {
+      "offset": 2814,
+      "size": 1,
+      "bytes": "bc",
+      "type": "marker",
+      "annotation": "lbracket"
+    },
+    {
+      "offset": 2815,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 2818,
+      "size": 81,
+      "bytes": "63a0726365577174725f72a071745d7071a0675d73a05f74a0745863a0645d5d72a05f5e64a0745f596371a0675d7372a05e5f5b63a0745f65a066725d5ba0675d73a05f5e64a072577071a05774a07370",
+      "type": "text",
+      "decoded": "e registrar stops you at the door and takes your name tag from you and rips it up"
+    },
+    {
+      "offset": 2899,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2900,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2901,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2902,
+      "size": 43,
+      "bytes": "915863a074635c5c71a0675d73a074585f74a0675d7372a0815d5b91745f72a0625f5c5f5e6163a05771a0",
+      "type": "text",
+      "decoded": "She tells you that your ComStar balance is "
+    },
+    {
+      "offset": 2945,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2946,
+      "size": 2,
+      "bytes": "f3ba",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=ba",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        186
+      ]
+    },
+    {
+      "offset": 2948,
+      "size": 3,
+      "bytes": "ecbb91",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [91BB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        37307
+      ]
+    },
+    {
+      "offset": 2951,
+      "size": 76,
+      "bytes": "5863a0575e665d725b71a0675d73a074585f74a0645d61745d7271a0636870636174a0745da06263a0705f5764a0665d72a0745863a076637267a0585f7264a0755d7259a074586367a0645d",
+      "type": "text",
+      "decoded": "he informs you that doctors expect to be paid for the very hard work they do"
+    },
+    {
+      "offset": 3027,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3028,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3029,
+      "size": 66,
+      "bytes": "5f5e64a0665d72a0675d73a05e5d74a0745da072637473725ea0735e74575ca0675d73a0615f5ea05f66665d7264a0745da0705f67a0675d7372a05d755ea0755f67",
+      "type": "text",
+      "decoded": "and for you not to return until you can afford to pay your own way"
+    },
+    {
+      "offset": 3095,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3096,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3097,
+      "size": 4,
+      "bytes": "e89cbbec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=9c jump\u2192[ECBB]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        156,
+        60603
+      ]
+    },
+    {
+      "offset": 3101,
+      "size": 45,
+      "bytes": "875d73a0755f746158a05fa0665f7161575e5f74575e65a0645771705c5f67a05d66a0746361585e5d5c5d6567",
+      "type": "text",
+      "decoded": "You watch a fascinating display of technology"
+    },
+    {
+      "offset": 3146,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3147,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3148,
+      "size": 52,
+      "bytes": "66725d5ba071575b705c63a07159575ea065725f6674575e65a0745da0615d5b705c6368a05b675d5b6372a0575b705c5f5e7471",
+      "type": "text",
+      "decoded": "from simple skin grafting to complex myomer implants"
+    },
+    {
+      "offset": 3200,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3201,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3202,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3203,
+      "size": 50,
+      "bytes": "9458637263a05771a05b736158a05b5d7263a0575e665d725b5f74575d5ea074585f5ea0675d73a0615f5ea0645765637174",
+      "type": "text",
+      "decoded": "There is much more information than you can digest"
+    },
+    {
+      "offset": 3253,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3254,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3255,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3256,
+      "size": 65,
+      "bytes": "915d5b635d5e63a05d66a05fa0585765586372a05b636457615f5ca0625f615965725d735e64a05b57655874a0656374a05b5d7263a05d7374a05d66a074585771",
+      "type": "text",
+      "decoded": "Someone of a higher medical background might get more out of this"
+    },
+    {
+      "offset": 3321,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3322,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3323,
+      "size": 49,
+      "bytes": "627374a0675d73a0585f7663a0616372745f575e5c67a05c635f725e6364a05f71a05b736158a05f71a0675d73a0615f5e",
+      "type": "text",
+      "decoded": "but you have certainly learned as much as you can"
+    },
+    {
+      "offset": 3372,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3373,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3374,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 3376,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3377,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3378,
+      "size": 3,
+      "bytes": "ebec95",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [95EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        38380
+      ]
+    },
+    {
+      "offset": 3381,
+      "size": 30,
+      "bytes": "585da0755f5e7471a0745da05f7474635e64a0745863a071635b575e5f72",
+      "type": "text",
+      "decoded": "ho wants to attend the seminar"
+    },
+    {
+      "offset": 3411,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 3412,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 3413,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3414,
+      "size": 2,
+      "bytes": "f3bb",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=bb",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        187
+      ]
+    },
+    {
+      "offset": 3416,
+      "size": 4,
+      "bytes": "e8f0baeb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=f0 jump\u2192[EBBA]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        240,
+        60346
+      ]
+    },
+    {
+      "offset": 3420,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 3423,
+      "size": 52,
+      "bytes": "73a05f5c72635f6467a0595e5d75a05f5c5ca074585f74a0675d73a0615f5ea05c635f725ea066725d5ba05fa071635b575e5f72",
+      "type": "text",
+      "decoded": "u already know all that you can learn from a seminar"
+    },
+    {
+      "offset": 3475,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3476,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3477,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3478,
+      "size": 101,
+      "bytes": "875d73a0755d735c64a05e636364a0745da05f7474635e64a05fa064636457615f746364a05b636457615f5ca0615d5c5c636563a0575ea05d72646372a0745da05c635f725ea05f5e67a05b5d7263a074585f5ea0675d73a05f5c72635f6467a0595e5d75",
+      "type": "text",
+      "decoded": "You would need to attend a dedicated medical college in order to learn any more than you already know"
+    },
+    {
+      "offset": 3579,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3580,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3581,
+      "size": 4,
+      "bytes": "e89cbbf4",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=9c jump\u2192[F4BB]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        156,
+        62651
+      ]
+    },
+    {
+      "offset": 3585,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 3586,
+      "size": 1,
+      "bytes": "c3",
+      "type": "marker",
+      "annotation": "noop_c3"
+    },
+    {
+      "offset": 3587,
+      "size": 2,
+      "bytes": "f3bc",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=bc",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        188
+      ]
+    },
+    {
+      "offset": 3589,
+      "size": 4,
+      "bytes": "e8c0c0dc",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[DCC0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        56512
+      ]
+    },
+    {
+      "offset": 3593,
+      "size": 1,
+      "bytes": "2c",
+      "type": "transparent",
+      "annotation": "byte_2c"
+    },
+    {
+      "offset": 3594,
+      "size": 1,
+      "bytes": "cf",
+      "type": "unknown",
+      "annotation": "u_cf"
+    },
+    {
+      "offset": 3595,
+      "size": 3,
+      "bytes": "ebf0c0",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [C0F0]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        49392
+      ]
+    },
+    {
+      "offset": 3598,
+      "size": 1,
+      "bytes": "d6",
+      "type": "unknown",
+      "annotation": "u_d6"
+    },
+    {
+      "offset": 3599,
+      "size": 3,
+      "bytes": "ec819b",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [9B81]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        39809
+      ]
+    },
+    {
+      "offset": 3602,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 3607,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 3608,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3609,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3610,
+      "size": 2,
+      "bytes": "f3ba",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=ba",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        186
+      ]
+    },
+    {
+      "offset": 3612,
+      "size": 3,
+      "bytes": "f0c0c0",
+      "type": "opcode",
+      "annotation": "SET_TEXT_MARGINS c0 c0",
+      "opcode": 240,
+      "opcode_name": "SET_TEXT_MARGINS",
+      "operands": [
+        192,
+        192
+      ]
+    },
+    {
+      "offset": 3615,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 3618,
+      "size": 36,
+      "bytes": "63a0585d717057745f5ca071635c5c71a05b636457615f5ca0717370705c67a059577471",
+      "type": "text",
+      "decoded": "e hospital sells medical supply kits"
+    },
+    {
+      "offset": 3654,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3655,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3656,
+      "size": 14,
+      "bytes": "615f5c5c6364a07b636479577471",
+      "type": "text",
+      "decoded": "called MedKits"
+    },
+    {
+      "offset": 3670,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3671,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3672,
+      "size": 4,
+      "bytes": "665d72a0",
+      "type": "text",
+      "decoded": "for "
+    },
+    {
+      "offset": 3676,
+      "size": 1,
+      "bytes": "b5",
+      "type": "marker",
+      "annotation": "price:107"
+    },
+    {
+      "offset": 3677,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 3678,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3679,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 3680,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 3681,
+      "size": 10,
+      "bytes": "62575c5c71a0635f6158",
+      "type": "text",
+      "decoded": "bills each"
+    },
+    {
+      "offset": 3691,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3692,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3693,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3694,
+      "size": 21,
+      "bytes": "94586367a0615d5e745f575ea0625f5e645f656371",
+      "type": "text",
+      "decoded": "They contain bandages"
+    },
+    {
+      "offset": 3715,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3716,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3717,
+      "size": 7,
+      "bytes": "71705c575e7471",
+      "type": "text",
+      "decoded": "splints"
+    },
+    {
+      "offset": 3724,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3725,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3726,
+      "size": 5,
+      "bytes": "655f736a63",
+      "type": "text",
+      "decoded": "gauze"
+    },
+    {
+      "offset": 3731,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3732,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3733,
+      "size": 10,
+      "bytes": "5f5e7457716370745761",
+      "type": "text",
+      "decoded": "antiseptic"
+    },
+    {
+      "offset": 3743,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3744,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3745,
+      "size": 28,
+      "bytes": "5f5e64a05d74586372a06657727174a05f5764a0717370705c576371",
+      "type": "text",
+      "decoded": "and other first aid supplies"
+    },
+    {
+      "offset": 3773,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3774,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3775,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3776,
+      "size": 62,
+      "bytes": "7d5e5c67a0715d5b635d5e63a074725f575e6364a0575ea06657727174a05f5764a0615f5ea06366666361745776635c67a0737163a05fa07b6364795774",
+      "type": "text",
+      "decoded": "Only someone trained in first aid can effectively use a MedKit"
+    },
+    {
+      "offset": 3838,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3839,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 3840,
+      "size": 16,
+      "bytes": "95575c5ca0675d73a0627367a05d5e63",
+      "type": "text",
+      "decoded": "Will you buy one"
+    },
+    {
+      "offset": 3856,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 3857,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3858,
+      "size": 3,
+      "bytes": "f6d6bd",
+      "type": "opcode",
+      "annotation": "CHECK_CONDITION \u2192 [BDD6]",
+      "opcode": 246,
+      "opcode_name": "CHECK_CONDITION",
+      "operands": [
+        48598
+      ]
+    },
+    {
+      "offset": 3861,
+      "size": 4,
+      "bytes": "e8c0c0dd",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[DDC0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        56768
+      ]
+    },
+    {
+      "offset": 3865,
+      "size": 1,
+      "bytes": "79",
+      "type": "text",
+      "decoded": "K"
+    },
+    {
+      "offset": 3866,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3867,
+      "size": 1,
+      "bytes": "ce",
+      "type": "unknown",
+      "annotation": "u_ce"
+    },
+    {
+      "offset": 3868,
+      "size": 1,
+      "bytes": "bd",
+      "type": "marker",
+      "annotation": "rbracket"
+    },
+    {
+      "offset": 3869,
+      "size": 4,
+      "bytes": "e814d0de",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=14 jump\u2192[DED0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        20,
+        57040
+      ]
+    },
+    {
+      "offset": 3873,
+      "size": 1,
+      "bytes": "79",
+      "type": "text",
+      "decoded": "K"
+    },
+    {
+      "offset": 3874,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3875,
+      "size": 2,
+      "bytes": "f3c7",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=c7",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        199
+      ]
+    },
+    {
+      "offset": 3877,
+      "size": 3,
+      "bytes": "ecbb87",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [87BB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        34747
+      ]
+    },
+    {
+      "offset": 3880,
+      "size": 36,
+      "bytes": "5d73a0745f5963a05d5e63a05f5e64a063685f5b575e63a0745863a0615d5e74635e7471",
+      "type": "text",
+      "decoded": "ou take one and examine the contents"
+    },
+    {
+      "offset": 3916,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3917,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3918,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3919,
+      "size": 3,
+      "bytes": "7e5d75",
+      "type": "text",
+      "decoded": "Now"
+    },
+    {
+      "offset": 3922,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3923,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3924,
+      "size": 73,
+      "bytes": "675d73a075575c5ca06263a05f625c63a0745da058635f5ca0675d7372a070635d705c63a05f66746372a05fa0615d5b625f74a05b736158a05b5d7263a0636666576157635e745c67",
+      "type": "text",
+      "decoded": "you will be able to heal your people after a combat much more efficiently"
+    },
+    {
+      "offset": 3997,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3998,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3999,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 4001,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4002,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4003,
+      "size": 1,
+      "bytes": "d9",
+      "type": "unknown",
+      "annotation": "u_d9"
+    },
+    {
+      "offset": 4004,
+      "size": 1,
+      "bytes": "2c",
+      "type": "transparent",
+      "annotation": "byte_2c"
+    },
+    {
+      "offset": 4005,
+      "size": 1,
+      "bytes": "cf",
+      "type": "unknown",
+      "annotation": "u_cf"
+    },
+    {
+      "offset": 4006,
+      "size": 3,
+      "bytes": "ebf0c0",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [C0F0]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        49392
+      ]
+    },
+    {
+      "offset": 4009,
+      "size": 1,
+      "bytes": "d6",
+      "type": "unknown",
+      "annotation": "u_d6"
+    },
+    {
+      "offset": 4010,
+      "size": 3,
+      "bytes": "ec819b",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [9B81]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        39809
+      ]
+    },
+    {
+      "offset": 4013,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 4018,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 4019,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 4020,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4021,
+      "size": 2,
+      "bytes": "f3ba",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=ba",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        186
+      ]
+    },
+    {
+      "offset": 4023,
+      "size": 3,
+      "bytes": "f0c0c0",
+      "type": "opcode",
+      "annotation": "SET_TEXT_MARGINS c0 c0",
+      "opcode": 240,
+      "opcode_name": "SET_TEXT_MARGINS",
+      "operands": [
+        192,
+        192
+      ]
+    },
+    {
+      "offset": 4026,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 4029,
+      "size": 40,
+      "bytes": "63a0585d717057745f5ca071635c5c71a08657635c64a091737265637267a059577471a0665d72a0",
+      "type": "text",
+      "decoded": "e hospital sells Field Surgery kits for "
+    },
+    {
+      "offset": 4069,
+      "size": 1,
+      "bytes": "b1",
+      "type": "marker",
+      "annotation": "price:42"
+    },
+    {
+      "offset": 4070,
+      "size": 1,
+      "bytes": "b5",
+      "type": "marker",
+      "annotation": "price:107"
+    },
+    {
+      "offset": 4071,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 4072,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 4073,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 4074,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 4075,
+      "size": 10,
+      "bytes": "62575c5c71a0635f6158",
+      "type": "text",
+      "decoded": "bills each"
+    },
+    {
+      "offset": 4085,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 4086,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 4087,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 4088,
+      "size": 128,
+      "bytes": "94586367a0615d5e745f575ea074755da05c5f716372a071615f5c70635c71a05f5e64a05f5c5ca0745863a0717370705d7274a0636f7357705b635e74a05e63616371715f7267a0745da070725d76576463a0615d5b70726358635e71577663a05b636457615f5ca0615f7263a05d5ea0745863a0625f74745c636657635c64",
+      "type": "text",
+      "decoded": "They contain two laser scalpels and all the support eouipment necessary to provide comprehensive medical care on the battlefield"
+    },
+    {
+      "offset": 4216,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 4217,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 4218,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 4219,
+      "size": 60,
+      "bytes": "7d5e5c67a0715d5b635d5e63a076637267a07159575c5c6364a0575ea05b63645761575e63a0615f5ea0737163a05774a06366666361745776635c67",
+      "type": "text",
+      "decoded": "Only someone very skilled in medicine can use it effectively"
+    },
+    {
+      "offset": 4279,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 4280,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 4281,
+      "size": 16,
+      "bytes": "95575c5ca0675d73a0627367a05d5e63",
+      "type": "text",
+      "decoded": "Will you buy one"
+    },
+    {
+      "offset": 4297,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 4298,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4299,
+      "size": 3,
+      "bytes": "f6fdd0",
+      "type": "opcode",
+      "annotation": "CHECK_CONDITION \u2192 [D0FD]",
+      "opcode": 246,
+      "opcode_name": "CHECK_CONDITION",
+      "operands": [
+        53501
+      ]
+    },
+    {
+      "offset": 4302,
+      "size": 4,
+      "bytes": "e8c0c0dd",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[DDC0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        56768
+      ]
+    },
+    {
+      "offset": 4306,
+      "size": 1,
+      "bytes": "75",
+      "type": "text",
+      "decoded": "w"
+    },
+    {
+      "offset": 4307,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 4308,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 4309,
+      "size": 1,
+      "bytes": "cf",
+      "type": "unknown",
+      "annotation": "u_cf"
+    },
+    {
+      "offset": 4310,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 4313,
+      "size": 7,
+      "bytes": "875d73a0645d5e",
+      "type": "text",
+      "decoded": "You don"
+    },
+    {
+      "offset": 4320,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 4321,
+      "size": 15,
+      "bytes": "74a0585f7663a0635e5d736558a081",
+      "type": "text",
+      "decoded": "t have enough C"
+    },
+    {
+      "offset": 4336,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 4337,
+      "size": 45,
+      "bytes": "62575c5c71a0575ea0675d7372a05f61615d735e74a0745da05f66665d7264a074585771a070737261585f7163",
+      "type": "text",
+      "decoded": "bills in your account to afford this purchase"
+    },
+    {
+      "offset": 4382,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 4383,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4384,
+      "size": 4,
+      "bytes": "e828cfde",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=28 jump\u2192[DECF]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        40,
+        57039
+      ]
+    },
+    {
+      "offset": 4388,
+      "size": 1,
+      "bytes": "75",
+      "type": "text",
+      "decoded": "w"
+    },
+    {
+      "offset": 4389,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 4390,
+      "size": 2,
+      "bytes": "f3ca",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=ca",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        202
+      ]
+    },
+    {
+      "offset": 4392,
+      "size": 3,
+      "bytes": "ecbb87",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [87BB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        34747
+      ]
+    },
+    {
+      "offset": 4395,
+      "size": 30,
+      "bytes": "5d73a0585f5e64a0745863a0595774a0745da0675d7372a0645d61745d72",
+      "type": "text",
+      "decoded": "ou hand the kit to your doctor"
+    },
+    {
+      "offset": 4425,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 4426,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 4427,
+      "size": 29,
+      "bytes": "75585da06272635f74586371a05fa071576558a05d66a072635c576366",
+      "type": "text",
+      "decoded": "who breathes a sigh of relief"
+    },
+    {
+      "offset": 4456,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 4457,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 4458,
+      "size": 78,
+      "bytes": "595e5d75575e65a0745863a05a5d62a05d66a0705f746158575e65a0745863a065725d7370a07370a075575c5ca06263a0635f71576372a05f5e64a05b5d7263a0636666636174577663a05e5d75",
+      "type": "text",
+      "decoded": "knowing the job of patching the group up will be easier and more effective now"
+    },
+    {
+      "offset": 4536,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 4537,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4538,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 4540,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4541,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4542,
+      "size": 3,
+      "bytes": "ebec87",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [87EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        34796
+      ]
+    },
+    {
+      "offset": 4545,
+      "size": 28,
+      "bytes": "5d73a05f5c72635f6467a0585f7663a05d5e63a05d66a074585d7163",
+      "type": "text",
+      "decoded": "ou already have one of those"
+    },
+    {
+      "offset": 4573,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 4574,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4575,
+      "size": 4,
+      "bytes": "e828cfed",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=28 jump\u2192[EDCF]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        40,
+        60879
+      ]
+    },
+    {
+      "offset": 4579,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 4580,
+      "size": 1,
+      "bytes": "ed",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP"
+    }
+  ]
+}

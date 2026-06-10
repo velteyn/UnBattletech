@@ -1,0 +1,1632 @@
+{
+  "filename": "GARAGE.BLD",
+  "size": 1686,
+  "header": {
+    "file_type": 148,
+    "paragraphs": 6,
+    "signature": "eec6ebea",
+    "content_type": "c0f5",
+    "content_type_name": "shop/service",
+    "subtype": 181
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "9406eec6ebeac0f5",
+      "type": "header",
+      "annotation": "type=94 paragraphs=6 sig=eec6ebea content=shop/service subtype=b5"
+    },
+    {
+      "offset": 8,
+      "size": 1,
+      "bytes": "b5",
+      "type": "marker",
+      "annotation": "price:107"
+    },
+    {
+      "offset": 9,
+      "size": 1,
+      "bytes": "62",
+      "type": "text",
+      "decoded": "b"
+    },
+    {
+      "offset": 10,
+      "size": 1,
+      "bytes": "c3",
+      "type": "marker",
+      "annotation": "noop_c3"
+    },
+    {
+      "offset": 11,
+      "size": 2,
+      "bytes": "f5c8",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=c8",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        200
+      ]
+    },
+    {
+      "offset": 13,
+      "size": 1,
+      "bytes": "d0",
+      "type": "unknown",
+      "annotation": "u_d0"
+    },
+    {
+      "offset": 14,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 15,
+      "size": 4,
+      "bytes": "e806c2f3",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=06 jump\u2192[F3C2]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        6,
+        62402
+      ]
+    },
+    {
+      "offset": 19,
+      "size": 1,
+      "bytes": "cb",
+      "type": "unknown",
+      "annotation": "u_cb"
+    },
+    {
+      "offset": 20,
+      "size": 2,
+      "bytes": "f5d0",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=d0",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        208
+      ]
+    },
+    {
+      "offset": 22,
+      "size": 1,
+      "bytes": "74",
+      "type": "text",
+      "decoded": "t"
+    },
+    {
+      "offset": 23,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 24,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 27,
+      "size": 56,
+      "bytes": "73a0705f7171a07458725d736558a0745863a0705f7259575e65a0655f725f6563a05f5e64a05d7374a0745863a066725d5e74a0645d5d72",
+      "type": "text",
+      "decoded": "u pass through the parking garage and out the front door"
+    },
+    {
+      "offset": 83,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 84,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 85,
+      "size": 20,
+      "bytes": "63685774575e65a0745863a091745f72705d7274",
+      "type": "text",
+      "decoded": "exiting the Starport"
+    },
+    {
+      "offset": 105,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 106,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 107,
+      "size": 3,
+      "bytes": "f4c8c0",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE c8 c0",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        200,
+        192
+      ]
+    },
+    {
+      "offset": 110,
+      "size": 5,
+      "bytes": "e6c0baa740",
+      "type": "opcode",
+      "annotation": "SET_CURSOR_XY (-17728,16551)",
+      "opcode": 230,
+      "opcode_name": "SET_CURSOR_XY",
+      "operands": [
+        -17728,
+        16551
+      ]
+    },
+    {
+      "offset": 115,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 116,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 118,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 121,
+      "size": 68,
+      "bytes": "63a0705f7259575e65a0655f725f6563a05b5f5e5f656372a0715f735e74637271a05d766372a0745da0675d73a05f5e64a0585f5e6471a0675d73a0745863a062575c5c",
+      "type": "text",
+      "decoded": "e parking garage manager saunters over to you and hands you the bill"
+    },
+    {
+      "offset": 189,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 190,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 191,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 192,
+      "size": 46,
+      "bytes": "875d73a0615d736558a05f71a0675d73a072635f64a0745863a066576573726371a05d5ea0745863a0705f706372",
+      "type": "text",
+      "decoded": "You cough as you read the figures on the paper"
+    },
+    {
+      "offset": 238,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 239,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 240,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 241,
+      "size": 17,
+      "bytes": "875d73a0747267a0745da0585f65655c63",
+      "type": "text",
+      "decoded": "You try to haggle"
+    },
+    {
+      "offset": 258,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 259,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 260,
+      "size": 18,
+      "bytes": "627374a05863a071745f5e6471a06657725b",
+      "type": "text",
+      "decoded": "but he stands firm"
+    },
+    {
+      "offset": 278,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 279,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 280,
+      "size": 9,
+      "bytes": "5f66746372a05f5c5c",
+      "type": "text",
+      "decoded": "after all"
+    },
+    {
+      "offset": 289,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 290,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 291,
+      "size": 40,
+      "bytes": "5863a0645d6371a0585f7663a0675d7372a070725d7063727467a05f71a0615d5c5c5f7463725f5c",
+      "type": "text",
+      "decoded": "he does have your property as collateral"
+    },
+    {
+      "offset": 331,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 332,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 333,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 334,
+      "size": 24,
+      "bytes": "95575c5ca0675d73a0705f67a0745863a0666363a05d66a0",
+      "type": "text",
+      "decoded": "Will you pay the fee of "
+    },
+    {
+      "offset": 358,
+      "size": 1,
+      "bytes": "af",
+      "type": "marker",
+      "annotation": "price:40"
+    },
+    {
+      "offset": 359,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 360,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 361,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 362,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 363,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 364,
+      "size": 18,
+      "bytes": "62575c5c71a0745da0656374a0675d7372a0",
+      "type": "text",
+      "decoded": "bills to get your "
+    },
+    {
+      "offset": 382,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 383,
+      "size": 23,
+      "bytes": "7b63615871a05d7374a05d66a0745863a0655f725f6563",
+      "type": "text",
+      "decoded": "Mechs out of the garage"
+    },
+    {
+      "offset": 406,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 407,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 408,
+      "size": 3,
+      "bytes": "f6febf",
+      "type": "opcode",
+      "annotation": "CHECK_CONDITION \u2192 [BFFE]",
+      "opcode": 246,
+      "opcode_name": "CHECK_CONDITION",
+      "operands": [
+        49150
+      ]
+    },
+    {
+      "offset": 411,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 414,
+      "size": 27,
+      "bytes": "945863a05b5f5e5f656372a05c5f73655871a05f5e64a0715f6771",
+      "type": "text",
+      "decoded": "The manager laughs and says"
+    },
+    {
+      "offset": 441,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 442,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 443,
+      "size": 1,
+      "bytes": "a2",
+      "type": "marker",
+      "annotation": "noop_a2"
+    },
+    {
+      "offset": 444,
+      "size": 3,
+      "bytes": "875d73",
+      "type": "text",
+      "decoded": "You"
+    },
+    {
+      "offset": 447,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 448,
+      "size": 10,
+      "bytes": "5c5ca06263a0625f6159",
+      "type": "text",
+      "decoded": "ll be back"
+    },
+    {
+      "offset": 458,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 459,
+      "size": 1,
+      "bytes": "a2",
+      "type": "marker",
+      "annotation": "noop_a2"
+    },
+    {
+      "offset": 460,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 461,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 462,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 464,
+      "size": 1,
+      "bytes": "dd",
+      "type": "unknown",
+      "annotation": "u_dd"
+    },
+    {
+      "offset": 465,
+      "size": 1,
+      "bytes": "56",
+      "type": "transparent",
+      "annotation": "byte_56"
+    },
+    {
+      "offset": 466,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 467,
+      "size": 1,
+      "bytes": "5f",
+      "type": "text",
+      "decoded": "a"
+    },
+    {
+      "offset": 468,
+      "size": 1,
+      "bytes": "c2",
+      "type": "marker",
+      "annotation": "noop_c2"
+    },
+    {
+      "offset": 469,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 472,
+      "size": 33,
+      "bytes": "945863a05b5f5e5f656372a074635c5c71a0675d73a074585f74a0675d7372a081",
+      "type": "text",
+      "decoded": "The manager tells you that your C"
+    },
+    {
+      "offset": 505,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 506,
+      "size": 22,
+      "bytes": "62575c5ca05f61615d735e74a05d5e5c67a0585f71a0",
+      "type": "text",
+      "decoded": "bill account only has "
+    },
+    {
+      "offset": 528,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 529,
+      "size": 2,
+      "bytes": "f3ba",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=ba",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        186
+      ]
+    },
+    {
+      "offset": 531,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 534,
+      "size": 6,
+      "bytes": "7863a0755d5e",
+      "type": "text",
+      "decoded": "He won"
+    },
+    {
+      "offset": 540,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 541,
+      "size": 15,
+      "bytes": "74a072635c635f7163a0675d7372a0",
+      "type": "text",
+      "decoded": "t release your "
+    },
+    {
+      "offset": 556,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 557,
+      "size": 49,
+      "bytes": "7b63615871a0745da0675d73a0735e74575ca0675d73a0585f7663a0705f5764a0745863a062575c5ca0575ea066735c5c",
+      "type": "text",
+      "decoded": "Mechs to you until you have paid the bill in full"
+    },
+    {
+      "offset": 606,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 607,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 608,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 609,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 611,
+      "size": 1,
+      "bytes": "de",
+      "type": "unknown",
+      "annotation": "u_de"
+    },
+    {
+      "offset": 612,
+      "size": 1,
+      "bytes": "56",
+      "type": "transparent",
+      "annotation": "byte_56"
+    },
+    {
+      "offset": 613,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 614,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 617,
+      "size": 49,
+      "bytes": "875d73a0705f67a0745863a05c63636158a0575ea066735c5ca05f5e64a0625d5f7264a0675d7372a076635857615c6371",
+      "type": "text",
+      "decoded": "You pay the leech in full and board your vehicles"
+    },
+    {
+      "offset": 666,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 667,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 668,
+      "size": 29,
+      "bytes": "7558576158a05f7263a0755f5774575e65a05d737471576463a05e5d75",
+      "type": "text",
+      "decoded": "which are waiting outside now"
+    },
+    {
+      "offset": 697,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 698,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 699,
+      "size": 3,
+      "bytes": "f4c8c0",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE c8 c0",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        200,
+        192
+      ]
+    },
+    {
+      "offset": 702,
+      "size": 5,
+      "bytes": "e6c0baa740",
+      "type": "opcode",
+      "annotation": "SET_CURSOR_XY (-17728,16551)",
+      "opcode": 230,
+      "opcode_name": "SET_CURSOR_XY",
+      "operands": [
+        -17728,
+        16551
+      ]
+    },
+    {
+      "offset": 707,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 708,
+      "size": 2,
+      "bytes": "e9f3",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=f3",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        243
+      ]
+    },
+    {
+      "offset": 710,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 711,
+      "size": 5,
+      "bytes": "edf5a5cac6",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP idx=f5 thresh=a5 jump\u2192[C6CA]",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP",
+      "operands": [
+        245,
+        165,
+        50890
+      ]
+    },
+    {
+      "offset": 716,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 719,
+      "size": 26,
+      "bytes": "73a0585f7663a0755f5c596364a0575e745da05fa058736563a0",
+      "type": "text",
+      "decoded": "u have walked into a huge "
+    },
+    {
+      "offset": 745,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 746,
+      "size": 19,
+      "bytes": "7b636158a0705f7259575e65a0655f725f6563",
+      "type": "text",
+      "decoded": "Mech parking garage"
+    },
+    {
+      "offset": 765,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 766,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 767,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 768,
+      "size": 6,
+      "bytes": "91575e6163a0",
+      "type": "text",
+      "decoded": "Since "
+    },
+    {
+      "offset": 774,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 775,
+      "size": 37,
+      "bytes": "7b63615871a05f7263a05e5d74a05f5c5c5d756364a0575ea0745863a091745f72705d7274",
+      "type": "text",
+      "decoded": "Mechs are not allowed in the Starport"
+    },
+    {
+      "offset": 812,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 813,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 814,
+      "size": 14,
+      "bytes": "5f5e675d5e63a075577458a05fa0",
+      "type": "text",
+      "decoded": "anyone with a "
+    },
+    {
+      "offset": 828,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 829,
+      "size": 49,
+      "bytes": "7b636158a075577158575e65a0745da0635e746372a0745863a091745f72705d7274a05b737174a0705f7259a0585771a0",
+      "type": "text",
+      "decoded": "Mech wishing to enter the Starport must park his "
+    },
+    {
+      "offset": 878,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 879,
+      "size": 9,
+      "bytes": "7b636158a058637263",
+      "type": "text",
+      "decoded": "Mech here"
+    },
+    {
+      "offset": 888,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 889,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 890,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 891,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 892,
+      "size": 2,
+      "bytes": "f3cf",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=cf",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        207
+      ]
+    },
+    {
+      "offset": 894,
+      "size": 2,
+      "bytes": "f5d0",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=d0",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        208
+      ]
+    },
+    {
+      "offset": 896,
+      "size": 1,
+      "bytes": "d9",
+      "type": "unknown",
+      "annotation": "u_d9"
+    },
+    {
+      "offset": 897,
+      "size": 1,
+      "bytes": "c1",
+      "type": "marker",
+      "annotation": "noop_c1"
+    },
+    {
+      "offset": 898,
+      "size": 3,
+      "bytes": "ec9157",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5791]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22417
+      ]
+    },
+    {
+      "offset": 901,
+      "size": 19,
+      "bytes": "5e6163a0675d73a05f7263a05d5ea0665d5d74",
+      "type": "text",
+      "decoded": "nce you are on foot"
+    },
+    {
+      "offset": 920,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 921,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 922,
+      "size": 44,
+      "bytes": "675d73a0705f7171a07458725d736558a0745863a0655f725f6563a0745da0745863a072635f72a063685774",
+      "type": "text",
+      "decoded": "you pass through the garage to the rear exit"
+    },
+    {
+      "offset": 966,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 967,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 968,
+      "size": 24,
+      "bytes": "5f5e64a05d5ea0575e745da0745863a091745f72705d7274",
+      "type": "text",
+      "decoded": "and on into the Starport"
+    },
+    {
+      "offset": 992,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 993,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 994,
+      "size": 3,
+      "bytes": "f4c8bf",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE c8 bf",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        200,
+        191
+      ]
+    },
+    {
+      "offset": 997,
+      "size": 5,
+      "bytes": "e6d4bab340",
+      "type": "opcode",
+      "annotation": "SET_CURSOR_XY (-17708,16563)",
+      "opcode": 230,
+      "opcode_name": "SET_CURSOR_XY",
+      "operands": [
+        -17708,
+        16563
+      ]
+    },
+    {
+      "offset": 1002,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1003,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 1005,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 1008,
+      "size": 142,
+      "bytes": "63a0705f7259575e65a0655f725f6563a05b5f5e5f656372a05f7070725d5f61586371a0675d73a05f5e64a05f715971a0675d73a05766a0675d73a0755f5e74a0745da05c635f7663a0675d7372a076635857615c6371a058637263a0575ea0585771a066575e63a0665f61575c577467a07558575c63a0675d73a0635e746372a0745863a091745f72705d7274",
+      "type": "text",
+      "decoded": "e parking garage manager approaches you and asks you if you want to leave your vehicles here in his fine facility while you enter the Starport"
+    },
+    {
+      "offset": 1150,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1151,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1152,
+      "size": 3,
+      "bytes": "f633c4",
+      "type": "opcode",
+      "annotation": "CHECK_CONDITION \u2192 [C433]",
+      "opcode": 246,
+      "opcode_name": "CHECK_CONDITION",
+      "operands": [
+        50227
+      ]
+    },
+    {
+      "offset": 1155,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 1158,
+      "size": 44,
+      "bytes": "875d73a0705d5c5774635c67a074635c5ca058575ba05e5da05f5e64a063685774a0745863a0655f725f6563",
+      "type": "text",
+      "decoded": "You politely tell him no and exit the garage"
+    },
+    {
+      "offset": 1202,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1203,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1204,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1205,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 1207,
+      "size": 3,
+      "bytes": "ebec87",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [87EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        34796
+      ]
+    },
+    {
+      "offset": 1210,
+      "size": 14,
+      "bytes": "5d73a06573576463a0675d7372a0",
+      "type": "text",
+      "decoded": "ou guide your "
+    },
+    {
+      "offset": 1224,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1225,
+      "size": 55,
+      "bytes": "7b63615871a0575e745da0745863a0655f725f6563a05f5e64a0745f5963a0745863a07263616357707471a05d666663726364a0675d73",
+      "type": "text",
+      "decoded": "Mechs into the garage and take the receipts offered you"
+    },
+    {
+      "offset": 1280,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1281,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1282,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1283,
+      "size": 90,
+      "bytes": "875d73a05f7263a0745d5c64a074585f74a0675d73a075575c5ca06263a06368706361746364a0745da0705f67a0665d72a074585771a071637276576163a07558635ea0675d73a05c635f7663a0745863a091745f72705d7274",
+      "type": "text",
+      "decoded": "You are told that you will be expected to pay for this service when you leave the Starport"
+    },
+    {
+      "offset": 1373,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1374,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1375,
+      "size": 2,
+      "bytes": "f3cc",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=cc",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        204
+      ]
+    },
+    {
+      "offset": 1377,
+      "size": 4,
+      "bytes": "e8e0c1ec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=e0 jump\u2192[ECC1]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        224,
+        60609
+      ]
+    },
+    {
+      "offset": 1381,
+      "size": 16,
+      "bytes": "94586367a07174575c5ca0585f76635e",
+      "type": "text",
+      "decoded": "They still haven"
+    },
+    {
+      "offset": 1397,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1398,
+      "size": 77,
+      "bytes": "74a0665d72655d7474635ea05f625d7374a0675d7372a0725f5b705f6563a05d66a0715c5f736558746372a05f5e64a06463717472736174575d5ea07558635ea0675d73a071745d5c63a05fa0",
+      "type": "text",
+      "decoded": "t forgotten about your rampage of slaughter and destruction when you stole a "
+    },
+    {
+      "offset": 1475,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1476,
+      "size": 22,
+      "bytes": "7b636158a066725d5ba058637263a0635f725c576372",
+      "type": "text",
+      "decoded": "Mech from here earlier"
+    },
+    {
+      "offset": 1498,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1499,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1500,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1501,
+      "size": 58,
+      "bytes": "7774a0755d735c64a05e5d74a06263a075577163a0745da07263635e746372a0745863a091745f72705d7274a0735e74575ca074586367a0645d",
+      "type": "text",
+      "decoded": "It would not be wise to reenter the Starport until they do"
+    },
+    {
+      "offset": 1559,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1560,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1561,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1562,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 1564,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 1567,
+      "size": 31,
+      "bytes": "63a05b5f5e5f656372a05d66a0745863a0705f7259575e65a0655f725f6563",
+      "type": "text",
+      "decoded": "e manager of the parking garage"
+    },
+    {
+      "offset": 1598,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1599,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1600,
+      "size": 28,
+      "bytes": "625f61596364a06267a074755da05b737161735c5f72a07458736571",
+      "type": "text",
+      "decoded": "backed by two muscular thugs"
+    },
+    {
+      "offset": 1628,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1629,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1630,
+      "size": 23,
+      "bytes": "74635c5c71a0675d73a074585f74a074586367a0645d5e",
+      "type": "text",
+      "decoded": "tells you that they don"
+    },
+    {
+      "offset": 1653,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1654,
+      "size": 14,
+      "bytes": "74a0705f7259a079737257745fa0",
+      "type": "text",
+      "decoded": "t park Kurita "
+    },
+    {
+      "offset": 1668,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1669,
+      "size": 10,
+      "bytes": "7b63615871a058637263",
+      "type": "text",
+      "decoded": "Mechs here"
+    },
+    {
+      "offset": 1679,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1680,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1681,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1682,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 1684,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1685,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    }
+  ]
+}

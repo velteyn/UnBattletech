@@ -1,0 +1,2057 @@
+{
+  "filename": "COMSTAR.BLD",
+  "size": 2267,
+  "header": {
+    "file_type": 217,
+    "paragraphs": 8,
+    "signature": "eec6ebea",
+    "content_type": "c0ec",
+    "content_type_name": "dialogue/story",
+    "subtype": 135
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "d908eec6ebeac0ec",
+      "type": "header",
+      "annotation": "type=d9 paragraphs=8 sig=eec6ebea content=dialogue/story subtype=87"
+    },
+    {
+      "offset": 8,
+      "size": 86,
+      "bytes": "875d73a05f7263a071745f5e64575e65a0575ea0745863a0635e747267a0585f5c5ca05d66a05f5ea05d66665761575f5ca0815d5b91745f72a0586770637270735c7163a065635e63725f745d72a071745f74575d5e",
+      "type": "text",
+      "decoded": "You are standing in the entry hall of an official ComStar hyperpulse generator station"
+    },
+    {
+      "offset": 94,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 95,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 96,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 97,
+      "size": 14,
+      "bytes": "7f5c5ca05f725d735e64a0675d73",
+      "type": "text",
+      "decoded": "All around you"
+    },
+    {
+      "offset": 111,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 112,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 113,
+      "size": 68,
+      "bytes": "815d5b91745f72a0746361585e5761575f5e71a05f7474635e64a0745da0575e746372705c5f5e63745f7267a0615d5b5b735e57615f74575d5ea0636f7357705b635e74",
+      "type": "text",
+      "decoded": "ComStar technicians attend to interplanetary communication eouipment"
+    },
+    {
+      "offset": 181,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 182,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 183,
+      "size": 20,
+      "bytes": "7558575c63a071637663725f5ca07f6463707471",
+      "type": "text",
+      "decoded": "while several Adepts"
+    },
+    {
+      "offset": 203,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 204,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 205,
+      "size": 29,
+      "bytes": "7158725d73646364a0575ea0725d626371a05f5e64a05b677174637267",
+      "type": "text",
+      "decoded": "shrouded in robes and mystery"
+    },
+    {
+      "offset": 234,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 235,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 236,
+      "size": 20,
+      "bytes": "645772636174a07458635772a06366665d727471",
+      "type": "text",
+      "decoded": "direct their efforts"
+    },
+    {
+      "offset": 256,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 257,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 258,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 259,
+      "size": 42,
+      "bytes": "94586367a057655e5d7263a0675d7372a05f7474635b707471a05f74a0615d5b5b735e57615f74575d5e",
+      "type": "text",
+      "decoded": "They ignore your attempts at communication"
+    },
+    {
+      "offset": 301,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 302,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 303,
+      "size": 45,
+      "bytes": "715da0675d73a0716374745c63a0645d755ea0745da05d5e63a05d66a0745863a0715b5f5c5ca07073625c5761",
+      "type": "text",
+      "decoded": "so you settle down to one of the small public"
+    },
+    {
+      "offset": 348,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 349,
+      "size": 25,
+      "bytes": "5f6161637171a0615d5b7073746372a07463725b575e5f5c71",
+      "type": "text",
+      "decoded": "access computer terminals"
+    },
+    {
+      "offset": 374,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 375,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 376,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 377,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 378,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 379,
+      "size": 8,
+      "bytes": "95575c5ca0675d73",
+      "type": "text",
+      "decoded": "Will you"
+    },
+    {
+      "offset": 387,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 388,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 389,
+      "size": 21,
+      "bytes": "775e7170636174a0675d7372a05f61615d735e7471",
+      "type": "text",
+      "decoded": "Inspect your accounts"
+    },
+    {
+      "offset": 410,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 411,
+      "size": 14,
+      "bytes": "945f5c59a0745da05d7458637271",
+      "type": "text",
+      "decoded": "Talk to others"
+    },
+    {
+      "offset": 425,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 426,
+      "size": 5,
+      "bytes": "7c635f7663",
+      "type": "text",
+      "decoded": "Leave"
+    },
+    {
+      "offset": 431,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 432,
+      "size": 5,
+      "bytes": "e7ba36bffe",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=14010 jump\u2192[FEBF]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        14010,
+        65215
+      ]
+    },
+    {
+      "offset": 437,
+      "size": 1,
+      "bytes": "b8",
+      "type": "marker",
+      "annotation": "price:113"
+    },
+    {
+      "offset": 438,
+      "size": 1,
+      "bytes": "16",
+      "type": "transparent",
+      "annotation": "byte_16"
+    },
+    {
+      "offset": 439,
+      "size": 1,
+      "bytes": "b8",
+      "type": "marker",
+      "annotation": "price:113"
+    },
+    {
+      "offset": 440,
+      "size": 3,
+      "bytes": "ebec94",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [94EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        38124
+      ]
+    },
+    {
+      "offset": 443,
+      "size": 11,
+      "bytes": "5863a07463725b575e5f5c",
+      "type": "text",
+      "decoded": "he terminal"
+    },
+    {
+      "offset": 454,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 455,
+      "size": 15,
+      "bytes": "71a071617263635ea0615c635f7271",
+      "type": "text",
+      "decoded": "s screen clears"
+    },
+    {
+      "offset": 470,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 471,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 472,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 473,
+      "size": 17,
+      "bytes": "7f74a0577471a0575e71577174635e6163",
+      "type": "text",
+      "decoded": "At its insistence"
+    },
+    {
+      "offset": 490,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 491,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 492,
+      "size": 66,
+      "bytes": "675d73a0705c5f6163a0675d7372a0636763a05d766372a0745863a0726374575e5f5ca071615f5e5e6372a0745da0766372576667a074585f74a0675d73a05f7263",
+      "type": "text",
+      "decoded": "you place your eye over the retinal scanner to verify that you are"
+    },
+    {
+      "offset": 558,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 559,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 560,
+      "size": 6,
+      "bytes": "575e64636364",
+      "type": "text",
+      "decoded": "indeed"
+    },
+    {
+      "offset": 566,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 567,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 568,
+      "size": 16,
+      "bytes": "7a5f715d5ea0875d735e65625c5d5d64",
+      "type": "text",
+      "decoded": "Jason Youngblood"
+    },
+    {
+      "offset": 584,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 585,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 586,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 587,
+      "size": 37,
+      "bytes": "7f66746372a0745863a07463725b575e5f5ca06263637071a0615d5e6657725b5f74575d5e",
+      "type": "text",
+      "decoded": "After the terminal beeps confirmation"
+    },
+    {
+      "offset": 624,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 625,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 626,
+      "size": 91,
+      "bytes": "675d73a0625c575e59a05fa0666375a074575b6371a0745da0726364575c5f7463a0675d7372a0707370575ca05f71a0675d7372a0625f5c5f5e6163a07158636374a07072575e7471a05d7374a05d5ea0745863a071617263635e",
+      "type": "text",
+      "decoded": "you blink a few times to redilate your pupil as your balance sheet prints out on the screen"
+    },
+    {
+      "offset": 717,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 718,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 719,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 720,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 722,
+      "size": 3,
+      "bytes": "ec819b",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [9B81]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        39809
+      ]
+    },
+    {
+      "offset": 725,
+      "size": 12,
+      "bytes": "62575c5ca05f61615d735e74",
+      "type": "text",
+      "decoded": "bill account"
+    },
+    {
+      "offset": 737,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 738,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 739,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 740,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 741,
+      "size": 19,
+      "bytes": "81737272635e74a0575e766371745b635e7471",
+      "type": "text",
+      "decoded": "Current investments"
+    },
+    {
+      "offset": 760,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 761,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 762,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 763,
+      "size": 2,
+      "bytes": "f3c6",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=c6",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        198
+      ]
+    },
+    {
+      "offset": 765,
+      "size": 3,
+      "bytes": "f0c0bd",
+      "type": "opcode",
+      "annotation": "SET_TEXT_MARGINS c0 bd",
+      "opcode": 240,
+      "opcode_name": "SET_TEXT_MARGINS",
+      "operands": [
+        192,
+        189
+      ]
+    },
+    {
+      "offset": 768,
+      "size": 3,
+      "bytes": "ec845d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D84]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23940
+      ]
+    },
+    {
+      "offset": 771,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 772,
+      "size": 11,
+      "bytes": "675d73a0755f5e74a0745d",
+      "type": "text",
+      "decoded": "you want to"
+    },
+    {
+      "offset": 783,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 784,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 785,
+      "size": 18,
+      "bytes": "81585f5e6563a0575e766371745b635e7471",
+      "type": "text",
+      "decoded": "Change investments"
+    },
+    {
+      "offset": 803,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 804,
+      "size": 17,
+      "bytes": "926376576375a070725d71706361747371",
+      "type": "text",
+      "decoded": "Review prospectus"
+    },
+    {
+      "offset": 821,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 822,
+      "size": 13,
+      "bytes": "7c635f7663a0815d5b91745f72",
+      "type": "text",
+      "decoded": "Leave ComStar"
+    },
+    {
+      "offset": 835,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 836,
+      "size": 5,
+      "bytes": "e7b97ac13a",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=31417 jump\u2192[3AC1]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        31417,
+        15041
+      ]
+    },
+    {
+      "offset": 841,
+      "size": 1,
+      "bytes": "c1",
+      "type": "marker",
+      "annotation": "noop_c1"
+    },
+    {
+      "offset": 842,
+      "size": 1,
+      "bytes": "16",
+      "type": "transparent",
+      "annotation": "byte_16"
+    },
+    {
+      "offset": 843,
+      "size": 1,
+      "bytes": "b8",
+      "type": "marker",
+      "annotation": "price:113"
+    },
+    {
+      "offset": 844,
+      "size": 3,
+      "bytes": "ebec84",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [84EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        34028
+      ]
+    },
+    {
+      "offset": 847,
+      "size": 13,
+      "bytes": "5da0675d73a0755f5e74a0745d",
+      "type": "text",
+      "decoded": "o you want to"
+    },
+    {
+      "offset": 860,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 861,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 862,
+      "size": 9,
+      "bytes": "827367a071745d6159",
+      "type": "text",
+      "decoded": "Buy stock"
+    },
+    {
+      "offset": 871,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 872,
+      "size": 10,
+      "bytes": "91635c5ca071745d6159",
+      "type": "text",
+      "decoded": "Sell stock"
+    },
+    {
+      "offset": 882,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 883,
+      "size": 6,
+      "bytes": "815f5e61635c",
+      "type": "text",
+      "decoded": "Cancel"
+    },
+    {
+      "offset": 889,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 890,
+      "size": 5,
+      "bytes": "e7c540c143",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=16581 jump\u2192[43C1]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        16581,
+        17345
+      ]
+    },
+    {
+      "offset": 895,
+      "size": 1,
+      "bytes": "c1",
+      "type": "marker",
+      "annotation": "noop_c1"
+    },
+    {
+      "offset": 896,
+      "size": 1,
+      "bytes": "fb",
+      "type": "opcode",
+      "annotation": "ADVANCE_INPUT",
+      "opcode": 251,
+      "opcode_name": "ADVANCE_INPUT"
+    },
+    {
+      "offset": 897,
+      "size": 1,
+      "bytes": "c2",
+      "type": "marker",
+      "annotation": "noop_c2"
+    },
+    {
+      "offset": 898,
+      "size": 2,
+      "bytes": "f3c5",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=c5",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        197
+      ]
+    },
+    {
+      "offset": 900,
+      "size": 4,
+      "bytes": "e8fbc2f3",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=fb jump\u2192[F3C2]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        251,
+        62402
+      ]
+    },
+    {
+      "offset": 904,
+      "size": 1,
+      "bytes": "b8",
+      "type": "marker",
+      "annotation": "price:113"
+    },
+    {
+      "offset": 905,
+      "size": 4,
+      "bytes": "e8fbc2eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=fb jump\u2192[EBC2]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        251,
+        60354
+      ]
+    },
+    {
+      "offset": 909,
+      "size": 3,
+      "bytes": "ec8563",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [6385]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25477
+      ]
+    },
+    {
+      "offset": 912,
+      "size": 16,
+      "bytes": "74a0575e665d725b5f74575d5ea05d5e",
+      "type": "text",
+      "decoded": "t information on"
+    },
+    {
+      "offset": 928,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 929,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 930,
+      "size": 19,
+      "bytes": "846366575f5e6163a0775e6473717472576371",
+      "type": "text",
+      "decoded": "Defiance Industries"
+    },
+    {
+      "offset": 949,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 950,
+      "size": 19,
+      "bytes": "7e5f7158715f5ea08457766372715766576364",
+      "type": "text",
+      "decoded": "Nashsan Diversified"
+    },
+    {
+      "offset": 969,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 970,
+      "size": 21,
+      "bytes": "825f596372a090585f725b5f6163737457615f5c71",
+      "type": "text",
+      "decoded": "Baker Pharmaceuticals"
+    },
+    {
+      "offset": 991,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 992,
+      "size": 5,
+      "bytes": "e7c5e6c156",
+      "type": "opcode",
+      "annotation": "CMP_CURSOR_X X=-6459 jump\u2192[56C1]",
+      "opcode": 231,
+      "opcode_name": "CMP_CURSOR_X",
+      "operands": [
+        -6459,
+        22209
+      ]
+    },
+    {
+      "offset": 997,
+      "size": 1,
+      "bytes": "c3",
+      "type": "marker",
+      "annotation": "noop_c3"
+    },
+    {
+      "offset": 998,
+      "size": 1,
+      "bytes": "78",
+      "type": "text",
+      "decoded": "H"
+    },
+    {
+      "offset": 999,
+      "size": 1,
+      "bytes": "c5",
+      "type": "unknown",
+      "annotation": "u_c5"
+    },
+    {
+      "offset": 1000,
+      "size": 3,
+      "bytes": "ebec84",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [84EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        34028
+      ]
+    },
+    {
+      "offset": 1003,
+      "size": 31,
+      "bytes": "6366575f5e6163a0775e6473717472576371a05d66a07863717063727371a0",
+      "type": "text",
+      "decoded": "efiance Industries of Hesperus "
+    },
+    {
+      "offset": 1034,
+      "size": 1,
+      "bytes": "98",
+      "type": "marker",
+      "annotation": "noop_98"
+    },
+    {
+      "offset": 1035,
+      "size": 11,
+      "bytes": "81959183a071675b625d5c",
+      "type": "text",
+      "decoded": "CWSE symbol"
+    },
+    {
+      "offset": 1046,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 1047,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1048,
+      "size": 6,
+      "bytes": "846366786371",
+      "type": "text",
+      "decoded": "DefHes"
+    },
+    {
+      "offset": 1054,
+      "size": 1,
+      "bytes": "97",
+      "type": "marker",
+      "annotation": "noop_97"
+    },
+    {
+      "offset": 1055,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1056,
+      "size": 73,
+      "bytes": "5771a0745863a05c5f7265637174a0825f74745c637b636158a05b5f5e73665f61747372575e65a0615d5b705f5e67a0575ea0745863a07c67725f5ea0815d5b5b5d5e75635f5c7458",
+      "type": "text",
+      "decoded": "is the largest BattleMech manufacturing company in the Lyran Commonwealth"
+    },
+    {
+      "offset": 1129,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1130,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1131,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1132,
+      "size": 31,
+      "bytes": "945863a0615d5b705f5e67a05b5f5e73665f617473726371a0716376635ea0",
+      "type": "text",
+      "decoded": "The company manufactures seven "
+    },
+    {
+      "offset": 1163,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1164,
+      "size": 10,
+      "bytes": "7b636158a07467706371",
+      "type": "text",
+      "decoded": "Mech types"
+    },
+    {
+      "offset": 1174,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1175,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1176,
+      "size": 19,
+      "bytes": "575e615c7364575e65a0745863a058736563a0",
+      "type": "text",
+      "decoded": "including the huge "
+    },
+    {
+      "offset": 1195,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1196,
+      "size": 1,
+      "bytes": "8a",
+      "type": "marker",
+      "annotation": "noop_8a"
+    },
+    {
+      "offset": 1197,
+      "size": 3,
+      "bytes": "637371",
+      "type": "text",
+      "decoded": "eus"
+    },
+    {
+      "offset": 1200,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1201,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1202,
+      "size": 4,
+      "bytes": "5f5e64a0",
+      "type": "text",
+      "decoded": "and "
+    },
+    {
+      "offset": 1206,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1207,
+      "size": 5,
+      "bytes": "7f745c5f71",
+      "type": "text",
+      "decoded": "Atlas"
+    },
+    {
+      "offset": 1212,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1213,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1214,
+      "size": 6,
+      "bytes": "5b5d64635c71",
+      "type": "text",
+      "decoded": "models"
+    },
+    {
+      "offset": 1220,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1221,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1222,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1223,
+      "size": 51,
+      "bytes": "81737272635e745c67a0735e646372655d575e65a05f5ea05f5b625774575d7371a06368705f5e71575d5ea070725d65725f5b",
+      "type": "text",
+      "decoded": "Currently undergoing an ambitious expansion program"
+    },
+    {
+      "offset": 1274,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1275,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1276,
+      "size": 38,
+      "bytes": "846366786371a0585f71a05f5ea05f7474725f6174577663a0625f5c5f5e6163a07158636374",
+      "type": "text",
+      "decoded": "DefHes has an attractive balance sheet"
+    },
+    {
+      "offset": 1314,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1315,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1316,
+      "size": 19,
+      "bytes": "66635f747372575e65a05f5ea05f7171637471",
+      "type": "text",
+      "decoded": "featuring an assets"
+    },
+    {
+      "offset": 1335,
+      "size": 1,
+      "bytes": "9d",
+      "type": "marker",
+      "annotation": "count:1"
+    },
+    {
+      "offset": 1336,
+      "size": 21,
+      "bytes": "5c575f62575c5774576371a0725f74575da05d66a0",
+      "type": "text",
+      "decoded": "liabilities ratio of "
+    },
+    {
+      "offset": 1357,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 1358,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1359,
+      "size": 1,
+      "bytes": "af",
+      "type": "marker",
+      "annotation": "price:40"
+    },
+    {
+      "offset": 1360,
+      "size": 1,
+      "bytes": "a7",
+      "type": "marker",
+      "annotation": "noop_a7"
+    },
+    {
+      "offset": 1361,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1362,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1363,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1364,
+      "size": 63,
+      "bytes": "945863a071745d6159a0585f71a071585d755ea0615d5e71577174635e74a065725d757458a05f5e64a0636861637074575d5e5f5ca071745f62575c577467",
+      "type": "text",
+      "decoded": "The stock has shown consistent growth and exceptional stability"
+    },
+    {
+      "offset": 1427,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1428,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1429,
+      "size": 4,
+      "bytes": "e8fbc2eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=fb jump\u2192[EBC2]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        251,
+        60354
+      ]
+    },
+    {
+      "offset": 1433,
+      "size": 3,
+      "bytes": "ec7e5f",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5F7E]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        24446
+      ]
+    },
+    {
+      "offset": 1436,
+      "size": 18,
+      "bytes": "7158715f5ea08457766372715766576364a0",
+      "type": "text",
+      "decoded": "shsan Diversified "
+    },
+    {
+      "offset": 1454,
+      "size": 1,
+      "bytes": "98",
+      "type": "marker",
+      "annotation": "noop_98"
+    },
+    {
+      "offset": 1455,
+      "size": 11,
+      "bytes": "81959183a071675b625d5c",
+      "type": "text",
+      "decoded": "CWSE symbol"
+    },
+    {
+      "offset": 1466,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 1467,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1468,
+      "size": 6,
+      "bytes": "7e5f71845776",
+      "type": "text",
+      "decoded": "NasDiv"
+    },
+    {
+      "offset": 1474,
+      "size": 1,
+      "bytes": "97",
+      "type": "marker",
+      "annotation": "noop_97"
+    },
+    {
+      "offset": 1475,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1476,
+      "size": 11,
+      "bytes": "585f71a05fa058736563a0",
+      "type": "text",
+      "decoded": "has a huge "
+    },
+    {
+      "offset": 1487,
+      "size": 1,
+      "bytes": "b1",
+      "type": "marker",
+      "annotation": "price:42"
+    },
+    {
+      "offset": 1488,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1489,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1490,
+      "size": 33,
+      "bytes": "70637261635e74a071585f7263a05d66a0745863a0815d5b5b5d5e75635f5c7458",
+      "type": "text",
+      "decoded": "percent share of the Commonwealth"
+    },
+    {
+      "offset": 1523,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1524,
+      "size": 17,
+      "bytes": "71a0615d5b7073746372a05b5f72596374",
+      "type": "text",
+      "decoded": "s computer market"
+    },
+    {
+      "offset": 1541,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1542,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1543,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1544,
+      "size": 32,
+      "bytes": "94586367a05f7263a0575e765d5c766364a0575ea05b5f5e67a06657635c6471",
+      "type": "text",
+      "decoded": "They are involved in many fields"
+    },
+    {
+      "offset": 1576,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1577,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1578,
+      "size": 38,
+      "bytes": "66725d5ba0665d5d6471a0745da07158577070575e65a0745da05f7261585774636174737263",
+      "type": "text",
+      "decoded": "from foods to shipping to architecture"
+    },
+    {
+      "offset": 1616,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1617,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1618,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1619,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1620,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1621,
+      "size": 35,
+      "bytes": "7f6174577663a0575ea05f62715d7262575e65a05d74586372a0615d5b705f5e576371",
+      "type": "text",
+      "decoded": "Active in absorbing other companies"
+    },
+    {
+      "offset": 1656,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1657,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1658,
+      "size": 40,
+      "bytes": "7e5f7158715f5ea0585f71a05fa076637267a0655d5d64a070725d665774a0705d74635e74575f5c",
+      "type": "text",
+      "decoded": "Nashsan has a very good profit potential"
+    },
+    {
+      "offset": 1698,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1699,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1700,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1701,
+      "size": 7,
+      "bytes": "785d7563766372",
+      "type": "text",
+      "decoded": "However"
+    },
+    {
+      "offset": 1708,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1709,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1710,
+      "size": 59,
+      "bytes": "745863a07c67725f5ea0655d7663725e5b635e74a0585f71a0665d735e64a05d61615f71575d5ea0745da06f73637174575d5ea07e5f7158715f5e",
+      "type": "text",
+      "decoded": "the Lyran government has found occasion to ouestion Nashsan"
+    },
+    {
+      "offset": 1769,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1770,
+      "size": 49,
+      "bytes": "71a0637458576171a05f5e64a0585f71a05c6376576364a066575e6371a05f655f575e7174a0745863a0615d5b705f5e67",
+      "type": "text",
+      "decoded": "s ethics and has levied fines against the company"
+    },
+    {
+      "offset": 1819,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1820,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1821,
+      "size": 40,
+      "bytes": "575b705f7274575e65a05fa0616372745f575ea072577159a0745da0745863a0575e766371745d72",
+      "type": "text",
+      "decoded": "imparting a certain risk to the investor"
+    },
+    {
+      "offset": 1861,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1862,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1863,
+      "size": 4,
+      "bytes": "e8fbc2eb",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=fb jump\u2192[EBC2]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        251,
+        60354
+      ]
+    },
+    {
+      "offset": 1867,
+      "size": 3,
+      "bytes": "ec825f",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5F82]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        24450
+      ]
+    },
+    {
+      "offset": 1870,
+      "size": 20,
+      "bytes": "596372a090585f725b5f6163737457615f5c71a0",
+      "type": "text",
+      "decoded": "ker Pharmaceuticals "
+    },
+    {
+      "offset": 1890,
+      "size": 1,
+      "bytes": "98",
+      "type": "marker",
+      "annotation": "noop_98"
+    },
+    {
+      "offset": 1891,
+      "size": 11,
+      "bytes": "81959183a071675b625d5c",
+      "type": "text",
+      "decoded": "CWSE symbol"
+    },
+    {
+      "offset": 1902,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 1903,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1904,
+      "size": 7,
+      "bytes": "825f5990585f72",
+      "type": "text",
+      "decoded": "BakPhar"
+    },
+    {
+      "offset": 1911,
+      "size": 1,
+      "bytes": "97",
+      "type": "marker",
+      "annotation": "noop_97"
+    },
+    {
+      "offset": 1912,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1913,
+      "size": 59,
+      "bytes": "585f71a0665f616364a0716372575d7371a066575e5f5e61575f5ca05f5e64a0706372715d5e5e635ca070725d625c635b71a0726361635e745c67",
+      "type": "text",
+      "decoded": "has faced serious financial and personnel problems recently"
+    },
+    {
+      "offset": 1972,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1973,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1974,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1975,
+      "size": 52,
+      "bytes": "7e5d75a074585f74a07e5f7158715f5ea05771a0615772615c575e65a05f625d7374a07458635ba05c575963a05fa071585f7259",
+      "type": "text",
+      "decoded": "Now that Nashsan is circling about them like a shark"
+    },
+    {
+      "offset": 2027,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2028,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2029,
+      "size": 74,
+      "bytes": "825f596372a05771a0635b625f7259575e65a05d5ea0715d5b63a05e6375a076635e7473726371a074585f74a075575c5ca0635774586372a072635f70a058736563a070725d66577471",
+      "type": "text",
+      "decoded": "Baker is embarking on some new ventures that will either reap huge profits"
+    },
+    {
+      "offset": 2103,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2104,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2105,
+      "size": 31,
+      "bytes": "5d72a075575c5ca0616372745f575e5c67a0625f5e5972737074a07458635b",
+      "type": "text",
+      "decoded": "or will certainly bankrupt them"
+    },
+    {
+      "offset": 2136,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2137,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2138,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2139,
+      "size": 15,
+      "bytes": "775e766371745d7271a075577458a0",
+      "type": "text",
+      "decoded": "Investors with "
+    },
+    {
+      "offset": 2154,
+      "size": 1,
+      "bytes": "a2",
+      "type": "marker",
+      "annotation": "noop_a2"
+    },
+    {
+      "offset": 2155,
+      "size": 5,
+      "bytes": "71705f7263",
+      "type": "text",
+      "decoded": "spare"
+    },
+    {
+      "offset": 2160,
+      "size": 1,
+      "bytes": "a2",
+      "type": "marker",
+      "annotation": "noop_a2"
+    },
+    {
+      "offset": 2161,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2162,
+      "size": 37,
+      "bytes": "615f7158a05b5f67a0755f5e74a0745da0745f5963a05fa072577159a05d5ea0825f596372",
+      "type": "text",
+      "decoded": "cash may want to take a risk on Baker"
+    },
+    {
+      "offset": 2199,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2200,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2201,
+      "size": 50,
+      "bytes": "627374a05c637171a05f5b625774575d7371a0575e766371745d7271a071585d735c64a05c5d5d59a0635c71637558637263",
+      "type": "text",
+      "decoded": "but less ambitious investors should look elsewhere"
+    },
+    {
+      "offset": 2251,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2252,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2253,
+      "size": 4,
+      "bytes": "e8fbc2f4",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=fb jump\u2192[F4C2]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        251,
+        62658
+      ]
+    },
+    {
+      "offset": 2257,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 2258,
+      "size": 1,
+      "bytes": "c2",
+      "type": "marker",
+      "annotation": "noop_c2"
+    },
+    {
+      "offset": 2259,
+      "size": 2,
+      "bytes": "f3bc",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=bc",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        188
+      ]
+    },
+    {
+      "offset": 2261,
+      "size": 4,
+      "bytes": "e8c0c0ed",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=c0 jump\u2192[EDC0]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        192,
+        60864
+      ]
+    },
+    {
+      "offset": 2265,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2266,
+      "size": 1,
+      "bytes": "ed",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP"
+    }
+  ]
+}

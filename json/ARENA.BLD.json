@@ -1,0 +1,3492 @@
+{
+  "filename": "ARENA.BLD",
+  "size": 3957,
+  "header": {
+    "file_type": 115,
+    "paragraphs": 15,
+    "signature": "eec6ebea",
+    "content_type": "c0f5",
+    "content_type_name": "shop/service",
+    "subtype": 165
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "730feec6ebeac0f5",
+      "type": "header",
+      "annotation": "type=73 paragraphs=15 sig=eec6ebea content=shop/service subtype=a5"
+    },
+    {
+      "offset": 8,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 9,
+      "size": 1,
+      "bytes": "9d",
+      "type": "marker",
+      "annotation": "count:1"
+    },
+    {
+      "offset": 10,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 11,
+      "size": 3,
+      "bytes": "ec9563",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [6395]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        25493
+      ]
+    },
+    {
+      "offset": 14,
+      "size": 18,
+      "bytes": "5c615d5b63a0745da0745863a07f72635e5f",
+      "type": "text",
+      "decoded": "lcome to the Arena"
+    },
+    {
+      "offset": 32,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 33,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 34,
+      "size": 56,
+      "bytes": "7558637263a05b5d6463725ea0645f67a0655c5f64575f745d7271a06473635ca0575ea0745863a0615d5c577163735ba05d66a0745863a0",
+      "type": "text",
+      "decoded": "where modern day gladiators duel in the coliseum of the "
+    },
+    {
+      "offset": 90,
+      "size": 1,
+      "bytes": "b1",
+      "type": "marker",
+      "annotation": "price:42"
+    },
+    {
+      "offset": 91,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 92,
+      "size": 10,
+      "bytes": "7458a061635e74737267",
+      "type": "text",
+      "decoded": "th century"
+    },
+    {
+      "offset": 102,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 103,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 104,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 105,
+      "size": 71,
+      "bytes": "78637263a0675d73a0615f5ea061585f5c5c635e6563a05f5e5d74586372a07b636158955f7272575d72a0575ea0615d5b625f74a0665d72a066735ea05f5e64a070725d665774",
+      "type": "text",
+      "decoded": "Here you can challenge another MechWarrior in combat for fun and profit"
+    },
+    {
+      "offset": 176,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 177,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 178,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 179,
+      "size": 32,
+      "bytes": "945863a075575e5e6372a065637471a05fa0615f7158a05f755f7264a05d66a0",
+      "type": "text",
+      "decoded": "The winner gets a cash award of "
+    },
+    {
+      "offset": 211,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 212,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 213,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 214,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 215,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 216,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 217,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 222,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 223,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 224,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 225,
+      "size": 30,
+      "bytes": "945863a05c5d716372a05b5f67a06376635ea0656374a0745da05c577663",
+      "type": "text",
+      "decoded": "The loser may even get to live"
+    },
+    {
+      "offset": 255,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 256,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 257,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 258,
+      "size": 28,
+      "bytes": "845da0675d73a0755f5e74a0745da065577663a05774a05fa0747267",
+      "type": "text",
+      "decoded": "Do you want to give it a try"
+    },
+    {
+      "offset": 286,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 287,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 288,
+      "size": 3,
+      "bytes": "f669c2",
+      "type": "opcode",
+      "annotation": "CHECK_CONDITION \u2192 [C269]",
+      "opcode": 246,
+      "opcode_name": "CHECK_CONDITION",
+      "operands": [
+        49769
+      ]
+    },
+    {
+      "offset": 291,
+      "size": 3,
+      "bytes": "f4bbba",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE bb ba",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        187,
+        186
+      ]
+    },
+    {
+      "offset": 294,
+      "size": 2,
+      "bytes": "f3bc",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=bc",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        188
+      ]
+    },
+    {
+      "offset": 296,
+      "size": 5,
+      "bytes": "edecbb9158",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP idx=ec thresh=bb jump\u2192[5891]",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP",
+      "operands": [
+        236,
+        187,
+        22673
+      ]
+    },
+    {
+      "offset": 301,
+      "size": 32,
+      "bytes": "63a074635c5c71a0675d73a074585f74a0675d73a0615f5ea072635e74a05fa0",
+      "type": "text",
+      "decoded": "e tells you that you can rent a "
+    },
+    {
+      "offset": 333,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 334,
+      "size": 42,
+      "bytes": "7b636158a066725d5ba0745863a07f72635e5fa05d72a0737163a05d5e63a05d66a0675d7372a05d755e",
+      "type": "text",
+      "decoded": "Mech from the Arena or use one of your own"
+    },
+    {
+      "offset": 376,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 377,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 378,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 379,
+      "size": 22,
+      "bytes": "845da0675d73a0755f5e74a0745da072635e74a05fa0",
+      "type": "text",
+      "decoded": "Do you want to rent a "
+    },
+    {
+      "offset": 401,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 402,
+      "size": 4,
+      "bytes": "7b636158",
+      "type": "text",
+      "decoded": "Mech"
+    },
+    {
+      "offset": 406,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 407,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 408,
+      "size": 3,
+      "bytes": "f620c1",
+      "type": "opcode",
+      "annotation": "CHECK_CONDITION \u2192 [C120]",
+      "opcode": 246,
+      "opcode_name": "CHECK_CONDITION",
+      "operands": [
+        49440
+      ]
+    },
+    {
+      "offset": 411,
+      "size": 2,
+      "bytes": "f3a2",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=a2",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        162
+      ]
+    },
+    {
+      "offset": 413,
+      "size": 3,
+      "bytes": "f4a2c0",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE a2 c0",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        162,
+        192
+      ]
+    },
+    {
+      "offset": 416,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 419,
+      "size": 100,
+      "bytes": "875d73a05f7263a0665d72616364a0745da07157655ea071637663725f5ca0755f5776637271a072635c635f71575e65a0745863a07f72635e5fa05d7063725f745d7271a066725d5ba05f5e67a05c575f62575c577467a071585d735c64a0675d7372a0",
+      "type": "text",
+      "decoded": "You are forced to sign several waivers releasing the Arena operators from any liability should your "
+    },
+    {
+      "offset": 519,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 520,
+      "size": 17,
+      "bytes": "7b636158a06263a064637174725d676364",
+      "type": "text",
+      "decoded": "Mech be destroyed"
+    },
+    {
+      "offset": 537,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 538,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 539,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 540,
+      "size": 34,
+      "bytes": "7766a05774a05771a064637174725d676364a0575ea07f72635e5fa0615d5b625f74",
+      "type": "text",
+      "decoded": "If it is destroyed in Arena combat"
+    },
+    {
+      "offset": 574,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 575,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 576,
+      "size": 19,
+      "bytes": "675d73a05c5d7163a05774a0665d7263766372",
+      "type": "text",
+      "decoded": "you lose it forever"
+    },
+    {
+      "offset": 595,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 596,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 597,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 598,
+      "size": 32,
+      "bytes": "945863a07161725f7071a06263615d5b63a07f72635e5fa070725d7063727467",
+      "type": "text",
+      "decoded": "The scraps become Arena property"
+    },
+    {
+      "offset": 630,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 631,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 632,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 633,
+      "size": 2,
+      "bytes": "e9e8",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=e8",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        232
+      ]
+    },
+    {
+      "offset": 635,
+      "size": 1,
+      "bytes": "23",
+      "type": "transparent",
+      "annotation": "byte_23"
+    },
+    {
+      "offset": 636,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 637,
+      "size": 3,
+      "bytes": "f4a1c0",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE a1 c0",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        161,
+        192
+      ]
+    },
+    {
+      "offset": 640,
+      "size": 3,
+      "bytes": "ebec94",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [94EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        38124
+      ]
+    },
+    {
+      "offset": 643,
+      "size": 12,
+      "bytes": "5863a05f7474635e645f5e74",
+      "type": "text",
+      "decoded": "he attendant"
+    },
+    {
+      "offset": 655,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 656,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 657,
+      "size": 46,
+      "bytes": "5fa07158725776635c6364a05d5c64a0755d5b5f5ea075577458a0585d725ea072575b5b6364a0655c5f71716371",
+      "type": "text",
+      "decoded": "a shriveled old woman with horn rimmed glasses"
+    },
+    {
+      "offset": 703,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 704,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 705,
+      "size": 74,
+      "bytes": "745f596371a05fa05c5d5e65a070736666a05d66a0586372a06157655f7263747463a05f5e64a0707371586371a05fa0726365577174725f74575d5ea0665d725ba0675d7372a0755f67",
+      "type": "text",
+      "decoded": "takes a long puff of her cigarette and pushes a registration form your way"
+    },
+    {
+      "offset": 779,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 780,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 781,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 782,
+      "size": 27,
+      "bytes": "775ea06263747563635ea062725d5e6158575f5ca0615d73655871",
+      "type": "text",
+      "decoded": "In between bronchial coughs"
+    },
+    {
+      "offset": 809,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 810,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 811,
+      "size": 59,
+      "bytes": "715863a0705d575e7471a0745da0616372745f575ea0705c5f616371a05d5ea0745863a0665d725ba0665d72a0675d73a0745da0575e5774575f5c",
+      "type": "text",
+      "decoded": "she points to certain places on the form for you to initial"
+    },
+    {
+      "offset": 870,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 871,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 872,
+      "size": 49,
+      "bytes": "72635c635f71575e65a0745863a07f72635e5fa05b5f5e5f65635b635e74a066725d5ba05f5e67a05c575f62575c577467",
+      "type": "text",
+      "decoded": "releasing the Arena management from any liability"
+    },
+    {
+      "offset": 921,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 922,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 923,
+      "size": 2,
+      "bytes": "e9f3",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=f3",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        243
+      ]
+    },
+    {
+      "offset": 925,
+      "size": 1,
+      "bytes": "cb",
+      "type": "unknown",
+      "annotation": "u_cb"
+    },
+    {
+      "offset": 926,
+      "size": 2,
+      "bytes": "f5d0",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=d0",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        208
+      ]
+    },
+    {
+      "offset": 928,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 929,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 930,
+      "size": 3,
+      "bytes": "ebec94",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [94EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        38124
+      ]
+    },
+    {
+      "offset": 933,
+      "size": 29,
+      "bytes": "58635ea0715863a0615863615971a0675d7372a0815d5b91745f72a081",
+      "type": "text",
+      "decoded": "hen she checks your ComStar C"
+    },
+    {
+      "offset": 962,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 963,
+      "size": 32,
+      "bytes": "62575c5ca05f61615d735e74a05f5e64a074635c5c71a0675d73a074585f74a0",
+      "type": "text",
+      "decoded": "bill account and tells you that "
+    },
+    {
+      "offset": 995,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 996,
+      "size": 1,
+      "bytes": "dd",
+      "type": "unknown",
+      "annotation": "u_dd"
+    },
+    {
+      "offset": 997,
+      "size": 4,
+      "bytes": "eac015c4",
+      "type": "opcode",
+      "annotation": "COND_STATE_ACTION idx=c0 extra=15 align=c4",
+      "opcode": 234,
+      "opcode_name": "COND_STATE_ACTION",
+      "operands": [
+        192,
+        21,
+        196
+      ]
+    },
+    {
+      "offset": 1001,
+      "size": 3,
+      "bytes": "ec675d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D67]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23911
+      ]
+    },
+    {
+      "offset": 1004,
+      "size": 5,
+      "bytes": "73a0645d5e",
+      "type": "text",
+      "decoded": "u don"
+    },
+    {
+      "offset": 1009,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1010,
+      "size": 89,
+      "bytes": "74a0585f7663a0635e5d736558a0615f7158a05d5ea0585f5e64a0745da05b5f5963a0745863a07163617372577467a06463705d715774a0745da0615d766372a07263705f577271a0575ea0615f7163a0675d73a05c5d7163",
+      "type": "text",
+      "decoded": "t have enough cash on hand to make the security deposit to cover repairs in case you lose"
+    },
+    {
+      "offset": 1099,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1100,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1101,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1102,
+      "size": 20,
+      "bytes": "875d73a071745f7274a0745da070725d74637174",
+      "type": "text",
+      "decoded": "You start to protest"
+    },
+    {
+      "offset": 1122,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1123,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1124,
+      "size": 16,
+      "bytes": "715f67575e65a0675d73a0756372635e",
+      "type": "text",
+      "decoded": "saying you weren"
+    },
+    {
+      "offset": 1140,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1141,
+      "size": 31,
+      "bytes": "74a0745d5c64a05f5e677458575e65a05f625d7374a05fa06463705d715774",
+      "type": "text",
+      "decoded": "t told anything about a deposit"
+    },
+    {
+      "offset": 1172,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1173,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1174,
+      "size": 62,
+      "bytes": "627374a0715863a05771a0635e65725d71716364a0575ea05fa0615d736558575e65a0665774a05f5e64a05d5e5c67a0755f766371a0675d73a05f755f67",
+      "type": "text",
+      "decoded": "but she is engrossed in a coughing fit and only waves you away"
+    },
+    {
+      "offset": 1236,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1237,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1238,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1239,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 1241,
+      "size": 1,
+      "bytes": "de",
+      "type": "unknown",
+      "annotation": "u_de"
+    },
+    {
+      "offset": 1242,
+      "size": 4,
+      "bytes": "eac0ec74",
+      "type": "opcode",
+      "annotation": "COND_STATE_ACTION idx=c0 extra=ec align=74",
+      "opcode": 234,
+      "opcode_name": "COND_STATE_ACTION",
+      "operands": [
+        192,
+        236,
+        116
+      ]
+    },
+    {
+      "offset": 1246,
+      "size": 30,
+      "bytes": "5863a07f72635e5fa05b5f5e5f65635b635e74a0585f71a0745f59635ea0",
+      "type": "text",
+      "decoded": "he Arena management has taken "
+    },
+    {
+      "offset": 1276,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 1277,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1278,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1279,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1280,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1281,
+      "size": 49,
+      "bytes": "62575c5c71a066725d5ba0675d7372a05f61615d735e74a0665d72a072635e74575e65a05d5e63a05d66a07458635772a0",
+      "type": "text",
+      "decoded": "bills from your account for renting one of their "
+    },
+    {
+      "offset": 1330,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1331,
+      "size": 5,
+      "bytes": "7b63615871",
+      "type": "text",
+      "decoded": "Mechs"
+    },
+    {
+      "offset": 1336,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1337,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1338,
+      "size": 12,
+      "bytes": "5f5e64a05f5e5d74586372a0",
+      "type": "text",
+      "decoded": "and another "
+    },
+    {
+      "offset": 1350,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 1351,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1352,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1353,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1354,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1355,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1356,
+      "size": 58,
+      "bytes": "62575c5c71a05f71a05fa07163617372577467a06463705d715774a05f5e64a0745da0615d766372a07263705f577271a0745da07458635772a0",
+      "type": "text",
+      "decoded": "bills as a security deposit and to cover repairs to their "
+    },
+    {
+      "offset": 1414,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1415,
+      "size": 21,
+      "bytes": "7b636158a0575ea0615f7163a0675d73a05c5d7163",
+      "type": "text",
+      "decoded": "Mech in case you lose"
+    },
+    {
+      "offset": 1436,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1437,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1438,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1439,
+      "size": 2,
+      "bytes": "e9f5",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=f5",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        245
+      ]
+    },
+    {
+      "offset": 1441,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 1442,
+      "size": 1,
+      "bytes": "4d",
+      "type": "transparent",
+      "annotation": "byte_4d"
+    },
+    {
+      "offset": 1443,
+      "size": 1,
+      "bytes": "c6",
+      "type": "unknown",
+      "annotation": "u_c6"
+    },
+    {
+      "offset": 1444,
+      "size": 3,
+      "bytes": "f49fbf",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE 9f bf",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        159,
+        191
+      ]
+    },
+    {
+      "offset": 1447,
+      "size": 3,
+      "bytes": "ebec87",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [87EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        34796
+      ]
+    },
+    {
+      "offset": 1450,
+      "size": 69,
+      "bytes": "5d73a05e635f725c67a0715872576359a07558635ea0675d73a05f7263a0745d5c64a074585f74a0675d73a0585f7663a06263635ea061585f72656364a0715da05b736158",
+      "type": "text",
+      "decoded": "ou nearly shriek when you are told that you have been charged so much"
+    },
+    {
+      "offset": 1519,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1520,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1521,
+      "size": 40,
+      "bytes": "74585f74a05e5d7558637263a05771a05774a05c5771746364a074585f74a05774a0615d717471a0",
+      "type": "text",
+      "decoded": "that nowhere is it listed that it costs "
+    },
+    {
+      "offset": 1561,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 1562,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 1563,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 1564,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1565,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 1566,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 1567,
+      "size": 17,
+      "bytes": "62575c5c71a05a737174a0745da0747267",
+      "type": "text",
+      "decoded": "bills just to try"
+    },
+    {
+      "offset": 1584,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1585,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1586,
+      "size": 3,
+      "bytes": "637461",
+      "type": "text",
+      "decoded": "etc"
+    },
+    {
+      "offset": 1589,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1590,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1591,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1592,
+      "size": 26,
+      "bytes": "945863a05f7474635e645f5e74a05c5d5d5971a05f74a0675d73",
+      "type": "text",
+      "decoded": "The attendant looks at you"
+    },
+    {
+      "offset": 1618,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1619,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1620,
+      "size": 26,
+      "bytes": "5b5f596371a05fa0615d5e64637161635e64575e65a0665f6163",
+      "type": "text",
+      "decoded": "makes a condescending face"
+    },
+    {
+      "offset": 1646,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1647,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1648,
+      "size": 46,
+      "bytes": "5f5e64a074635c5c71a0675d73a074585f74a0675d73a0585f64a0626374746372a0585d7063a0675d73a075575e",
+      "type": "text",
+      "decoded": "and tells you that you had better hope you win"
+    },
+    {
+      "offset": 1694,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1695,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1696,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 1698,
+      "size": 2,
+      "bytes": "f39f",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=9f",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        159
+      ]
+    },
+    {
+      "offset": 1700,
+      "size": 3,
+      "bytes": "f4a2bf",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE a2 bf",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        162,
+        191
+      ]
+    },
+    {
+      "offset": 1703,
+      "size": 2,
+      "bytes": "f3a1",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=a1",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        161
+      ]
+    },
+    {
+      "offset": 1705,
+      "size": 2,
+      "bytes": "f598",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=98",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        152
+      ]
+    },
+    {
+      "offset": 1707,
+      "size": 1,
+      "bytes": "70",
+      "type": "text",
+      "decoded": "p"
+    },
+    {
+      "offset": 1708,
+      "size": 1,
+      "bytes": "bd",
+      "type": "marker",
+      "annotation": "rbracket"
+    },
+    {
+      "offset": 1709,
+      "size": 3,
+      "bytes": "eec6eb",
+      "type": "opcode",
+      "annotation": "SPEND_CREDITS c6 eb",
+      "opcode": 238,
+      "opcode_name": "SPEND_CREDITS",
+      "operands": [
+        198,
+        235
+      ]
+    },
+    {
+      "offset": 1712,
+      "size": 4,
+      "bytes": "eac0f5a1",
+      "type": "opcode",
+      "annotation": "COND_STATE_ACTION idx=c0 extra=f5 align=a1",
+      "opcode": 234,
+      "opcode_name": "COND_STATE_ACTION",
+      "operands": [
+        192,
+        245,
+        161
+      ]
+    },
+    {
+      "offset": 1716,
+      "size": 1,
+      "bytes": "d7",
+      "type": "unknown",
+      "annotation": "u_d7"
+    },
+    {
+      "offset": 1717,
+      "size": 1,
+      "bytes": "b7",
+      "type": "marker",
+      "annotation": "price:111"
+    },
+    {
+      "offset": 1718,
+      "size": 2,
+      "bytes": "f59f",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=9f",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        159
+      ]
+    },
+    {
+      "offset": 1720,
+      "size": 1,
+      "bytes": "12",
+      "type": "transparent",
+      "annotation": "byte_12"
+    },
+    {
+      "offset": 1721,
+      "size": 1,
+      "bytes": "b8",
+      "type": "marker",
+      "annotation": "price:113"
+    },
+    {
+      "offset": 1722,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 1725,
+      "size": 57,
+      "bytes": "63a07158725776635c6364a0755d5b5f5ea05f5c5b5d7174a061587361595c6371a07558635ea0715863a071636371a0675d73a05f655f575e",
+      "type": "text",
+      "decoded": "e shriveled woman almost chuckles when she sees you again"
+    },
+    {
+      "offset": 1782,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1783,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1784,
+      "size": 2,
+      "bytes": "f5a2",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=a2",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        162
+      ]
+    },
+    {
+      "offset": 1786,
+      "size": 1,
+      "bytes": "06",
+      "type": "control",
+      "annotation": "break_06"
+    },
+    {
+      "offset": 1787,
+      "size": 1,
+      "bytes": "c5",
+      "type": "unknown",
+      "annotation": "u_c5"
+    },
+    {
+      "offset": 1788,
+      "size": 3,
+      "bytes": "ecbbbb",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [BBBB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        48059
+      ]
+    },
+    {
+      "offset": 1791,
+      "size": 80,
+      "bytes": "915863a0715f6771a074585f74a05e5d74a05d5e5c67a0645764a0675d73a05c5d7163a0745863a0615d5b625f74a05f5e64a0745863a072637170636174a05d66a0745863a071706361745f745d7271",
+      "type": "text",
+      "decoded": "She says that not only did you lose the combat and the respect of the spectators"
+    },
+    {
+      "offset": 1871,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1872,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1873,
+      "size": 19,
+      "bytes": "675d73a05f5c715da05c5d7174a0675d7372a0",
+      "type": "text",
+      "decoded": "you also lost your "
+    },
+    {
+      "offset": 1892,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1893,
+      "size": 4,
+      "bytes": "7b636158",
+      "type": "text",
+      "decoded": "Mech"
+    },
+    {
+      "offset": 1897,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1898,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1899,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1900,
+      "size": 23,
+      "bytes": "915863a05c5f73655871a0575ea0675d7372a0665f6163",
+      "type": "text",
+      "decoded": "She laughs in your face"
+    },
+    {
+      "offset": 1923,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1924,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1925,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1926,
+      "size": 7,
+      "bytes": "815c635f725c67",
+      "type": "text",
+      "decoded": "Clearly"
+    },
+    {
+      "offset": 1933,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 1934,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 1935,
+      "size": 37,
+      "bytes": "617371745d5b6372a072635c5f74575d5e71a05f7263a05e5d74a074585771a0755d5b5f5e",
+      "type": "text",
+      "decoded": "customer relations are not this woman"
+    },
+    {
+      "offset": 1972,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 1973,
+      "size": 14,
+      "bytes": "71a07174725d5e65a0705d575e74",
+      "type": "text",
+      "decoded": "s strong point"
+    },
+    {
+      "offset": 1987,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1988,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1989,
+      "size": 4,
+      "bytes": "e830b8ec",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=30 jump\u2192[ECB8]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        48,
+        60600
+      ]
+    },
+    {
+      "offset": 1993,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1994,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 1995,
+      "size": 24,
+      "bytes": "915863a074635c5c71a0675d73a074585f74a0675d7372a0",
+      "type": "text",
+      "decoded": "She tells you that your "
+    },
+    {
+      "offset": 2019,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 2020,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 2021,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 2022,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2023,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 2024,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 2025,
+      "size": 62,
+      "bytes": "62575c5ca06463705d715774a0585f71a06263635ea0615d5e665771615f746364a0745da0705f67a0665d72a07263705f577271a0745da07458635772a0",
+      "type": "text",
+      "decoded": "bill deposit has been confiscated to pay for repairs to their "
+    },
+    {
+      "offset": 2087,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 2088,
+      "size": 4,
+      "bytes": "7b636158",
+      "type": "text",
+      "decoded": "Mech"
+    },
+    {
+      "offset": 2092,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2093,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2094,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2095,
+      "size": 12,
+      "bytes": "915863a06368705c5f575e71",
+      "type": "text",
+      "decoded": "She explains"
+    },
+    {
+      "offset": 2107,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2108,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2109,
+      "size": 14,
+      "bytes": "6263747563635ea0615d73655871",
+      "type": "text",
+      "decoded": "between coughs"
+    },
+    {
+      "offset": 2123,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2124,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2125,
+      "size": 36,
+      "bytes": "74585f74a0675d73a0585f7663a05c5d7174a072637170636174a05f5e64a05b5d5e6367",
+      "type": "text",
+      "decoded": "that you have lost respect and money"
+    },
+    {
+      "offset": 2161,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2162,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2163,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2164,
+      "size": 51,
+      "bytes": "915863a07263615d5b5b635e6471a074585f74a0745863a05e636874a074575b63a0675d73a0747267a0745863a07f72635e5f",
+      "type": "text",
+      "decoded": "She recommends that the next time you try the Arena"
+    },
+    {
+      "offset": 2215,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2216,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2217,
+      "size": 7,
+      "bytes": "675d73a075575e",
+      "type": "text",
+      "decoded": "you win"
+    },
+    {
+      "offset": 2224,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2225,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2226,
+      "size": 3,
+      "bytes": "ecbb87",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [87BB]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        34747
+      ]
+    },
+    {
+      "offset": 2229,
+      "size": 26,
+      "bytes": "5d73a07473725ea05f5e64a063685774a0745863a07f72635e5f",
+      "type": "text",
+      "decoded": "ou turn and exit the Arena"
+    },
+    {
+      "offset": 2255,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2256,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2257,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 2258,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 2260,
+      "size": 1,
+      "bytes": "e3",
+      "type": "unknown",
+      "annotation": "u_e3"
+    },
+    {
+      "offset": 2261,
+      "size": 3,
+      "bytes": "f4bfec",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE bf ec",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        191,
+        236
+      ]
+    },
+    {
+      "offset": 2264,
+      "size": 87,
+      "bytes": "945863a05e5f717467a0755d5b5f5ea0626358575e64a0745863a0615d735e746372a0615f61595c6371a05d7374a05fa0666363625c63a0615d5e65725f74735c5f74575d5e71a05d5ea0675d7372a0765761745d7267",
+      "type": "text",
+      "decoded": "The nasty woman behind the counter cackles out a feeble congratulations on your victory"
+    },
+    {
+      "offset": 2351,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2352,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2353,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2354,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2355,
+      "size": 2,
+      "bytes": "f5a2",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=a2",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        162
+      ]
+    },
+    {
+      "offset": 2357,
+      "size": 1,
+      "bytes": "9d",
+      "type": "marker",
+      "annotation": "count:1"
+    },
+    {
+      "offset": 2358,
+      "size": 1,
+      "bytes": "be",
+      "type": "marker",
+      "annotation": "price:125"
+    },
+    {
+      "offset": 2359,
+      "size": 3,
+      "bytes": "ec9158",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5891]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22673
+      ]
+    },
+    {
+      "offset": 2362,
+      "size": 37,
+      "bytes": "63a06572736465575e655c67a0585f5e6471a0675d73a066577663a058735e64726364a081",
+      "type": "text",
+      "decoded": "e grudgingly hands you five hundred C"
+    },
+    {
+      "offset": 2399,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 2400,
+      "size": 5,
+      "bytes": "62575c5c71",
+      "type": "text",
+      "decoded": "bills"
+    },
+    {
+      "offset": 2405,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2406,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2407,
+      "size": 40,
+      "bytes": "5b736158a05d66a07558576158a075575c5ca0655da0745da07263705f5772575e65a0675d7372a0",
+      "type": "text",
+      "decoded": "much of which will go to repairing your "
+    },
+    {
+      "offset": 2447,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 2448,
+      "size": 4,
+      "bytes": "7b636158",
+      "type": "text",
+      "decoded": "Mech"
+    },
+    {
+      "offset": 2452,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2453,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2454,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2455,
+      "size": 24,
+      "bytes": "875d73a0615863637266735c5c67a074585f5e59a0586372",
+      "type": "text",
+      "decoded": "You cheerfully thank her"
+    },
+    {
+      "offset": 2479,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2480,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2481,
+      "size": 32,
+      "bytes": "7558576158a07163635b71a0745da05f5e5e5d67a0586372a066737274586372",
+      "type": "text",
+      "decoded": "which seems to annoy her further"
+    },
+    {
+      "offset": 2513,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2514,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2515,
+      "size": 19,
+      "bytes": "5f5e64a05c635f7663a0745863a07f72635e5f",
+      "type": "text",
+      "decoded": "and leave the Arena"
+    },
+    {
+      "offset": 2534,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2535,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2536,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 2537,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 2539,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 2542,
+      "size": 58,
+      "bytes": "63a05d7063725f745d7271a05d66a0745863a07f72635e5fa05c5d5d59a05d5ea0575ea0585d72725d72a05f71a0675d73a0755f5c746aa05fa0",
+      "type": "text",
+      "decoded": "e operators of the Arena look on in horror as you waltz a "
+    },
+    {
+      "offset": 2600,
+      "size": 1,
+      "bytes": "af",
+      "type": "marker",
+      "annotation": "price:40"
+    },
+    {
+      "offset": 2601,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2602,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 2603,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2604,
+      "size": 9,
+      "bytes": "5b575c5c575d5ea081",
+      "type": "text",
+      "decoded": "million C"
+    },
+    {
+      "offset": 2613,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 2614,
+      "size": 39,
+      "bytes": "62575c5ca07c5d61737174a05d7374a05d66a0745863a07f72635e5fa05f5e64a06371615f7063",
+      "type": "text",
+      "decoded": "bill Locust out of the Arena and escape"
+    },
+    {
+      "offset": 2653,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2654,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2655,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2656,
+      "size": 67,
+      "bytes": "875d73a0646366745c67a05d73745b5f5e6373766372a0745863a07073727173575e65a09372625f5e7b63615871a05f5e64a05e5d75a05d755ea05fa07c5d61737174",
+      "type": "text",
+      "decoded": "You deftly outmaneuver the pursuing UrbanMechs and now own a Locust"
+    },
+    {
+      "offset": 2723,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2724,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2725,
+      "size": 14,
+      "bytes": "66726363a05f5e64a0615c635f72",
+      "type": "text",
+      "decoded": "free and clear"
+    },
+    {
+      "offset": 2739,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 2740,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2741,
+      "size": 2,
+      "bytes": "f3be",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=be",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        190
+      ]
+    },
+    {
+      "offset": 2743,
+      "size": 2,
+      "bytes": "f5be",
+      "type": "opcode",
+      "annotation": "SHOP_DISPATCH op=be",
+      "opcode": 245,
+      "opcode_name": "SHOP_DISPATCH",
+      "operands": [
+        190
+      ]
+    },
+    {
+      "offset": 2745,
+      "size": 1,
+      "bytes": "2c",
+      "type": "transparent",
+      "annotation": "byte_2c"
+    },
+    {
+      "offset": 2746,
+      "size": 1,
+      "bytes": "ba",
+      "type": "marker",
+      "annotation": "rparen"
+    },
+    {
+      "offset": 2747,
+      "size": 4,
+      "bytes": "e885bcf2",
+      "type": "opcode",
+      "annotation": "RNG_CHECK mask=85 jump\u2192[F2BC]",
+      "opcode": 232,
+      "opcode_name": "RNG_CHECK",
+      "operands": [
+        133,
+        62140
+      ]
+    },
+    {
+      "offset": 2751,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 2753,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 2756,
+      "size": 20,
+      "bytes": "63a072637174a05d66a0675d7372a065725d7370",
+      "type": "text",
+      "decoded": "e rest of your group"
+    },
+    {
+      "offset": 2776,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2777,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2778,
+      "size": 44,
+      "bytes": "585f76575e65a0755f7461586364a0745863a071706361745f615c63a066725d5ba0745863a071745f5e6471",
+      "type": "text",
+      "decoded": "having watched the spectacle from the stands"
+    },
+    {
+      "offset": 2822,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2823,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2824,
+      "size": 92,
+      "bytes": "5f61746364a06f735761595c67a0575ea0655f74586372575e65a0745d656374586372a05d737471576463a0745863a091745f72705d7274a0745da05b636374a07370a075577458a0675d73a05766a0675d73a07173727657766364",
+      "type": "text",
+      "decoded": "acted ouickly in gathering together outside the Starport to meet up with you if you survived"
+    },
+    {
+      "offset": 2916,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 2917,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2918,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2919,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 2920,
+      "size": 2,
+      "bytes": "f3cf",
+      "type": "opcode",
+      "annotation": "SHOP_INTERACTION op=cf",
+      "opcode": 243,
+      "opcode_name": "SHOP_INTERACTION",
+      "operands": [
+        207
+      ]
+    },
+    {
+      "offset": 2922,
+      "size": 3,
+      "bytes": "f1d085",
+      "type": "opcode",
+      "annotation": "ADD_TO_STATE d0 85",
+      "opcode": 241,
+      "opcode_name": "ADD_TO_STATE",
+      "operands": [
+        208,
+        133
+      ]
+    },
+    {
+      "offset": 2925,
+      "size": 1,
+      "bytes": "bc",
+      "type": "marker",
+      "annotation": "lbracket"
+    },
+    {
+      "offset": 2926,
+      "size": 1,
+      "bytes": "85",
+      "type": "text",
+      "decoded": "G"
+    },
+    {
+      "offset": 2927,
+      "size": 1,
+      "bytes": "bc",
+      "type": "marker",
+      "annotation": "lbracket"
+    },
+    {
+      "offset": 2928,
+      "size": 1,
+      "bytes": "74",
+      "type": "text",
+      "decoded": "t"
+    },
+    {
+      "offset": 2929,
+      "size": 1,
+      "bytes": "b9",
+      "type": "marker",
+      "annotation": "lparen"
+    },
+    {
+      "offset": 2930,
+      "size": 1,
+      "bytes": "74",
+      "type": "text",
+      "decoded": "t"
+    },
+    {
+      "offset": 2931,
+      "size": 1,
+      "bytes": "b9",
+      "type": "marker",
+      "annotation": "lparen"
+    },
+    {
+      "offset": 2932,
+      "size": 1,
+      "bytes": "74",
+      "type": "text",
+      "decoded": "t"
+    },
+    {
+      "offset": 2933,
+      "size": 1,
+      "bytes": "b9",
+      "type": "marker",
+      "annotation": "lparen"
+    },
+    {
+      "offset": 2934,
+      "size": 3,
+      "bytes": "ec775e",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5E77]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        24183
+      ]
+    },
+    {
+      "offset": 2937,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2938,
+      "size": 53,
+      "bytes": "5f5c5ca0745863a0615d5b5b5d74575d5ea0717372725d735e64575e65a0675d7372a0645f72575e65a07458636674a05d66a05fa0",
+      "type": "text",
+      "decoded": "all the commotion surrounding your daring theft of a "
+    },
+    {
+      "offset": 2991,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 2992,
+      "size": 4,
+      "bytes": "7b636158",
+      "type": "text",
+      "decoded": "Mech"
+    },
+    {
+      "offset": 2996,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 2997,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 2998,
+      "size": 36,
+      "bytes": "745863a065736771a05f74a0745863a0705f7259575e65a0655f725f6563a0756372635e",
+      "type": "text",
+      "decoded": "the guys at the parking garage weren"
+    },
+    {
+      "offset": 3034,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 3035,
+      "size": 26,
+      "bytes": "74a0705f67575e65a0615f726366735ca05f7474635e74575d5e",
+      "type": "text",
+      "decoded": "t paying careful attention"
+    },
+    {
+      "offset": 3061,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3062,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3063,
+      "size": 43,
+      "bytes": "5f5e64a0675d7372a065725d7370a0585f71a05b5f5e5f656364a0745da07263615d766372a0675d7372a0",
+      "type": "text",
+      "decoded": "and your group has managed to recover your "
+    },
+    {
+      "offset": 3106,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 3107,
+      "size": 36,
+      "bytes": "7b63615871a0755774585d7374a0705f67575e65a0745863a0705f7259575e65a0666363",
+      "type": "text",
+      "decoded": "Mechs without paying the parking fee"
+    },
+    {
+      "offset": 3143,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3144,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3145,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 3146,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 3148,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 3151,
+      "size": 4,
+      "bytes": "73a0645d",
+      "type": "text",
+      "decoded": "u do"
+    },
+    {
+      "offset": 3155,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3156,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3157,
+      "size": 7,
+      "bytes": "585d7563766372",
+      "type": "text",
+      "decoded": "however"
+    },
+    {
+      "offset": 3164,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3165,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3166,
+      "size": 75,
+      "bytes": "7458575e59a05774a070727364635e74a074585f74a0675d73a05e5d74a071585d75a0675d7372a0665f6163a05f725d735e64a0745863a091745f72705d7274a0665d72a05fa05c5d5e65",
+      "type": "text",
+      "decoded": "think it prudent that you not show your face around the Starport for a long"
+    },
+    {
+      "offset": 3241,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3242,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3243,
+      "size": 9,
+      "bytes": "5c5d5e65a074575b63",
+      "type": "text",
+      "decoded": "long time"
+    },
+    {
+      "offset": 3252,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3253,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3254,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3255,
+      "size": 62,
+      "bytes": "8376637267a084725f615d5e575f5ea0715d5c64576372a071585d735c64a0585f7663a0675d7372a0665f6163a05b635b5d72576a6364a06267a05e5d75",
+      "type": "text",
+      "decoded": "Every Draconian soldier should have your face memorized by now"
+    },
+    {
+      "offset": 3317,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3318,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3319,
+      "size": 39,
+      "bytes": "5f5e64a07458637263a05771a05fa05863667467a07072576163a05d5ea0675d7372a058635f64",
+      "type": "text",
+      "decoded": "and there is a hefty price on your head"
+    },
+    {
+      "offset": 3358,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3359,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3360,
+      "size": 3,
+      "bytes": "f4a1c0",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE a1 c0",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        161,
+        192
+      ]
+    },
+    {
+      "offset": 3363,
+      "size": 3,
+      "bytes": "f4b5bf",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE b5 bf",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        181,
+        191
+      ]
+    },
+    {
+      "offset": 3366,
+      "size": 3,
+      "bytes": "f4a8c0",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE a8 c0",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        168,
+        192
+      ]
+    },
+    {
+      "offset": 3369,
+      "size": 3,
+      "bytes": "f4a7d4",
+      "type": "opcode",
+      "annotation": "SET_STATE_VALUE a7 d4",
+      "opcode": 244,
+      "opcode_name": "SET_STATE_VALUE",
+      "operands": [
+        167,
+        212
+      ]
+    },
+    {
+      "offset": 3372,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 3373,
+      "size": 2,
+      "bytes": "e9f3",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=f3",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        243
+      ]
+    },
+    {
+      "offset": 3375,
+      "size": 1,
+      "bytes": "c9",
+      "type": "unknown",
+      "annotation": "u_c9"
+    },
+    {
+      "offset": 3376,
+      "size": 5,
+      "bytes": "edec945863",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP idx=ec thresh=94 jump\u2192[6358]",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP",
+      "operands": [
+        236,
+        148,
+        25432
+      ]
+    },
+    {
+      "offset": 3381,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3382,
+      "size": 103,
+      "bytes": "7158725776635c6364a05d5c64a0755d5b5f5ea0715e63637271a05f74a0675d73a05f5e64a074635c5c71a0675d73a074585f74a0745863a07f72635e5fa07163727657616371a05f7263a05d5e5c67a0665d72a0905f61576657615fa07263715764635e7471",
+      "type": "text",
+      "decoded": "shriveled old woman sneers at you and tells you that the Arena services are only for Pacifica residents"
+    },
+    {
+      "offset": 3485,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3486,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3487,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3488,
+      "size": 63,
+      "bytes": "9558635ea0675d7372a071585d7274a074635b706372a0715e5f7071a05f5e64a0675d73a071745f7274a067635c5c575e65a074585f74a0675d73a0645d5e",
+      "type": "text",
+      "decoded": "When your short temper snaps and you start yelling that you don"
+    },
+    {
+      "offset": 3551,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 3552,
+      "size": 32,
+      "bytes": "74a0595e5d75a095787f94a0715863a05771a0745f5c59575e65a05f625d7374",
+      "type": "text",
+      "decoded": "t know WHAT she is talking about"
+    },
+    {
+      "offset": 3584,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3585,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3586,
+      "size": 42,
+      "bytes": "715863a07558577071a05d7374a05fa0817c7d918384a07157655ea05f5e64a0755f5c5971a05f755f67",
+      "type": "text",
+      "decoded": "she whips out a CLOSED sign and walks away"
+    },
+    {
+      "offset": 3628,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3629,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3630,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 3631,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 3633,
+      "size": 3,
+      "bytes": "ec9458",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5894]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        22676
+      ]
+    },
+    {
+      "offset": 3636,
+      "size": 43,
+      "bytes": "635ea0715863a0585f5e6471a0675d73a05fa062575c5ca0665d72a07263705f577271a0745da0745863a0",
+      "type": "text",
+      "decoded": "en she hands you a bill for repairs to the "
+    },
+    {
+      "offset": 3679,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 3680,
+      "size": 15,
+      "bytes": "7b636158a0675d73a072635e746364",
+      "type": "text",
+      "decoded": "Mech you rented"
+    },
+    {
+      "offset": 3695,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3696,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3697,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3698,
+      "size": 48,
+      "bytes": "815d5e7157646372575e65a0745863a072637073745f74575d5ea05d66a074585771a06371745f625c5771585b635e74",
+      "type": "text",
+      "decoded": "Considering the reputation of this establishment"
+    },
+    {
+      "offset": 3746,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3747,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3748,
+      "size": 60,
+      "bytes": "675d73a05f7263a05e5d74a0717372707257716364a074585f74a0745863a062575c5ca0635e615d5b705f71716371a0675d7372a0635e74577263a0",
+      "type": "text",
+      "decoded": "you are not surprised that the bill encompasses your entire "
+    },
+    {
+      "offset": 3808,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 3809,
+      "size": 1,
+      "bytes": "b3",
+      "type": "marker",
+      "annotation": "price:44"
+    },
+    {
+      "offset": 3810,
+      "size": 1,
+      "bytes": "b0",
+      "type": "marker",
+      "annotation": "price:41"
+    },
+    {
+      "offset": 3811,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3812,
+      "size": 1,
+      "bytes": "81",
+      "type": "text",
+      "decoded": "C"
+    },
+    {
+      "offset": 3813,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 3814,
+      "size": 12,
+      "bytes": "62575c5ca06463705d715774",
+      "type": "text",
+      "decoded": "bill deposit"
+    },
+    {
+      "offset": 3826,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3827,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3828,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3829,
+      "size": 66,
+      "bytes": "94586367a070725d625f625c67a07170635e74a074585f74a05b5d5e6367a05f71a0715d5d5ea05f71a0675d73a05c5f5764a05774a05d5ea0745863a0745f625c63",
+      "type": "text",
+      "decoded": "They probably spent that money as soon as you laid it on the table"
+    },
+    {
+      "offset": 3895,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3896,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3897,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3898,
+      "size": 27,
+      "bytes": "875d73a065577663a0586372a05fa0705f575e6364a0715b575c63",
+      "type": "text",
+      "decoded": "You give her a pained smile"
+    },
+    {
+      "offset": 3925,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3926,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3927,
+      "size": 14,
+      "bytes": "745f5963a0745863a05b5d5e6367",
+      "type": "text",
+      "decoded": "take the money"
+    },
+    {
+      "offset": 3941,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 3942,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 3943,
+      "size": 7,
+      "bytes": "5f5e64a072735e",
+      "type": "text",
+      "decoded": "and run"
+    },
+    {
+      "offset": 3950,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 3951,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3952,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 3953,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 3955,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 3956,
+      "size": 1,
+      "bytes": "ed",
+      "type": "opcode",
+      "annotation": "UNIT_CHECK_LOOP",
+      "opcode": 237,
+      "opcode_name": "UNIT_CHECK_LOOP"
+    }
+  ]
+}

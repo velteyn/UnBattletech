@@ -1,0 +1,1071 @@
+{
+  "filename": "ENDMECH.BLD",
+  "size": 1022,
+  "header": {
+    "file_type": 252,
+    "paragraphs": 3,
+    "signature": "eec6ebea",
+    "content_type": "c0f4",
+    "content_type_name": "special",
+    "subtype": 173
+  },
+  "blocks": [
+    {
+      "offset": 0,
+      "size": 8,
+      "bytes": "fc03eec6ebeac0f4",
+      "type": "header",
+      "annotation": "type=fc paragraphs=3 sig=eec6ebea content=special subtype=ad"
+    },
+    {
+      "offset": 8,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 9,
+      "size": 1,
+      "bytes": "bf",
+      "type": "marker",
+      "annotation": "price:127"
+    },
+    {
+      "offset": 10,
+      "size": 3,
+      "bytes": "ec875d",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [5D87]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        23943
+      ]
+    },
+    {
+      "offset": 13,
+      "size": 25,
+      "bytes": "73a0585f7663a0665d735e64a0745863a05c5f7265637174a0",
+      "type": "text",
+      "decoded": "u have found the largest "
+    },
+    {
+      "offset": 38,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 39,
+      "size": 23,
+      "bytes": "7b636158a0675d73a0585f7663a063766372a07163635e",
+      "type": "text",
+      "decoded": "Mech you have ever seen"
+    },
+    {
+      "offset": 62,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 63,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 64,
+      "size": 4,
+      "bytes": "5fa09078",
+      "type": "text",
+      "decoded": "a PH"
+    },
+    {
+      "offset": 68,
+      "size": 1,
+      "bytes": "88",
+      "type": "marker",
+      "annotation": "noop_88"
+    },
+    {
+      "offset": 69,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 70,
+      "size": 2,
+      "bytes": "7879",
+      "type": "text",
+      "decoded": "HK"
+    },
+    {
+      "offset": 72,
+      "size": 1,
+      "bytes": "b2",
+      "type": "marker",
+      "annotation": "price:43"
+    },
+    {
+      "offset": 73,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 74,
+      "size": 16,
+      "bytes": "90585d635e5768a0785f7559a07c7f7b",
+      "type": "text",
+      "decoded": "Phoenix Hawk LAM"
+    },
+    {
+      "offset": 90,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 91,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 92,
+      "size": 37,
+      "bytes": "5a737174a05c575963a0745863a05d5e63a0675d7372a0665f74586372a070575c5d746364",
+      "type": "text",
+      "decoded": "just like the one your father piloted"
+    },
+    {
+      "offset": 129,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 130,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 131,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 132,
+      "size": 42,
+      "bytes": "945863a0615d575e615764635e6163a05771a0745d5da05b736158a0745da06263a062635c5763766364",
+      "type": "text",
+      "decoded": "The coincidence is too much to be believed"
+    },
+    {
+      "offset": 174,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 175,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 176,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 177,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 178,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 179,
+      "size": 2,
+      "bytes": "e9f3",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=f3",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        243
+      ]
+    },
+    {
+      "offset": 181,
+      "size": 1,
+      "bytes": "9b",
+      "type": "marker",
+      "annotation": "thought"
+    },
+    {
+      "offset": 182,
+      "size": 3,
+      "bytes": "eec6ea",
+      "type": "opcode",
+      "annotation": "SPEND_CREDITS c6 ea",
+      "opcode": 238,
+      "opcode_name": "SPEND_CREDITS",
+      "operands": [
+        198,
+        234
+      ]
+    },
+    {
+      "offset": 185,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 186,
+      "size": 3,
+      "bytes": "ebec87",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EB \u2192 [87EC]",
+      "opcode": 235,
+      "opcode_name": "CHECK_FLAG_EB",
+      "operands": [
+        34796
+      ]
+    },
+    {
+      "offset": 189,
+      "size": 50,
+      "bytes": "5d73a07161725f5b625c63a07370a0745863a0625d5f7264575e65a05c5f64646372a0745da0575e7170636174a0745863a0",
+      "type": "text",
+      "decoded": "ou scramble up the boarding ladder to inspect the "
+    },
+    {
+      "offset": 239,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 240,
+      "size": 4,
+      "bytes": "7b636158",
+      "type": "text",
+      "decoded": "Mech"
+    },
+    {
+      "offset": 244,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 245,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 246,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 247,
+      "size": 22,
+      "bytes": "91577474575e65a0575ea0745863a0615d6159705774",
+      "type": "text",
+      "decoded": "Sitting in the cockpit"
+    },
+    {
+      "offset": 269,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 270,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 271,
+      "size": 26,
+      "bytes": "675d73a05e5d74576163a05f5ea0635b707467a0715d61596374",
+      "type": "text",
+      "decoded": "you notice an empty socket"
+    },
+    {
+      "offset": 297,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 298,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 299,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 300,
+      "size": 2,
+      "bytes": "7774",
+      "type": "text",
+      "decoded": "It"
+    },
+    {
+      "offset": 302,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 303,
+      "size": 64,
+      "bytes": "71a05a737174a0745863a07257655874a071576a63a0745da0665774a0745863a062575d61585770a074585f74a0755f71a0575ea0675d7372a0665f74586372",
+      "type": "text",
+      "decoded": "s just the right size to fit the biochip that was in your father"
+    },
+    {
+      "offset": 367,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 368,
+      "size": 23,
+      "bytes": "71a0625d68a075577458a0745863a0585d5c5d64577159",
+      "type": "text",
+      "decoded": "s box with the holodisk"
+    },
+    {
+      "offset": 391,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 392,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 393,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 394,
+      "size": 20,
+      "bytes": "875d73a0705c7365a0575ea0745863a061585770",
+      "type": "text",
+      "decoded": "You plug in the chip"
+    },
+    {
+      "offset": 414,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 415,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 416,
+      "size": 17,
+      "bytes": "5f5e64a0705d756372a07370a0745863a0",
+      "type": "text",
+      "decoded": "and power up the "
+    },
+    {
+      "offset": 433,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 434,
+      "size": 4,
+      "bytes": "7b636158",
+      "type": "text",
+      "decoded": "Mech"
+    },
+    {
+      "offset": 438,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 439,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 440,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 441,
+      "size": 2,
+      "bytes": "e9ec",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ec",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        236
+      ]
+    },
+    {
+      "offset": 443,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 444,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 445,
+      "size": 4,
+      "bytes": "945863a0",
+      "type": "text",
+      "decoded": "The "
+    },
+    {
+      "offset": 449,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 450,
+      "size": 20,
+      "bytes": "7b636158a0717072575e6571a0745da05c576663",
+      "type": "text",
+      "decoded": "Mech springs to life"
+    },
+    {
+      "offset": 470,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 471,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 472,
+      "size": 47,
+      "bytes": "5f5e64a0745863a05d5e625d5f7264a0615d5b7073746372a07263615d655e576a6371a0745863a062575d61585770",
+      "type": "text",
+      "decoded": "and the onboard computer recognizes the biochip"
+    },
+    {
+      "offset": 519,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 520,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 521,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 522,
+      "size": 26,
+      "bytes": "775ea05fa0705c635f715f5e74a066635b5f5c63a0765d576163",
+      "type": "text",
+      "decoded": "In a pleasant female voice"
+    },
+    {
+      "offset": 548,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 549,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 550,
+      "size": 19,
+      "bytes": "5774a0657263637471a0745863a070575c5d74",
+      "type": "text",
+      "decoded": "it greets the pilot"
+    },
+    {
+      "offset": 569,
+      "size": 1,
+      "bytes": "aa",
+      "type": "marker",
+      "annotation": "option"
+    },
+    {
+      "offset": 570,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 571,
+      "size": 1,
+      "bytes": "a2",
+      "type": "marker",
+      "annotation": "noop_a2"
+    },
+    {
+      "offset": 572,
+      "size": 14,
+      "bytes": "95635c615d5b63a05f625d5f7264",
+      "type": "text",
+      "decoded": "Welcome aboard"
+    },
+    {
+      "offset": 586,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 587,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 588,
+      "size": 8,
+      "bytes": "7a6372635b575f58",
+      "type": "text",
+      "decoded": "Jeremiah"
+    },
+    {
+      "offset": 596,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 597,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 598,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 599,
+      "size": 29,
+      "bytes": "91585f5c5ca07563a0615d5e74575e7363a05d7372a05b577171575d5e",
+      "type": "text",
+      "decoded": "Shall we continue our mission"
+    },
+    {
+      "offset": 628,
+      "size": 1,
+      "bytes": "ad",
+      "type": "marker",
+      "annotation": "transition"
+    },
+    {
+      "offset": 629,
+      "size": 1,
+      "bytes": "a2",
+      "type": "marker",
+      "annotation": "noop_a2"
+    },
+    {
+      "offset": 630,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 631,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 632,
+      "size": 2,
+      "bytes": "e9eb",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=eb",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        235
+      ]
+    },
+    {
+      "offset": 634,
+      "size": 3,
+      "bytes": "ec7774",
+      "type": "opcode",
+      "annotation": "CHECK_FLAG_EC \u2192 [7477]",
+      "opcode": 236,
+      "opcode_name": "CHECK_FLAG_EC",
+      "operands": [
+        29815
+      ]
+    },
+    {
+      "offset": 637,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 638,
+      "size": 14,
+      "bytes": "5771a0675d7372a0665f74586372",
+      "type": "text",
+      "decoded": "is your father"
+    },
+    {
+      "offset": 652,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 653,
+      "size": 2,
+      "bytes": "71a0",
+      "type": "text",
+      "decoded": "s "
+    },
+    {
+      "offset": 655,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 656,
+      "size": 4,
+      "bytes": "7b636158",
+      "type": "text",
+      "decoded": "Mech"
+    },
+    {
+      "offset": 660,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 661,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 662,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 663,
+      "size": 32,
+      "bytes": "91575e6163a05774a05771a0575ea070637266636174a0615d5e645774575d5e",
+      "type": "text",
+      "decoded": "Since it is in perfect condition"
+    },
+    {
+      "offset": 695,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 696,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 697,
+      "size": 32,
+      "bytes": "7458635ea05863a05b737174a0585f7663a058576464635ea05774a058637263",
+      "type": "text",
+      "decoded": "then he must have hidden it here"
+    },
+    {
+      "offset": 729,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 730,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 731,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 732,
+      "size": 40,
+      "bytes": "7863a05b737174a0585f7663a0595e5d755ea0715d5b635d5e63a0755f71a05f66746372a058575b",
+      "type": "text",
+      "decoded": "He must have known someone was after him"
+    },
+    {
+      "offset": 772,
+      "size": 1,
+      "bytes": "9c",
+      "type": "marker",
+      "annotation": "dialogue"
+    },
+    {
+      "offset": 773,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 774,
+      "size": 13,
+      "bytes": "5f5e64a05c636674a0745863a0",
+      "type": "text",
+      "decoded": "and left the "
+    },
+    {
+      "offset": 787,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 788,
+      "size": 22,
+      "bytes": "7b636158a058637263a0715da05774a0755d735c645e",
+      "type": "text",
+      "decoded": "Mech here so it wouldn"
+    },
+    {
+      "offset": 810,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 811,
+      "size": 13,
+      "bytes": "74a06263a0615f707473726364",
+      "type": "text",
+      "decoded": "t be captured"
+    },
+    {
+      "offset": 824,
+      "size": 1,
+      "bytes": "9f",
+      "type": "marker",
+      "annotation": "directed"
+    },
+    {
+      "offset": 825,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 826,
+      "size": 1,
+      "bytes": "a0",
+      "type": "marker",
+      "annotation": "space"
+    },
+    {
+      "offset": 827,
+      "size": 39,
+      "bytes": "94585771a0717072575e6571a05e6375a0585d7063a074585f74a05b5f676263a05863a057715e",
+      "type": "text",
+      "decoded": "This springs new hope that maybe he isn"
+    },
+    {
+      "offset": 866,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 867,
+      "size": 16,
+      "bytes": "74a064635f64a05f66746372a05f5c5c",
+      "type": "text",
+      "decoded": "t dead after all"
+    },
+    {
+      "offset": 883,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 884,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 885,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 886,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 887,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 888,
+      "size": 2,
+      "bytes": "e9ec",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ec",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        236
+      ]
+    },
+    {
+      "offset": 890,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 891,
+      "size": 1,
+      "bytes": "bb",
+      "type": "marker",
+      "annotation": "separator"
+    },
+    {
+      "offset": 892,
+      "size": 17,
+      "bytes": "875d73a06457715b5d735e74a0745863a0",
+      "type": "text",
+      "decoded": "You dismount the "
+    },
+    {
+      "offset": 909,
+      "size": 1,
+      "bytes": "a5",
+      "type": "marker",
+      "annotation": "continuation"
+    },
+    {
+      "offset": 910,
+      "size": 105,
+      "bytes": "7b636158a0745da0615d5e74575e7363a0675d7372a05b577171575d5ea05d66a05c5d615f74575e65a0745863a0615f615863a05f5e64a07371575e65a0745863a0786770637270735c7163a085635e63725f745d72a0745da0615d5e745f6174a0795f7472575e5f",
+      "type": "text",
+      "decoded": "Mech to continue your mission of locating the cache and using the Hyperpulse Generator to contact Katrina"
+    },
+    {
+      "offset": 1015,
+      "size": 1,
+      "bytes": "9e",
+      "type": "marker",
+      "annotation": "narrative"
+    },
+    {
+      "offset": 1016,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1017,
+      "size": 1,
+      "bytes": "f2",
+      "type": "opcode",
+      "annotation": "ROOM_DESCRIPTION",
+      "opcode": 242,
+      "opcode_name": "ROOM_DESCRIPTION"
+    },
+    {
+      "offset": 1018,
+      "size": 2,
+      "bytes": "e9ed",
+      "type": "opcode",
+      "annotation": "CALL_ROOM_HANDLER op=ed",
+      "opcode": 233,
+      "opcode_name": "CALL_ROOM_HANDLER",
+      "operands": [
+        237
+      ]
+    },
+    {
+      "offset": 1020,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    },
+    {
+      "offset": 1021,
+      "size": 1,
+      "bytes": "c0",
+      "type": "marker",
+      "annotation": "control_prefix"
+    }
+  ]
+}

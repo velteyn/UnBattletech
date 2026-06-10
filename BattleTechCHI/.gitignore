@@ -1,0 +1,17 @@
+# Godot
+.godot/
+*.godot
+import/
+.mono/
+mono_crash.*
+*.csproj.user
+
+# .NET
+bin/
+obj/
+*.nupkg
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
