@@ -86,8 +86,13 @@ public partial class BldInterpreter : Node
             // 0xC0 structural separator; 0xBA rparen; 0xBB separator
             if (b == 0xC0 || b == 0xBA || b == 0xBB) { _ip++; continue; }
 
-            // 0x80-0xE3: cipher text (uppercase 0x80-0x96 etc.) and gap bytes
-            if (b < 0xE4) { HandleTextByte(b); _ip++; continue; }
+            // 0x80-0xE3: cipher text (uppercase 0x81-0x87, 0x90-0x96, 0xA0)
+            // or structural markers (no-ops). Only decode known cipher bytes.
+            if (b < 0xE4)
+            {
+                if (CipherDecoder.IsMapped(b)) { HandleTextByte(b); }
+                _ip++; continue;
+            }
 
             // Opcode range 0xE4-0xFF
             _ip++;
@@ -293,8 +298,10 @@ public partial class BldInterpreter : Node
         EmitSignal(SignalName.InterpreterComplete);
     }
 
-    private GameMode? DispatchCase(byte caseVal)
+    private GameMode? DispatchCase(byte rawCase)
     {
+        byte caseVal = (byte)((rawCase & 0x1F) + 1);
+        GD.Print($"  raw_operand=0x{rawCase:X2} → case=0x{caseVal:X2}");
         var shop = _script != null ? ShopRegistry.Get(_script.Name) : null;
         return Fn1CD3Dispatcher.Dispatch(caseVal, _state, shop);
     }

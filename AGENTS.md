@@ -83,9 +83,17 @@ content in 0x08-0x9F, breaking every BLD script.
 | Range | Type | Description |
 |-------|------|-------------|
 | 0x00-0x7F | Cipher text | Passed through `CipherDecoder.DecodeByte()` |
-| 0x80-0xC3 | Narrative markers | `0x9E`=ThirdPerson, `0x9C`=CharacterSpeech, `0x9B`=PlayerThought, `0x9F`=PlayerAction, `0xA5`=Continuation, `0xA0`=Space, `0xBA`=RParen |
-| 0xC0 | Separator | Structural separator, skipped |
+| 0x80-0xE3 | Structural markers | **Skipped** unless `CipherDecoder.IsMapped()` returns true (only `0x81-0x87`, `0x90-0x96`, `0xA0` have cipher mappings). These are formatting markers (new sentence, paragraph, punctuation, price encoding), NOT cipher text. |
 | 0xE4-0xFF | Opcodes | See `BldOpcode` enum |
+
+**Narrative markers** (subset of 0x80-0xE3, handled before decoder):
+- `0x9E`=ThirdPerson, `0x9C`=CharacterSpeech, `0x9B`=PlayerThought, `0x9F`=PlayerAction, `0xA5`=Continuation
+
+**Separators** (skipped): `0xC0`, `0xBA`, `0xBB`
+
+**0x81-0x96 uppercase cipher bytes**: These ARE valid cipher text and decoded by `CipherDecoder` (`0x81`='C', `0x82`='B', `0x83`='E', `0x84`='D', `0x85`='G', `0x86`='F', `0x87`='Y', `0x90`='P', `0x91`='S', `0x92`='R', `0x93`='U', `0x94`='T', `0x95`='W', `0x96`='V'). All other bytes 0x80-0xE3 are structural markers and silently skipped.
+
+**Note on original game typos**: The game text contains genuine 1988 typos where 'q' is spelled as 'o' (e.g. "eouipment" for "equipment", "ouite" for "quite", "reouest" for "request"). This is NOT a cipher error — byte 0x60 ('q') exists but is never used; byte 0x6F ('o') appears in its place in misspelled words.
 
 ### Key Opcodes
 

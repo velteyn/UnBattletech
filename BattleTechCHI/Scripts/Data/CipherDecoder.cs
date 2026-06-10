@@ -28,6 +28,18 @@ public static class CipherDecoder
     };
 
     /// <summary>
+    /// Returns true if this cipher byte has a mapping in the decode table
+    /// (including space at 0xA0 and direct ASCII 0x20-0x7E).
+    /// </summary>
+    public static bool IsMapped(byte cipherByte)
+    {
+        if (DecodeTable.ContainsKey(cipherByte)) return true;
+        if (cipherByte == 0xA0) return true;
+        if (cipherByte >= 0x20 && cipherByte <= 0x7E) return true;
+        return false;
+    }
+
+    /// <summary>
     /// Decodifica un byte cipher nel carattere corrispondente.
     /// </summary>
     public static char DecodeByte(byte cipherByte)
