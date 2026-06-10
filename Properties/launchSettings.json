@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "UNBATTLETECH": {
-      "commandName": "Project",
-      "commandLineArgs": "-e UNBTECH.exe --UseCodeOverride true",
-      "workingDirectory": "C:\\Reversing\\UNBATTLETECH\\battletech"
-    }
-  }
-}

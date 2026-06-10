@@ -410,3 +410,9 @@ spice86dumpMemoryDump.bin
 
 # Java prototype
 java_project/*.class
+
+# Merge artifacts
+*.orig
+
+# Build logs
+build_log.txt
