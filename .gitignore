@@ -1,6 +1,16 @@
 *.deb
-spice86/obj/
 java_project/*.class
 **/*.userprefs
 **/bin/
 **/obj/
+__pycache__/
+*.pyc
+
+# Original game assets (do not upload)
+original/
+*.exe
+*.EXE
+spice86dumpMemoryDump.bin
+
+# Reko intermediate files
+*.bndb
