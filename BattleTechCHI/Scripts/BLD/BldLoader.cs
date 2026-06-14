@@ -29,13 +29,11 @@ public static class BldLoader
         script.TypeCode = raw[6] << 8 | raw[7];
         script.SubType = raw[8];
 
-        // Interpreter base depends on content type:
-        //   shop/service (0xC0F5): 3 extra subtype bytes at 8-10, script at 11
-        //   dialogue/story (0xC0EC): script starts immediately at offset 8
-        if (script.TypeCode == 0xC0F5)
-            script.InterpreterBase = 11;
-        else
-            script.InterpreterBase = 8;
+        // InterpreterBase = 0xA0 (confirmed from Reko decompilation — fn0FDC_01C0
+        // at UNBTECH_0FDC.asm:92-98: "mov ax,0A0h; mov dx,3092h; push dx; push ax").
+        // Bytecode starts at file offset 0xA0. Pre-0xA0 (0x08-0x9F) is metadata/cipher
+        // text, NOT bytecode. Original game NEVER interprets those bytes as opcodes.
+        script.InterpreterBase = 0xA0;
 
         // Decrypt bytes from offset 0xA0
         var decrypted = new byte[raw.Length];

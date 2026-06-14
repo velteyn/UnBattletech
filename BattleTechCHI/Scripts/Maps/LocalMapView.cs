@@ -73,7 +73,7 @@ public partial class LocalMapView : TileMap
         if (ts != null) TileSet = ts;
 
         _currentMap = MapLoader.Load(
-            ProjectSettings.GlobalizePath($"../../../MAP{mapId}.MTP"),
+            ProjectSettings.GlobalizePath($"../original/mtp/MAP{mapId}.MTP"),
             mapId);
 
         if (_currentMap != null)

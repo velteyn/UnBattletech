@@ -5,6 +5,12 @@ namespace BattleTechCHI.Data;
 /// </summary>
 public class GameState
 {
+    public GameState()
+    {
+        for (int i = 0; i < 8; i++) UnitSlots[i] = new UnitSlot();
+        for (int i = 0; i < 16; i++) StorySlots[i] = new StorySlot();
+    }
+
     // === UI Mode ===
     public GameMode Mode { get; set; } = GameMode.WorldMap;
     
@@ -38,6 +44,23 @@ public class GameState
     public bool TrainingComplete { get; set; }     // bD450
     public bool Milestone { get; set; }            // bD451
     
+    // === Unit Slots (aC614[0..7], stride 0x11) ===
+    public UnitSlot[] UnitSlots { get; set; } = new UnitSlot[8];
+
+    // === Key Wait State (w3938) ===
+    // 0 = normal (opcodes execute, busy-wait on keypress)
+    // non-zero = fast-forward / skip (opcode 0xEA becomes no-op, timer-based wait)
+    public short KeyWaitState { get; set; }
+
+    // === Unit ID Counter (bD456) ===
+    // Incremented each time a new unit is created; wraps to 2 when >= 10
+    public byte UnitIdCounter { get; set; } = 2;
+
+    // === Encounter Flags ===
+    public byte EncounterSlot { get; set; }          // bD331
+    public byte EncounterTriggerFlag { get; set; }   // bD332
+    public byte EncounterFlag { get; set; }          // bD333
+
     // === Incontri ===
     public byte EncounterMask { get; set; } = 0x1F;  // bD330
     
@@ -70,4 +93,30 @@ public class StorySlot
     public byte CounterB { get; set; }             // b0056 (capped 2)
     public byte StoryState { get; set; }           // b0057 (0=Training, 1=CitadelAttack, 2=PostAttack)
     public byte LatchMarker { get; set; }          // b0058 (one-shot latch)
+    public byte LinkedUnitSlot { get; set; } = 0xFF;  // b0079 (0xFF = unassigned)
+}
+
+/// <summary>
+/// Per-unit slot (aC614[slot], stride 0x11 = 17 bytes).
+/// 8 slots total (0-7), 0xFF in TypeId = empty.
+/// </summary>
+public class UnitSlot
+{
+    public byte TypeId { get; set; } = 0xFF;       // +0x00: b0000 (0xFF = empty)
+    public byte Attr1 { get; set; }                 // +0x01: C615 (random attribute, 2D6)
+    public byte Attr2 { get; set; }                 // +0x02: C616 (random attribute, 2D6)
+    public byte Attr3 { get; set; }                 // +0x03: C617 (random attribute, 2D6)
+    public byte[] Inventory { get; set; } = new byte[7];  // +0x04..+0x0A: C618[0..6]
+    public byte FieldC61C { get; set; }             // +0x08 (within C618 region)
+    public byte FieldC61F { get; set; }             // +0x0B
+    public byte LinkedStorySlot { get; set; } = 0x08;  // +0x0C: C620 (0x08 = unassigned)
+    public byte FieldC621 { get; set; }             // +0x0D
+    public byte FieldC622 { get; set; }             // +0x0E
+    public byte DerivedAttr { get; set; }           // +0x0F: C623 = Attr1 * 10
+    public byte FieldC624 { get; set; }             // +0x10
+    /// <summary>
+    /// The handler value from CALL_ROOM_HANDLER (0xE9) opcode that created this unit.
+    /// In the original game, this writes value 3 to C618[slot*17 + handler].
+    /// </summary>
+    public sbyte HandlerTag { get; set; }
 }

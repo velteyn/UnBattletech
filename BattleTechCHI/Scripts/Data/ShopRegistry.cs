@@ -20,6 +20,8 @@ public static class ShopRegistry
         ["CITADEL"] = new CitadelShopInventory(),
         ["TRAINING"] = new TrainingShopInventory(),
         ["GARAGE"] = new GarageShopInventory(),
+        ["CLOTHES"] = new ClothesShopInventory(),
+        ["HOSPITAL"] = new HospitalShopInventory(),
     };
 
     /// <summary>

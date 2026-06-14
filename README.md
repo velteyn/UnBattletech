@@ -59,7 +59,7 @@ Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Cresc
 The rebuild is in **Phase 3.2** (BLD interpreter + 47-case shop/action dispatch):
 - ✅ Phase 0-1: Core engine, data models, asset loaders, game loop
 - ✅ Phase 2: Tile rendering, world map viewport, local maps, border panel
-- 🔄 Phase 3: BLD interpreter, dialogue system, shop UI
+- ✅ Phase 3: BLD interpreter (26 opcodes), cipher decoder, 47-case dispatcher (all real impl.), dialogue system, ShopScreen, LocationMapper
 - ⬜ Phase 4: Combat system
 - ⬜ Phase 5+: Economy, animations, story integration
 

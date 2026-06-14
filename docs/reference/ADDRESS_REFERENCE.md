@@ -696,7 +696,7 @@ Each pair iterated in `unknown_19EF_1886_1B776`, stride 0x40 (64):
 | `0xE7` | `65511` | 2 bytes LE compare_val, 2 bytes LE abs_jump | CMP_CURSOR_X — If cursor X != compare, skip 2B; else jump |
 | `0xE8` | `~0x17` | 1 byte mask, 2 bytes LE abs_jump | RNG_CHECK — If `RNG() & mask != 0`, jump |
 | `0xE9` | `~0x16` | 1 byte | CALL_ROOM_HANDLER — Call `fn11B8_0D58(operand)` |
-| `0xEA` | `~0x15` | 1 byte | COND_STATE_ACTION — Via `fn0800_48B7` if `w3938==0` |
+| `0xEA` | `~0x15` | 2 bytes (cond+action) | COND_STATE_ACTION — If `w3938==0`, call `fn0800_48B7(cond, action)` |
 | `0xEB` | `65515` | 0 bytes | CHECK_FLAG_EB — Skip if `bD451 == 0` |
 | `0xEC` | `65516` | 0 bytes | CHECK_FLAG_EC — Skip if `bD450 == 0` |
 | `0xED` | `~0x12` | 2 bytes | UNIT_CHECK_LOOP — Loop 8 units checking `aC60F` |
@@ -710,8 +710,8 @@ Each pair iterated in `unknown_19EF_1886_1B776`, stride 0x40 (64):
 | `0xF5` | `~0x0A` | 1 byte | SHOP_DISPATCH — Call `fn1CD3_0004(operand)` |
 | `0xF6` | `~0x09` | 0 bytes | CHECK_CONDITION — Skip if `fn0800_1A13(1)` returns 0 |
 | `0xF7` | `~0x08` | 1 byte | STATE_COND_CHECK — Skip if `D30C[index] == 0` |
-| `0xF8` | `~0x07` | 0 bytes | JUMP_FORWARD — Skip forward 2 bytes (GOTO) |
-| `0xF9` | `~0x06` | 1 byte | JUMP_INDEXED — Computed GOTO: skip by `fn1E56_0B5E(op)*2+2` |
+| `0xF8` | `~0x07` | 2 bytes LE | JUMP_FORWARD — Read 2-byte WORD → absolute jump target (new IP = word value) |
+| `0xF9` | `~0x06` | 1 byte | JUMP_INDEXED — Read 1 byte menuId, calls `fn1E56_0B5E(menuId)` → returns index, reads WORD at `base + _ip + index*2` as new IP |
 | `0xFA` | `~0x05` | 1 byte | DRAW_SPRITE — Draw sprite via `fn1E56_0004(operand)` |
 | `0xFB` | `~0x04` | 0 bytes | ADVANCE_INPUT — Wait for key |
 | `0xFC` | `~0x03` | N bytes | RENDER_TEXT — Display cipher text, advance past string |

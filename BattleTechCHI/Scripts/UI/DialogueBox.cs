@@ -1,3 +1,4 @@
+using System.Text;
 using Godot;
 using BattleTechCHI.Data;
 
@@ -17,8 +18,17 @@ public partial class DialogueBox : Control
     private bool _waitingForInput;
     private bool _hasSprite;
 
+    // Menu mode state
+    private bool _menuMode;
+    private int _menuSelection;
+    private int _menuItemCount;
+    private string[] _menuLines = [];
+
     [Signal]
     public delegate void InputReadyEventHandler();
+
+    [Signal]
+    public delegate void MenuItemSelectedEventHandler(int index);
 
     public override void _Ready()
     {
@@ -100,6 +110,26 @@ public partial class DialogueBox : Control
     }
 
     /// <summary>
+    /// Show menu with numbered options from BLD text.
+    /// User selects via number keys or arrow keys + Enter.
+    /// Emits MenuItemSelected on choice.
+    /// </summary>
+    public void ShowMenu(string menuText)
+    {
+        _menuMode = true;
+        _menuSelection = 0;
+        _narratorLabel.Text = "";
+
+        string text = string.IsNullOrWhiteSpace(menuText) ? "Make a selection" : menuText;
+        _menuLines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        _menuItemCount = Math.Max(1, _menuLines.Length);
+
+        UpdateMenuHighlight();
+        Visible = true;
+        _waitingForInput = true;
+    }
+
+    /// <summary>
     /// Mostra un testo con l'indicatore del narratore appropriato.
     /// </summary>
     public void ShowText(string text, NarrativeMode mode)
@@ -120,6 +150,7 @@ public partial class DialogueBox : Control
     /// </summary>
     public new void Hide()
     {
+        _menuMode = false;
         Visible = false;
         ClearSprite();
     }
@@ -138,13 +169,67 @@ public partial class DialogueBox : Control
         if (!_waitingForInput || !Visible) return;
         if (@event is InputEventKey key && key.Pressed && !key.Echo)
         {
-            if (key.Keycode == Key.Space || key.Keycode == Key.Enter)
+            if (_menuMode)
+                HandleMenuInput(key);
+            else if (key.Keycode == Key.Space || key.Keycode == Key.Enter)
             {
                 _waitingForInput = false;
                 Visible = false;
                 EmitSignal(SignalName.InputReady);
             }
         }
+    }
+
+    private void HandleMenuInput(InputEventKey key)
+    {
+        // Number keys for direct selection
+        if (key.Keycode >= Key.Key1 && key.Keycode <= Key.Key9)
+        {
+            int index = (int)(key.Keycode - Key.Key1);
+            if (index < _menuItemCount)
+                AcceptMenuSelection(index);
+            return;
+        }
+
+        // Arrow key navigation
+        if (key.Keycode == Key.Up || key.Keycode == Key.W)
+        {
+            _menuSelection = Mathf.Max(0, _menuSelection - 1);
+            UpdateMenuHighlight();
+            return;
+        }
+        if (key.Keycode == Key.Down || key.Keycode == Key.S)
+        {
+            _menuSelection = Mathf.Min(_menuItemCount - 1, _menuSelection + 1);
+            UpdateMenuHighlight();
+            return;
+        }
+
+        // Confirm selection
+        if (key.Keycode == Key.Space || key.Keycode == Key.Enter)
+        {
+            AcceptMenuSelection(_menuSelection);
+        }
+    }
+
+    private void AcceptMenuSelection(int index)
+    {
+        _menuMode = false;
+        _waitingForInput = false;
+        Visible = false;
+        EmitSignal(SignalName.MenuItemSelected, index);
+    }
+
+    private void UpdateMenuHighlight()
+    {
+        var sb = new StringBuilder();
+        for (int i = 0; i < _menuItemCount; i++)
+        {
+            string prefix = i == _menuSelection ? "[>]" : "[ ]";
+            sb.AppendLine($"{prefix} {_menuLines[i].Trim()}");
+        }
+        sb.Append("\n[1-9: select  UP/DOWN: navigate  ENTER: confirm]");
+        _textLabel.Text = sb.ToString();
     }
 
     public override void _ExitTree()

@@ -18,6 +18,7 @@ public partial class GameLoop : Node
     private BldInterpreter _bldInterpreter = null!;
     private DialogueBox _dialogueBox = null!;
     private CombatManager _combatManager = null!;
+    private ShopScreen _shopScreen = null!;
 
     private bool _startInLocalMap;
     private GameMode _previousMode = GameMode.WorldMap;
@@ -90,12 +91,30 @@ public partial class GameLoop : Node
         _bldInterpreter.CreditsChanged += (amount) => _borderPanel.UpdateInfo(State.CursorX, State.CursorY, amount);
         _bldInterpreter.InterpreterComplete += OnBldComplete;
         _bldInterpreter.SpriteRequested += OnBldSpriteRequested;
+        _bldInterpreter.WorldMapReinitRequested += OnWorldMapReinitRequested;
 
         // CombatManager
         _combatManager = new CombatManager(_stateManager.State);
 
-        // Connetti DialogueBox -> interpreter continue
+        // Connetti DialogueBox -> interpreter continue / menu selection
         _dialogueBox.InputReady += OnDialogueInputReady;
+        _dialogueBox.MenuItemSelected += OnMenuItemSelected;
+
+        // ShopScreen (hidden by default, shown on shop dispatch)
+        _shopScreen = new ShopScreen();
+        _shopScreen.Name = "ShopScreen";
+        AddChild(_shopScreen);
+        _shopScreen.BuyRequested += OnShopBuy;
+        _shopScreen.SellRequested += OnShopSell;
+        _shopScreen.ExitShop += OnShopExit;
+
+        // Fn1CD3Dispatcher events
+        Fn1CD3Dispatcher.BuildingEntered += (bld) => GD.Print($"  Dispatcher: building entered '{bld}'");
+        Fn1CD3Dispatcher.CreditsDisplayed += (amount) => _borderPanel.UpdateInfo(State.CursorX, State.CursorY, amount);
+        Fn1CD3Dispatcher.RenderingRequested += (handler) => GD.Print($"  Dispatcher: render request '{handler}'");
+        Fn1CD3Dispatcher.ActionTriggered += () => GD.Print("  Dispatcher: action triggered");
+        Fn1CD3Dispatcher.SaveRequested += () => GD.Print("  Dispatcher: save positions");
+        Fn1CD3Dispatcher.RestoreRequested += () => GD.Print("  Dispatcher: restore positions");
 
         // Stato iniziale
         _stateManager.State.Credits = 1500;
@@ -138,7 +157,7 @@ public partial class GameLoop : Node
         // for input, nudge it. In normal flow ProcessNext runs synchronously until
         // yield inside the interpreter's own call chain, so this should not fire.
         if (_stateManager.State.Mode == GameMode.TextScreen &&
-            _bldInterpreter.IsRunning && !_bldInterpreter.WaitingForInput)
+            _bldInterpreter.IsRunning && !_bldInterpreter.WaitingForInput && !_bldInterpreter.WaitingForMenu)
             _bldInterpreter.ProcessNext();
     }
 
@@ -267,7 +286,7 @@ public partial class GameLoop : Node
         }
 
         // Run the BLD script (shows entry menu, story, shops, etc.)
-        var bldPath = ProjectSettings.GlobalizePath($"../../../{bldName}.BLD");
+        var bldPath = ProjectSettings.GlobalizePath($"../original/bld/{bldName}.BLD");
         var script = BldLoader.Load(bldPath, bldName);
         if (script != null)
         {
@@ -290,7 +309,20 @@ public partial class GameLoop : Node
             "Armor Shop" => "ARMOR",
             "Mechit-Lube" => "GARAGE",
             "Barracks" => "BARRACKS",
+            "Barracks 2" => "BARRACK2",
             "Lounge" => "LOUNGE",
+            "Hospital" => "HOSPITAL",
+            "Clothes Shop" => "CLOTHES",
+            "Theater" => "THEATER",
+            "Viewdisk" => "VIEWDISK",
+            "Arena" => "ARENA",
+            "Repair Shop" => "REPAIR",
+            "Party" => "PARTY",
+            "Hut" => "HUT",
+            "Jail" => "JAIL",
+            "Mayor" => "MAYOR",
+            "Hotel" => "FROB",
+            "Findit" => "FINDIT",
             _ => null
         };
 
@@ -300,7 +332,7 @@ public partial class GameLoop : Node
             return;
         }
 
-        var bldPath = ProjectSettings.GlobalizePath($"../../../{bldName}.BLD");
+        var bldPath = ProjectSettings.GlobalizePath($"../original/bld/{bldName}.BLD");
         var script = BldLoader.Load(bldPath, bldName);
         if (script != null)
         {
@@ -330,6 +362,50 @@ public partial class GameLoop : Node
     {
         GD.Print("Dialogue input ready — resuming interpreter");
         _bldInterpreter.ResumeAfterInput();
+    }
+
+    private void OnMenuItemSelected(int index)
+    {
+        GD.Print($"Menu item selected: {index}");
+        _bldInterpreter.ResumeAfterMenuSelection(index);
+    }
+
+    /// <summary>
+    /// Called by BldInterpreter when a menu needs to be shown.
+    /// </summary>
+    public void ShowMenuForBld(string text)
+    {
+        _dialogueBox.ShowMenu(text);
+    }
+
+    private void OnWorldMapReinitRequested()
+    {
+        _worldMapView.Reinitialize();
+    }
+
+    // ── ShopScreen handlers ────────────────────────────────────
+    private void OnShopBuy(int slot)
+    {
+        GD.Print($"Shop buy requested: slot {slot}");
+        var shop = ShopRegistry.Get(_currentBldName);
+        if (shop != null)
+            Fn1CD3Dispatcher.Dispatch(0x05, State, _currentBldName, shop);
+    }
+
+    private void OnShopSell(int slot)
+    {
+        GD.Print($"Shop sell requested: slot {slot}");
+        var shop = ShopRegistry.Get(_currentBldName);
+        if (shop != null)
+            Fn1CD3Dispatcher.Dispatch(0x08, State, _currentBldName, shop);
+    }
+
+    private void OnShopExit()
+    {
+        GD.Print("Shop exit");
+        _shopScreen.Visible = false;
+        if (_stateManager.State.Mode == GameMode.TextScreen)
+            _bldInterpreter.ResumeAfterInput();
     }
 
     private void OnMenuPressed(int index)
@@ -386,6 +462,8 @@ public partial class GameLoop : Node
         _worldMapView.Visible = mode == GameMode.WorldMap;
         _localMapView.Visible = mode == GameMode.LocalTiles;
         _dialogueBox.Visible = mode == GameMode.TextScreen;
+        _shopScreen.Visible = mode == GameMode.BuildingName; // shown on dispatch requests
+        _borderPanel.Visible = mode == GameMode.WorldMap || mode == GameMode.LocalTiles;
     }
 
     /// <summary>

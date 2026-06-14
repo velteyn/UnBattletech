@@ -1955,7 +1955,7 @@ Opcodes 0xE4-0xFF are handled in a switch at `UNBTECH_0FDC.c:197-535`:
 | `0xE7` | `65511` | CMP_CURSOR_X | 2 bytes LE | Compare with `A44B`. If NOT equal, skip next opcode |
 | `0xE8` | `~0x17` | RNG_CHECK | 1 byte | If `(RNG() & operand) == 0`, skip next opcode |
 | `0xE9` | `~0x16` | CALL_ROOM_HANDLER | 1 byte | Call `fn11B8_0D58(operand)` |
-| `0xEA` | `~0x15` | COND_STATE_ACTION | 1 byte | Conditional action via `fn0800_48B7` if `w3938==0` |
+| `0xEA` | `~0x15` | COND_STATE_ACTION | 2 bytes (cond+action) | If `w3938==0`, call `fn0800_48B7(cond, action)` |
 | `0xEB` | `65515` | CHECK_FLAG_EB | 0 bytes | Skip if `bD451 == 0` |
 | `0xEC` | `65516` | CHECK_FLAG_EC | 0 bytes | Skip if `bD450 == 0` |
 | `0xED` | `~0x12` | UNIT_CHECK_LOOP | 2 bytes | Loop 8 units checking `aC60F` state |
@@ -1969,8 +1969,8 @@ Opcodes 0xE4-0xFF are handled in a switch at `UNBTECH_0FDC.c:197-535`:
 | `0xF5` | `~0x0A` | SHOP_DISPATCH | 1 byte | Call `fn1CD3_0004(operand)` — dispatches to room handler |
 | `0xF6` | `~0x09` | CHECK_CONDITION | 0 bytes | Call `fn0800_1A13(1)`, skip if returns 0 |
 | `0xF7` | `~0x08` | STATE_COND_CHECK | 1 byte | Skip if `D30C[index] == 0` |
-| `0xF8` | `~0x07` | JUMP_FORWARD | 0 bytes | Skip forward by 2 bytes (GOTO) |
-| `0xF9` | `~0x06` | JUMP_INDEXED | 1 byte | Computed GOTO: skip by `fn1E56_0B5E(op) * 2 + 2` |
+| `0xF8` | `~0x07` | JUMP_FORWARD | 2 bytes LE | Read 2-byte WORD → absolute jump target (new IP = word value) |
+| `0xF9` | `~0x06` | JUMP_INDEXED | 1 byte | Read 1 byte menuId, calls `fn1E56_0B5E(menuId)` → returns index, reads WORD at `base + _ip + index*2` as new IP (absolute jump table) |
 | `0xFA` | `~0x05` | DRAW_SPRITE | 1 byte | Draw sprite via `fn1E56_0004(operand)` |
 | `0xFB` | `~0x04` | ADVANCE_INPUT | 0 bytes | Wait for key via `fn1F3D_0259` |
 | `0xFC` | `~0x03` | RENDER_TEXT | N bytes | Display cipher text via `fn1E56_03F5`. Advance past string |

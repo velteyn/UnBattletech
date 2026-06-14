@@ -131,6 +131,15 @@ public partial class WorldMapView : TileMap
         return (int)(src.Texture.GetWidth() / _tileWidth);
     }
 
+    /// <summary>
+    /// Reinitialize the world map from template (called from BLD CondStateAction).
+    /// </summary>
+    public void Reinitialize()
+    {
+        _worldData.Initialize();
+        RenderViewport();
+    }
+
     private void CreateFallbackTileset()
     {
         // Crea un tileset minimale colorato per testing

@@ -242,7 +242,7 @@ Layer 4: fn1E56_03F5 (1E56:03F5)
 | `0xE7` | CMP_CURSOR_X | 2 bytes LE | Compare with `A44B`; if NOT equal, skip 2 bytes (jump target); else read 2B LE abs_jump |
 | `0xE8` | RNG_CHECK | 1 byte | If `(RNG() & mask) == 0`, skip 2 bytes (jump target); else read 2B LE abs_jump |
 | `0xE9` | CALL_ROOM_HANDLER | 1 byte | Call `fn11B8_0D58(operand)` |
-| `0xEA` | COND_STATE_ACTION | 1 byte | Conditional action via `fn0800_48B7` |
+| `0xEA` | COND_STATE_ACTION | 2 bytes (cond+action) | If `w3938==0`, call `fn0800_48B7(cond, action)` |
 | `0xEB` | CHECK_FLAG_EB | 0 bytes | Skip if `bD451 == 0` |
 | `0xEC` | CHECK_FLAG_EC | 0 bytes | Skip if `bD450 == 0` |
 | `0xED` | UNIT_CHECK_LOOP | 2 bytes | Loop 8 units checking `aC60F` state |
@@ -256,8 +256,8 @@ Layer 4: fn1E56_03F5 (1E56:03F5)
 | `0xF5` | SHOP_DISPATCH | 1 byte | Read 1 decrypted operand byte, pass DIRECTLY as case to `fn1CD3_0004(case)`. NOT an indirect index — byte IS the case value. |
 | `0xF6` | CHECK_CONDITION | 0 bytes | Skip if `fn0800_1A13(1)` returns 0 |
 | `0xF7` | STATE_COND_CHECK | 1 byte | Skip if `D30C[index] == 0` |
-| `0xF8` | JUMP_FORWARD | 0 bytes | Skip 2 bytes (GOTO) |
-| `0xF9` | JUMP_INDEXED | 1 byte | Computed GOTO: skip by `fn1E56_0B5E(op)*2+2` |
+| `0xF8` | JUMP_FORWARD | 2 bytes LE | Read 2-byte WORD → absolute jump target (new IP = word value) |
+| `0xF9` | JUMP_INDEXED | 1 byte | Calls `fn1E56_0B5E(op)` → returns selection index; reads WORD at `base + _ip + index*2` as new IP (absolute jump table). Jump table entries are WORDs right after operand byte |
 | `0xFA` | DRAW_SPRITE | 1 byte | Draw sprite |
 | `0xFB` | ADVANCE_INPUT | 0 bytes | Wait for key |
 | `0xFC` | RENDER_TEXT | N bytes | Display cipher text, advance past string |
