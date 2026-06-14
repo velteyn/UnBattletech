@@ -29,6 +29,27 @@ Project uses Godot 4.4 (.NET SDK 4.4.0, net8.0).
 - **UI/** — EgaPalette, BorderPanel, StartupSequence, ShopScreen
 - **Runner/** — Standalone test console app (not part of Godot build)
 
+## Phase 4 Combat System (Implemented)
+
+Combat lives in `BattleTechCHI/Scripts/Combat/` — 5 files, fully reworked from stubs:
+
+### Files
+- **CombatTypes.cs**: `MechState` (class with full 11-location armour/structure arrays, 10 ammo bins, heat, crits), `HitLocation` enum (11 body parts), `AmmoBin` struct, `ActionCode`/`CombatPhase`/`Direction8` enums
+- **CombatState.cs**: Twin 12×24 fog grids, 24 unit slots, phase tracking, kill chain state. Methods: `InitFogGrids()`, `ClearFogForUnit()`, `ResetFogForUnit()`, `KillUnit()`, `AnyEnemiesAlive()`
+- **CombatManager.cs**: Main loop — 12-phase state machine (Init→UnitLoop→Movement→Targeting→ToHit→Fire→PostFire→HeatDissipation→Complete). Maps to `ghidra_guess_1000_458C_1458C`. Features:
+  - Movement: approach toward target if out of weapon range, 1 tile/tick, collision + bounds check, fog clearing on move
+  - To-hit: full 2D6 formula (skill popcount + terrain + heat thresholds + story state penalty)
+  - Damage: hit location table, armour→structure flow, critical hits, ammo decrement, kill chain
+  - Cluster weapons: LRM/SRM per-missile damage via cluster hits table
+  - Combat end: story state update, encounter rate reduction, world map restore
+- **CombatResolver.cs**: RNG (24-bit LFSR), LoS (Bresenham ray-cast), to-hit computation, heat dissipation (pool→penalty→clear), hit location (front table via `RNG & 0x0A`), criticals (2D6≥8), ammo explosion, kill chain
+- **AiController.cs**: AI targeting from story state properties (offsets 0x33-0x55), action code by distance (short≤3/medium≤6/long≤10), weapon selection by best range+damage with ammo check
+
+### Key Combat Flows
+1. **Entry**: BLD `SHOP_DISPATCH 0x2D` → `Fn1CD3Dispatcher.CombatEncounter()` → `GameMode.Combat` → `GameLoop.StartCombatEncounter()` → `CombatManager.StartCombat()`
+2. **Round**: UnitLoop(0..23) → Movement → LoS check → ToHit(2D6) → Fire(damage) → next unit → HeatDissipation → stageCounter++ → next round
+3. **End**: All enemies dead → victory → story state update → world map; stageCounter>20 → draw
+
 ## Fn1CD3Dispatcher Case Mapping (ALL 47 CASES IMPLEMENTED, verified vs decompiled C)
 
 | Case | Name | Description |

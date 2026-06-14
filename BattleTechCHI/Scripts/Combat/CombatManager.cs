@@ -3,157 +3,163 @@ using BattleTechCHI.Data;
 
 namespace BattleTechCHI.Combat;
 
-/// <summary>
-/// Main combat loop and phase dispatch.
-/// Maps to ghidra_guess_1000_458C_1458C + fn183B_000A.
-///
-/// Flow:
-///   Init → UnitLoop (0..23) →
-///     StateCheck → AITarget → Movement → LoS → ToHit → Fire → PostFire
-///   → HeatDissipation → next round
-/// </summary>
 public partial class CombatManager
 {
     public CombatState State { get; }
     public bool CombatActive => State.Active;
 
-    // Tile property table for LoS blocking
     private byte[] _tileProperties = Array.Empty<byte>();
     private byte _skillGate;
+    private Action? _onComplete;
+
+    // Melee range for physical attacks
+    private const int MeleeRange = 1;
+    private const int ShortRangeMax = 3;
+    private const int MediumRangeMax = 6;
+    private const int LongRangeMax = 10;
+
+    // 3 fixed enemy mech templates
+    private static readonly int[] EnemyMechTemplateIds = { 0x00, 0x01, 0x02 };
 
     public CombatManager(GameState gameState)
     {
         State = new CombatState(gameState);
     }
 
-    // ─── COMBAT INIT (fn183B_000A) ───
+    // ─── COMBAT INIT ───
 
-    /// <summary>
-    /// Start a combat encounter. Called from GameLoop when entering combat mode.
-    /// </summary>
-    public void StartCombat(Action onComplete)
+    public void StartCombat(Action? onComplete = null)
     {
         GD.Print("CombatManager: starting combat encounter");
 
+        _onComplete = onComplete;
         State.Active = true;
         State.Phase = CombatPhase.Init;
         State.StageCounter = 0;
-
-        // Save cursor position
         State.SavedCursorX = State.GameState.CursorX;
         State.SavedCursorY = State.GameState.CursorY;
-
-        // Initialize fog grids (all fogged)
         State.InitFogGrids();
 
-        // Populate enemy units
         PopulateEnemies();
-
-        // Position player units
         InitPlayerUnits();
 
-        // Transition to main loop
         State.Phase = CombatPhase.UnitLoop;
         State.CurrentUnit = 0;
+
+        GD.Print($"  {CountAlivePlayers()} player units, {CountAliveEnemies()} enemy units");
     }
 
-    /// <summary>Populate enemy units from template table (fn0DAB_0D3D).</summary>
     private void PopulateEnemies()
     {
-        // Enemy mechs: select from fixed 3-entry table via RNG % 3
         int templateIdx = CombatResolver.RngByte() % 3;
-        LoadMechTemplate(12, templateIdx);
+        LoadMechTemplate(12, EnemyMechTemplateIds[templateIdx]);
 
-        // Enemy infantry: random equipment from 4-option table
         for (int i = 4; i <= 11; i++)
         {
-            State.Units[i].Alive = true;
+            State.Units[i].Init(i, 1, false);
             State.UnitActive[i] = true;
             int equipIdx = CombatResolver.RngByte() & 0x03;
-            State.Units[i].MechId = -1;  // infantry — no mech ID
-            State.Units[i].Team = 1;
-
-            // Position in a line across the map
+            State.Units[i].InfantryEquipment = equipIdx;
             State.Units[i].UnitX = 18 + (i - 4) * 2;
             State.Units[i].UnitY = 5;
         }
+
+        // Fill remaining enemy mech slots
+        for (int i = 13; i <= 17; i++)
+        {
+            int tIdx = CombatResolver.RngByte() % 3;
+            LoadMechTemplate(i, EnemyMechTemplateIds[tIdx]);
+            State.Units[i].UnitX = 16 + (i - 12) * 2;
+            State.Units[i].UnitY = 3 + (i - 12);
+        }
     }
 
-    /// <summary>Load a mech template into enemy slot.</summary>
-    private void LoadMechTemplate(int slot, int templateIdx)
+    private void LoadMechTemplate(int slot, int mechId)
     {
-        // 3 fixed templates: Locust(0x00), Wasp(0x01), Stinger(0x02) at 20t each
-        int[] mechIds = { 0x00, 0x01, 0x02 };
-        int mechId = mechIds[templateIdx];
+        var unit = State.Units[slot];
+        unit.Init(slot, 1, true);
+        unit.MechId = mechId;
 
-        State.Units[slot].Alive = true;
+        // Default armour/structure values based on tonnage
+        int tonnage = mechId switch
+        {
+            0x00 => 20,  // Locust
+            0x01 => 20,  // Wasp
+            0x02 => 20,  // Stinger
+            0x03 => 25,  // Commando
+            0x06 => 30,  // Urbanmech
+            0x09 => 35,  // Jenner
+            0xC8 => 50,  // Chameleon
+            _ => 20
+        };
+
+        int baseArmour = tonnage * 2;
+        int baseStructure = tonnage / 5;
+
+        for (int i = 0; i < CombatConstants.NumHitLocations; i++)
+        {
+            unit.MaxArmour[i] = baseArmour / CombatConstants.NumHitLocations;
+            unit.CurrentArmour[i] = unit.MaxArmour[i];
+            unit.MaxStructure[i] = baseStructure;
+            unit.CurrentStructure[i] = baseStructure;
+        }
+
+        // Give default ammo
+        unit.Ammo[0] = new AmmoBin { WeaponId = 3, Remaining = 10, MaxCapacity = 10 };  // Medium Laser
+        unit.Ammo[1] = new AmmoBin { WeaponId = 9, Remaining = 8, MaxCapacity = 8 };     // SRM-2
+        unit.Ammo[2] = new AmmoBin { WeaponId = 12, Remaining = 6, MaxCapacity = 6 };    // LRM-5
+
         State.UnitActive[slot] = true;
-        State.Units[slot].MechId = mechId;
-        State.Units[slot].Team = 1;
-        State.Units[slot].UnitX = 20;
-        State.Units[slot].UnitY = 3 + templateIdx * 3;
     }
 
-    /// <summary>Position player units at the start of combat.</summary>
     private void InitPlayerUnits()
     {
         for (int i = 0; i < 4; i++)
         {
-            State.Units[i].Alive = true;
+            var unit = State.Units[i];
+            unit.Init(i, 0, true);
+            unit.MechId = 0xC8;  // Chameleon
+
+            int baseArmour = 100;
+            for (int j = 0; j < CombatConstants.NumHitLocations; j++)
+            {
+                unit.MaxArmour[j] = baseArmour / CombatConstants.NumHitLocations;
+                unit.CurrentArmour[j] = unit.MaxArmour[j];
+                unit.MaxStructure[j] = 10;
+                unit.CurrentStructure[j] = 10;
+            }
+
+            unit.Ammo[0] = new AmmoBin { WeaponId = 3, Remaining = 20, MaxCapacity = 20 };
+            unit.Ammo[1] = new AmmoBin { WeaponId = 8, Remaining = 15, MaxCapacity = 15 };
+            unit.Ammo[2] = new AmmoBin { WeaponId = 11, Remaining = 10, MaxCapacity = 10 };
+
+            unit.UnitX = 3 + i;
+            unit.UnitY = 6;
+            unit.StoryStateByte = 0;
+            unit.StorySkill24 = 0;
+            unit.StorySkill25 = 0;
+
             State.UnitActive[i] = true;
-            State.Units[i].MechId = 0xC8;  // Chameleon
-            State.Units[i].Team = 0;
-            State.Units[i].UnitX = 3 + i;
-            State.Units[i].UnitY = 6;
-            State.Units[i].CurrentAmmo = new int[10];
         }
     }
 
-    // ─── MAIN COMBAT LOOP ───
+    // ─── MAIN LOOP ───
 
-    /// <summary>
-    /// Process one tick of the combat state machine.
-    /// Called each frame from GameLoop when in Combat mode.
-    /// </summary>
     public void ProcessTick()
     {
         if (!State.Active) return;
 
         switch (State.Phase)
         {
-            case CombatPhase.Init:
-                break;
-
-            case CombatPhase.UnitLoop:
-                ProcessUnitSlot();
-                break;
-
-            case CombatPhase.Movement:
-                ProcessMovement();
-                break;
-
-            case CombatPhase.Targeting:
-                ProcessTargeting();
-                break;
-
-            case CombatPhase.ToHit:
-                ProcessToHit();
-                break;
-
-            case CombatPhase.Fire:
-                ProcessFire();
-                break;
-
-            case CombatPhase.PostFire:
-                AdvanceToNextUnit();
-                break;
-
-            case CombatPhase.HeatDissipation:
-                EndRound();
-                break;
-
-            case CombatPhase.Complete:
-                break;
+            case CombatPhase.Init: break;
+            case CombatPhase.UnitLoop: ProcessUnitSlot(); break;
+            case CombatPhase.Movement: ProcessMovement(); break;
+            case CombatPhase.Targeting: ProcessTargeting(); break;
+            case CombatPhase.ToHit: ProcessToHit(); break;
+            case CombatPhase.Fire: ProcessFire(); break;
+            case CombatPhase.PostFire: AdvanceToNextUnit(); break;
+            case CombatPhase.HeatDissipation: EndRound(); break;
+            case CombatPhase.Complete: break;
         }
     }
 
@@ -162,15 +168,12 @@ public partial class CombatManager
     private void ProcessUnitSlot()
     {
         int unit = State.CurrentUnit;
-
-        // Check end of loop
         if (unit >= 24)
         {
             State.Phase = CombatPhase.HeatDissipation;
             return;
         }
 
-        // Skip dead/inactive units
         if (!State.IsAlive(unit))
         {
             State.CurrentUnit++;
@@ -179,21 +182,17 @@ public partial class CombatManager
 
         GD.Print($"  Combat unit {unit} at ({State.Units[unit].UnitX},{State.Units[unit].UnitY})");
 
-        // Determine target
         int targetId = -1;
         ActionCode action;
 
         if (State.IsPlayer(unit))
         {
-            // Player units use cursor position as target
             targetId = GetTargetAtCursor();
             action = AiController.GetActionCode(State, unit, targetId);
         }
         else
         {
-            // AI target selection
-            targetId = AiController.SelectTarget(
-                State, unit, State.StageCounter);
+            targetId = AiController.SelectTarget(State, unit, State.StageCounter);
             action = AiController.GetActionCode(State, unit, targetId);
         }
 
@@ -202,39 +201,52 @@ public partial class CombatManager
 
         if (targetId < 0 || action >= ActionCode.NoAction)
         {
-            // No valid target — skip unit
-            GD.Print($"    no target / out of range → skip");
+            if (targetId < 0)
+                GD.Print($"    no target → skip");
+            else
+                GD.Print($"    out of range → skip");
             State.CurrentUnit++;
             return;
         }
 
-        GD.Print($"    target={targetId} action={action}");
+        State.WeaponIndex = AiController.SelectWeapon(State, unit, targetId);
 
-        // Select weapon
-        State.WeaponIndex = AiController.SelectWeapon(
-            State, unit, targetId);
+        int dist = State.GetDistance(unit, targetId);
+        if (dist > GetWeaponMaxRange(unit, State.WeaponIndex))
+        {
+            State.Phase = CombatPhase.Movement;
+        }
+        else
+        {
+            State.Phase = CombatPhase.Targeting;
+        }
+    }
 
-        // Proceed to movement
-        State.Phase = CombatPhase.Movement;
+    private int GetWeaponMaxRange(int unitId, int weaponSlot)
+    {
+        if (weaponSlot < 0) return MeleeRange;
+        var unit = State.Units[unitId];
+        if (unit.Ammo == null || weaponSlot >= unit.Ammo.Length) return MeleeRange;
+        int weaponId = unit.Ammo[weaponSlot].WeaponId;
+        var weapons = WeaponData.Weapons;
+        if (weaponId >= 1 && weaponId <= weapons.Length)
+            return weapons[weaponId - 1].MaxRange;
+        return MeleeRange;
     }
 
     private int GetTargetAtCursor()
     {
-        // Player targets whatever is under the cursor
         int cx = State.GameState.CursorX;
         int cy = State.GameState.CursorY;
-
         for (int i = 4; i < 24; i++)
         {
-            if (State.IsAlive(i) &&
-                State.Units[i].UnitX == cx &&
-                State.Units[i].UnitY == cy)
+            if (State.IsAlive(i) && State.Units[i].UnitX == cx && State.Units[i].UnitY == cy)
                 return i;
         }
         return -1;
     }
 
-    // ─── MOVEMENT PHASE ───
+    // ─── MOVEMENT ───
 
     private void ProcessMovement()
     {
@@ -249,18 +261,48 @@ public partial class CombatManager
 
         var src = State.GetUnitPos(unit);
         var dst = State.GetUnitPos(target);
+        int dist = State.GetDistance(unit, target);
+        int weaponRange = GetWeaponMaxRange(unit, State.WeaponIndex);
 
-        Direction8 dir = CombatResolver.CalcMoveDirection(
-            src.x, src.y, dst.x, dst.y);
+        if (dist <= weaponRange)
+        {
+            State.Phase = CombatPhase.Targeting;
+            return;
+        }
 
+        // Move 1 tile toward target
+        Direction8 dir = CombatResolver.CalcMoveDirection(src.x, src.y, dst.x, dst.y);
         State.MoveDirection = dir;
 
-        // Apply movement: move 1 tile toward target
         if (dir != Direction8.None)
         {
             var delta = Direction8Table.Deltas[(int)dir];
-            State.Units[unit].UnitX += delta.dx;
-            State.Units[unit].UnitY += delta.dy;
+            int newX = State.Units[unit].UnitX + delta.dx;
+            int newY = State.Units[unit].UnitY + delta.dy;
+
+            // Bounds check
+            if (newX >= 0 && newX < 24 && newY >= 0 && newY < 12)
+            {
+                // Check if target tile is occupied
+                bool occupied = false;
+                for (int i = 0; i < 24; i++)
+                {
+                    if (i != unit && State.IsAlive(i) &&
+                        State.Units[i].UnitX == newX && State.Units[i].UnitY == newY)
+                    {
+                        occupied = true;
+                        break;
+                    }
+                }
+
+                if (!occupied)
+                {
+                    State.Units[unit].UnitX = newX;
+                    State.Units[unit].UnitY = newY;
+                    State.ClearFogForUnit(unit);
+                    GD.Print($"    moved to ({newX},{newY})");
+                }
+            }
         }
 
         State.Phase = CombatPhase.Targeting;
@@ -279,14 +321,17 @@ public partial class CombatManager
             return;
         }
 
+        // Training dummy (ID 0xD) is always targetable
+        if (State.Units[target].IsTrainingDummy)
+        {
+            State.Phase = CombatPhase.ToHit;
+            return;
+        }
+
         var src = State.GetUnitPos(unit);
         var dst = State.GetUnitPos(target);
 
-        // LoS check
-        bool losClear = CombatResolver.CheckLoS(
-            src.x, src.y, dst.x, dst.y,
-            _tileProperties, _skillGate);
-
+        bool losClear = CombatResolver.CheckLoS(src.x, src.y, dst.x, dst.y, _tileProperties, _skillGate);
         if (!losClear)
         {
             GD.Print($"    LoS blocked");
@@ -302,49 +347,47 @@ public partial class CombatManager
     private void ProcessToHit()
     {
         int unit = State.CurrentUnit;
+        int target = State.CurrentTargetId;
 
-        // Compute modifiers
-        int skillMod = CombatResolver.ComputeSkillMod(
-            State.Units[unit].StorySkill24,
-            State.Units[unit].StorySkill25);
-
-        int terrainMod = 0; // from tile property at 0x32C6 — TBD
-
-        int heatPenalty = CombatResolver.ComputeHeatPenalty(
-            State.Units[unit].HeatPool);
-
+        int skillMod = CombatResolver.ComputeSkillMod(State.Units[unit].StorySkill24, State.Units[unit].StorySkill25);
+        int terrainMod = 0;
+        int heatPenalty = CombatResolver.ComputeHeatPenalty(State.Units[unit].HeatPool);
         bool storyPenalty = State.Units[unit].StoryStateByte != 0;
 
         int weaponId = -1;
-        // Look up weapon ID from weapon index
-        var weapons = WeaponData.Weapons;
-        if (State.WeaponIndex >= 0 && State.WeaponIndex < 0xB)
+        if (State.WeaponIndex >= 0 && State.Units[unit].Ammo != null &&
+            State.WeaponIndex < State.Units[unit].Ammo.Length)
         {
-            int w = State.GameState.StateArray[0x18 + State.WeaponIndex];
-            if (w >= 1 && w <= weapons.Length)
-                weaponId = weapons[w - 1].Id;
+            weaponId = State.Units[unit].Ammo[State.WeaponIndex].WeaponId;
         }
 
         State.TargetNumber = CombatResolver.ComputeTargetNumber(
-            State.CurrentAction,
-            weaponId,
-            skillMod,
-            terrainMod,
-            heatPenalty,
-            storyPenalty);
+            State.CurrentAction, weaponId, skillMod, terrainMod, heatPenalty, storyPenalty);
 
-        // Roll 2D6
         State.DiceRoll = CombatResolver.Roll2D6();
         State.HitResult = State.DiceRoll >= State.TargetNumber;
 
-        GD.Print($"    TN={State.TargetNumber} roll={State.DiceRoll} " +
-                 (State.HitResult ? "HIT" : "MISS"));
+        GD.Print($"    TN={State.TargetNumber} roll={State.DiceRoll} {(State.HitResult ? "HIT" : "MISS")}");
 
-        // Add weapon heat
-        if (State.WeaponIndex >= 0)
+        if (weaponId > 0)
+            CombatResolver.AddWeaponHeat(State.Units[unit], weaponId);
+
+        // Handle cluster weapons during to-hit
+        if (State.HitResult && CombatResolver.IsClusterWeapon(weaponId))
         {
-            int w = State.GameState.StateArray[0x18 + State.WeaponIndex];
-            CombatResolver.AddWeaponHeat(State.Units[unit], w);
+            int clusterSize = CombatResolver.GetClusterSize(weaponId);
+            int hits = CombatResolver.RollClusterHits(clusterSize);
+            int perMissileDamage = CombatResolver.GetWeaponDamage(weaponId);
+            State.DamageDealt = perMissileDamage * hits;
+            GD.Print($"    cluster: {hits} hits × {perMissileDamage} damage = {State.DamageDealt}");
+        }
+        else if (State.HitResult)
+        {
+            State.DamageDealt = CombatResolver.GetWeaponDamage(weaponId);
+        }
+        else
+        {
+            State.DamageDealt = 0;
         }
 
         State.Phase = CombatPhase.Fire;
@@ -354,58 +397,59 @@ public partial class CombatManager
 
     private void ProcessFire()
     {
-        if (!State.HitResult)
-        {
-            State.Phase = CombatPhase.PostFire;
-            return;
-        }
-
         int target = State.CurrentTargetId;
-        if (target < 0)
+        State.IsKillShot = false;
+
+        if (!State.HitResult || target < 0 || State.DamageDealt <= 0)
         {
             State.Phase = CombatPhase.PostFire;
             return;
         }
 
-        // Determine weapon damage
-        int weaponId = -1;
-        var weapons = WeaponData.Weapons;
-        if (State.WeaponIndex >= 0 && State.WeaponIndex < 0xB)
-        {
-            int w = State.GameState.StateArray[0x18 + State.WeaponIndex];
-            if (w >= 1 && w <= weapons.Length)
-                weaponId = w;
-        }
+        var targetUnit = State.Units[target];
 
-        int damage = weaponId > 0 ? CombatResolver.ApplyDamage(weaponId) : 0;
+        // Roll hit location
+        State.HitLocation = CombatResolver.RollHitLocation();
+
+        // Check critical
+        State.CriticalMultiplier = CombatResolver.CheckCritical(State.DiceRoll);
+
+        GD.Print($"    damage={State.DamageDealt} location={State.HitLocation} crit={State.CriticalMultiplier}");
+
+        if (targetUnit.IsMech)
+        {
+            bool locDestroyed = CombatResolver.ApplyLocationDamage(targetUnit, State.HitLocation, State.DamageDealt);
+
+            if (State.CriticalMultiplier > 0)
+                CombatResolver.ApplyCriticalDamage(targetUnit, State.HitLocation, State.CriticalMultiplier);
+
+            if (CombatResolver.IsMechDestroyed(targetUnit))
+            {
+                GD.Print($"    Unit {target} destroyed!");
+                CombatResolver.ProcessKillChain(State, target);
+                State.IsKillShot = true;
+            }
+        }
+        else
+        {
+            // Infantry: simplified - one-shot kill
+            CombatResolver.ProcessKillChain(State, target);
+            State.IsKillShot = true;
+        }
 
         // Decrement ammo
-        if (State.Units[State.CurrentUnit].CurrentAmmo != null &&
-            State.WeaponIndex < State.Units[State.CurrentUnit].CurrentAmmo.Length)
-        {
-            if (State.Units[State.CurrentUnit].CurrentAmmo[State.WeaponIndex] > 0)
-                State.Units[State.CurrentUnit].CurrentAmmo[State.WeaponIndex]--;
-        }
-
-        // Hit location
-        int hitLoc = CombatResolver.RollHitLocation();
-
-        GD.Print($"    damage={damage} location={hitLoc}");
-
-        // Critical check
-        int critMul = CombatResolver.CheckCritical(State.DiceRoll);
-        if (critMul > 0)
-            GD.Print($"    CRITICAL! multiplier={critMul}");
-
-        // Apply damage (simplified — mark target dead if damage > threshold)
-        if (damage > 0)
-        {
-            // Simplified: record damage but don't implement full structure damage
-            // In the original: damage is applied to mech struct body parts
-            GD.Print($"    dealt {damage} damage to unit {target}");
-        }
+        DecrementAmmo(State.CurrentUnit, State.WeaponIndex);
 
         State.Phase = CombatPhase.PostFire;
+    }
+
+    private void DecrementAmmo(int unitId, int weaponSlot)
+    {
+        if (weaponSlot < 0) return;
+        var unit = State.Units[unitId];
+        if (unit.Ammo == null || weaponSlot >= unit.Ammo.Length) return;
+        if (unit.Ammo[weaponSlot].Remaining > 0)
+            unit.Ammo[weaponSlot].Remaining--;
     }
 
     // ─── ADVANCE ───
@@ -422,57 +466,81 @@ public partial class CombatManager
     {
         GD.Print("CombatManager: end of round");
 
-        // Heat dissipation
         for (int i = 0; i < 24; i++)
-        {
             if (State.IsAlive(i))
                 CombatResolver.DissipateHeat(State.Units[i]);
-        }
 
-        // Increment stage counter
         State.StageCounter++;
 
-        // Check if combat should end
-        bool enemiesDead = true;
-        for (int i = 4; i < 24; i++)
+        if (!State.AnyEnemiesAlive())
         {
-            if (State.IsAlive(i))
-            {
-                enemiesDead = false;
-                break;
-            }
-        }
-
-        if (enemiesDead || State.StageCounter > 20)
-        {
-            EndCombat();
+            GD.Print("  All enemies defeated!");
+            EndCombat(victory: true);
             return;
         }
 
-        // Start next round
+        if (!State.AnyPlayersAlive())
+        {
+            GD.Print("  All player units destroyed!");
+            EndCombat(victory: false);
+            return;
+        }
+
+        if (State.StageCounter > 20)
+        {
+            GD.Print("  Stage limit reached — ending combat");
+            EndCombat(victory: false);
+            return;
+        }
+
         State.CurrentUnit = 0;
         State.Phase = CombatPhase.UnitLoop;
     }
 
     // ─── END COMBAT ───
 
-    private void EndCombat()
+    private void EndCombat(bool victory)
     {
-        GD.Print("CombatManager: combat ended");
+        GD.Print($"CombatManager: combat ended (victory={victory})");
+
         State.Active = false;
         State.Phase = CombatPhase.Complete;
-        State.GameState.Mode = GameMode.WorldMap;
 
-        // Restore cursor
+        // Apply story state updates post-combat
+        if (victory)
+        {
+            State.GameState.StateArray[0x50] = 1;  // Training progress
+            State.GameState.EncounterMask = 0x7F;  // Reduce encounter rate
+        }
+
+        State.GameState.Mode = GameMode.WorldMap;
         State.GameState.CursorX = State.SavedCursorX;
         State.GameState.CursorY = State.SavedCursorY;
+
+        _onComplete?.Invoke();
     }
 
-    // ─── PUBLIC HELPERS ───
+    // ─── HELPERS ───
 
     public void SetTileProperties(byte[] properties, byte skillGate)
     {
         _tileProperties = properties;
         _skillGate = skillGate;
+    }
+
+    public int CountAlivePlayers()
+    {
+        int count = 0;
+        for (int i = 0; i < 4; i++)
+            if (State.IsAlive(i)) count++;
+        return count;
+    }
+
+    public int CountAliveEnemies()
+    {
+        int count = 0;
+        for (int i = 4; i < 24; i++)
+            if (State.IsAlive(i)) count++;
+        return count;
     }
 }

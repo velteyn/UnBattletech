@@ -462,8 +462,8 @@ public partial class GameLoop : Node
         _worldMapView.Visible = mode == GameMode.WorldMap;
         _localMapView.Visible = mode == GameMode.LocalTiles;
         _dialogueBox.Visible = mode == GameMode.TextScreen;
-        _shopScreen.Visible = mode == GameMode.BuildingName; // shown on dispatch requests
-        _borderPanel.Visible = mode == GameMode.WorldMap || mode == GameMode.LocalTiles;
+        _shopScreen.Visible = mode == GameMode.BuildingName;
+        _borderPanel.Visible = mode is GameMode.WorldMap or GameMode.LocalTiles or GameMode.Combat;
     }
 
     /// <summary>

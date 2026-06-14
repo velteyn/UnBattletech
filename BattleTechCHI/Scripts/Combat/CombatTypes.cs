@@ -1,6 +1,5 @@
 namespace BattleTechCHI.Combat;
 
-/// <summary>Maximum unit slots in combat (0-23).</summary>
 public static class CombatConstants
 {
     public const int MaxUnits = 24;
@@ -13,9 +12,11 @@ public static class CombatConstants
     public const int MaxStagePhases = 12;
     public const int FogGridW = 24;
     public const int FogGridH = 12;
+    public const int MaxAmmoBins = 10;
+    public const int NumHitLocations = 11;
+    public const int MaxHeat = 30;
 }
 
-/// <summary>Action codes returned by state check.</summary>
 public enum ActionCode
 {
     None = 0,
@@ -25,7 +26,6 @@ public enum ActionCode
     NoAction = 4
 }
 
-/// <summary>Combat sub-phase within the main loop.</summary>
 public enum CombatPhase
 {
     Init,
@@ -39,7 +39,6 @@ public enum CombatPhase
     Complete
 }
 
-/// <summary>8-way direction enum.</summary>
 public enum Direction8 : byte
 {
     E = 0, NE = 1, N = 2, NW = 3,
@@ -62,20 +61,82 @@ public static class Direction8Table
     };
 }
 
-/// <summary>Per-unit combat state (maps to 125-byte mech struct).</summary>
-public struct MechState
+/// <summary>Hit locations (11 body parts per BT mech).</summary>
+public enum HitLocation : byte
 {
-    public int MechId;         // +0x7B  mech template ID
-    public int Team;           // 0=player, 1=enemy
-    public int UnitX, UnitY;   // position
-    public bool Alive;         // status != 0
+    LeftArm = 0,
+    LeftLeg = 1,
+    LeftTorso = 2,
+    Head = 3,
+    CenterTorso = 4,
+    RightArm = 5,
+    RightLeg = 6,
+    RightTorso = 7,
+    CenterTorsoRear = 8,
+    LeftTorsoRear = 9,
+    RightTorsoRear = 10
+}
 
-    public int HeatPool;       // accumulated heat this round
-    public int HeatPenalty;    // heat penalty carry-over
+/// <summary>Ammo bin: tracks weapon type and remaining shots.</summary>
+public struct AmmoBin
+{
+    public int WeaponId;
+    public int Remaining;
+    public int MaxCapacity;
+}
 
-    public int[] CurrentAmmo;  // per-weapon ammo (10 slots)
+/// <summary>Full per-unit mech/infantry state for combat.</summary>
+public class MechState
+{
+    public int SlotId;
+    public int MechId;
+    public int Team;
+    public int UnitX, UnitY;
+    public bool Alive;
 
-    public byte StoryStateByte; // b0057 / +0xC79B
-    public byte StorySkill24;   // story state offset 0x24
-    public byte StorySkill25;   // story state offset 0x25
+    public int HeatPool;
+    public int HeatPenalty;
+
+    public AmmoBin[] Ammo = Array.Empty<AmmoBin>();
+    public int[] CurrentArmour = Array.Empty<int>();
+    public int[] MaxArmour = Array.Empty<int>();
+    public int[] CurrentStructure = Array.Empty<int>();
+    public int[] MaxStructure = Array.Empty<int>();
+    public byte[] CriticalFlags = Array.Empty<byte>();
+
+    public byte StoryStateByte;
+    public byte StorySkill24;
+    public byte StorySkill25;
+    public int InfantryEquipment;
+    public int InfantryBurstCount;
+    public bool IsTrainingDummy;
+
+    public void Init(int slot, int team, bool isMech)
+    {
+        SlotId = slot;
+        Team = team;
+        Alive = true;
+        UnitX = 0; UnitY = 0;
+        HeatPool = 0; HeatPenalty = 0;
+        IsTrainingDummy = false;
+        InfantryBurstCount = 0;
+        InfantryEquipment = 0;
+
+        if (isMech)
+        {
+            Ammo = new AmmoBin[CombatConstants.MaxAmmoBins];
+            CurrentArmour = new int[CombatConstants.NumHitLocations];
+            MaxArmour = new int[CombatConstants.NumHitLocations];
+            CurrentStructure = new int[CombatConstants.NumHitLocations];
+            MaxStructure = new int[CombatConstants.NumHitLocations];
+            CriticalFlags = new byte[CombatConstants.NumHitLocations];
+            for (int i = 0; i < CombatConstants.NumHitLocations; i++)
+            {
+                CurrentStructure[i] = 5;
+                MaxStructure[i] = 5;
+            }
+        }
+    }
+
+    public bool IsMech => Ammo.Length > 0;
 }
