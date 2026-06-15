@@ -37,6 +37,18 @@ public class CombatState
     public int KillChainPhase { get; set; }
     public int KillChainTarget { get; set; } = -1;
 
+    // Player input state
+    public CombatInputState InputState { get; set; } = CombatInputState.Auto;
+    public int SelectedWeaponSlot { get; set; } = -1;
+    public System.Collections.Generic.List<string> Messages { get; } = new();
+
+    public void AddMessage(string msg)
+    {
+        Messages.Add(msg);
+        if (Messages.Count > 50)
+            Messages.RemoveAt(0);
+    }
+
     public CombatState(GameState gameState)
     {
         GameState = gameState;

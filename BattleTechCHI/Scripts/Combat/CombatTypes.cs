@@ -17,6 +17,14 @@ public static class CombatConstants
     public const int MaxHeat = 30;
 }
 
+public enum CombatInputState
+{
+    Auto,
+    WaitingForTarget,
+    WaitingForWeapon,
+    WaitingForConfirm
+}
+
 public enum ActionCode
 {
     None = 0,

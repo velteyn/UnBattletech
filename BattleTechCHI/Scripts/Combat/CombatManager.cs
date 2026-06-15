@@ -180,21 +180,29 @@ public partial class CombatManager
             return;
         }
 
-        GD.Print($"  Combat unit {unit} at ({State.Units[unit].UnitX},{State.Units[unit].UnitY})");
+        // Don't re-process while waiting for player input
+        if (State.InputState != CombatInputState.Auto)
+            return;
 
-        int targetId = -1;
-        ActionCode action;
+        GD.Print($"  Combat unit {unit} at ({State.Units[unit].UnitX},{State.Units[unit].UnitY})");
 
         if (State.IsPlayer(unit))
         {
-            targetId = GetTargetAtCursor();
-            action = AiController.GetActionCode(State, unit, targetId);
+            State.InputState = CombatInputState.WaitingForTarget;
+            State.AddMessage($"Your turn: Unit {unit}");
+            State.GameState.CursorX = State.Units[unit].UnitX;
+            State.GameState.CursorY = State.Units[unit].UnitY;
+            return;
         }
-        else
-        {
-            targetId = AiController.SelectTarget(State, unit, State.StageCounter);
-            action = AiController.GetActionCode(State, unit, targetId);
-        }
+
+        ProcessEnemyUnit();
+    }
+
+    private void ProcessEnemyUnit()
+    {
+        int unit = State.CurrentUnit;
+        int targetId = AiController.SelectTarget(State, unit, State.StageCounter);
+        ActionCode action = AiController.GetActionCode(State, unit, targetId);
 
         State.CurrentTargetId = targetId;
         State.CurrentAction = action;
@@ -211,14 +219,120 @@ public partial class CombatManager
 
         State.WeaponIndex = AiController.SelectWeapon(State, unit, targetId);
 
+        State.AddMessage($"Enemy Unit {unit} targets Unit {targetId} (action={action})");
+
         int dist = State.GetDistance(unit, targetId);
         if (dist > GetWeaponMaxRange(unit, State.WeaponIndex))
-        {
             State.Phase = CombatPhase.Movement;
-        }
         else
-        {
             State.Phase = CombatPhase.Targeting;
+    }
+
+    // ─── PLAYER INPUT ───
+
+    public void MovePlayerCursor(int dx, int dy)
+    {
+        if (State.InputState != CombatInputState.WaitingForTarget &&
+            State.InputState != CombatInputState.WaitingForWeapon)
+            return;
+
+        int newX = Mathf.Clamp(State.GameState.CursorX + dx, 0, 23);
+        int newY = Mathf.Clamp(State.GameState.CursorY + dy, 0, 11);
+        State.GameState.CursorX = newX;
+        State.GameState.CursorY = newY;
+
+        if (State.InputState == CombatInputState.WaitingForTarget)
+            State.CurrentTargetId = GetTargetAtCursor();
+    }
+
+    public void SelectNextWeapon(int direction)
+    {
+        if (State.InputState != CombatInputState.WaitingForWeapon) return;
+        int unit = State.CurrentUnit;
+        int slot = State.SelectedWeaponSlot;
+        int start = slot;
+        do
+        {
+            slot += direction;
+            if (slot < 0) slot = CombatConstants.MaxAmmoBins - 1;
+            if (slot >= CombatConstants.MaxAmmoBins) slot = 0;
+            if (slot == start) break;
+        } while (State.Units[unit].Ammo[slot].WeaponId <= 0);
+        State.SelectedWeaponSlot = slot;
+    }
+
+    public void ConfirmPlayerAction()
+    {
+        int unit = State.CurrentUnit;
+
+        if (State.InputState == CombatInputState.WaitingForTarget)
+        {
+            int targetId = GetTargetAtCursor();
+            if (targetId < 0)
+            {
+                State.AddMessage("No target at cursor position!");
+                return;
+            }
+            State.CurrentTargetId = targetId;
+            State.CurrentAction = AiController.GetActionCode(State, unit, targetId);
+            if (State.CurrentAction >= ActionCode.NoAction)
+            {
+                State.AddMessage("Target out of range!");
+                return;
+            }
+            State.InputState = CombatInputState.WaitingForWeapon;
+            State.SelectedWeaponSlot = AiController.SelectWeapon(State, unit, targetId);
+            State.AddMessage($"Target locked: Unit {targetId}");
+        }
+        else if (State.InputState == CombatInputState.WaitingForWeapon)
+        {
+            State.WeaponIndex = State.SelectedWeaponSlot;
+            int weaponId = State.Units[unit].Ammo[State.WeaponIndex].WeaponId;
+            string wName = weaponId >= 1 && weaponId <= WeaponData.Weapons.Length
+                ? WeaponData.Weapons[weaponId - 1].Name : $"WPN{weaponId}";
+            State.AddMessage($"Firing {wName} at Unit {State.CurrentTargetId}");
+
+            int dist = State.GetDistance(unit, State.CurrentTargetId);
+            if (dist > GetWeaponMaxRange(unit, State.WeaponIndex))
+                State.Phase = CombatPhase.Movement;
+            else
+                State.Phase = CombatPhase.Targeting;
+
+            State.InputState = CombatInputState.Auto;
+        }
+    }
+
+    public void SelectWeaponByNumber(int num)
+    {
+        if (State.InputState != CombatInputState.WaitingForWeapon) return;
+        int unit = State.CurrentUnit;
+        int count = 0;
+        for (int i = 0; i < CombatConstants.MaxAmmoBins; i++)
+        {
+            if (State.Units[unit].Ammo[i].WeaponId > 0)
+            {
+                if (count == num)
+                {
+                    State.SelectedWeaponSlot = i;
+                    return;
+                }
+                count++;
+            }
+        }
+    }
+
+    public void CancelPlayerAction()
+    {
+        if (State.InputState == CombatInputState.WaitingForWeapon)
+        {
+            State.InputState = CombatInputState.WaitingForTarget;
+            State.AddMessage("Select a new target");
+        }
+        else if (State.InputState == CombatInputState.WaitingForTarget)
+        {
+            State.AddMessage($"Unit {State.CurrentUnit} skips turn");
+            State.InputState = CombatInputState.Auto;
+            State.CurrentUnit++;
         }
     }
 

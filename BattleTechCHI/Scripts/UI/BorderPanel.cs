@@ -14,6 +14,7 @@ public partial class BorderPanel : Node2D
     private Sprite2D? _borderBottom;
     private Label? _locationLabel;
     private Label? _creditsLabel;
+    private GameMode _currentMode = GameMode.WorldMap;
 
     public override void _Ready()
     {
@@ -67,16 +68,29 @@ public partial class BorderPanel : Node2D
     /// <summary>
     /// Aggiorna le label con lo stato corrente.
     /// </summary>
-    public void UpdateInfo(int cursorX, int cursorY, int credits)
+    public void UpdateInfo(int cursorX, int cursorY, int credits, GameMode? mode = null)
     {
+        var m = mode ?? _currentMode;
+        _currentMode = m;
+
         if (_locationLabel != null)
         {
-            int tileX = (cursorX & 0x7F) >> 1;
-            int tileY = (cursorY & 0x7F) >> 1;
-            _locationLabel.Text = $"({tileX},{tileY})";
+            if (m == GameMode.Combat)
+                _locationLabel.Text = $"Grid:({cursorX},{cursorY})";
+            else
+            {
+                int tileX = (cursorX & 0x7F) >> 1;
+                int tileY = (cursorY & 0x7F) >> 1;
+                _locationLabel.Text = $"({tileX},{tileY})";
+            }
         }
         if (_creditsLabel != null)
-            _creditsLabel.Text = $"CB:{credits}";
+        {
+            if (m == GameMode.Combat)
+                _creditsLabel.Text = $"COMBAT";
+            else
+                _creditsLabel.Text = $"CB:{credits}";
+        }
     }
 
     private static Theme CreateEgaTheme()

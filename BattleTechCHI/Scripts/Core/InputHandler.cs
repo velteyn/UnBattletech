@@ -38,6 +38,10 @@ public partial class InputHandler : Node
 
     private void HandleKey(InputEventKey key)
     {
+        // During combat, input is handled by GameLoop._Input directly
+        if (_stateManager.State.Mode == GameMode.Combat)
+            return;
+
         switch (key.Keycode)
         {
             // Movimento: frecce e WASD alternativi

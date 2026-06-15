@@ -18,6 +18,8 @@ public partial class GameLoop : Node
     private BldInterpreter _bldInterpreter = null!;
     private DialogueBox _dialogueBox = null!;
     private CombatManager _combatManager = null!;
+    private CombatView _combatView = null!;
+    private CombatHUD _combatHud = null!;
     private ShopScreen _shopScreen = null!;
 
     private bool _startInLocalMap;
@@ -96,6 +98,21 @@ public partial class GameLoop : Node
         // CombatManager
         _combatManager = new CombatManager(_stateManager.State);
 
+        // CombatView (tile grid positioned in right 240px area)
+        _combatView = new CombatView();
+        _combatView.Name = "CombatView";
+        _combatView.Position = new Vector2(80, 0);
+        AddChild(_combatView);
+        _combatView.SetState(_combatManager.State, State);
+        _combatView.Hide();
+
+        // CombatHUD (info overlay in left 80px panel)
+        _combatHud = new CombatHUD();
+        _combatHud.Name = "CombatHUD";
+        AddChild(_combatHud);
+        _combatHud.SetState(_combatManager.State, State);
+        _combatHud.Hide();
+
         // Connetti DialogueBox -> interpreter continue / menu selection
         _dialogueBox.InputReady += OnDialogueInputReady;
         _dialogueBox.MenuItemSelected += OnMenuItemSelected;
@@ -137,11 +154,61 @@ public partial class GameLoop : Node
         GD.Print("GameLoop ready. Phase 3.");
     }
 
+    public override void _Input(InputEvent @event)
+    {
+        if (_stateManager.State.Mode != GameMode.Combat || !_combatManager.CombatActive)
+            return;
+
+        if (@event is InputEventKey key && key.Pressed && !key.Echo)
+        {
+            bool handled = true;
+            switch (key.Keycode)
+            {
+                case Key.Up or Key.W:
+                    _combatManager.MovePlayerCursor(0, -1);
+                    break;
+                case Key.Down or Key.S:
+                    _combatManager.MovePlayerCursor(0, 1);
+                    break;
+                case Key.Left or Key.A:
+                    _combatManager.MovePlayerCursor(-1, 0);
+                    break;
+                case Key.Right or Key.D:
+                    _combatManager.MovePlayerCursor(1, 0);
+                    break;
+                case Key.Space or Key.Enter:
+                    _combatManager.ConfirmPlayerAction();
+                    break;
+                case Key.Escape:
+                    _combatManager.CancelPlayerAction();
+                    break;
+                case Key.Key1: _combatManager.SelectWeaponByNumber(0); break;
+                case Key.Key2: _combatManager.SelectWeaponByNumber(1); break;
+                case Key.Key3: _combatManager.SelectWeaponByNumber(2); break;
+                case Key.Key4: _combatManager.SelectWeaponByNumber(3); break;
+                case Key.Key5: _combatManager.SelectWeaponByNumber(4); break;
+                case Key.Key6: _combatManager.SelectWeaponByNumber(5); break;
+                case Key.Key7: _combatManager.SelectWeaponByNumber(6); break;
+                case Key.Key8: _combatManager.SelectWeaponByNumber(7); break;
+                case Key.Key9: _combatManager.SelectWeaponByNumber(8); break;
+                default:
+                    handled = false;
+                    break;
+            }
+
+            if (handled)
+                GetViewport().SetInputAsHandled();
+        }
+    }
+
     public override void _Process(double delta)
     {
         if (_combatManager.CombatActive)
         {
             _combatManager.ProcessTick();
+            _combatView.RenderCombat();
+            _combatHud.UpdateDisplay();
+            _borderPanel.UpdateInfo(State.CursorX, State.CursorY, State.Credits, GameMode.Combat);
         }
         else if (_stateManager.State.Mode == GameMode.Combat &&
                  !_combatManager.State.Active)
@@ -463,6 +530,8 @@ public partial class GameLoop : Node
         _localMapView.Visible = mode == GameMode.LocalTiles;
         _dialogueBox.Visible = mode == GameMode.TextScreen;
         _shopScreen.Visible = mode == GameMode.BuildingName;
+        _combatView.Visible = mode == GameMode.Combat;
+        _combatHud.Visible = mode == GameMode.Combat;
         _borderPanel.Visible = mode is GameMode.WorldMap or GameMode.LocalTiles or GameMode.Combat;
     }
 
