@@ -4,7 +4,7 @@
 
 This is an extensive reverse engineering effort targeting **BattleTech: The Crescent Hawk's Inception**, a 1988 MS-DOS 16-bit real-mode game by Infocom. The original executable `BTECH.EXE` was unpacked to `UNBTECH.EXE`. The project aims to fully understand the game's internals — code, data formats, game logic — to produce comprehensive documentation enabling a full rewrite with modern technologies.
 
-**Current status:** RE ~95% complete — all major systems understood (BLD bytecode, combat, maps, story, economy, world map). Engine rebuild underway in **Godot 4 + C#** (`BattleTechCHI/`). Phase 0-2 implemented: scaffold, data models, loaders, RLE decompressor, EGA palette, game loop, state machine, input, save/load, tile rendering, world map viewport, local map viewer, border panel (~1776 lines C#).
+**Current status:** RE ~95% complete — all major systems understood (BLD bytecode, combat, maps, story, economy, world map). Engine rebuild underway in **Godot 4 + C#** (`BattleTechCHI/`). Phases 0-4 implemented: scaffold, data models, loaders, RLE decompressor, EGA palette, game loop, state machine, input, save/load, tile rendering, world map viewport, local map viewer, border panel, BLD interpreter + 47-case dispatch, shops/dialogue, combat system with full 2D6 to-hit, AI, movement, damage, heat, ammo, fog of war, kill chain, player input, and grid UI (~3000 lines C#).
 
 ---
 

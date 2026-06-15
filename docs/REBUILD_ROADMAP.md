@@ -103,7 +103,7 @@ Phase 3: BLD Script Engine & Story
 ├── Room handler system (fn11B8_0D58 dispatch)
 └── All 26 BLD files wired to their maps/locations
 
-Phase 4: Combat System
+Phase 4: Combat System ✅
 ├── Combat initialization (fn183B_000A: populate enemies, init fog)
 ├── Turn order (24 slots: 4 player mechs + 8 enemy infantry + 12 enemy mechs)
 ├── Movement phase (8-direction, tile cost, skill-gated LoS stepping)
@@ -114,7 +114,10 @@ Phase 4: Combat System
 ├── Fog of war (twin 12×24 grids, LoS clearing)
 ├── Heat system (weapon heat → pool → penalty accumulator → cap 30)
 ├── Ammo management (10 bins per mech, per-missile for LRM/SRM)
-├── Fire phase VFX (EGA planar impact rendering)
+├── Combat UI: CombatView (TileMap 24×12 grid, sprites, fog, cursor, reticle)
+├── Combat HUD: left panel overlay (unit stats, weapons, message log, prompts)
+├── Player input: arrow/WASD move cursor, Space confirm, Esc cancel, 1-9 weapons
+├── Two-step confirm flow: target select → weapon select → fire
 └── Combat → world transition (cleanup, story state updates)
 
 Phase 5: Economy & Inventory
@@ -158,8 +161,8 @@ Phase 7: Polish (Post-MVP)
 | BLD bytecode | 🟢 100% complete | 🔴 Phase 3 (full interpreter needed) |
 | Story text | 🟢 100% decoded | 🔴 Phase 3 (interpreter needed) |
 | Map format | 🟢 100% complete | 🔴 Phase 2 (renderer needed) |
-| Combat system | 🟢 90% complete | 🔴 Phase 4 (full system needed) |
-| AI system | 🟢 90% complete | 🔴 Phase 4 (data-driven) |
+| Combat system | 🟢 90% complete | 🟢 Phase 4 (full system built, player input + grid UI) |
+| AI system | 🟢 90% complete | 🟢 Phase 4 (data-driven) |
 | Economy | 🟢 100% complete | 🔴 Phase 5 (all data structures known) |
 | Save format | 🟢 100% complete | 🔴 Phase 1 (binary parser) |
 | Animations | 🟡 80% (frames extracted) | 🔴 Phase 7 (player needed) |
@@ -197,7 +200,7 @@ Rather than porting the Python BLD decoder + cipher to the target engine, use `b
 | Phase 1: Core Systems | 2-3 weeks | Phase 0 |
 | Phase 2: World & Navigation | 2-3 weeks | Phase 1 |
 | Phase 3: BLD Script Engine | 4-6 weeks | Phase 1 (largest single piece) |
-| Phase 4: Combat System | 3-4 weeks | Phase 1 |
+| Phase 4: Combat System | 3-4 weeks | Phase 1 | ✅ Done |
 | Phase 5: Economy & Inventory | 1-2 weeks | Phase 3 |
 | Phase 6: Integration & Testing | 2-3 weeks | Phases 2-5 |
 | Phase 7: Polish | 2-4 weeks | Phase 6 |
