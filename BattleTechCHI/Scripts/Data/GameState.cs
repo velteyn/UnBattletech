@@ -63,6 +63,7 @@ public class GameState
 
     // === Incontri ===
     public byte EncounterMask { get; set; } = 0x1F;  // bD330
+    public byte EncounterCooldown { get; set; }      // bD335
     
     // === World Map ===
     public byte[] WorldMapVisibility { get; set; } = new byte[2048]; // 128x128 bit-packed

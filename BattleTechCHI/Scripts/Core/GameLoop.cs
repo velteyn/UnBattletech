@@ -25,6 +25,7 @@ public partial class GameLoop : Node
     private bool _startInLocalMap;
     private GameMode _previousMode = GameMode.WorldMap;
     private string _currentBldName = "";
+    private bool _wasCombatActive;
 
     public StateManager StateManager => _stateManager;
     public GameState State => _stateManager.State;
@@ -209,6 +210,13 @@ public partial class GameLoop : Node
             _combatView.RenderCombat();
             _combatHud.UpdateDisplay();
             _borderPanel.UpdateInfo(State.CursorX, State.CursorY, State.Credits, GameMode.Combat);
+            _wasCombatActive = true;
+        }
+        else if (_wasCombatActive)
+        {
+            // Combat just ended — restore view visibility
+            _wasCombatActive = false;
+            OnGameModeChanged(_stateManager.State.Mode);
         }
         else if (_stateManager.State.Mode == GameMode.Combat &&
                  !_combatManager.State.Active)
@@ -218,6 +226,21 @@ public partial class GameLoop : Node
         else if (_stateManager.State.Mode == GameMode.LocalTiles)
         {
             _localMapView.NpcController.ProcessTick();
+        }
+
+        // World map random encounter check
+        if (_stateManager.State.Mode == GameMode.WorldMap)
+        {
+            if (State.EncounterCooldown > 0)
+                State.EncounterCooldown--;
+
+            if (State.EncounterCooldown == 0 &&
+                (Combat.CombatResolver.RngByte() & State.EncounterMask) == 0)
+            {
+                State.EncounterCooldown = 63;
+                GD.Print("Random encounter triggered!");
+                _stateManager.SetMode(GameMode.Combat);
+            }
         }
 
         // Safety: if BLD interpreter is running in TextScreen mode but not waiting
@@ -520,7 +543,9 @@ public partial class GameLoop : Node
     {
         GD.Print("GameLoop: starting combat encounter");
         _combatManager.StartCombat(() => {
-            GD.Print("Combat ended callback");
+            _wasCombatActive = false;
+            OnGameModeChanged(_stateManager.State.Mode);
+            GD.Print("Combat ended — restored world map");
         });
     }
 
