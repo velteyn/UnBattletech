@@ -4,6 +4,7 @@ using BattleTechCHI.Maps;
 using BattleTechCHI.UI;
 using BattleTechCHI.BLD;
 using BattleTechCHI.Combat;
+using System.IO;
 
 namespace BattleTechCHI.Core;
 
@@ -364,7 +365,7 @@ public partial class GameLoop : Node
             return;
         }
 
-        var bldName = LocationMapper.GetBldName(bldIndex.Value);
+        var bldName = SelectBldForTile(tileX, tileY, bldIndex.Value);
         GD.Print($"Location: {bldName}");
 
         // If this world tile has an associated local map, enter it first
@@ -376,7 +377,7 @@ public partial class GameLoop : Node
         }
 
         // Run the BLD script (shows entry menu, story, shops, etc.)
-        var bldPath = ProjectSettings.GlobalizePath($"../original/bld/{bldName}.BLD");
+        var bldPath = GetBldPath(bldName);
         var script = BldLoader.Load(bldPath, bldName);
         if (script != null)
         {
@@ -385,6 +386,36 @@ public partial class GameLoop : Node
             _stateManager.SetMode(GameMode.TextScreen);
             _bldInterpreter.LoadAndRun(script);
         }
+    }
+
+    /// <summary>
+    /// State-aware BLD selection for tiles with multiple BLDs (e.g. Citadel tile 26,5).
+    /// Falls back to LocationMapper default for tiles with a single BLD.
+    /// </summary>
+    private string SelectBldForTile(int tileX, int tileY, int defaultIndex)
+    {
+        // Tile (26,5) map 1: shared by TRAINING, CITADEL, ENDMECH, WINSCENE
+        if (tileX == 26 && tileY == 5)
+        {
+            // WINSCENE: endgame — all objectives done
+            if (State.Milestone && State.StateArray[0x53] == 1)
+                return "WINSCENE";
+            // ENDMECH: Phoenix Hawk discovery — cache found
+            if (State.TrainingComplete && State.StateArray[0x52] == 1)
+                return "ENDMECH";
+            // CITADEL: story hub — after basic training
+            if (State.TrainingComplete)
+                return "CITADEL";
+            // TRAINING: default (tutorial intro)
+            return "TRAINING";
+        }
+        return LocationMapper.GetBldName(defaultIndex);
+    }
+
+    private static string GetBldPath(string bldName)
+    {
+        var projectDir = ProjectSettings.GlobalizePath("res://");
+        return Path.GetFullPath(Path.Combine(projectDir, "..", "original", "bld", $"{bldName}.BLD"));
     }
 
     private void LoadBldForLocalBuilding(string buildingName)
@@ -422,7 +453,7 @@ public partial class GameLoop : Node
             return;
         }
 
-        var bldPath = ProjectSettings.GlobalizePath($"../original/bld/{bldName}.BLD");
+        var bldPath = GetBldPath(bldName);
         var script = BldLoader.Load(bldPath, bldName);
         if (script != null)
         {

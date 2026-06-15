@@ -431,18 +431,71 @@ public static partial class Fn1CD3Dispatcher
     }
 
     // ── Case 0x21: DISPATCH_0FDC_1C9B ─────────────────────────
-    // fn0FDC_1C9B — room interaction stub
+    // fn0FDC_1C9B — ENTER ROOM INTERACTION (push state)
+    // Original: backup story slot 0 (0xC724, 0x7D bytes) → [0x54AA]+0x3780,
+    // load room data from [0x54B0]+0x2F0 into slot 0, clear unit slots 1-7,
+    // set wE48E=1.
     static void Dispatch0FDC_1C9B(GameState state)
     {
-        GD.Print("    DISPATCH_0FDC_1C9B (room interaction)");
+        GD.Print("    DISPATCH_0FDC_1C9B (enter room)");
+        // Back up current story slot 0 (125 bytes → RoomStateBackup)
+        if (state.StorySlots.Length > 0 && state.StorySlots[0] != null)
+        {
+            var slot = state.StorySlots[0];
+            int idx = 0;
+            state.RoomStateBackup[idx++] = slot.StatusByte;
+            state.RoomStateBackup[idx++] = slot.FlagsLow;
+            state.RoomStateBackup[idx++] = slot.FlagsHigh;
+            state.RoomStateBackup[idx++] = slot.TimingNibble;
+            state.RoomStateBackup[idx++] = slot.CounterA;
+            state.RoomStateBackup[idx++] = slot.CounterB;
+            state.RoomStateBackup[idx++] = slot.StoryState;
+            state.RoomStateBackup[idx++] = slot.LatchMarker;
+            state.RoomStateBackup[idx++] = slot.LinkedUnitSlot;
+            // Remaining bytes are zeroed (the room interaction data
+            // will be set by BLD text opcodes during the room).
+            for (int i = idx; i < state.RoomStateBackup.Length; i++)
+                state.RoomStateBackup[i] = 0;
+        }
+        // Clear NPC unit slots 1-7 (units leave during room interaction)
+        for (int i = 1; i < state.UnitSlots.Length; i++)
+            state.UnitSlots[i].TypeId = 0xFF;
+        state.RoomActive = true;
         RenderingRequested?.Invoke("0FDC_1C9B");
     }
 
     // ── Case 0x22: DISPATCH_0FDC_1A26 ─────────────────────────
-    // fn0FDC_1A26 — room interaction stub
+    // fn0FDC_1A26 — EXIT ROOM INTERACTION (pop state + render text)
+    // Original: backup 4 slots' C79D/C79E, call fn1E56_0388 +
+    // fn1E56_03F5(0x17A5) to render room text, call fn1467_0B98
+    // to re-init state, restore slot 0 data from linked slot,
+    // clear unit slots 1-7, set wE48E=0.
     static void Dispatch0FDC_1A26(GameState state)
     {
-        GD.Print("    DISPATCH_0FDC_1A26 (room interaction)");
+        GD.Print("    DISPATCH_0FDC_1A26 (exit room / render text)");
+        // Restore story slot 0 from backup
+        if (state.StorySlots.Length > 0 && state.StorySlots[0] != null
+            && state.RoomStateBackup.Length >= 9)
+        {
+            var slot = state.StorySlots[0];
+            var b = state.RoomStateBackup;
+            slot.StatusByte = b[0];
+            slot.FlagsLow = b[1];
+            slot.FlagsHigh = b[2];
+            slot.TimingNibble = b[3];
+            slot.CounterA = b[4];
+            slot.CounterB = b[5];
+            slot.StoryState = b[6];
+            slot.LatchMarker = b[7];
+            slot.LinkedUnitSlot = b[8];
+        }
+        // Clear NPC unit slots 1-7
+        for (int i = 1; i < state.UnitSlots.Length; i++)
+            state.UnitSlots[i].TypeId = 0xFF;
+        state.RoomActive = false;
+        // Signal the GameLoop to render BLD room text and wait for input.
+        // The GameLoop's RenderingRequested handler should call
+        // BldInterpreter to process the room's text opcodes.
         RenderingRequested?.Invoke("0FDC_1A26");
     }
 

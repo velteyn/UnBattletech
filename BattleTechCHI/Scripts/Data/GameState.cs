@@ -79,6 +79,14 @@ public class GameState
     public int TextCursorY { get; set; }
     public int TextMarginLeft { get; set; }
     public int TextMarginRight { get; set; }
+
+    // === Room Interaction State (0x21/0x22) ===
+    // Tracks whether we're inside a room interaction (wE48E equivalent).
+    public bool RoomActive { get; set; }
+
+    // Backup of StorySlots[0] (125 bytes = 0x7D) saved when entering a room,
+    // restored when exiting. Maps to the [0x54AA]+0x3780 backup area.
+    public byte[] RoomStateBackup { get; set; } = new byte[0x7D];
 }
 
 /// <summary>

@@ -109,6 +109,19 @@ state, or perform their documented operations. Six static events on
 `RenderingRequested`, `ActionTriggered`, `SaveRequested`,
 `RestoreRequested`) let GameLoop react to dispatcher actions.
 
+**Case 0x21 (DISPATCH_0FDC_1C9B)**: Push-state room interaction. Backs up
+`StorySlots[0]` (125 bytes) into `RoomStateBackup`, clears unit slots 1-7,
+sets `RoomActive = true`. Emits `RenderingRequested("0FDC_1C9B")`. The BLD
+interpreter continues running after dispatch (no mode change).
+
+**Case 0x22 (DISPATCH_0FDC_1A26)**: Pop-state room interaction. Restores
+`StorySlots[0]` from `RoomStateBackup`, clears unit slots 1-7, sets
+`RoomActive = false`. Emits `RenderingRequested("0FDC_1A26")`.
+
+Both cases mapped from original `fn0FDC_1C9B` / `fn0FDC_1A26` (Reko decomp,
+UNBTECH_0FDC.asm:3190 and 2961). GameState.RoomActive tracks `wE48E`,
+`GameState.RoomStateBackup[0x7D]` maps to `[0x54AA]+0x3780` backup area.
+
 **Critical**: Cases 0x0A-0x2F were previously misassigned by 2+ positions
 (starting at 0x0A = RepairMech when it should be ShowCredits). Fixed in
 session 2026-06-08.
@@ -165,7 +178,49 @@ for full explanation.
 
 ### BLD files location
 
-`../../../*.BLD` relative to project root (i.e., repository root).
+Located at `original/bld/` relative to repository root. Loaded via
+`GetBldPath()` in `GameLoop.cs` which resolves from `res://` project dir.
+
+**26 BLD files** in the game:
+
+| File | Purpose | Location |
+|------|---------|----------|
+| TRAINING.BLD | Tutorial intro | (26,5) map 1 |
+| CITADEL.BLD | Story hub (after training) | (26,5) map 1 |
+| ENDMECH.BLD | Phoenix Hawk LAM discovery | (26,5) map 1 |
+| WINSCENE.BLD | Endgame victory sequence | (26,5) map 1 |
+| INSTRUCT.BLD | Father's note / code key system | (27,5) map 1 |
+| ENTRANCE.BLD | Star League cache entrance | (33,49) map 7 |
+| BARRACKS.BLD | Barracks | (28,11) map 2 |
+| BARRACK2.BLD | Barracks 2 | (29,11) map 2 |
+| COMSTAR.BLD | ComStar station | (27,9) map 2 |
+| GARAGE.BLD | Mechit-Lube garage | (29,12) map 2 |
+| HOSPITAL.BLD | Hospital | (28,12) map 2 |
+| WEAPON.BLD | Weapon shop | (29,10) map 2 |
+| WEAPON2.BLD | Weapon shop 2 (robbery) | (30,10) map 2 |
+| ARMOR.BLD | Armor shop | (28,9) map 2 |
+| CLOTHES.BLD | Clothes shop | (27,10) map 2 |
+| LOUNGE.BLD | Lounge | (30,11) map 2 |
+| THEATER.BLD | Theater | (27,12) map 2 |
+| VIEWDISK.BLD | Viewdisk | (27,12) map 2 |
+| JAIL.BLD | Jail | (5,54) map 3 |
+| MAYOR.BLD | Mayor | (5,55) map 3 |
+| FINDIT.BLD | Cache island | (55,8) map 4 |
+| FROB.BLD | Hotel/Frob | (32,18) map 5 |
+| HUT.BLD | Hut | (10,10) map 6 |
+| PARTY.BLD | Party | (28,10) map 2 |
+| ARENA.BLD | Arena | (30,8) map 2 |
+| REPAIR.BLD | Repair shop | (28,13) map 2 |
+
+**State-aware BLD selection**: Tile (26,5) map 1 hosts 4 BLDs (TRAINING,
+CITADEL, ENDMECH, WINSCENE). `SelectBldForTile()` in GameLoop.cs picks:
+1. `Milestone && StateArray[0x53]==1` → WINSCENE
+2. `TrainingComplete && StateArray[0x52]==1` → ENDMECH
+3. `TrainingComplete` → CITADEL
+4. default → TRAINING
+
+Flags `StateArray[0x52]` / `[0x53]` are set by story BLD scripts during
+gameplay (cache found, mech obtained). Tune during playtesting.
 
 ## Radare2 (r2) Tooling
 
