@@ -118,7 +118,8 @@ Phase 4: Combat System ✅
 ├── Combat HUD: left panel overlay (unit stats, weapons, message log, prompts)
 ├── Player input: arrow/WASD move cursor, Space confirm, Esc cancel, 1-9 weapons
 ├── Two-step confirm flow: target select → weapon select → fire
-└── Combat → world transition (cleanup, story state updates)
+├── World map random encounters (RNG & EncounterMask check, 63-frame cooldown)
+└── Combat → world transition (cleanup, story state updates, view restoration)
 
 Phase 5: Economy & Inventory
 ├── C-Bills tracking (32-bit dwD370)
