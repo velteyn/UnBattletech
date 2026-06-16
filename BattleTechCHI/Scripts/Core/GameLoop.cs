@@ -28,6 +28,12 @@ public partial class GameLoop : Node
     private string _currentBldName = "";
     private bool _wasCombatActive;
 
+    // 135D dispatch tables
+    private PositionInteractionTable _positionTable = null!;
+    private AnimationDispatchTable _animDispatchTable = null!;
+    private int _lastPosInteractionEntry = -1;
+    private bool _dispatchTableInitialized;
+
     public StateManager StateManager => _stateManager;
     public GameState State => _stateManager.State;
 
@@ -69,6 +75,11 @@ public partial class GameLoop : Node
         _borderPanel = new BorderPanel();
         _borderPanel.Name = "BorderPanel";
         AddChild(_borderPanel);
+
+        // 135D dispatch tables
+        _positionTable = new PositionInteractionTable();
+        _animDispatchTable = new AnimationDispatchTable();
+        PopulateDispatchFromLocationMapper();
 
         // WorldMapView
         _worldMapView = new WorldMapView();
@@ -292,7 +303,11 @@ public partial class GameLoop : Node
         {
             _stateManager.State.CursorX = Mathf.Clamp(_stateManager.State.CursorX + dx, 0, 127);
             _stateManager.State.CursorY = Mathf.Clamp(_stateManager.State.CursorY + dy, 0, 127);
-            _borderPanel.UpdateInfo(_stateManager.State.CursorX, _stateManager.State.CursorY, _stateManager.State.Credits);
+
+            // Query 135D dispatch tables for cursor position
+            int cursorX = _stateManager.State.CursorX;
+            int cursorY = _stateManager.State.CursorY;
+            DispatchCursorMove(cursorX, cursorY);
             _worldMapView.RenderViewport();
         }
     }
@@ -507,6 +522,88 @@ public partial class GameLoop : Node
     private void OnWorldMapReinitRequested()
     {
         _worldMapView.Reinitialize();
+    }
+
+    // ── 135D Dispatch Tables ────────────────────────────────────
+    private void DispatchCursorMove(int cursorX, int cursorY)
+    {
+        _borderPanel.UpdateInfo(cursorX, cursorY, _stateManager.State.Credits);
+
+        // PositionInteractionTable (33-entry): building names on cursor hover
+        int posEntry = _positionTable.FindEntry(cursorX, cursorY);
+        if (posEntry != _lastPosInteractionEntry)
+        {
+            _lastPosInteractionEntry = posEntry;
+            if (posEntry >= 0)
+            {
+                string bldName = GetBldNameForPositionEntry(posEntry);
+                if (!string.IsNullOrEmpty(bldName))
+                    _borderPanel.SetHoverBuildingName(bldName);
+                else
+                    _borderPanel.SetHoverBuildingName(null);
+
+                if (!_positionTable.IsVisited(posEntry))
+                    _positionTable.MarkVisited(posEntry);
+            }
+            // else: no building hover — UpdateInfo already restored coordinate display
+        }
+
+        // AnimationDispatchTable (12-entry): tile animation on cursor hover
+        int animEntry = _animDispatchTable.FindEntry(cursorX, cursorY);
+        if (animEntry >= 0)
+        {
+            var entry = _animDispatchTable.GetEntry(animEntry);
+            // Param1-3 can be mapped to ANM names here
+        }
+    }
+
+    private static string GetBldNameForPositionEntry(int entryIndex)
+    {
+        if (entryIndex < 0 || entryIndex >= PositionInteractionTable.EntryCount)
+            return null;
+        return "Security Terminal";
+    }
+
+    /// <summary>
+    /// Populate the animation dispatch table from LocationMapper building positions.
+    /// Maps each world map building tile to its ANM file via BldAnmMap.
+    /// </summary>
+    private void PopulateDispatchFromLocationMapper()
+    {
+        if (_dispatchTableInitialized) return;
+        _dispatchTableInitialized = true;
+
+        int count = 0;
+        var seenTiles = new System.Collections.Generic.HashSet<(int, int)>();
+
+        for (int i = 0; i < LocationMapper.LocationCount && count < AnimationDispatchTable.EntryCount; i++)
+        {
+            string bldName = LocationMapper.GetBldName(i);
+            if (string.IsNullOrEmpty(bldName)) continue;
+
+            var (_, tileX, tileY, _) = LocationMapper.GetLocation(i);
+            var key = (tileX, tileY);
+            if (seenTiles.Contains(key)) continue;
+            seenTiles.Add(key);
+
+            // Convert tile coords to subtile coords for dispatch table
+            int subX = tileX * 2;
+            int subY = tileY * 2;
+
+            // Use ANM param if available in BldAnmMap, otherwise use index
+            int anmIndex = BldAnmMap.TryGetValue(bldName, out var anm) ? ParseAnmIndex(anm) : count;
+
+            _animDispatchTable.SetEntry(count, subX, subY, anmIndex, 0, 0);
+            count++;
+        }
+    }
+
+    private static int ParseAnmIndex(string anmName)
+    {
+        // "o0" → 0, "o10" → 10, etc.
+        if (anmName.Length >= 2 && anmName[0] == 'o' && int.TryParse(anmName[1..], out int idx))
+            return idx;
+        return 0;
     }
 
     // ── ANM Animation Mapping ──────────────────────────────────

@@ -291,12 +291,12 @@ Scene order (back→front):
 - O15 (9 frames) has no BLD mapping — may be unused/unreferenced in game.
 - O16 (20 frames) is structurally valid but outside game's 16-file range.
 - ANM file for specific mech/character interactions in combat not yet mapped.
-- Full animation dispatch table (segment 135D, 12-entry + 33-entry) not yet integrated — currently using static BldAnmMap dictionary.
+- Animation dispatch table cursor-hover ANM triggering not yet active — `DispatchCursorMove()` currently detects matches via `AnimationDispatchTable` but is not wired to show ANM on hover (only on building entry).
 
 ### Next ANM Integration Steps
 
-1. **Runtime ANM decompression**: Load raw `.ANM` files via `RleDecompressor.DecompressAnimation()` at runtime instead of pre-extracted PNGs (for accuracy).
-2. **Animation dispatch**: Implement the 135D segment's 12-entry and 33-entry position dispatch tables to trigger animations based on game state and cursor position.
+1. ~~**Runtime ANM decompression**~~ DONE (`AnmPlayer.LoadRaw()` + `RleDecompressor.DecompressAnimationFrames()`)
+2. ~~**Animation dispatch**~~ DONE — `PositionInteractionTable` (33-entry, static data from DGROUP:0x21CE) and `AnimationDispatchTable` (12-entry, runtime-populated from LocationMapper) query on cursor move via `DispatchCursorMove()`, building names shown on hover.
 3. **Combat mech panel**: Animate combat left-panel display with ANM frames per mech state (idle/move/fire/damage).
 4. **Map cursor animation**: Replace blink timer with ANM cursor frames.
 

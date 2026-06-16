@@ -93,4 +93,16 @@ public static class LocationMapper
         }
         return null;
     }
+
+    public static int LocationCount => Locations.Length;
+
+    /// <summary>
+    /// Get the full location tuple (bldName, tileX, tileY, mapId) by index.
+    /// </summary>
+    public static (string bldName, int tileX, int tileY, int mapId) GetLocation(int index)
+    {
+        if (index >= 0 && index < Locations.Length)
+            return Locations[index];
+        return ("", 0, 0, 0);
+    }
 }

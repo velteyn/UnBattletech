@@ -127,6 +127,16 @@ public partial class BorderPanel : Node2D
         _anmPlayer.Visible = false;
     }
 
+    /// <summary>
+    /// Show building name on cursor hover (135D position interaction dispatch).
+    /// null/empty = no hover (coordinate display already set by UpdateInfo).
+    /// </summary>
+    public void SetHoverBuildingName(string? name)
+    {
+        if (_locationLabel != null && !string.IsNullOrEmpty(name))
+            _locationLabel.Text = name;
+    }
+
     private static Theme CreateEgaTheme()
     {
         var theme = new Theme();
