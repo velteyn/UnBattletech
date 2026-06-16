@@ -134,6 +134,102 @@ public static class RleDecompressor
     }
 
     /// <summary>
+    /// Decomprime TUTTI i frame di un file ANM.
+    /// Header ANM=51 byte (0x00-0x32), dati da offset 0x33.
+    /// Ogni frame = 0x0F20 byte nibble = 88×88 pixel.
+    /// Il RLE è continuo (nessun separatore tra frame) — si legge finché
+    /// il flusso RLE è esaurito, producendo frame di 0x0F20 byte ciascuno.
+    /// I frame sono XOR-delta: ogni frame è XORato col precedente.
+    /// </summary>
+    public static List<byte[]> DecompressAnimationFrames(byte[] compressed)
+    {
+        const int bufSize = 0x0F20;
+        const int headerSize = 0x33;
+        var frames = new List<byte[]>();
+
+        if (compressed.Length <= headerSize) return frames;
+
+        // Check active flag
+        if (compressed[0x32] == 0) return frames;
+
+        var buffer = new byte[bufSize];
+        int srcIdx = headerSize;
+
+        while (srcIdx < compressed.Length)
+        {
+            int prevSrcIdx = srcIdx;
+            int dstIdx = 0;
+            Buffer.BlockCopy(buffer, 0, buffer, 0, bufSize); // reset to current base
+
+            while (dstIdx < bufSize && srcIdx < compressed.Length)
+            {
+                sbyte b = (sbyte)compressed[srcIdx++];
+                int runLength;
+
+                if (b == 0)
+                {
+                    if (srcIdx + 2 > compressed.Length) break;
+                    runLength = compressed[srcIdx] | (compressed[srcIdx + 1] << 8);
+                    srcIdx += 2;
+                }
+                else if (b < 0)
+                {
+                    runLength = -b;
+                }
+                else
+                {
+                    runLength = b;
+                }
+
+                while (runLength > 0 && dstIdx < bufSize && srcIdx < compressed.Length)
+                {
+                    byte data = compressed[srcIdx];
+                    buffer[dstIdx] ^= data;
+                    dstIdx++;
+                    runLength--;
+
+                    if (b > 0)
+                        srcIdx++;
+                    else if (runLength == 0)
+                        srcIdx++;
+                }
+            }
+
+            if (dstIdx == 0) break; // no progress → done
+
+            var frame = new byte[bufSize];
+            Buffer.BlockCopy(buffer, 0, frame, 0, bufSize);
+            frames.Add(frame);
+        }
+
+        return frames;
+    }
+
+    /// <summary>
+    /// Crea una texture atlas orizzontale da tutti i frame ANM.
+    /// </summary>
+    public static Image? AnmFramesToImage(List<byte[]> frames, int frameW = 88, int frameH = 88)
+    {
+        if (frames.Count == 0) return null;
+
+        int sheetW = frameW * frames.Count;
+        int sheetH = frameH;
+
+        var sheet = Image.CreateEmpty(sheetW, sheetH, false, Image.Format.Rgba8);
+
+        for (int f = 0; f < frames.Count; f++)
+        {
+            var pixels = NibbleToPixels(frames[f], frameW, frameH);
+            var frameImg = PixelsToImage(pixels, frameW, frameH);
+            if (frameImg == null) continue;
+
+            sheet.BlitRect(frameImg, new Rect2I(0, 0, frameW, frameH), new Vector2I(f * frameW, 0));
+        }
+
+        return sheet;
+    }
+
+    /// <summary>
     /// Converte da formato nibble (4-bit) a pixel (8-bit) con palette EGA mapping.
     /// Ogni byte in input contiene due nibble: high nibble = pixel sinistro, low = destro.
     /// </summary>

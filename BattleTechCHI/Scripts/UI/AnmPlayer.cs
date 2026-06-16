@@ -1,4 +1,6 @@
 using Godot;
+using BattleTechCHI.Maps;
+using System.IO;
 
 namespace BattleTechCHI.UI;
 
@@ -37,13 +39,25 @@ public partial class AnmPlayer : Node2D
         AddChild(_timer);
     }
 
+    /// <summary>
+    /// Load an animation: tries runtime ANM decompression first,
+    /// falls back to pre-extracted PNG spritesheet.
+    /// </summary>
     public bool Load(string anmName)
     {
+        // Try runtime decompression from original ANM file
+        if (LoadRaw(anmName))
+        {
+            CurrentAnimation = anmName;
+            return true;
+        }
+
+        // Fallback: pre-extracted PNG spritesheet
         var path = $"res://Assets/Animations/{anmName}_sheet.png";
         _sheet = ResourceLoader.Load<Texture2D>(path);
         if (_sheet == null)
         {
-            GD.PrintErr($"AnmPlayer: failed to load '{path}'");
+            GD.PrintErr($"AnmPlayer: failed to load '{path}' and raw ANM not available");
             CurrentAnimation = null;
             return false;
         }
@@ -55,6 +69,53 @@ public partial class AnmPlayer : Node2D
         _sprite.RegionEnabled = true;
         _sprite.RegionRect = new Rect2(0, 0, _frameWidth, _frameHeight);
         CurrentAnimation = anmName;
+        return true;
+    }
+
+    /// <summary>
+    /// Load animation by decompressing the original ANM file at runtime.
+    /// Converts "o0" → "O0.ANM" and looks in original/anm/.
+    /// </summary>
+    private bool LoadRaw(string anmName)
+    {
+        // Normalize: "o0" → "O0"
+        string rawName = anmName.Length >= 1
+            ? char.ToUpperInvariant(anmName[0]) + anmName[1..] + ".ANM"
+            : anmName + ".ANM";
+
+        var projectDir = ProjectSettings.GlobalizePath("res://");
+        var anmPath = Path.GetFullPath(Path.Combine(projectDir, "..", "original", "anm", rawName));
+
+        if (!File.Exists(anmPath))
+        {
+            GD.Print($"AnmPlayer: raw ANM not found at '{anmPath}', trying PNG fallback");
+            return false;
+        }
+
+        byte[] rawData = File.ReadAllBytes(anmPath);
+        var frames = RleDecompressor.DecompressAnimationFrames(rawData);
+        if (frames.Count == 0)
+        {
+            GD.PrintErr($"AnmPlayer: no frames decompressed from '{anmPath}'");
+            return false;
+        }
+
+        // Build spritesheet texture from decompressed frames
+        var sheetImage = RleDecompressor.AnmFramesToImage(frames, _frameWidth, _frameHeight);
+        if (sheetImage == null)
+        {
+            GD.PrintErr("AnmPlayer: failed to build spritesheet from ANM frames");
+            return false;
+        }
+
+        _sheet = ImageTexture.CreateFromImage(sheetImage);
+        _frameCount = frames.Count;
+        _currentFrame = 0;
+        _sprite.Texture = _sheet;
+        _sprite.RegionEnabled = true;
+        _sprite.RegionRect = new Rect2(0, 0, _frameWidth, _frameHeight);
+
+        GD.Print($"AnmPlayer: loaded '{rawName}' — {frames.Count} frames via runtime decompression");
         return true;
     }
 
