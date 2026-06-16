@@ -1,5 +1,8 @@
 # Agent Instructions — BattleTech CHI Rebuild
 
+> **Phase 5 ANM Integration** (2026-06-16): AnmPlayer + BorderPanel + BldAnmMap shipped.
+> Next priorities: Runtime ANM decompression, 135D dispatch tables, combat mech panel ANM.
+
 ## Build & Run
 
 ```bash

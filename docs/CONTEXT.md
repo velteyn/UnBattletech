@@ -650,15 +650,32 @@ BattleTechCHI/
 │   │   └── LocalMapView.cs     # TileMap viewport per MAP1-14.MTP
 │   ├── BLD/
 │   │   └── BldLoader.cs        # Carica e decripta .BLD
+│   ├── Combat/
+│   │   ├── CombatManager.cs    # Loop 12-fasi: movimento, to-hit, danno, kill chain
+│   │   ├── CombatView.cs       # TileMap 15×12 + sprite2D unità (ricreati ogni frame)
+│   │   ├── CombatHUD.cs        # Overlay sinistro 80px in combattimento
+│   │   ├── CombatState.cs      # Stato combattimento, griglie fog 12×24
+│   │   ├── CombatResolver.cs   # RNG (LFSR 24-bit), LoS (Bresenham), danno
+│   │   └── CombatTypes.cs      # MechState, HitLocation, ActionCode enum
+│   ├── BLD/
+│   │   └── BldLoader.cs        # Carica e decripta .BLD
 │   └── UI/
 │       ├── EgaPalette.cs       # Palette EGA 16 colori + custom asset
-│       ├── BorderPanel.cs      # Pannello sinistro 80px + bordo EGA
-│       └── StartupSequence.cs  # INFOCOM → BTTITLE → gioco
-└── Scenes/
-    └── Main.tscn
+│       ├── AnmPlayer.cs        # Player animazioni ANM (88×88, timer-based, FPS configurabile)
+│       ├── BorderPanel.cs      # Pannello sinistro 80px + bordo EGA + AnmPlayer
+│       ├── StartupSequence.cs  # INFOCOM → BTTITLE → gioco
+│       ├── DialogueBox.cs      # Testo BLD, sprite, menu interattivo
+│       └── ShopScreen.cs       # Interfaccia compra/vendita
+├── Scenes/
+│   └── Main.tscn
+├── Assets/
+│   └── Animations/             # Spritesheet ANM O0–O16 (88×88 px, 321 PNG, 1.4MB)
+└── docs/
+    └── reference/
+        └── ANM_FORMAT.md       # Specifica formato ANM (XOR-delta RLE)
 ```
 
-**Status**: Phase 0-3.1 (~2350 lines). Core systems + tile rendering + world map + BLD bytecode interpreter (26 opcodes) + DialogueBox UI + LocationMapper + MapCursor.
+**Status**: Phase 0-5 (~3500 lines). Core systems + tile rendering + world/local map + BLD bytecode interpreter (26 opcodes) + 47-case dispatcher + full combat system + ANM animation player + BorderPanel left-panel animations.
 
 ---
 
