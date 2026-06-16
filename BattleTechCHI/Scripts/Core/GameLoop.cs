@@ -16,6 +16,7 @@ public partial class GameLoop : Node
     private WorldMapView _worldMapView = null!;
     private LocalMapView _localMapView = null!;
     private BorderPanel _borderPanel = null!;
+    private ViewportManager _viewportManager = null!;
     private BldInterpreter _bldInterpreter = null!;
     private DialogueBox _dialogueBox = null!;
     private CombatManager _combatManager = null!;
@@ -71,10 +72,16 @@ public partial class GameLoop : Node
         _dialogueBox.Name = "DialogueBox";
         AddChild(_dialogueBox);
 
-        // BorderPanel
+        // ViewportManager (layout framework)
+        _viewportManager = new ViewportManager();
+        _viewportManager.Name = "ViewportManager";
+        AddChild(_viewportManager);
+
+        // BorderPanel (content for left panel region)
         _borderPanel = new BorderPanel();
         _borderPanel.Name = "BorderPanel";
-        AddChild(_borderPanel);
+        _viewportManager.AddChild(_borderPanel);
+        _viewportManager.AssignContent(_borderPanel, "LeftPanel");
 
         // 135D dispatch tables
         _positionTable = new PositionInteractionTable();
@@ -85,12 +92,14 @@ public partial class GameLoop : Node
         _worldMapView = new WorldMapView();
         _worldMapView.Name = "WorldMapView";
         AddChild(_worldMapView);
+        _viewportManager.AssignContent(_worldMapView, "Viewport");
 
         // LocalMapView
         _localMapView = new LocalMapView();
         _localMapView.Name = "LocalMapView";
         AddChild(_localMapView);
         _localMapView.Visible = false;
+        _viewportManager.AssignContent(_localMapView, "Viewport");
 
         // Connetti input
         _inputHandler.CursorMoved += OnCursorMoved;
@@ -111,18 +120,19 @@ public partial class GameLoop : Node
         // CombatManager
         _combatManager = new CombatManager(_stateManager.State);
 
-        // CombatView (tile grid positioned in right 240px area)
+        // CombatView (tile grid in Viewport region)
         _combatView = new CombatView();
         _combatView.Name = "CombatView";
-        _combatView.Position = new Vector2(80, 0);
         AddChild(_combatView);
+        _viewportManager.AssignContent(_combatView, "Viewport");
         _combatView.SetState(_combatManager.State, State);
         _combatView.Hide();
 
-        // CombatHUD (info overlay in left 80px panel)
+        // CombatHUD (info overlay in left panel region)
         _combatHud = new CombatHUD();
         _combatHud.Name = "CombatHUD";
         AddChild(_combatHud);
+        _viewportManager.AssignContent(_combatHud, "LeftPanel");
         _combatHud.SetState(_combatManager.State, State);
         _combatHud.Hide();
 
@@ -733,6 +743,18 @@ public partial class GameLoop : Node
         _combatView.Visible = mode == GameMode.Combat;
         _combatHud.Visible = mode == GameMode.Combat;
         _borderPanel.Visible = mode is GameMode.WorldMap or GameMode.LocalTiles or GameMode.Combat;
+
+        // Viewport layout switching
+        var layout = mode switch
+        {
+            GameMode.WorldMap => ViewportLayout.WorldMap,
+            GameMode.LocalTiles => ViewportLayout.LocalTiles,
+            GameMode.TextScreen => ViewportLayout.TextScreen,
+            GameMode.BuildingName => ViewportLayout.BuildingName,
+            GameMode.Combat => ViewportLayout.Combat,
+            _ => ViewportLayout.WorldMap,
+        };
+        _viewportManager.SetLayout(layout);
 
         // Hide ANM animation when returning to map view
         if (mode is GameMode.WorldMap or GameMode.LocalTiles)

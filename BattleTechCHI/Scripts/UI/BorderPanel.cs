@@ -4,53 +4,27 @@ using BattleTechCHI.Data;
 namespace BattleTechCHI.UI;
 
 /// <summary>
-/// BorderPanel: pannello di bordo stile EGA che incornicia il viewport.
-/// Nel gioco originale: 80px a sinistra (immagine mech/info) + 240px viewport.
-/// BTBORDER.CMP contiene i tile per i bordi.
+/// BorderPanel: contenuto del pannello sinistro (80px).
+/// Layout e bordi gestiti da ViewportManager.
+/// BTBORDER.CMP tile border — Phase 2.
 /// </summary>
 public partial class BorderPanel : Node2D
 {
-    private Sprite2D? _borderLeft;
-    private Sprite2D? _borderBottom;
     private Label? _locationLabel;
     private Label? _creditsLabel;
     private AnmPlayer _anmPlayer = null!;
     private GameMode _currentMode = GameMode.WorldMap;
 
-    /// <summary>
-    /// ANM animation display in the left 80px panel.
-    /// </summary>
     public AnmPlayer AnmPlayer => _anmPlayer;
 
     public override void _Ready()
     {
-        // Sfondo nero per l'area bordo
-        var bg = new ColorRect
-        {
-            Color = Colors.Black,
-            Size = new Vector2(320, 200)
-        };
-        AddChild(bg);
-
-        // TODO Phase 2: caricare BTBORDER.CMP per i tile bordo reali
-        // Per ora: rettangoli colorati che simulano il layout
-
-        // Left panel (80px)
-        var leftPanel = new ColorRect
-        {
-            Color = new Color(0x00, 0x00, 0x55), // dark blue EGA
-            Size = new Vector2(80, 200)
-        };
-        AddChild(leftPanel);
-
-        // ANM animation display in left panel (88x88 frames, centered at 40, 85)
         _anmPlayer = new AnmPlayer();
         _anmPlayer.Name = "AnmPlayer";
         _anmPlayer.Position = new Vector2(40, 85);
         AddChild(_anmPlayer);
         _anmPlayer.Hide();
 
-        // Label posizione (in alto a sinistra)
         _locationLabel = new Label
         {
             Text = "Pos: (0,0)",
@@ -59,7 +33,6 @@ public partial class BorderPanel : Node2D
         };
         AddChild(_locationLabel);
 
-        // Label crediti (in basso a sinistra)
         _creditsLabel = new Label
         {
             Text = "CB: 1000",
@@ -67,15 +40,6 @@ public partial class BorderPanel : Node2D
             Theme = CreateEgaTheme()
         };
         AddChild(_creditsLabel);
-
-        // Bottom bar (4px sotto il viewport, larga 240)
-        var bottomBar = new ColorRect
-        {
-            Color = new Color(0x55, 0x55, 0x55), // dark gray EGA
-            Size = new Vector2(320, 8),
-            Position = new Vector2(0, 192)
-        };
-        AddChild(bottomBar);
     }
 
     /// <summary>

@@ -36,11 +36,11 @@ Source files: `spice86/GeneratedCode18.cs` (segment 19EF), `spice86/GeneratedCod
 COMBAT ENCOUNTER (two triggers: walking on world map 0800:192 or BLD script action menu)
   │
   ├─► Walking encounter: main loop checks RNG & bD330 == 0 every frame (see §16)
-  │   → fn183B_000A initializes combat, populates enemies, sets w4FBA = 2
+  │   → fn183B_000A initializes combat, populates enemies, sets w4FBC = 1 (narrow panel)
   │
-  ├─► BLD script encounter: action menu at 0D27, "fight" choice sets w4FBA = 2
+  ├─► BLD script encounter: action menu at 0D27, "fight" choice sets w4FBC = 1
   │
-  ├─► Set w4FBA = 2 (combat mode)
+  ├─► Narrow left panel via w4FBC = 1 (from 80px→4px), w4FBA unchanged
   │
   ├─► COMBAT HANDLER (ghidra_guess_1000_458C_1458C @ 0x1458C)
   │     │
@@ -111,8 +111,8 @@ COMBAT ENCOUNTER (two triggers: walking on world map 0800:192 or BLD script acti
      │     │     │
      │     │     └─► POST-FIRE: call unknown_19EF_1DF8_1BCE8 (cleanup)
   │     │
-   │     └─► EXIT: loop termination → w4FBA = 3 (post-combat) on completion
-   │         bD330 set to 0x7F to reduce re-encounter probability
+    │     └─► EXIT: loop termination → w4FBC = 0 (restore 80px panel), story state update
+    │         bD330 set to 0x7F to reduce re-encounter probability
    │
    └─► Return to world map
 ```
@@ -1266,7 +1266,7 @@ Handles state cleanup after a unit completes its fire phase:
 
 **Triggering combat:**
 - BLD script interpreter (1E56:03F5) dispatches combat-related property handlers
-- The handler sets `w4FBA = 2` when an encounter begins
+- The handler sets `w4FBC = 1` (narrows left panel to 4px) when an encounter begins; w4FBA unchanged
 - Story property `0x1F` triggers the citadel attack (training→combat transition)
 - Story property `0x20` handles multi-step combat/encounter resolution
 
@@ -2030,7 +2030,7 @@ Called from BLD opcode `0xF5` and various game functions. All 47 cases present.
 | `0x2A` | SAVE_POSITIONS | Save unit positions (X to `0x4024[]`, Y to `0x4056[]`) + COMSTAR state |
 | `0x2B` | RESTORE_POSITIONS | Restore positions from saved arrays (`0x4024`/`0xD390` for X, `0x4056`/`0xD392` for Y) |
 | `0x2C` | DISPATCH_11B8_1762 | Position/state management via `fn11B8_1762` |
-| `0x2D` | COMBAT_ENCOUNTER | **Combat transition**: handle `w4FBA` states 0→2→3, setup viewport, template load, border draw |
+| `0x2D` | COMBAT_ENCOUNTER | **Combat transition**: set `w4FBC = 1` (narrow left panel 80px→4px), setup viewport, template load, border draw |
 | `0x2E` | RESTORE_SLOTS | Restore 4 story slots from temporary backup, update `bD55E`, call `fn1467_0002` |
 | `0x2F` | DECREMENT_STATE | If `bC623 > 5`, decrement by 4 |
 
@@ -2545,21 +2545,39 @@ Controls which rendering mode is active. Checked by 60+ code paths across 8 code
 | `2` | Text Only | Cipher-decoded text | Text border (`fn207F_245C`) | 1× direct | `fn207F_2251` | `0xA000:0xAC00` |
 | `3` | Building Name | Overlay text | Narrow border (`fn207F_1D3A`) | 8× (8-byte) | `fn207F_22A5` | `0x246C:0x244B` |
 
-**Assignment**: The user presses keys `1`/`2`/`3`/`4` (ASCII 0x31-0x34), and the value is decremented by 0x31 to yield 0-3. This happens in `fn0D27_0044` (segment `0D27:0044`), the action menu handler.
+**Set at startup, with render-in-progress toggle**: w4FBA is written from user keyboard input (keys 1-4). The user presses `1`/`2`/`3`/`4` (ASCII 0x31-0x34) in the `main` function (pseudocode lines 5921-5922), stored as raw keycode. After the protection screen (lines 5929-5958), it is normalized at line 5961 via `-= 0x31` to yield 0-3. During the main render loop (lines 6110-6132): if w4FBA==0, it is temporarily set to 1 during the rendering pass and restored to 0 after. Values 0 and 1 produce the same border variant. **No BLD opcode or game function changes w4FBA to a different mode during gameplay.** All dynamic viewport changes (combat mode, building entry, action menus) are handled by `w4FBC` and `tB764` instead.
 
-**Set by**:
-- **Key 1-4** → decrement by 0x31 → 0-3
-- **BLD action menu**: select "Fight" → `w4FBA = 2` (combat text mode)
-- **BLD opcode `0xB0`** (SET_OVERLAY): sets `w4FBA = 3` (building name)
-- **Building entry `fn0FDC_0008`**: sets `w4FBA = 1` (local tiles) or `2` (text)
-- **`fn0800_50C8` outer loop**: initializes to mode 0
-- **Post-combat**: sets to mode 3
+- **Initial set**: `main` reads key 1-4, stores raw ASCII (0x31-0x34) at line 5922
+- **Normalization**: line 5961: `t4FBA -= 0x31` (0x31→0, 0x32→1, 0x33→2, 0x34→3)
+- **Render toggle** (lines 6110-6132): if w4FBA==0, set to 1 during render pass, call `fn207F_2CE1(1)` → tB764=1; after render, reset to 0, call `fn207F_2CE1(0)` → tB764=0
+- **Protection screen** (lines 5929-5958): runs between keyboard input and normalization — a custom text I/O screen using `fn1F3D_0259`, NOT part of the w4FBA viewport system. Renders prompts and reads answers (keys 1-3) before main game loop starts.
 
 **Mode-specific rendering parameters** (from `fn1F3D_03EB` lookup tables at `a4FC4[][w4FBA]`, `a4FCC[][w4FBA]`, `a4FD4[][w4FBA]`):
 - Mode 0: left panel width = 80px, row stride = 0x0140 (320 bytes), line advance by 320
 - Mode 1: left panel width = 80px, double pixel width
 - Mode 2: no left panel (fullscreen text), VGA buffer at 0xAC00, row stride = 40 text columns
 - Mode 3: overlay with 0x0A00 stride (2560 = character row * 320 * 8), 8× pixel font
+
+#### w4FBC — Secondary Viewport Flag (Combat/Building Panel Narrowing)
+
+**Location**: Selector `0x53E8` (adjacent to `0x53A0` which holds w4FBA), offset `0x4FBC`. Stored as `uint16` but used as boolean (only values 0x00 and 0x01).
+
+**Purpose**: Controls left-panel width narrowing. When `w4FBC != 0`, the left panel narrows from 80px (`0x50`) to 4px (`0x04`) in rendering functions like `fn1F3D_049D` (line 568). This is the MECHANISM used for combat mode, building interiors, and interactive menus — NOT a w4FBA change.
+
+**Set to 1 (`w4FBC = 0x01`)**:
+- Combat encounter start (`fn183B_000A`, pseudocode lines 2997, 3276)
+- Combat flow (`fn0800` lines 4790, 5658)
+- Combat dispatch (`fn1CD3` lines 12867, 13366)
+- Building entry (`fn135D` lines 84, 583, 713)
+- Action menu (`fn1CD3` line 1718)
+
+**Cleared to 0 (`w4FBC = 0x00`)**:
+- Combat cleanup/end (`fn0800` lines 4853, 5653, 8233)
+- Action menu exit (`fn0DAB` line 1832)
+- Building exit (`fn135D`)
+- Game mode transitions (`fn0800` lines 4798, 5598; `fn1CD3` line 1674)
+
+**Key insight**: The original TECHNICAL_ANALYSIS.md incorrectly attributed combat/text transitions to w4FBA changes. Those were actually w4FBC toggles. w4FBA stays at whatever startup value the user chose (typically 0 for World Map). When combat starts, w4FBC=1 narrows the left panel to 4px (hiding the animation graphic), and the combat HUD text is drawn there alongside the expanded right-panel viewport.
 
 #### Border Drawing System
 
@@ -2709,8 +2727,8 @@ Rendering follows a **3-pass compositing model**, not a unified draw call. The p
 
 Two functions in segment 207F manage rendering bounds:
 
-- **`fn207F_1B80(left, top, width, height)`**: Configures viewport dimensions. Sets internal registers (`tB78E/tB790` = dest base, `tB792/tB794` = source X/Y, `tB79A/tB79C` = clip width/height).
-- **`fn207F_1A97()`**: Applies configured clipping to coordinates. Clips source and destination to viewport bounds.
+- **`fn207F_18EF`**: Screen refresh pass. Via `fn207F_1AA8`/`1ACE`/`1AF4` renders the 13×12 tile grid centered on cursor `(A44B, A44D)`. Reads tile property from seg 246C `+0x7AD[tile_index]`. No standalone viewport-dimension-config function (`fn207F_1B80` does not exist in decompiled code — earlier documentation references to it were incorrect).
+- **`fn207F_24D7`**: Core EGA framebuffer blitter that handles all viewport clipping with 4 cases based on `tB764`. Case 0x00 clips to 80px left panel width (0x50), case 0x02 clips to 40-column text width.
 
 The core blitter `fn207F_24D7()` handles EGA framebuffer copying with 4 cases based on the `tB764` **pixel format flag** at seg 246C's rendering config struct:
 

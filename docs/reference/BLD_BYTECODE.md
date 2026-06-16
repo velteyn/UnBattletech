@@ -215,7 +215,7 @@ The argument `wArg04` selects the interaction type.
 | `0x2A` | SAVE_POSITIONS | Save X to `0x4024`/`wD390`, Y to `0x4056`/`wD392`. 8 unit slots. |
 | `0x2B` | RESTORE_POSITIONS | Restore X/Y from saved arrays. 8 unit slots. |
 | `0x2C` | DRAW_INTERIOR5 | Call `fn11B8_1762` (alternate render path). |
-| `0x2D` | COMBAT_ENCOUNTER | Init/resolve combat. Set graphics params. If `w4FBA==0`: transition to combat. If `w4FBA==2`: battle in progress. If `w4FBA==3`: victory handling. |
+| `0x2D` | COMBAT_ENCOUNTER | Init/resolve combat. Sets `w4FBC=1` (narrow left panel 80px→4px), loads combat templates, draws borders. |
 | `0x2E` | RESET_ROOM | Restore NPCs from backup, clean up, call `fn1467_0002(0x00)`. |
 | `0x2F` | DECREMENT_COUNTER | If `bC623 > 0x05`, subtract 0x04. Timer/counter decrement. |
 

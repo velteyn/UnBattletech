@@ -234,8 +234,11 @@ ANM files (O0.ANM–O16.ANM) are 88×88 pixel EGA animations used in the game's 
 | File | Description |
 |------|-------------|
 | `Scripts/UI/AnmPlayer.cs` | Animation player: loads `_sheet.png` from `Assets/Animations/`, splits into 88×88 frames, timer-based playback at configurable FPS |
-| `Scripts/UI/BorderPanel.cs` (modified) | Now contains an `AnmPlayer` child positioned at `(40, 85)` — centered in the left 80px panel |
-| `Scripts/Core/GameLoop.cs` (modified) | `ShowBldAnimation(bldName)` maps BLD names → ANM files via `BldAnmMap` dictionary. Called on building entry (world map + local map), hidden on map mode return |
+| `Scripts/UI/ViewportManager.cs` | Layout framework: manages dynamic viewport regions per GameMode, draws borders between regions, reparents content nodes on layout switch |
+| `Scripts/UI/ViewportRegion.cs` | `Control` wrapper for a named screen region with clipping and background |
+| `Scripts/UI/ViewportLayout.cs` | Enum: `WorldMap`, `LocalTiles`, `TextScreen`, `BuildingName`, `Combat`, `Stats` |
+| `Scripts/UI/BorderPanel.cs` (refactored) | Stripped of layout elements — now only contains AnmPlayer + labels, assigned to `ViewportManager`'s LeftPanel region |
+| `Scripts/Core/GameLoop.cs` (modified) | Creates `ViewportManager`, assigns views to regions, calls `SetLayout()` in `_OnGameModeChanged()` |
 | `Scripts/Maps/RleDecompressor.cs` (modified) | `DecompressAnimation()` — XOR-delta RLE decompressor, buffer 0x0F20 (3872 bytes) → nibble-to-pixel → 88×88. Fixed from stub Format01 |
 
 ### Building-to-ANM Mapping (BldAnmMap)
@@ -270,21 +273,41 @@ Initial mapping (tune during playtesting — based on frame counts and expected 
 - RLE: positive byte = N literal bytes; negative byte = repeat 1 byte -N times; 0x00 + WORD LE = extended repeat.
 - XOR-delta: decompressed byte is `output[i] ^= data` (frame accumulates deltas).
 
-### Rendering Pipeline (Updated)
+### Viewport System — Original Architecture vs Rebuild
 
-All map views use Godot `TileMap` (no `_Draw()` overrides):
+**Original game** (`UNBTECH.exe`):
+- **w4FBA** (offset 0x4FBA): 4 modes (0-3). Set at startup from keys 1-4 (raw ASCII 0x31-0x34 stored, then normalized to 0-3 via `-= 0x31` after protection screen at pseudocode line 5961). During main render loop: if w4FBA==0, temporarily set to 1 during rendering pass then restored to 0 (render-in-progress toggle). Values 0 and 1 produce same border. See CONTEXT.md §12.
+- **w4FBC** (offset 0x4FBC): Binary flag controlling left-panel width (80px→4px). This is the ACTUAL mechanism for combat, building-entry, and menu viewport changes — NOT w4FBA.
+- **tB764** (seg 0x246C, offset 0xB764): Rendering sub-mode controlling font stride/blitter. Set by `fn207F_2CE1`. Values: 0=CGA, 1=EGA planar, 2=VGA text, 3=VGA mode X.
+- **3-pass rendering**: Pass 1 = right panel content (`fn207F_18EF`, 13×12 tile grid), Pass 2 = left panel border (`fn1F3D_06C3`, 3 variants by w4FBA), Pass 3 = text overlay (`fn1E56_03F5`).
+- **Border dispatch** (`fn1F3D_06C3`): Full border (`fn207F_1CB8`) for w4FBA 0/1, narrow text border (`fn207F_1D3A`) for w4FBA 2, text overlay (`fn207F_245C`) for w4FBA 3.
+- **No dynamic full-layout switching** — the 3-pass pipeline structure is constant. Combat/building-entry narrow the left panel via w4FBC (80px→4px). Special screens like the protection quiz, stat/inventory (`fn0800_3D40`), and title sequences use `w014A=1` to suspend normal refresh and render directly to VRAM with their own layout.
 
-```
-Scene order (back→front):
-  1. BorderPanel bg (320×200 black)
-  2. BorderPanel left panel (80×200 dark blue)
-  3. BorderPanel AnmPlayer (88×88 centered at 40,85) — shown during building/combat
-  4. BorderPanel location/credits labels
-  5. BorderPanel bottom bar (320×8)
-  6. WorldMapView / LocalMapView / CombatView (TileMap layers: Terrain→Fog→Overlay)
-  7. Map cursor, NPC rects, combat unit sprites
-  8. DialogueBox, ShopScreen (Controls)
-```
+**Current rebuild** (`ViewportManager.cs`):
+- Uses a pragmatic `SetLayout()` approach that maps our Godot `GameMode` enum to layout presets, approximating the visual result of the original's w4FBA/w4FBC system.
+- Key files:
+  | File | Purpose |
+  |------|---------|
+  | `ViewportLayout.cs` | `enum ViewportLayout` (6 values: WorldMap, LocalTiles, TextScreen, BuildingName, Combat, Stats) |
+  | `ViewportRegion.cs` | `partial class ViewportRegion : Control` — named container with `SetRegionRect()`, clipping, background |
+  | `ViewportManager.cs` | `partial class ViewportManager : Node2D` — owns regions, switches layouts, draws EGA-style borders, tracks content-to-region assignments |
+- Layouts: WorldMap/LocalTiles/TextScreen/BuildingName/Combat all use the same 3-region layout (LeftPanel 80×200 + Viewport 240×192 + BottomBar 320×8). Stats uses 5 panels.
+- Content nodes are assigned to regions and reparented on layout switch.
+- Borders are 4px ColorRect lines between regions (placeholder for future BTBORDER.CMP).
+- Node tree after `_Ready`:
+  ```
+  GameLoop (Node)
+  ├── ViewportManager (Node2D)
+  │   ├── Region_LeftPanel (Control, 0,0 80×200, clip, bg dark blue)
+  │   │   ├── BorderPanel (Node2D, AnmPlayer + labels)
+  │   ├── Region_Viewport (Control, 80,0 240×192, clip, bg black)
+  │   │   ├── WorldMapView / LocalMapView / CombatView (TileMap)
+  │   ├── Region_BottomBar (Control, 0,192 320×8, bg dark gray)
+  │   └── Border lines (ColorRects, ZIndex 100+)
+  ├── DialogueBox, CombatHUD, ShopScreen (overlays)
+  ```
+
+**TODO**: Replace `SetLayout()` with a w4FBC-style flag model for combat and building entry, where the left panel narrows rather than the whole layout changing.
 
 ### Known Mapping Gaps
 
