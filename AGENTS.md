@@ -222,6 +222,81 @@ CITADEL, ENDMECH, WINSCENE). `SelectBldForTile()` in GameLoop.cs picks:
 Flags `StateArray[0x52]` / `[0x53]` are set by story BLD scripts during
 gameplay (cache found, mech obtained). Tune during playtesting.
 
+## Phase 5 — ANM Animation System (2026-06-16)
+
+ANM files (O0.ANM–O16.ANM) are 88×88 pixel EGA animations used in the game's **left panel** (80px info area). They were fully extracted as PNG spritesheets via XOR-delta RLE decompression.
+
+### Key Files
+
+| File | Description |
+|------|-------------|
+| `Scripts/UI/AnmPlayer.cs` | Animation player: loads `_sheet.png` from `Assets/Animations/`, splits into 88×88 frames, timer-based playback at configurable FPS |
+| `Scripts/UI/BorderPanel.cs` (modified) | Now contains an `AnmPlayer` child positioned at `(40, 85)` — centered in the left 80px panel |
+| `Scripts/Core/GameLoop.cs` (modified) | `ShowBldAnimation(bldName)` maps BLD names → ANM files via `BldAnmMap` dictionary. Called on building entry (world map + local map), hidden on map mode return |
+| `Scripts/Maps/RleDecompressor.cs` (modified) | `DecompressAnimation()` — XOR-delta RLE decompressor, buffer 0x0F20 (3872 bytes) → nibble-to-pixel → 88×88. Fixed from stub Format01 |
+
+### Building-to-ANM Mapping (BldAnmMap)
+
+Initial mapping (tune during playtesting — based on frame counts and expected content):
+
+| BLD | ANM | Frames | Notes |
+|-----|-----|--------|-------|
+| GARAGE, WEAPON, WEAPON2, ARMOR, ARENA, REPAIR | O0 | 19 | Shop/garage — most common, 19-frame idle |
+| ENDMECH | O1 | 6 | Phoenix Hawk LAM reveal |
+| COMSTAR | O2 | 17 | ComStar station |
+| TRAINING | O3 | 11 | Training center intro |
+| LOUNGE, THEATER, PARTY | O4 | 15 | Social/interior scenes |
+| BARRACKS, BARRACK2 | O5 | 7 | Barracks |
+| MAYOR | O6 | 16 | Mayor's house |
+| CITADEL, ENTRANCE | O7 | 19 | Citadel hub / Star League entrance |
+| INSTRUCT | O8 | 11 | Father's note / lock system |
+| WINSCENE | O9 | 30 | Endgame victory |
+| HOSPITAL | O10 | 56 | Hospital (most frames — complex idle) |
+| FROB, HUT | O11 | 12 | Dr. Tellhim's hut / puzzle gauntlet |
+| FINDIT | O12 | 20 | Cache island search |
+| JAIL | O13 | 2 | Jail (2-frame loop) |
+| CLOTHES | O14 | 12 | Clothes shop |
+| (unmapped) | O15 | 9 | Unused |
+| (extra) | O16 | 20 | Beyond game table (O0–O15 only) |
+
+### ANM Format Summary
+
+- Header: 51 bytes (0x00–0x32). `byte[0x32] = 0x01` means active file.
+- Data: offset 0x33, XOR-delta RLE compressed.
+- Frame size: 88×88 pixels = 7744 pixels = 3872 nibble-encoded bytes (0x0F20).
+- RLE: positive byte = N literal bytes; negative byte = repeat 1 byte -N times; 0x00 + WORD LE = extended repeat.
+- XOR-delta: decompressed byte is `output[i] ^= data` (frame accumulates deltas).
+
+### Rendering Pipeline (Updated)
+
+All map views use Godot `TileMap` (no `_Draw()` overrides):
+
+```
+Scene order (back→front):
+  1. BorderPanel bg (320×200 black)
+  2. BorderPanel left panel (80×200 dark blue)
+  3. BorderPanel AnmPlayer (88×88 centered at 40,85) — shown during building/combat
+  4. BorderPanel location/credits labels
+  5. BorderPanel bottom bar (320×8)
+  6. WorldMapView / LocalMapView / CombatView (TileMap layers: Terrain→Fog→Overlay)
+  7. Map cursor, NPC rects, combat unit sprites
+  8. DialogueBox, ShopScreen (Controls)
+```
+
+### Known Mapping Gaps
+
+- O15 (9 frames) has no BLD mapping — may be unused/unreferenced in game.
+- O16 (20 frames) is structurally valid but outside game's 16-file range.
+- ANM file for specific mech/character interactions in combat not yet mapped.
+- Full animation dispatch table (segment 135D, 12-entry + 33-entry) not yet integrated — currently using static BldAnmMap dictionary.
+
+### Next ANM Integration Steps
+
+1. **Runtime ANM decompression**: Load raw `.ANM` files via `RleDecompressor.DecompressAnimation()` at runtime instead of pre-extracted PNGs (for accuracy).
+2. **Animation dispatch**: Implement the 135D segment's 12-entry and 33-entry position dispatch tables to trigger animations based on game state and cursor position.
+3. **Combat mech panel**: Animate combat left-panel display with ANM frames per mech state (idle/move/fire/damage).
+4. **Map cursor animation**: Replace blink timer with ANM cursor frames.
+
 ## Radare2 (r2) Tooling
 
 r2 **6.0.7** installed at `/usr/bin/r2`. Project binary is `UNBTECH.exe` (MS-DOS MZ, 16-bit x86 real mode).

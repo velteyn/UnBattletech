@@ -376,6 +376,9 @@ public partial class GameLoop : Node
             TransitionToLocalMap(mapId.Value, 32, 32);
         }
 
+        // Show ANM animation in left panel for this building
+        ShowBldAnimation(bldName);
+
         // Run the BLD script (shows entry menu, story, shops, etc.)
         var bldPath = GetBldPath(bldName);
         var script = BldLoader.Load(bldPath, bldName);
@@ -453,6 +456,8 @@ public partial class GameLoop : Node
             return;
         }
 
+        ShowBldAnimation(bldName);
+
         var bldPath = GetBldPath(bldName);
         var script = BldLoader.Load(bldPath, bldName);
         if (script != null)
@@ -502,6 +507,48 @@ public partial class GameLoop : Node
     private void OnWorldMapReinitRequested()
     {
         _worldMapView.Reinitialize();
+    }
+
+    // ── ANM Animation Mapping ──────────────────────────────────
+    private static readonly System.Collections.Generic.Dictionary<string, string> BldAnmMap = new()
+    {
+        { "TRAINING", "o3" },
+        { "CITADEL", "o7" },
+        { "BARRACKS", "o5" },
+        { "BARRACK2", "o5" },
+        { "COMSTAR", "o2" },
+        { "GARAGE", "o0" },
+        { "HOSPITAL", "o10" },
+        { "WEAPON", "o0" },
+        { "WEAPON2", "o0" },
+        { "ARMOR", "o0" },
+        { "CLOTHES", "o14" },
+        { "LOUNGE", "o4" },
+        { "THEATER", "o4" },
+        { "JAIL", "o13" },
+        { "MAYOR", "o6" },
+        { "FROB", "o11" },
+        { "HUT", "o11" },
+        { "PARTY", "o4" },
+        { "ARENA", "o0" },
+        { "REPAIR", "o0" },
+        { "INSTRUCT", "o8" },
+        { "ENTRANCE", "o7" },
+        { "FINDIT", "o12" },
+        { "ENDMECH", "o1" },
+        { "WINSCENE", "o9" },
+    };
+
+    private void ShowBldAnimation(string bldName)
+    {
+        if (BldAnmMap.TryGetValue(bldName, out var anm))
+        {
+            _borderPanel.ShowAnimation(anm);
+        }
+        else
+        {
+            _borderPanel.HideAnimation();
+        }
     }
 
     // ── ShopScreen handlers ────────────────────────────────────
@@ -589,6 +636,10 @@ public partial class GameLoop : Node
         _combatView.Visible = mode == GameMode.Combat;
         _combatHud.Visible = mode == GameMode.Combat;
         _borderPanel.Visible = mode is GameMode.WorldMap or GameMode.LocalTiles or GameMode.Combat;
+
+        // Hide ANM animation when returning to map view
+        if (mode is GameMode.WorldMap or GameMode.LocalTiles)
+            _borderPanel.HideAnimation();
     }
 
     /// <summary>

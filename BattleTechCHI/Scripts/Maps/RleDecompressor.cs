@@ -70,11 +70,67 @@ public static class RleDecompressor
     }
 
     /// <summary>
-    /// Decomprime animazione ANM. Stesso formato 01 ma con header 0x33 byte.
+    /// Decomprime animazione ANM con XOR-delta RLE.
+    /// Buffer 0x0F20 (3872) byte → 88×88 px dopo NibbleToPixels.
+    /// Differenze da Format01:
+    ///   - Output[N] ^= DataByte  (XOR delta, non sovrascrive)
+    ///   - byte positivo = N byte letterali distinti (non ripetizioni)
+    ///   - byte negativo = ripeti 1 byte -N volte
+    ///   - 0x00 esteso: WORD little-endian = lunghezza
     /// </summary>
     public static byte[] DecompressAnimation(byte[] compressed, int startPos)
     {
-        return DecompressFormat01(compressed, startPos);
+        const int bufSize = 0x0F20; // 3872 = 88*88/2
+        var output = new byte[bufSize];
+        int srcIdx = startPos;
+        int dstIdx = 0;
+
+        while (dstIdx < bufSize && srcIdx < compressed.Length)
+        {
+            sbyte b = (sbyte)compressed[srcIdx++];
+            int runLength;
+
+            if (b == 0)
+            {
+                // Extended run: WORD little-endian, then 1 data byte
+                if (srcIdx + 2 > compressed.Length) break;
+                runLength = compressed[srcIdx] | (compressed[srcIdx + 1] << 8);
+                srcIdx += 2;
+            }
+            else if (b < 0)
+            {
+                // Negative: repeat next byte -b times
+                runLength = -b;
+            }
+            else
+            {
+                // Positive: read b distinct literal bytes
+                runLength = b;
+            }
+
+            while (runLength > 0 && dstIdx < bufSize && srcIdx < compressed.Length)
+            {
+                byte data = compressed[srcIdx];
+                output[dstIdx] ^= data; // XOR delta
+                dstIdx++;
+                runLength--;
+
+                if (b > 0)
+                {
+                    // Literal: consume one byte per output
+                    srcIdx++;
+                }
+                else
+                {
+                    // Repeat: keep using same byte
+                    if (runLength > 0)
+                        continue;
+                    srcIdx++;
+                }
+            }
+        }
+
+        return output;
     }
 
     /// <summary>

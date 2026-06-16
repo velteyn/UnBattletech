@@ -14,7 +14,13 @@ public partial class BorderPanel : Node2D
     private Sprite2D? _borderBottom;
     private Label? _locationLabel;
     private Label? _creditsLabel;
+    private AnmPlayer _anmPlayer = null!;
     private GameMode _currentMode = GameMode.WorldMap;
+
+    /// <summary>
+    /// ANM animation display in the left 80px panel.
+    /// </summary>
+    public AnmPlayer AnmPlayer => _anmPlayer;
 
     public override void _Ready()
     {
@@ -36,6 +42,13 @@ public partial class BorderPanel : Node2D
             Size = new Vector2(80, 200)
         };
         AddChild(leftPanel);
+
+        // ANM animation display in left panel (88x88 frames, centered at 40, 85)
+        _anmPlayer = new AnmPlayer();
+        _anmPlayer.Name = "AnmPlayer";
+        _anmPlayer.Position = new Vector2(40, 85);
+        AddChild(_anmPlayer);
+        _anmPlayer.Hide();
 
         // Label posizione (in alto a sinistra)
         _locationLabel = new Label
@@ -91,6 +104,27 @@ public partial class BorderPanel : Node2D
             else
                 _creditsLabel.Text = $"CB:{credits}";
         }
+    }
+
+    /// <summary>
+    /// Show an ANM animation in the left panel.
+    /// </summary>
+    public void ShowAnimation(string anmName, float fps = 10.0f)
+    {
+        if (_anmPlayer.Load(anmName))
+        {
+            _anmPlayer.Play(fps);
+            _anmPlayer.Visible = true;
+        }
+    }
+
+    /// <summary>
+    /// Hide the left panel animation.
+    /// </summary>
+    public void HideAnimation()
+    {
+        _anmPlayer.Stop();
+        _anmPlayer.Visible = false;
     }
 
     private static Theme CreateEgaTheme()
