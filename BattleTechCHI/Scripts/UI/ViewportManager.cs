@@ -7,54 +7,21 @@ namespace BattleTechCHI.UI;
 public partial class ViewportManager : Node2D
 {
     private ViewportLayout _currentLayout = ViewportLayout.WorldMap;
+    private bool _narrowPanel;
     private readonly Dictionary<string, ViewportRegion> _regions = new();
     private readonly Dictionary<string, Node> _contentMap = new();
     private readonly List<Node> _borderNodes = new();
     private TileManager? _tileManager;
 
-    private static readonly Dictionary<ViewportLayout, (string name, Rect2 rect, int zIndex, Color bgColor)[]> LayoutDefs = new()
-    {
-        [ViewportLayout.WorldMap] = new[]
-        {
-            ("LeftPanel", new Rect2(0, 0, 80, 200), 0, new Color(0x00, 0x00, 0x55)),
-            ("Viewport", new Rect2(80, 0, 240, 192), 1, Colors.Black),
-            ("BottomBar", new Rect2(0, 192, 320, 8), 2, new Color(0x55, 0x55, 0x55)),
-        },
-        [ViewportLayout.LocalTiles] = new[]
-        {
-            ("LeftPanel", new Rect2(0, 0, 80, 200), 0, new Color(0x00, 0x00, 0x55)),
-            ("Viewport", new Rect2(80, 0, 240, 192), 1, Colors.Black),
-            ("BottomBar", new Rect2(0, 192, 320, 8), 2, new Color(0x55, 0x55, 0x55)),
-        },
-        [ViewportLayout.TextScreen] = new[]
-        {
-            ("LeftPanel", new Rect2(0, 0, 80, 200), 0, new Color(0x00, 0x00, 0x55)),
-            ("Viewport", new Rect2(80, 0, 240, 192), 1, Colors.Black),
-            ("BottomBar", new Rect2(0, 192, 320, 8), 2, new Color(0x55, 0x55, 0x55)),
-        },
-        [ViewportLayout.BuildingName] = new[]
-        {
-            ("LeftPanel", new Rect2(0, 0, 80, 200), 0, new Color(0x00, 0x00, 0x55)),
-            ("Viewport", new Rect2(80, 0, 240, 192), 1, Colors.Black),
-            ("BottomBar", new Rect2(0, 192, 320, 8), 2, new Color(0x55, 0x55, 0x55)),
-        },
-        [ViewportLayout.Combat] = new[]
-        {
-            ("LeftPanel", new Rect2(0, 0, 80, 200), 0, new Color(0x00, 0x00, 0x55)),
-            ("Viewport", new Rect2(80, 0, 240, 192), 1, Colors.Black),
-            ("BottomBar", new Rect2(0, 192, 320, 8), 2, new Color(0x55, 0x55, 0x55)),
-        },
-        [ViewportLayout.Stats] = new[]
-        {
-            ("TopLeft", new Rect2(0, 0, 80, 96), 0, Colors.Black),
-            ("BottomLeft", new Rect2(0, 104, 80, 96), 1, Colors.Black),
-            ("TopRight", new Rect2(88, 0, 232, 96), 2, Colors.Black),
-            ("BottomRight", new Rect2(88, 104, 232, 64), 3, Colors.Black),
-            ("Center", new Rect2(88, 176, 232, 24), 4, Colors.Black),
-        },
-    };
+    private const int PanelWide = 80;
+    private const int PanelNarrow = 16;
+    private const int ViewportWide = 240;
+    private const int ViewportNarrow = 304;
+    private const int ViewportHeight = 192;
+    private const int BottomBarHeight = 8;
 
     public ViewportLayout CurrentLayout => _currentLayout;
+    public bool NarrowPanel => _narrowPanel;
     public ViewportRegion? GetRegion(string name) =>
         _regions.GetValueOrDefault(name);
 
@@ -63,45 +30,69 @@ public partial class ViewportManager : Node2D
         _tileManager = tm;
     }
 
-    public void SetLayout(ViewportLayout layout)
+    public void SetLayout(ViewportLayout layout, bool narrow = false)
     {
-        if (layout == _currentLayout && _regions.Count > 0)
+        if (layout == _currentLayout && narrow == _narrowPanel && _regions.Count > 0)
             return;
+
         _currentLayout = layout;
+        _narrowPanel = narrow;
 
         ClearRegions();
         ClearBorderNodes();
 
-        if (!LayoutDefs.TryGetValue(layout, out var defs))
-            return;
-
-        foreach (var (name, rect, zIndex, bgColor) in defs)
+        if (layout == ViewportLayout.Stats)
         {
-            var region = new ViewportRegion
-            {
-                RegionName = name,
-                ShowBorder = true,
-                Name = $"Region_{name}",
-                ZIndex = zIndex,
-                MouseFilter = Control.MouseFilterEnum.Ignore,
-            };
-            region.SetRegionRect(rect);
-            region.ClipContents = true;
-
-            var regionBg = new ColorRect
-            {
-                Color = bgColor,
-                Size = rect.Size,
-                MouseFilter = Control.MouseFilterEnum.Ignore,
-            };
-            region.AddChild(regionBg);
-
-            AddChild(region);
-            _regions[name] = region;
+            CreateStatsLayout();
+            ReassignContent();
+            DrawStatsBorders();
+            return;
         }
+
+        int panelW = narrow ? PanelNarrow : PanelWide;
+        int viewW = narrow ? ViewportNarrow : ViewportWide;
+        int viewX = narrow ? PanelNarrow : PanelWide;
+
+        CreateRegion("LeftPanel", new Rect2(0, 0, panelW, 200), 0, new Color(0x00, 0x00, 0x55));
+        CreateRegion("Viewport", new Rect2(viewX, 0, viewW, ViewportHeight), 1, Colors.Black);
+        CreateRegion("BottomBar", new Rect2(0, ViewportHeight, 320, BottomBarHeight), 2, new Color(0x55, 0x55, 0x55));
 
         ReassignContent();
         DrawBorders();
+    }
+
+    private void CreateRegion(string name, Rect2 rect, int zIndex, Color bgColor)
+    {
+        var region = new ViewportRegion
+        {
+            RegionName = name,
+            ShowBorder = true,
+            Name = $"Region_{name}",
+            ZIndex = zIndex,
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+        };
+        region.SetRegionRect(rect);
+        region.ClipContents = true;
+
+        var regionBg = new ColorRect
+        {
+            Color = bgColor,
+            Size = rect.Size,
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+        };
+        region.AddChild(regionBg);
+
+        AddChild(region);
+        _regions[name] = region;
+    }
+
+    private void CreateStatsLayout()
+    {
+        CreateRegion("TopLeft", new Rect2(0, 0, 80, 96), 0, Colors.Black);
+        CreateRegion("BottomLeft", new Rect2(0, 104, 80, 96), 1, Colors.Black);
+        CreateRegion("TopRight", new Rect2(88, 0, 232, 96), 2, Colors.Black);
+        CreateRegion("BottomRight", new Rect2(88, 104, 232, 64), 3, Colors.Black);
+        CreateRegion("Center", new Rect2(88, 176, 232, 24), 4, Colors.Black);
     }
 
     public void AssignContent(Node node, string regionName)
@@ -111,6 +102,7 @@ public partial class ViewportManager : Node2D
             _contentMap.Remove(existingKey);
 
         _contentMap[regionName] = node;
+        UpdateNodeVisibility(node, regionName);
 
         var region = GetRegion(regionName);
         if (region != null)
@@ -155,7 +147,14 @@ public partial class ViewportManager : Node2D
             var region = GetRegion(regionName);
             if (region != null)
                 ReparentToRegion(node, region);
+            UpdateNodeVisibility(node, regionName);
         }
+    }
+
+    private void UpdateNodeVisibility(Node node, string regionName)
+    {
+        if (regionName == "LeftPanel" && node is CanvasItem ci)
+            ci.Visible = !_narrowPanel;
     }
 
     private static void ReparentToRegion(Node node, ViewportRegion region)
@@ -187,29 +186,33 @@ public partial class ViewportManager : Node2D
 
     private void DrawBorders()
     {
-        if (_currentLayout == ViewportLayout.Stats)
+        if (_narrowPanel)
         {
-            DrawColorRectBorder(new Rect2(80, 0, 8, 200));
-            DrawColorRectBorder(new Rect2(0, 96, 80, 8));
-            DrawColorRectBorder(new Rect2(88, 100, 232, 4));
-            DrawColorRectBorder(new Rect2(88, 168, 232, 8));
+            // Narrow: just a thin decorative column on the left edge
+            // No vertical separator (viewport butts up against the narrow strip)
+            DrawHorizontalSeparator();
+            DrawLeftEdgeDecoration();
             return;
         }
 
-        // Draw BTBORDER tile-based decorative strip on left edge
+        // Wide: full decorative strip + separators
         DrawLeftEdgeDecoration();
-
-        // Draw separator lines using BTBORDER tiles
         DrawVerticalSeparator();
         DrawHorizontalSeparator();
+    }
+
+    private void DrawStatsBorders()
+    {
+        DrawColorRectBorder(new Rect2(80, 0, 8, 200));
+        DrawColorRectBorder(new Rect2(0, 96, 80, 8));
+        DrawColorRectBorder(new Rect2(88, 100, 232, 4));
+        DrawColorRectBorder(new Rect2(88, 168, 232, 8));
     }
 
     private void DrawLeftEdgeDecoration()
     {
         if (_tileManager == null) return;
 
-        // BTBORDER tile IDs that form the left-edge decorative strip
-        // Tiles 0-17 form a vertical decorative column: top → bottom
         int[] decorTiles =
         [
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -247,8 +250,6 @@ public partial class ViewportManager : Node2D
             return;
         }
 
-        // Use tile 6 (solid Light Gray) for the vertical separator
-        // Place a column of tiles at x=76, from y=0 to y=192 (12 tiles)
         var tile = _tileManager.GetBorderTile(6);
         if (tile == null)
         {
@@ -284,7 +285,6 @@ public partial class ViewportManager : Node2D
             return;
         }
 
-        // Use tile 6 (solid Light Gray) for the horizontal separator
         var tile = _tileManager.GetBorderTile(6);
         if (tile == null)
         {

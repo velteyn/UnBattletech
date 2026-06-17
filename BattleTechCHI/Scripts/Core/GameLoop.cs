@@ -759,7 +759,8 @@ public partial class GameLoop : Node
             GameMode.Combat => ViewportLayout.Combat,
             _ => ViewportLayout.WorldMap,
         };
-        _viewportManager.SetLayout(layout);
+        bool narrow = mode == GameMode.BuildingName;
+        _viewportManager.SetLayout(layout, narrow);
 
         // Hide ANM animation when returning to map view
         if (mode is GameMode.WorldMap or GameMode.LocalTiles)

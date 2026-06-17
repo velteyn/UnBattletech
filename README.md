@@ -1,7 +1,7 @@
 # UnBattletech — Reverse Engineering BattleTech: The Crescent Hawk's Inception (1988)
 
 [![RE Status](https://img.shields.io/badge/RE-95%25-brightgreen)](docs/CONTEXT.md)
-[![Godot Rebuild](https://img.shields.io/badge/Rebuild-Phase_4-yellow)](BattleTechCHI/)
+[![Godot Rebuild](https://img.shields.io/badge/Rebuild-Phase_5-yellow)](BattleTechCHI/)
 
 Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Crescent Hawk's Inception**, the 1988 MS-DOS game by Infocom.
 
@@ -56,12 +56,14 @@ Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Cresc
 
 ## Godot Rebuild Progress
 
-The rebuild is in **Phase 4** (Combat system):
-- ✅ Phase 0-1: Core engine, data models, asset loaders, game loop
-- ✅ Phase 2: Tile rendering, world map viewport, local maps, border panel
-- ✅ Phase 3: BLD interpreter (26 opcodes), cipher decoder, 47-case dispatcher (all real impl.), dialogue system, ShopScreen, LocationMapper
-- 🔄 Phase 4: Combat system — init, turn order, movement, LoS, to-hit (2D6), damage (hit locations, criticals, cluster weapons), AI targeting, heat/ammo, kill chain, fog of war
-- ⬜ Phase 5+: Economy, animations, story integration
+The rebuild is in **Phase 5** (economy + ANM integration). ~7,800 lines C# across 42 scripts in `BattleTechCHI/Scripts/`.
+
+- ✅ Phase 0–1: Core engine, data models, asset loaders, game loop, partial save/load
+- ✅ Phase 2: Tile rendering, world map viewport, local maps, LocationMapper, fog of war
+- ✅ Phase 3: BLD interpreter (26 opcodes), cipher decoder, 47-case dispatcher (all real impl.), dialogue, ShopScreen
+- ✅ Phase 4: Combat — init, turn order, movement, LoS, to-hit (2D6), damage, AI, heat/ammo, fog, HUD, encounters
+- 🔄 Phase 5: Shops/economy (partial — stock market pending), AnmPlayer + ViewportManager + BldAnmMap, runtime ANM decompress
+- ⬜ Phase 6–7: End-to-end playtesting, polish (VFX, BTSTATS, sound)
 
 ## Tools & Scripts
 

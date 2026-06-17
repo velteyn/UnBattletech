@@ -291,10 +291,12 @@ Initial mapping (tune during playtesting — based on frame counts and expected 
   | `ViewportLayout.cs` | `enum ViewportLayout` (6 values: WorldMap, LocalTiles, TextScreen, BuildingName, Combat, Stats) |
   | `ViewportRegion.cs` | `partial class ViewportRegion : Control` — named container with `SetRegionRect()`, clipping, background |
   | `ViewportManager.cs` | `partial class ViewportManager : Node2D` — owns regions, switches layouts, draws EGA-style borders, tracks content-to-region assignments |
-- Layouts: WorldMap/LocalTiles/TextScreen/BuildingName/Combat all use the same 3-region layout (LeftPanel 80×200 + Viewport 240×192 + BottomBar 320×8). Stats uses 5 panels.
+- Layouts: WorldMap/LocalTiles/TextScreen/Combat use 3-region layout (LeftPanel 80×200 + Viewport 240×192 + BottomBar 320×8). BuildingName uses narrow layout (LeftPanel 16×200 + Viewport 304×192 + BottomBar). Stats uses 5 panels.
+- Narrow-panel flag (`SetLayout(layout, narrow)`): when true, LeftPanel shrinks to 16px (decorative strip only), Viewport expands to 304px. Content in LeftPanel is hidden when narrow.
 - Content nodes are assigned to regions and reparented on layout switch.
 - Borders use actual BTBORDER.CMP tiles (properly extracted as 29-tile spritesheet). Left-edge decorative column (tiles 0-17, 18 tiles × 16px vertically), vertical separator at x=76 (tile 6 solid Light Gray), horizontal separator at y=188 (tile 6). Falls back to ColorRect lines if TileManager unavailable.
-- Node tree after `_Ready`:
+
+- Node tree after `_Ready` (wide layout):
   ```
   GameLoop (Node)
   ├── ViewportManager (Node2D)
@@ -303,12 +305,11 @@ Initial mapping (tune during playtesting — based on frame counts and expected 
   │   ├── Region_Viewport (Control, 80,0 240×192, clip, bg black)
   │   │   ├── WorldMapView / LocalMapView / CombatView (TileMap)
   │   ├── Region_BottomBar (Control, 0,192 320×8, bg dark gray)
-  │   └── Border lines (ColorRects, ZIndex 100+)
+  │   └── Border tiles (BTBORDER TextureRects, ZIndex 50-100)
   ├── DialogueBox, CombatHUD, ShopScreen (overlays)
   ```
 
-**TODO**: Replace `SetLayout()` with a w4FBC-style flag model for combat and building entry, where the left panel narrows rather than the whole layout changing.
-
+Narrow layout (BuildingName): LeftPanel=16×200, Viewport=16,0 304×192, BottomBar=0,192 320×8. BorderPanel/CombatHUD hidden.
 ### Known Mapping Gaps
 
 - O15 (9 frames) has no BLD mapping — may be unused/unreferenced in game.

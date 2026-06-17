@@ -4,7 +4,7 @@
 
 This is an extensive reverse engineering effort targeting **BattleTech: The Crescent Hawk's Inception**, a 1988 MS-DOS 16-bit real-mode game by Infocom. The original executable `BTECH.EXE` was unpacked to `UNBTECH.EXE`. The project aims to fully understand the game's internals — code, data formats, game logic — to produce comprehensive documentation enabling a full rewrite with modern technologies.
 
-**Current status:** RE ~95% complete — all major systems understood (BLD bytecode, combat, maps, story, economy, world map). Engine rebuild underway in **Godot 4 + C#** (`BattleTechCHI/`). Phases 0-4 implemented: scaffold, data models, loaders, RLE decompressor, EGA palette, game loop, state machine, input, save/load, tile rendering, world map viewport, local map viewer, border panel, BLD interpreter + 47-case dispatch, shops/dialogue, combat system with full 2D6 to-hit, AI, movement, damage, heat, ammo, fog of war, kill chain, player input, and grid UI (~3000 lines C#).
+**Current status:** RE ~95% complete — all major systems understood (BLD bytecode, combat, maps, story, economy, world map). Engine rebuild underway in **Godot 4 + C#** (`BattleTechCHI/`). Phases 0-4 implemented; **Phase 5 in progress** (~7,800 lines C#): scaffold, data models, loaders, RLE decompressor, EGA palette, game loop, state machine, input, partial save/load, tile rendering, world/local map views, LocationMapper, BLD interpreter + 47-case dispatch, shops/dialogue, full combat system (2D6 to-hit, AI, heat, ammo, fog, HUD), ViewportManager, AnmPlayer with runtime ANM decompress, BldAnmMap, and cursor-hover animation dispatch.
 
 ---
 
@@ -677,7 +677,7 @@ BattleTechCHI/
         └── ANM_FORMAT.md       # Specifica formato ANM (XOR-delta RLE)
 ```
 
-**Status**: Phase 0-5 (~3500 lines). Core systems + tile rendering + world/local map + BLD bytecode interpreter (26 opcodes) + 47-case dispatcher + full combat system + ANM animation player + BorderPanel left-panel animations.
+**Status**: Phase 5 in progress (~7,800 lines C#). Phases 0-4 done: core systems, tile rendering, world/local maps, BLD interpreter (26 opcodes) + 47-case dispatcher, shops/dialogue, full combat system. Phase 5 shipped: AnmPlayer, ViewportManager, BldAnmMap, runtime ANM decompress, animation dispatch on hover. Remaining: stock market, tech screen, combat mech panel ANM, end-to-end playtesting.
 
 ---
 
@@ -849,9 +849,9 @@ The full decoded story reveals details about Kurita's role beyond the basic inva
 4. **AI logic**: Trace AI decision trees in combat (target selection, movement priorities)
 5. ~~**Sound**: Investigate SoundBlaster/PC Speaker interrupt handler at segment 204B~~ **WONT_DO**: Not needed for reconstruction — replaceable with modern sounds
 6. **HEAT DISSIPATION** → **RESOLVED**: Pool → penalty accumulator → cleared each round. See TECHNICAL_ANALYSIS.md §16.
-3. ~~**Data-driven recreation**~~ **IN PROGRESS**: Godot 4 + C# engine started. Phase 1 done (core systems), Phase 2 done (tile rendering + world map viewport). Next: Phase 3 (BLD bytecode interpreter).
+3. ~~**Data-driven recreation**~~ **IN PROGRESS**: Godot 4 + C# engine. Phases 0-4 done (core, maps, BLD interpreter, combat). Phase 5: economy + ANM. Next: stock market, combat ANM panel, end-to-end playtest.
 4. ~~**World Map unknown origin**~~ **RESOLVED**: 64×64 tile grid embedded in EXE at `0x246C:0x244B`. See Section 6.
-5. ~~**Phase 2 (tile rendering)**~~ **DONE**: WorldMapView, LocalMapView, TileManager, WorldMapData, BorderPanel.
+5. ~~**Phase 2 (tile rendering)**~~ **DONE**: WorldMapView, LocalMapView, TileManager, WorldMapData, BorderPanel, ViewportManager.
 6. **Play through and trace**: Use Spice86 with targeted breakpoints to map story progression for all missions
 7. ~~**fn183B_28DB analysis**~~ **RESOLVED**: Enemies at random offsets from (26,12).
 8. ~~**AI stage counter phase dispatch**~~ **RESOLVED**: Counter 0-11 selects nth target.
