@@ -293,7 +293,7 @@ Initial mapping (tune during playtesting — based on frame counts and expected 
   | `ViewportManager.cs` | `partial class ViewportManager : Node2D` — owns regions, switches layouts, draws EGA-style borders, tracks content-to-region assignments |
 - Layouts: WorldMap/LocalTiles/TextScreen/BuildingName/Combat all use the same 3-region layout (LeftPanel 80×200 + Viewport 240×192 + BottomBar 320×8). Stats uses 5 panels.
 - Content nodes are assigned to regions and reparented on layout switch.
-- Borders are 4px ColorRect lines between regions (placeholder for future BTBORDER.CMP).
+- Borders use actual BTBORDER.CMP tiles (properly extracted as 29-tile spritesheet). Left-edge decorative column (tiles 0-17, 18 tiles × 16px vertically), vertical separator at x=76 (tile 6 solid Light Gray), horizontal separator at y=188 (tile 6). Falls back to ColorRect lines if TileManager unavailable.
 - Node tree after `_Ready`:
   ```
   GameLoop (Node)

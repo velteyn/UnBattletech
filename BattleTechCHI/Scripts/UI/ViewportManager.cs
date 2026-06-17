@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using BattleTechCHI.Maps;
 
 namespace BattleTechCHI.UI;
 
@@ -8,9 +9,9 @@ public partial class ViewportManager : Node2D
     private ViewportLayout _currentLayout = ViewportLayout.WorldMap;
     private readonly Dictionary<string, ViewportRegion> _regions = new();
     private readonly Dictionary<string, Node> _contentMap = new();
-    private readonly List<ColorRect> _borderLines = new();
+    private readonly List<Node> _borderNodes = new();
+    private TileManager? _tileManager;
 
-    // Layout definitions: regionName → (Rect2, zIndex, bgColor)
     private static readonly Dictionary<ViewportLayout, (string name, Rect2 rect, int zIndex, Color bgColor)[]> LayoutDefs = new()
     {
         [ViewportLayout.WorldMap] = new[]
@@ -57,6 +58,11 @@ public partial class ViewportManager : Node2D
     public ViewportRegion? GetRegion(string name) =>
         _regions.GetValueOrDefault(name);
 
+    public void SetTileManager(TileManager tm)
+    {
+        _tileManager = tm;
+    }
+
     public void SetLayout(ViewportLayout layout)
     {
         if (layout == _currentLayout && _regions.Count > 0)
@@ -64,7 +70,7 @@ public partial class ViewportManager : Node2D
         _currentLayout = layout;
 
         ClearRegions();
-        ClearBorderLines();
+        ClearBorderNodes();
 
         if (!LayoutDefs.TryGetValue(layout, out var defs))
             return;
@@ -122,7 +128,6 @@ public partial class ViewportManager : Node2D
     {
         foreach (var region in _regions.Values)
         {
-            // Move only tracked content nodes back to ViewportManager
             foreach (var (key, node) in _contentMap)
             {
                 if (node.GetParent() == region)
@@ -136,11 +141,11 @@ public partial class ViewportManager : Node2D
         _regions.Clear();
     }
 
-    private void ClearBorderLines()
+    private void ClearBorderNodes()
     {
-        foreach (var line in _borderLines)
-            line.QueueFree();
-        _borderLines.Clear();
+        foreach (var node in _borderNodes)
+            node.QueueFree();
+        _borderNodes.Clear();
     }
 
     private void ReassignContent()
@@ -184,18 +189,130 @@ public partial class ViewportManager : Node2D
     {
         if (_currentLayout == ViewportLayout.Stats)
         {
-            DrawBorderLine(new Rect2(80, 0, 8, 200));
-            DrawBorderLine(new Rect2(0, 96, 80, 8));
-            DrawBorderLine(new Rect2(88, 100, 232, 4));
-            DrawBorderLine(new Rect2(88, 168, 232, 8));
+            DrawColorRectBorder(new Rect2(80, 0, 8, 200));
+            DrawColorRectBorder(new Rect2(0, 96, 80, 8));
+            DrawColorRectBorder(new Rect2(88, 100, 232, 4));
+            DrawColorRectBorder(new Rect2(88, 168, 232, 8));
             return;
         }
 
-        DrawBorderLine(new Rect2(76, 0, 4, 200));
-        DrawBorderLine(new Rect2(0, 188, 320, 4));
+        // Draw BTBORDER tile-based decorative strip on left edge
+        DrawLeftEdgeDecoration();
+
+        // Draw separator lines using BTBORDER tiles
+        DrawVerticalSeparator();
+        DrawHorizontalSeparator();
     }
 
-    private void DrawBorderLine(Rect2 rect)
+    private void DrawLeftEdgeDecoration()
+    {
+        if (_tileManager == null) return;
+
+        // BTBORDER tile IDs that form the left-edge decorative strip
+        // Tiles 0-17 form a vertical decorative column: top → bottom
+        int[] decorTiles =
+        [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            10, 11, 12, 13, 14, 15, 16, 17,
+        ];
+
+        for (int i = 0; i < decorTiles.Length; i++)
+        {
+            int y = i * 16;
+            if (y >= 200) break;
+
+            var tile = _tileManager.GetBorderTile(decorTiles[i]);
+            if (tile == null) continue;
+
+            var texRect = new TextureRect
+            {
+                Texture = tile,
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                StretchMode = TextureRect.StretchModeEnum.Keep,
+                Size = new Vector2(16, 16),
+                Position = new Vector2(0, y),
+                ZIndex = 50,
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            AddChild(texRect);
+            _borderNodes.Add(texRect);
+        }
+    }
+
+    private void DrawVerticalSeparator()
+    {
+        if (_tileManager == null)
+        {
+            DrawColorRectBorder(new Rect2(76, 0, 4, 200));
+            return;
+        }
+
+        // Use tile 6 (solid Light Gray) for the vertical separator
+        // Place a column of tiles at x=76, from y=0 to y=192 (12 tiles)
+        var tile = _tileManager.GetBorderTile(6);
+        if (tile == null)
+        {
+            DrawColorRectBorder(new Rect2(76, 0, 4, 200));
+            return;
+        }
+
+        for (int i = 0; i < 13; i++)
+        {
+            int y = i * 16;
+            if (y >= 200) break;
+
+            var texRect = new TextureRect
+            {
+                Texture = tile,
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                StretchMode = TextureRect.StretchModeEnum.Keep,
+                Size = new Vector2(4, 16),
+                Position = new Vector2(76, y),
+                ZIndex = 100,
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            AddChild(texRect);
+            _borderNodes.Add(texRect);
+        }
+    }
+
+    private void DrawHorizontalSeparator()
+    {
+        if (_tileManager == null)
+        {
+            DrawColorRectBorder(new Rect2(0, 188, 320, 4));
+            return;
+        }
+
+        // Use tile 6 (solid Light Gray) for the horizontal separator
+        var tile = _tileManager.GetBorderTile(6);
+        if (tile == null)
+        {
+            DrawColorRectBorder(new Rect2(0, 188, 320, 4));
+            return;
+        }
+
+        for (int i = 0; i < 20; i++)
+        {
+            int x = i * 16;
+            if (x >= 320) break;
+
+            var texRect = new TextureRect
+            {
+                Texture = tile,
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                StretchMode = TextureRect.StretchModeEnum.Keep,
+                Size = new Vector2(16, 4),
+                Position = new Vector2(x, 188),
+                ZIndex = 100,
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            AddChild(texRect);
+            _borderNodes.Add(texRect);
+        }
+    }
+
+    private void DrawColorRectBorder(Rect2 rect)
     {
         var line = new ColorRect
         {
@@ -206,9 +323,8 @@ public partial class ViewportManager : Node2D
             MouseFilter = Control.MouseFilterEnum.Ignore,
         };
         AddChild(line);
-        _borderLines.Add(line);
+        _borderNodes.Add(line);
 
-        // Highlight for EGA bevel effect
         var highlight = new ColorRect
         {
             Color = new Color(0xAA, 0xAA, 0xAA),
@@ -219,6 +335,6 @@ public partial class ViewportManager : Node2D
             MouseFilter = Control.MouseFilterEnum.Ignore,
         };
         AddChild(highlight);
-        _borderLines.Add(highlight);
+        _borderNodes.Add(highlight);
     }
 }

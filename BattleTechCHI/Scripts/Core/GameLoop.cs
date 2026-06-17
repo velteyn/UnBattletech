@@ -53,6 +53,10 @@ public partial class GameLoop : Node
         _tileManager.Name = "TileManager";
         AddChild(_tileManager);
 
+        // Load border tileset (BTBORDER)
+        var btbPath = ProjectSettings.GlobalizePath("res://Assets/BTBORDER.png");
+        _tileManager.LoadTileSet("BTBORDER", btbPath, 16, 16);
+
         // StateManager
         _stateManager = new StateManager();
         _stateManager.Name = "StateManager";
@@ -75,6 +79,7 @@ public partial class GameLoop : Node
         // ViewportManager (layout framework)
         _viewportManager = new ViewportManager();
         _viewportManager.Name = "ViewportManager";
+        _viewportManager.SetTileManager(_tileManager);
         AddChild(_viewportManager);
 
         // BorderPanel (content for left panel region)

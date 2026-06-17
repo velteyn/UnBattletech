@@ -416,3 +416,4 @@ java_project/*.class
 
 # Build logs
 build_log.txt
+.wiki
