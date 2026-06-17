@@ -18,6 +18,7 @@ public partial class WorldMapView : TileMap
     private int _tilesetSourceId = 0;
     private int _tileWidth = 16;
     private int _tileHeight = 16;
+    private MapCursor? _cursor;
 
     // Viewport visibile: 8×8 tile
     private const int ViewportW = 8;
@@ -58,7 +59,9 @@ public partial class WorldMapView : TileMap
         SetLayerEnabled(LayerFog, true);
         SetLayerModulate(LayerFog, new Color(0, 0, 0, 0.7f));
 
-        // Disegna la mappa iniziale
+        _cursor = new MapCursor { Name = "MapCursor" };
+        AddChild(_cursor);
+
         RenderViewport();
     }
 
@@ -120,8 +123,8 @@ public partial class WorldMapView : TileMap
 
     private void DrawCursor(int vx, int vy)
     {
-        // TODO Phase 2: overlay del cursore (rettangolo lampeggiante)
-        // Usando un ColorRect o un secondo layer TileMap
+        if (_cursor != null)
+            _cursor.SetTilePosition(vx, vy);
     }
 
     private int GetTilesetCols()

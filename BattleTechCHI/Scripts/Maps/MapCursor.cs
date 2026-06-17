@@ -2,41 +2,46 @@ using Godot;
 
 namespace BattleTechCHI.Maps;
 
-/// <summary>
-/// Cursor: overlay visibile sulla TileMap che mostra dove si trova il giocatore.
-/// Lampeggia stile EGA.
-/// </summary>
 public partial class MapCursor : Sprite2D
 {
-    private Godot.Timer _blinkTimer = null!;
-    private bool _visible_state = true;
+    private Godot.Timer _animTimer = null!;
+    private int _currentFrame;
+    private int _frameCount = 2;
+    private int _frameSize = 16;
 
     public override void _Ready()
     {
-        // Crea un quadratino 16x16 colore EGA light green
-        var img = Image.CreateEmpty(16, 16, false, Image.Format.Rgba8);
-        for (int y = 0; y < 16; y++)
-            for (int x = 0; x < 16; x++)
-                img.SetPixel(x, y, y < 2 || y >= 14 || x < 2 || x >= 14
-                    ? new Color(0x55, 0xFF, 0x55) // light green EGA
-                    : Colors.Transparent);
-        Texture = ImageTexture.CreateFromImage(img);
-
-        _blinkTimer = new Godot.Timer { WaitTime = 0.4f, OneShot = false };
-        AddChild(_blinkTimer);
-        _blinkTimer.Timeout += () =>
+        int sheetW = _frameSize * _frameCount;
+        var img = Image.CreateEmpty(sheetW, _frameSize, false, Image.Format.Rgba8);
+        for (int frame = 0; frame < _frameCount; frame++)
         {
-            _visible_state = !_visible_state;
-            Modulate = _visible_state ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.3f);
+            float alpha = frame == 0 ? 1.0f : 0.3f;
+            var color = new Color(0x55 / 255f, 0xFF / 255f, 0x55 / 255f, alpha);
+            for (int y = 0; y < _frameSize; y++)
+            {
+                for (int x = 0; x < _frameSize; x++)
+                {
+                    bool isBorder = y < 2 || y >= _frameSize - 2 || x < 2 || x >= _frameSize - 2;
+                    img.SetPixel(frame * _frameSize + x, y, isBorder ? color : Colors.Transparent);
+                }
+            }
+        }
+        Texture = ImageTexture.CreateFromImage(img);
+        RegionEnabled = true;
+        RegionRect = new Rect2(0, 0, _frameSize, _frameSize);
+
+        _animTimer = new Godot.Timer { WaitTime = 0.4f, OneShot = false };
+        _animTimer.Timeout += () =>
+        {
+            _currentFrame = (_currentFrame + 1) % _frameCount;
+            RegionRect = new Rect2(_currentFrame * _frameSize, 0, _frameSize, _frameSize);
         };
-        _blinkTimer.Start();
+        AddChild(_animTimer);
+        _animTimer.Start();
     }
 
-    /// <summary>
-    /// Posiziona il cursore su un tile specifico.
-    /// </summary>
     public void SetTilePosition(int tileX, int tileY)
     {
-        Position = new Vector2(tileX * 16, tileY * 16);
+        Position = new Vector2(tileX * _frameSize, tileY * _frameSize);
     }
 }
