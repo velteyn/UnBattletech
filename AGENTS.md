@@ -3,6 +3,16 @@
 > **Phase 5 ANM Integration** (2026-06-16): AnmPlayer + BorderPanel + BldAnmMap shipped.
 > Next priorities: Runtime ANM decompression, 135D dispatch tables, combat mech panel ANM.
 
+## ⚠️ Documentation Priority Rule
+
+**Documentation correctness has priority over implementation.** When you discover new information that contradicts existing docs:
+
+1. Immediately search **all `.md` files** (`grep -rn` across `docs/`, `AGENTS.md`, `README.md`) for the incorrect claim.
+2. Fix every occurrence before writing implementation code.
+3. Commit doc fixes as a separate commit with message prefix `docs:`.
+
+Do not implement new features if they are based on incorrect documentation assumptions — fix the docs first, then reassess the implementation plan.
+
 ## Build & Run
 
 ```bash
@@ -236,7 +246,7 @@ ANM files (O0.ANM–O16.ANM) are 88×88 pixel EGA animations used in the game's 
 | `Scripts/UI/AnmPlayer.cs` | Animation player: loads `_sheet.png` from `Assets/Animations/`, splits into 88×88 frames, timer-based playback at configurable FPS |
 | `Scripts/UI/ViewportManager.cs` | Layout framework: manages dynamic viewport regions per GameMode, draws borders between regions, reparents content nodes on layout switch |
 | `Scripts/UI/ViewportRegion.cs` | `Control` wrapper for a named screen region with clipping and background |
-| `Scripts/UI/ViewportLayout.cs` | Enum: `WorldMap`, `LocalTiles`, `TextScreen`, `BuildingName`, `Combat`, `Stats` |
+| `Scripts/UI/ViewportLayout.cs` | Enum: `WorldMap`, `LocalTiles`, `TextScreen`, `BuildingName`, `Combat` |
 | `Scripts/UI/BorderPanel.cs` (refactored) | Stripped of layout elements — now only contains AnmPlayer + labels, assigned to `ViewportManager`'s LeftPanel region |
 | `Scripts/Core/GameLoop.cs` (modified) | Creates `ViewportManager`, assigns views to regions, calls `SetLayout()` in `_OnGameModeChanged()` |
 | `Scripts/Maps/RleDecompressor.cs` (modified) | `DecompressAnimation()` — XOR-delta RLE decompressor, buffer 0x0F20 (3872 bytes) → nibble-to-pixel → 88×88. Fixed from stub Format01 |
@@ -288,10 +298,10 @@ Initial mapping (tune during playtesting — based on frame counts and expected 
 - Key files:
   | File | Purpose |
   |------|---------|
-  | `ViewportLayout.cs` | `enum ViewportLayout` (6 values: WorldMap, LocalTiles, TextScreen, BuildingName, Combat, Stats) |
+  | `ViewportLayout.cs` | `enum ViewportLayout` (5 values: WorldMap, LocalTiles, TextScreen, BuildingName, Combat) |
   | `ViewportRegion.cs` | `partial class ViewportRegion : Control` — named container with `SetRegionRect()`, clipping, background |
   | `ViewportManager.cs` | `partial class ViewportManager : Node2D` — owns regions, switches layouts, draws EGA-style borders, tracks content-to-region assignments |
-- Layouts: WorldMap/LocalTiles/TextScreen/Combat use 3-region layout (LeftPanel 80×200 + Viewport 240×192 + BottomBar 320×8). BuildingName uses narrow layout (LeftPanel 16×200 + Viewport 304×192 + BottomBar). Stats uses 5 panels.
+- Layouts: WorldMap/LocalTiles/TextScreen/Combat use 3-region layout (LeftPanel 80×200 + Viewport 240×192 + BottomBar 320×8). BuildingName uses narrow layout (LeftPanel 16×200 + Viewport 304×192 + BottomBar).
 - Narrow-panel flag (`SetLayout(layout, narrow)`): when true, LeftPanel shrinks to 16px (decorative strip only), Viewport expands to 304px. Content in LeftPanel is hidden when narrow.
 - Content nodes are assigned to regions and reparented on layout switch.
 - Borders use actual BTBORDER.CMP tiles (properly extracted as 29-tile spritesheet). Left-edge decorative column (tiles 0-17, 18 tiles × 16px vertically), vertical separator at x=76 (tile 6 solid Light Gray), horizontal separator at y=188 (tile 6). Falls back to ColorRect lines if TileManager unavailable.
@@ -306,7 +316,7 @@ Initial mapping (tune during playtesting — based on frame counts and expected 
   │   │   ├── WorldMapView / LocalMapView / CombatView (TileMap)
   │   ├── Region_BottomBar (Control, 0,192 320×8, bg dark gray)
   │   └── Border tiles (BTBORDER TextureRects, ZIndex 50-100)
-  ├── DialogueBox, CombatHUD, ShopScreen (overlays)
+  ├── DialogueBox, CombatHUD, ShopScreen, StatsScreen (overlays)
   ```
 
 Narrow layout (BuildingName): LeftPanel=16×200, Viewport=16,0 304×192, BottomBar=0,192 320×8. BorderPanel/CombatHUD hidden.
@@ -317,12 +327,24 @@ Narrow layout (BuildingName): LeftPanel=16×200, Viewport=16,0 304×192, BottomB
 - ANM file for specific mech/character interactions in combat not yet mapped.
 - Animation dispatch table cursor-hover ANM triggering not yet active — `DispatchCursorMove()` currently detects matches via `AnimationDispatchTable` but is not wired to show ANM on hover (only on building entry).
 
+### Stats Screen — Full-Screen Overlay (NOT a viewport layout)
+
+The stats/inventory screen (`fn0800_3D40`) is a **full-screen modal overlay**, like the protection screen:
+- Sets `w014A = 1` to suspend normal game rendering
+- Renders BTSTATS.CMP as 320×200 background (left 80px black, right 240px has pre-rendered borders/text areas)
+- Draws unit data dynamically (5 columns × 48 rows of 3×3 subtiles from game state)
+- Plays ANM in left 80px (mech portrait)
+- Runs its own input loop (arrow keys for unit selection, SPACE to exit)
+- On exit: `w014A = 0`, redraws viewport + borders + cursor
+
+**Rebuild implementation**: `StatsScreen.cs` — full-screen `Control` overlay (like `ShopScreen`), NOT a `ViewportLayout`. Triggered by Fn1CD3Dispatcher case 0x0D event or F5 debug key.
+
 ### Next ANM Integration Steps
 
-1. ~~**Runtime ANM decompression**~~ DONE (`AnmPlayer.LoadRaw()` + `RleDecompressor.DecompressAnimationFrames()`)
-2. ~~**Animation dispatch**~~ DONE — `PositionInteractionTable` (33-entry, static data from DGROUP:0x21CE) and `AnimationDispatchTable` (12-entry, runtime-populated from LocationMapper) query on cursor move via `DispatchCursorMove()`, building names shown on hover.
+1. ~~**Runtime ANM decompression**~~ DONE
+2. ~~**Animation dispatch**~~ DONE
 3. **Combat mech panel**: Animate combat left-panel display with ANM frames per mech state (idle/move/fire/damage).
-4. **Map cursor animation**: Replace blink timer with ANM cursor frames.
+4. ~~**Map cursor animation**~~ DONE — frame-based spritesheet with RegionRect cycling replaces old Modulate-toggle blink
 
 ## Radare2 (r2) Tooling
 
