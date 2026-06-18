@@ -7,5 +7,4 @@ public enum ViewportLayout
     TextScreen,
     BuildingName,
     Combat,
-    Stats,
 }

@@ -13,6 +13,7 @@ public static partial class Fn1CD3Dispatcher
     public static event Action? ActionTriggered;
     public static event Action? SaveRequested;
     public static event Action? RestoreRequested;
+    public static event Action? StatsScreenRequested;
 
     public static GameMode? Dispatch(byte caseVal, GameState state, string bldName, IShopInventory? shop = null)
     {
@@ -214,6 +215,7 @@ public static partial class Fn1CD3Dispatcher
     {
         GD.Print("    EQUIPMENT_MENU");
         state.StateArray[0x1A] = 0;
+        StatsScreenRequested?.Invoke();
     }
 
     // ── Case 0x0E: COUNT_UNIT_SLOTS ────────────────────────────

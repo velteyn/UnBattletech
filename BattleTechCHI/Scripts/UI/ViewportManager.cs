@@ -41,14 +41,6 @@ public partial class ViewportManager : Node2D
         ClearRegions();
         ClearBorderNodes();
 
-        if (layout == ViewportLayout.Stats)
-        {
-            CreateStatsLayout();
-            ReassignContent();
-            DrawStatsBorders();
-            return;
-        }
-
         int panelW = narrow ? PanelNarrow : PanelWide;
         int viewW = narrow ? ViewportNarrow : ViewportWide;
         int viewX = narrow ? PanelNarrow : PanelWide;
@@ -84,15 +76,6 @@ public partial class ViewportManager : Node2D
 
         AddChild(region);
         _regions[name] = region;
-    }
-
-    private void CreateStatsLayout()
-    {
-        CreateRegion("TopLeft", new Rect2(0, 0, 80, 96), 0, Colors.Black);
-        CreateRegion("BottomLeft", new Rect2(0, 104, 80, 96), 1, Colors.Black);
-        CreateRegion("TopRight", new Rect2(88, 0, 232, 96), 2, Colors.Black);
-        CreateRegion("BottomRight", new Rect2(88, 104, 232, 64), 3, Colors.Black);
-        CreateRegion("Center", new Rect2(88, 176, 232, 24), 4, Colors.Black);
     }
 
     public void AssignContent(Node node, string regionName)
@@ -199,14 +182,6 @@ public partial class ViewportManager : Node2D
         DrawLeftEdgeDecoration();
         DrawVerticalSeparator();
         DrawHorizontalSeparator();
-    }
-
-    private void DrawStatsBorders()
-    {
-        DrawColorRectBorder(new Rect2(80, 0, 8, 200));
-        DrawColorRectBorder(new Rect2(0, 96, 80, 8));
-        DrawColorRectBorder(new Rect2(88, 100, 232, 4));
-        DrawColorRectBorder(new Rect2(88, 168, 232, 8));
     }
 
     private void DrawLeftEdgeDecoration()

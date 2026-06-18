@@ -23,6 +23,7 @@ public partial class GameLoop : Node
     private CombatView _combatView = null!;
     private CombatHUD _combatHud = null!;
     private ShopScreen _shopScreen = null!;
+    private StatsScreen _statsScreen = null!;
 
     private bool _startInLocalMap;
     private GameMode _previousMode = GameMode.WorldMap;
@@ -153,8 +154,15 @@ public partial class GameLoop : Node
         _shopScreen.SellRequested += OnShopSell;
         _shopScreen.ExitShop += OnShopExit;
 
+        // StatsScreen (hidden by default, shown on equipment menu)
+        _statsScreen = new StatsScreen();
+        _statsScreen.Name = "StatsScreen";
+        AddChild(_statsScreen);
+        _statsScreen.ExitStats += OnStatsExit;
+
         // Fn1CD3Dispatcher events
         Fn1CD3Dispatcher.BuildingEntered += (bld) => GD.Print($"  Dispatcher: building entered '{bld}'");
+        Fn1CD3Dispatcher.StatsScreenRequested += OnStatsScreenRequested;
         Fn1CD3Dispatcher.CreditsDisplayed += (amount) => _borderPanel.UpdateInfo(State.CursorX, State.CursorY, amount);
         Fn1CD3Dispatcher.RenderingRequested += (handler) => GD.Print($"  Dispatcher: render request '{handler}'");
         Fn1CD3Dispatcher.ActionTriggered += () => GD.Print("  Dispatcher: action triggered");
@@ -688,6 +696,20 @@ public partial class GameLoop : Node
             _bldInterpreter.ResumeAfterInput();
     }
 
+    private void OnStatsExit()
+    {
+        GD.Print("Stats exit");
+        _statsScreen.Visible = false;
+        if (_stateManager.State.Mode == GameMode.TextScreen)
+            _bldInterpreter.ResumeAfterInput();
+    }
+
+    private void OnStatsScreenRequested()
+    {
+        GD.Print("StatsScreen requested via BLD dispatch 0x0D");
+        _statsScreen.ShowForUnit(State, 0);
+    }
+
     private void OnMenuPressed(int index)
     {
         switch (index)
@@ -710,7 +732,14 @@ public partial class GameLoop : Node
         }
     }
 
-    private void OnFunctionKey(int key) => GD.Print($"F{key}");
+    private void OnFunctionKey(int key)
+    {
+        GD.Print($"F{key}");
+        if (key == 5)
+        {
+            _statsScreen.ShowForUnit(State, 0);
+        }
+    }
 
     private void OnBldSpriteRequested(int spriteId)
     {
