@@ -10,6 +10,7 @@
 1. Immediately search **all `.md` files** (`grep -rn` across `docs/`, `AGENTS.md`, `README.md`) for the incorrect claim.
 2. Fix every occurrence before writing implementation code.
 3. Commit doc fixes as a separate commit with message prefix `docs:`.
+4. Also **update the GitHub wiki** pages that humans read — clone `git@github.com:velteyn/UnBattletech.wiki.git`, update relevant pages, commit and push. The wiki has `Home.md`, `Rebuild-Progress.md`, `Combat-System.md` (and any others found).
 
 Do not implement new features if they are based on incorrect documentation assumptions — fix the docs first, then reassess the implementation plan.
 
