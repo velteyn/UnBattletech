@@ -1,7 +1,7 @@
 # UnBattletech — Reverse Engineering BattleTech: The Crescent Hawk's Inception (1988)
 
 [![RE Status](https://img.shields.io/badge/RE-95%25-brightgreen)](docs/CONTEXT.md)
-[![Godot Rebuild](https://img.shields.io/badge/Rebuild-Phase_5-yellow)](BattleTechCHI/)
+[![Godot Rebuild](https://img.shields.io/badge/Rebuild-Phase_6-green)](BattleTechCHI/)
 
 Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Crescent Hawk's Inception**, the 1988 MS-DOS game by Infocom.
 
@@ -9,8 +9,8 @@ Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Cresc
 
 ```
 ├── docs/               # RE documentation & findings
-│   ├── CONTEXT.md      # Master context (851 lines)
-│   ├── TECHNICAL_ANALYSIS.md  # Comprehensive technical analysis (3193 lines)
+│   ├── CONTEXT.md      # Master context (1050+ lines)
+│   ├── TECHNICAL_ANALYSIS.md  # Comprehensive technical analysis (3211 lines)
 │   ├── MEMORY_MAP.md   # Full memory map (603 lines)
 │   ├── ADDRESS_REFERENCE.md   # Address reference (1035 lines)
 │   ├── BLD_BYTECODE.md # BLD bytecode specification (342 lines)
@@ -56,14 +56,36 @@ Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Cresc
 
 ## Godot Rebuild Progress
 
-The rebuild is in **Phase 5** (economy + ANM integration). ~7,800 lines C# across 42 scripts in `BattleTechCHI/Scripts/`.
+The rebuild is in **Phase 6** (ANM integration + combat ANM). ~8,000 lines C# across 45+ scripts in `BattleTechCHI/Scripts/`.
 
 - ✅ Phase 0–1: Core engine, data models, asset loaders, game loop, partial save/load
 - ✅ Phase 2: Tile rendering, world map viewport, local maps, LocationMapper, fog of war
 - ✅ Phase 3: BLD interpreter (26 opcodes), cipher decoder, 47-case dispatcher (all real impl.), dialogue, ShopScreen
 - ✅ Phase 4: Combat — init, turn order, movement, LoS, to-hit (2D6), damage, AI, heat/ammo, fog, HUD, encounters
-- 🔄 Phase 5: Shops/economy (partial — stock market pending), AnmPlayer + ViewportManager + BldAnmMap, runtime ANM decompress
-- ⬜ Phase 6–7: End-to-end playtesting, polish (VFX, BTSTATS, sound)
+- ✅ Phase 5: AnmPlayer + ViewportManager + BldAnmMap, runtime ANM decompress
+- ✅ Phase 6: Combat mech panel ANM (MechPortrait), map cursor ANM, StorySlots 16→8 fix, emulator A: drive fix
+- ⬜ Phase 7: End-to-end playtesting, polish (VFX, BTSTATS, sound, w4FBC refactor, TileMapLayer migration)
+
+## Emulator & Runtime Introspection
+
+Spice86 emulator with 19 BattleTech-specific MCP tools for runtime game state introspection:
+- Read/write game state (state array, story slots, unit slots, cursor, credits, flags)
+- Read combat grids, unit positions, fog of war
+- Inject keyboard input (script the game through menus)
+- Read CPU registers and memory
+
+```bash
+# Start emulator with MCP server on port 8081
+dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
+  --Exe "/path/to/BTECH.EXE" \
+  --CDrive "/path/to/game/" \
+  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui
+
+# Read game state
+curl -s -X POST http://localhost:8081/mcp/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"bt_get_state","arguments":{}}}'
+```
 
 ## Tools & Scripts
 
@@ -82,6 +104,12 @@ python3 tools/bld/ascii_viewer.py
 
 # Render CMP assets to PPM
 python3 tools/assets/extract_assets.py
+
+# Build C# rebuild
+cd BattleTechCHI && dotnet build
+
+# Build emulator
+dotnet build UNBATTLETECH.csproj
 ```
 
 ## Disclaimer
