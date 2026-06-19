@@ -8,7 +8,7 @@ public class GameState
     public GameState()
     {
         for (int i = 0; i < 8; i++) UnitSlots[i] = new UnitSlot();
-        for (int i = 0; i < 16; i++) StorySlots[i] = new StorySlot();
+        for (int i = 0; i < 8; i++) StorySlots[i] = new StorySlot();
     }
 
     // === UI Mode ===
@@ -37,8 +37,11 @@ public class GameState
     // Layer 1: Generic state array (D30C, 256 byte)
     public byte[] StateArray { get; set; } = new byte[256];
     
-    // Layer 2: Story properties per story slot
-    public StorySlot[] StorySlots { get; set; } = new StorySlot[16];
+    // Layer 2: Per-slot data (aC724[0..7], stride 0x7D)
+    // Dual-purpose: player mechs (slots 0-3) + enemy mech templates (slots 4-7)
+    // Each slot holds both mech combat data AND story progression state.
+    // Not 16 — original game has exactly 8 slots. See TECHNICAL_ANALYSIS.md §17.10.
+    public StorySlot[] StorySlots { get; set; } = new StorySlot[8];
     
     // Layer 3: Flags
     public bool TrainingComplete { get; set; }     // bD450
@@ -84,13 +87,18 @@ public class GameState
     // Tracks whether we're inside a room interaction (wE48E equivalent).
     public bool RoomActive { get; set; }
 
-    // Backup of StorySlots[0] (125 bytes = 0x7D) saved when entering a room,
+    // Backup of StorySlots[0] (aC724[0], 125 bytes = 0x7D) saved when entering a room,
     // restored when exiting. Maps to the [0x54AA]+0x3780 backup area.
     public byte[] RoomStateBackup { get; set; } = new byte[0x7D];
 }
 
 /// <summary>
-/// Per-story slot (Eq_107947, 0x7D bytes per entry).
+/// Per-slot data (aC724[i], 0x7D bytes per entry, 8 entries).
+/// Hybrid struct: fields from two overlapping Reko views.
+/// - Eq_107947 at 0xC744 (story state: b0004..b0058)
+/// - Eq_106577 at 0xC724 (mech data: b001F,b0024,b0025,b0069,b006A,b0075,b0076,b0079)
+/// Also includes b0000 (status) and b0079 (LinkedUnitSlot).
+/// Base address 0xC724 + i*0x7D.
 /// </summary>
 public class StorySlot
 {

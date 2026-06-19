@@ -1,0 +1,9 @@
+Oh nice, I see you incorporated my tooling for map extraction etc. Good to see some progress on this, I'd like to see a final complete understanding of it.
+
+I've got a private github project with a bunch of the memory mappings, I derived from Reko plus manual tracing years ago. It's the Reko C output but var and function names changed when identified. I've also identified a bunch of the data structures.
+
+I also spotted the 0x07D in your unverified discoveries section. That's the same size as the mech struct and if a story progress step its likely a check if the mech is destroyed or something. 0xC79B <-- indicates you are accessing a component for Mech0 in a MechArray. There's an Mechs[8]; //C724 <-- array of mech struct, 4 friendly mechs followed by 4 enemy mechs that used repeatedly in the code. Just add 0x07D to navigate through the array mech by mech.
+
+You have a lack of focus on the Mech and character, component and ammo memory mappings which is causing you problems. I've successfully mapped those out. These values are used repeatedly in the logic, additionally sometimes they are duplicated to a new memory location but are identifiable by the code parsing them the same.
+
+Do you have a discord or how are you co-ordinating?

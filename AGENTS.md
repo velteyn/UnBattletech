@@ -106,7 +106,7 @@ Combat lives in `BattleTechCHI/Scripts/Combat/` — 5 files, fully reworked from
 | 0x19 | FLAG_D450 | TrainingComplete = true, StateArray[0x50] = 1 |
 | 0x1A | FLAG_D451 | Milestone = true, StateArray[0x51] = 1 |
 | 0x1B | GOTO_2E_SHARED | Shared path with 0x2E (RestoreSlots): bD55E = 0 |
-| 0x1C | CLEAR_ALL_SLOTS | Clear 16 story slots (StatusByte = 0xFF) |
+| 0x1C | CLEAR_ALL_SLOTS | Clear 8 story slots (StatusByte = 0xFF) |
 | 0x1D | COUNT_UPPERCASE | Count story slots with StatusByte < 0x80 → bD31C |
 | 0x1E | DISPATCH_11B8_104E | Emits `RenderingRequested("11B8_104E")` for building interior |
 | 0x1F | READ_SLOT_FLAG | Reads UnitSlots[bD31A].LinkedStorySlot → bD32B |
