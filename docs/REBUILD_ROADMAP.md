@@ -3,7 +3,7 @@
 **Last updated:** 2026-06-17  
 **Engine:** Godot 4.4 + C# (`BattleTechCHI/`)  
 **RE status:** ~95% complete  
-**Rebuild status:** Phase 5 in progress (~7,800 lines C# across 42 script files)
+**Rebuild status:** Phase 5 in progress (~8,000 lines C# across 43 script files)
 
 ---
 
@@ -22,7 +22,7 @@ The Godot rebuild has moved well past scaffolding: **Phases 0–4 are implemente
 | Maps | MTP loader, ICN tiles, world + local views, fog | `Maps/MapLoader.cs`, `WorldMapView.cs`, `LocalMapView.cs` |
 | BLD runtime | Loader, cipher, 26 opcodes, 47-case dispatcher | `BLD/BldInterpreter.cs`, `Fn1CD3Dispatcher.cs` |
 | Shops/dialogue | ShopScreen, dialogue box, LocationMapper | `UI/ShopScreen.cs`, `DialogueBox.cs` |
-| Combat | Full 12-phase loop, AI, 2D6, LoS, fog, HUD | `Combat/*.cs` (6 files) |
+| Combat | Full 12-phase loop, AI, 2D6, LoS, fog, HUD, mech portrait ANM | `Combat/*.cs` (7 files) |
 | Viewport layout | ViewportManager, regions, EGA borders | `UI/ViewportManager.cs`, `ViewportRegion.cs` |
 | ANM animations | Runtime decompress + PNG fallback, BldAnmMap | `UI/AnmPlayer.cs`, `Maps/RleDecompressor.cs` |
 | Startup | INFOCOM + BTTITLE splash sequence | `UI/StartupSequence.cs` |
@@ -36,7 +36,7 @@ The Godot rebuild has moved well past scaffolding: **Phases 0–4 are implemente
 | Tech screen / component repair | ❌ Not implemented | Medium |
 | Full equipment management UI | ⚠️ Dispatcher cases exist, UI thin | Medium |
 | Save/load round-trip verification | ⚠️ Parser exists, not fully verified | Small |
-| Combat mech panel ANM | ❌ Not wired | Medium |
+| Combat mech panel ANM | ✅ MechPortrait + CombatHUD integration | Medium |
 | Map cursor ANM (replace blink) | ❌ Not wired | Small |
 | 135D dispatch tables (full) | ⚠️ Partial via DispatchTables | Medium |
 | End-to-end story playtesting | ❌ Not validated | Large |

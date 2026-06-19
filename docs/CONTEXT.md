@@ -4,7 +4,7 @@
 
 This is an extensive reverse engineering effort targeting **BattleTech: The Crescent Hawk's Inception**, a 1988 MS-DOS 16-bit real-mode game by Infocom. The original executable `BTECH.EXE` was unpacked to `UNBTECH.EXE`. The project aims to fully understand the game's internals — code, data formats, game logic — to produce comprehensive documentation enabling a full rewrite with modern technologies.
 
-**Current status:** RE ~95% complete — all major systems understood (BLD bytecode, combat, maps, story, economy, world map). Engine rebuild underway in **Godot 4 + C#** (`BattleTechCHI/`). Phases 0-4 implemented; **Phase 5 in progress** (~7,800 lines C#): scaffold, data models, loaders, RLE decompressor, EGA palette, game loop, state machine, input, partial save/load, tile rendering, world/local map views, LocationMapper, BLD interpreter + 47-case dispatch, shops/dialogue, full combat system (2D6 to-hit, AI, heat, ammo, fog, HUD), ViewportManager, AnmPlayer with runtime ANM decompress, BldAnmMap, and cursor-hover animation dispatch.
+**Current status:** RE ~95% complete — all major systems understood (BLD bytecode, combat, maps, story, economy, world map). Engine rebuild underway in **Godot 4 + C#** (`BattleTechCHI/`). Phases 0-4 implemented; **Phase 5 in progress** (~8,000 lines C#): scaffold, data models, loaders, RLE decompressor, EGA palette, game loop, state machine, input, partial save/load, tile rendering, world/local map views, LocationMapper, BLD interpreter + 47-case dispatch, shops/dialogue, full combat system (2D6 to-hit, AI, heat, ammo, fog, HUD), ViewportManager, AnmPlayer with runtime ANM decompress, BldAnmMap, cursor-hover animation dispatch, and combat mech panel ANM (MechPortrait with state animation).
 
 ---
 
@@ -655,13 +655,13 @@ BattleTechCHI/
 │   ├── Combat/
 │   │   ├── CombatManager.cs    # Loop 12-fasi: movimento, to-hit, danno, kill chain
 │   │   ├── CombatView.cs       # TileMap 15×12 + sprite2D unità (ricreati ogni frame)
-│   │   ├── CombatHUD.cs        # Overlay sinistro 80px in combattimento
+│   │   ├── CombatHUD.cs        # Overlay sinistro 80px in combattimento + mech portrait
 │   │   ├── CombatState.cs      # Stato combattimento, griglie fog 12×24
 │   │   ├── CombatResolver.cs   # RNG (LFSR 24-bit), LoS (Bresenham), danno
-│   │   └── CombatTypes.cs      # MechState, HitLocation, ActionCode enum
+│   │   ├── CombatTypes.cs      # MechState, HitLocation, ActionCode enum
+│   │   └── MechPortrait.cs     # Mech animato (scala 2× da MECHSHAP, stati idle/move/fire/danno)
 │   ├── BLD/
 │   │   └── BldLoader.cs        # Carica e decripta .BLD
-│   └── UI/
 │       ├── EgaPalette.cs       # Palette EGA 16 colori + custom asset
 │       ├── AnmPlayer.cs        # Player animazioni ANM (88×88, timer-based, FPS configurabile)
 │       ├── BorderPanel.cs      # Pannello sinistro 80px + bordo EGA + AnmPlayer
@@ -677,7 +677,7 @@ BattleTechCHI/
         └── ANM_FORMAT.md       # Specifica formato ANM (XOR-delta RLE)
 ```
 
-**Status**: Phase 5 in progress (~7,800 lines C#). Phases 0-4 done: core systems, tile rendering, world/local maps, BLD interpreter (26 opcodes) + 47-case dispatcher, shops/dialogue, full combat system. Phase 5 shipped: AnmPlayer, ViewportManager, BldAnmMap, runtime ANM decompress, animation dispatch on hover. Remaining: stock market, tech screen, combat mech panel ANM, end-to-end playtesting.
+**Status**: Phase 5 in progress (~8,000 lines C#). Phases 0-4 done: core systems, tile rendering, world/local maps, BLD interpreter (26 opcodes) + 47-case dispatcher, shops/dialogue, full combat system. Phase 5 shipped: AnmPlayer, ViewportManager, BldAnmMap, runtime ANM decompress, animation dispatch on hover, combat mech panel ANM (MechPortrait). Remaining: stock market, tech screen, end-to-end playtesting.
 
 ---
 

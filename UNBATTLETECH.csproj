@@ -1,29 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFramework>net10.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
-	<ItemGroup>
-		<None Remove=".gitignore" />
-	</ItemGroup>
-	<ItemGroup>
-		<Using Include="Spice86.Core.Emulator.Memory" />
-		<Using Include="Spice86.Core.Emulator.ReverseEngineer" />
-		<Using Include="Spice86.Core.Emulator.VM" />
-		<Using Include="Spice86.Shared.Utils" />
-		<Using Include="Spice86.Core.Emulator.Function" />
-	</ItemGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+  <!-- Only compile Spice86-specific files, not Godot project files or old generated code -->
+  <ItemGroup>
+    <Compile Remove="BattleTechCHI/**/*.cs" />
+    <Compile Remove="InceptionTools/**/*.cs" />
+    <Compile Remove="spice86/GeneratedCode/**/*.cs" />
+    <Compile Remove="MyOverrideSupplier.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Spice86.Core.Emulator.Memory" />
+    <Using Include="Spice86.Core.Emulator.Mcp" />
+    <Using Include="Spice86.Core.Emulator.ReverseEngineer" />
+    <Using Include="Spice86.Core.Emulator.VM" />
+    <Using Include="Spice86.Shared.Utils" />
+    <Using Include="Spice86.Core.Emulator.Function" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Spice86" Version="11.0.0" />
-	</ItemGroup>
-	 <ItemGroup>
-     <Content Include="libportaudio.dll">
-        
-         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-         <Pack>True</Pack>
-     </Content>
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Spice86/src/Spice86/Spice86.csproj" />
+    <ProjectReference Include="../../Spice86/src/BattleTechMcpTools/BattleTechMcpTools.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="libportaudio.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Pack>True</Pack>
+    </Content>
+  </ItemGroup>
 </Project>

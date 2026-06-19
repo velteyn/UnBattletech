@@ -25,6 +25,17 @@ cd BattleTechCHI && bash run.sh
 
 # Build only (via script)
 cd BattleTechCHI && bash build.sh
+
+# Build Spice86-based emulator (UNBATTLETECH)
+dotnet build UNBATTLETECH.csproj
+
+# Run emulator (headless, verbose, with MCP on port 8081)
+# Always kill stale ports first — port 20000 (HTTP API) holds over from prior runs
+fuser -k 20000/tcp 8081/tcp 2>/dev/null
+dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
+  --Exe "/path/to/game/BTECH.EXE" \
+  --CDrive "/path/to/game/" \
+  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui --VerboseLogs
 ```
 
 ## Godot Binary
@@ -344,7 +355,7 @@ The stats/inventory screen (`fn0800_3D40`) is a **full-screen modal overlay**, l
 
 1. ~~**Runtime ANM decompression**~~ DONE
 2. ~~**Animation dispatch**~~ DONE
-3. **Combat mech panel**: Animate combat left-panel display with ANM frames per mech state (idle/move/fire/damage).
+3. ~~**Combat mech panel**: Animate combat left-panel display with ANM frames per mech state (idle/move/fire/damage).~~ **DONE** — `MechPortrait.cs` uses MECHSHAP 24×24 Locust/Commando sprites scaled to 48×48, builds runtime spritesheet, cycles frames on timer. State mapping: Idle (4fps), Moving (8fps), Firing (yellow overlay 300ms), TakingDamage (red overlay 400ms). Integrated into CombatHUD at top of 80px panel, labels shifted down.
 4. ~~**Map cursor animation**~~ DONE — frame-based spritesheet with RegionRect cycling replaces old Modulate-toggle blink
 
 ## Radare2 (r2) Tooling
@@ -542,6 +553,114 @@ These scripts work on raw binary data (not r2-pipe):
 | `extract_story.py` | Extract full narrative → `STORY_TEXT.txt` |
 | `ascii_viewer.py` | ASCII viewer for BLD content |
 
+## Spice86 MCP — BattleTech Runtime Introspection Tools
+
+A set of **19 BattleTech-specific MCP tools** built on Spice86's MCP (Model Context Protocol) infrastructure. These let you query and control the emulated game at runtime — read/write game state, inject keyboard input, inspect memory — without modifying the original EXE.
+
+### How It Works
+
+`BattleTechOverrideSupplier` implements both `IOverrideSupplier` and `IMcpToolSupplier`, loaded at emulator startup via `Program.cs`:
+```
+RunWithOverrides<BattleTechOverrideSupplier>(args)
+```
+
+All tools use **DS-relative addressing** `(DS << 4) + offset` at runtime rather than hardcoded physical addresses — the DS register varies due to EXE relocation. Tools auto-pause emulation before executing, then resume after the operation.
+
+### Tool Categories
+
+| Category | Tools | Purpose |
+|----------|-------|---------|
+| **Game State** | `bt_read_state_array`, `bt_write_state_array`, `bt_get_state` | Read/write the 256-byte generic state array at DS:0xD30C. `bt_get_state` returns a comprehensive snapshot (state array + cursor + credits + flags + active units) |
+| **Story/Unit Slots** | `bt_read_story_slot`, `bt_read_unit_slot` | Read per-unit data: story slots (8 × 125 bytes, stride 0x7D at DS:0xC724), unit slots (8 × 17 bytes, stride 0x11 at DS:0xC614) |
+| **Position & Economy** | `bt_read_cursor`, `bt_read_credits`, `bt_read_flags` | World map cursor X/Y (DS:0xA44B/A44D), C-Bills (DS:0xD370, uint32), TrainingComplete (DS:0xD450) and Milestone (DS:0xD451) flags |
+| **Combat State** | `bt_read_combat_grids`, `bt_read_combat_units` | Twin 12×24 fog grids (DS:0x40B4/0x41D4), 24 combat unit X/Y positions + status arrays (DS:0x4004/0x4036/0x406A) |
+| **Memory Access** | `bt_read_memory`, `bt_write_memory`, `bt_read_ds`, `bt_read_string` | Generic physical memory access, DS-relative read, null-terminated string reader |
+| **CPU State** | `bt_read_registers` | Dump all CPU segment registers, general registers, IP, and flags |
+| **Keyboard Input** | `bt_send_key`, `bt_type_text`, `bt_press_enter`, `bt_press_escape` | Inject single keystrokes, type text strings, or press/release Enter/Escape - lets you script the game through SPACE menus, shop interactions, dialogue |
+
+### How to Use
+
+```bash
+# Kill stale ports from prior runs (port 20000 blocks startup)
+fuser -k 20000/tcp 8081/tcp 2>/dev/null
+
+# Start Spice86 with MCP server on port 8081
+dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
+  --Exe "/path/to/game/BTECH.EXE" \
+  --CDrive "/path/to/game/" \
+  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui --VerboseLogs
+
+# Query available tools
+curl -s -X POST http://localhost:8081/mcp/ \
+  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' \
+  | grep 'data: ' | sed 's/^data: //'
+
+# Read game state (response comes as SSE event)
+curl -s -X POST http://localhost:8081/mcp/ \
+  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"bt_get_state","arguments":{}}}' \
+  | grep 'data: ' | sed 's/^data: //'
+
+# Send keypress (uses string key names, NOT ASCII codes)
+# EGA question expects "D1" or "D2"; drive letter expects "C" or "A"
+# See PcKeyboardKey.cs for all key name values
+curl -s -X POST http://localhost:8081/mcp/ \
+  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"bt_send_key","arguments":{"key":"Space","isPressed":true}}}'
+```
+
+### Game Startup Sequence
+
+Spice86 loads `BTECH.EXE` (compressed — decompression stub runs first in emulation, transparent to user). The game then enters this startup sequence:
+
+1. **EGA/CGA prompt** — waits for `D1` (EGA) or `D2` (CGA) key
+2. **Drive letter prompt** — waits for `C` or `A` key
+3. **Opens `INFOCOM.CMP`** via INT 21h — reads file from C: drive
+4. **Opens `BTTITLE.CMP`** — title screen
+5. **Protection screen** (cracked — SPACE to skip)
+6. **Main menu** → game init → training center
+
+Use the MCP tools to send keys at each stage. After each key, wait for the game to process before sending the next (the emulator runs in real-time).
+
+**Root cause (RESOLVED)**: The game runs with DOS default drive = `A:` (boot floppy in original hardware). `INFOCOM.CMP` was resolved to `A:\INFOCOM.CMP` but A: had no mounted host directory. **Fix**: Both A: and B: drives are now mounted to `cDriveFolderPath` (same as C:) in `DosDriveManager.cs` constructor. Game files are accessible from all three drives. The game's file opens (`INFOCOM.CMP`, `BTTITLE.CMP`, etc.) now resolve to `A:\<file>` and find the files on disk.
+
+### Game Startup Sequence
+
+### Why This Is Invaluable
+
+1. **Automated testing against the Godot rebuild**: Read game state from Spice86 at a given point, then read the same state from the Godot rebuild and compare — catch discrepancies immediately.
+2. **Script the game**: Automate entire playthroughs (training → citadel → shops → combat → cache → endgame) by injecting keystrokes and verifying state transitions.
+3. **Snapshot & replay**: Capture full game state at key moments (training completion, combat start, shop interaction) for analysis and regression testing.
+4. **Live introspection without breakpoints**: Query cursor position, credits, combat fog grids, or CPU registers at any moment without halting the emulator or setting breakpoints.
+5. **Combat validation**: Read combat unit positions, fog grids, and unit status to verify AI behavior matches the original.
+
+### DS-Relative Address Reference
+
+| Field | DS:Offset | Size | Tool |
+|-------|-----------|------|------|
+| StateArray | DS:0xD30C | 256 bytes | `bt_read_state_array` |
+| StorySlots | DS:0xC724 | 8×125 bytes | `bt_read_story_slot` |
+| UnitSlots | DS:0xC614 | 8×17 bytes | `bt_read_unit_slot` |
+| Cursor X/Y | DS:0xA44B/A44D | uint16 each | `bt_read_cursor` |
+| Credits | DS:0xD370 | uint32 | `bt_read_credits` |
+| TrainingComplete | DS:0xD450 | byte | `bt_read_flags` |
+| Milestone | DS:0xD451 | byte | `bt_read_flags` |
+| Fog Grid A | DS:0x40B4 | 12×24 bytes | `bt_read_combat_grids` |
+| Fog Grid B | DS:0x41D4 | 12×24 bytes | `bt_read_combat_grids` |
+| Combat Unit X | DS:0x4004 | 24×uint16 | `bt_read_combat_units` |
+| Combat Unit Y | DS:0x4036 | 24×uint16 | `bt_read_combat_units` |
+| Combat Status | DS:0x406A | 24×uint16 | `bt_read_combat_units` |
+
+### Project Location
+
+```
+Spice86/src/BattleTechMcpTools/
+├── BattleTechMcpTools.csproj    # Project file (part of Spice86.sln)
+├── BattleTechOverrideSupplier.cs  # IOverrideSupplier + IMcpToolSupplier impl
+└── BattleTechMcpTools.cs        # 19 tool implementations
+```
+
 ## Tool Complement Summary
 
 | Tool | Purpose | When to Use |
@@ -549,6 +668,7 @@ These scripts work on raw binary data (not r2-pipe):
 | **r2** | Interactive disassembly, binary investigation, string search, byte-level analysis | Reverse engineer specific bytecode, check opcodes, dump segments |
 | **Reko** | Structural decompilation, C pseudocode, struct/union definitions | Understand high-level logic, data structures, control flow |
 | **Spice86** | Execution trace, memory dump, C# code generation | Verify runtime behavior, get exact register/memory state |
+| **Spice86 MCP (BattleTech)** | Runtime game state introspection + keyboard control via 19 `bt_*` tools | Automated testing against Godot rebuild, scripting playthroughs, combat validation, live game state queries |
 | **GDB** | Debugging C# rebuild (Godot) or test binaries | Runtime debugging of the Godot rewrite |
 | **Dosbox-X** | Run original game, verify behavior | Playtest original for reference |
 | **Python tools** | Batch analysis, format conversion, story extraction | Bulk processing, text export, format conversion |
