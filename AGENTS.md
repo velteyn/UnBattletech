@@ -576,7 +576,7 @@ All tools use **DS-relative addressing** `(DS << 4) + offset` at runtime rather 
 | **Combat State** | `bt_read_combat_grids`, `bt_read_combat_units` | Twin 12×24 fog grids (DS:0x40B4/0x41D4), 24 combat unit X/Y positions + status arrays (DS:0x4004/0x4036/0x406A) |
 | **Memory Access** | `bt_read_memory`, `bt_write_memory`, `bt_read_ds`, `bt_read_string` | Generic physical memory access, DS-relative read, null-terminated string reader |
 | **CPU State** | `bt_read_registers` | Dump all CPU segment registers, general registers, IP, and flags |
-| **Keyboard Input** | `bt_send_key`, `bt_type_text`, `bt_press_enter`, `bt_press_escape` | Inject single keystrokes, type text strings, or press/release Enter/Escape - lets you script the game through SPACE menus, shop interactions, dialogue |
+| **Keyboard Input** | `bt_inject_key`, `bt_press_key`, `bt_send_key`, `bt_type_text`, `bt_press_enter`, `bt_press_escape` | `bt_inject_key` (PREFERRED): Direct BIOS buffer injection — pauses emulator, writes key code atomically, resumes. Takes `ascii` (int) and `scanCode` (int). `bt_press_key`: Same but injects two copies (press+release). `bt_send_key` (LEGACY): Goes through InputEventHub pipeline — unreliable in headless mode. |
 
 ### How to Use
 
@@ -602,7 +602,15 @@ curl -s -X POST http://localhost:8081/mcp/ \
   -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"bt_get_state","arguments":{}}}' \
   | grep 'data: ' | sed 's/^data: //'
 
-# Send keypress (uses string key names, NOT ASCII codes)
+# Send keypress (PREFERRED: bt_inject_key — direct BIOS buffer, pause+resume)
+# Parameters: ascii (int), scanCode (int)
+# Normal keys: ascii=char code, scanCode=PC scancode (Space=0x20/0x39, Enter=0x0D/0x1C)
+# Extended keys (arrows, etc): ascii=0, scanCode=0x4B/0x4D/0x48/0x50 (Left/Right/Up/Down)
+curl -s -X POST http://localhost:8081/mcp/ \
+  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"bt_inject_key","arguments":{"ascii":32,"scanCode":57}}}'
+
+# bt_send_key (LEGACY — unreliable in headless mode, uses string key names)
 # EGA question expects "D1" or "D2"; drive letter expects "C" or "A"
 # See PcKeyboardKey.cs for all key name values
 curl -s -X POST http://localhost:8081/mcp/ \
@@ -612,16 +620,30 @@ curl -s -X POST http://localhost:8081/mcp/ \
 
 ### Game Startup Sequence
 
-Spice86 loads `BTECH.EXE` (compressed — decompression stub runs first in emulation, transparent to user). The game then enters this startup sequence:
+Spice86 loads `BTECH.EXE` (compressed — decompression stub runs first in emulation, transparent to user). The game then enters this startup sequence (works with UNBTECH.exe):
 
-1. **EGA/CGA prompt** — waits for `D1` (EGA) or `D2` (CGA) key
-2. **Drive letter prompt** — waits for `C` or `A` key
-3. **Opens `INFOCOM.CMP`** via INT 21h — reads file from C: drive
-4. **Opens `BTTITLE.CMP`** — title screen
-5. **Protection screen** (cracked — SPACE to skip)
-6. **Main menu** → game init → training center
+1. **EGA/CGA prompt** — send `4` (ascii=0x34, scan=0x05) — selects EGA mode
+2. **Drive letter prompt** — send `3` (ascii=0x33, scan=0x04) — selects drive C
+3. **Cutscenes/intro text** — send `Space`×3 to advance through
+4. **Main menu** — send `Left` arrow (ascii=0x00, scan=0x4B) to select "New Game", then `Space` to confirm
+5. → Training center (building interior, local map, NOT world map)
 
-Use the MCP tools to send keys at each stage. After each key, wait for the game to process before sending the next (the emulator runs in real-time).
+Use `bt_inject_key` for ALL keypresses — it pauses the emulator, writes atomically to the BIOS keyboard buffer, and resumes.
+
+### World Map Movement
+
+The world map uses a **hex-grid** with 6 directional keys (NOT arrow keys):
+
+| Key | ASCII | Scan | Direction | Delta |
+|-----|-------|------|-----------|-------|
+| Q   | 0x51  | 0x10 | Northwest | (-1,-1) |
+| E   | 0x45  | 0x12 | Northeast | (+1,-1) |
+| A   | 0x41  | 0x1E | West      | (-1,0) |
+| D   | 0x44  | 0x20 | East      | (+1,0) |
+| Z   | 0x5A  | 0x2C | Southwest | (-1,+1) |
+| C   | 0x43  | 0x2E | Southeast | (+1,+1) |
+
+Building entry at a tile is triggered by pressing `D` (East key) — the game's east movement doubles as the "door/enter" action when standing on a building tile.
 
 **Root cause (RESOLVED)**: The game runs with DOS default drive = `A:` (boot floppy in original hardware). `INFOCOM.CMP` was resolved to `A:\INFOCOM.CMP` but A: had no mounted host directory. **Fix**: Both A: and B: drives are now mounted to `cDriveFolderPath` (same as C:) in `DosDriveManager.cs` constructor. Game files are accessible from all three drives. The game's file opens (`INFOCOM.CMP`, `BTTITLE.CMP`, etc.) now resolve to `A:\<file>` and find the files on disk.
 
