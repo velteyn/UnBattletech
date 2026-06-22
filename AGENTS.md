@@ -33,8 +33,8 @@ dotnet build UNBATTLETECH.csproj
 # Always kill stale ports first — port 20000 (HTTP API) holds over from prior runs
 fuser -k 20000/tcp 8081/tcp 2>/dev/null
 dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
-  --Exe "/path/to/game/BTECH.EXE" \
-  --CDrive "/path/to/game/" \
+  --Exe "/home/velteyn/projects/Reversing/BATTLETECH_CHI/UNBTECH.exe" \
+  --CDrive "/home/velteyn/projects/Reversing/BATTLETECH_CHI/" \
   --HeadlessMode Minimal --McpHttpPort 8081 --NoGui --VerboseLogs
 ```
 
@@ -574,9 +574,10 @@ All tools use **DS-relative addressing** `(DS << 4) + offset` at runtime rather 
 | **Story/Unit Slots** | `bt_read_story_slot`, `bt_read_unit_slot` | Read per-unit data: story slots (8 × 125 bytes, stride 0x7D at DS:0xC724), unit slots (8 × 17 bytes, stride 0x11 at DS:0xC614) |
 | **Position & Economy** | `bt_read_cursor`, `bt_read_credits`, `bt_read_flags` | World map cursor X/Y (DS:0xA44B/A44D), C-Bills (DS:0xD370, uint32), TrainingComplete (DS:0xD450) and Milestone (DS:0xD451) flags |
 | **Combat State** | `bt_read_combat_grids`, `bt_read_combat_units` | Twin 12×24 fog grids (DS:0x40B4/0x41D4), 24 combat unit X/Y positions + status arrays (DS:0x4004/0x4036/0x406A) |
-| **Memory Access** | `bt_read_memory`, `bt_write_memory`, `bt_read_ds`, `bt_read_string` | Generic physical memory access, DS-relative read, null-terminated string reader |
+| **Memory Access** | `bt_read_memory`, `bt_write_memory`, `bt_read_ds`, `bt_read_string` | Generic physical memory access, DS-relative read, null-terminated string reader. **`bt_read_memory` may error** — use HTTP API `GET /api/memory/{addr}/range/{len}` instead for reliable cursor reads. |
+| **Emulator Control** | `pause_emulator`, `resume_emulator`, `step` | **Pause/resume** the emulation thread. Required before/after BIOS buffer writes (see "Keyboard Injection"). Also available via HTTP API: `POST /api/status/pause`, `POST /api/status/unpause`. |
 | **CPU State** | `bt_read_registers` | Dump all CPU segment registers, general registers, IP, and flags |
-| **Keyboard Input** | `bt_inject_key`, `bt_press_key`, `bt_send_key`, `bt_type_text`, `bt_press_enter`, `bt_press_escape` | `bt_inject_key` (PREFERRED): Direct BIOS buffer injection — pauses emulator, writes key code atomically, resumes. Takes `ascii` (int) and `scanCode` (int). `bt_press_key`: Same but injects two copies (press+release). `bt_send_key` (LEGACY): Goes through InputEventHub pipeline — unreliable in headless mode. |
+| **Keyboard Input** | `bt_inject_key`, `bt_press_key`, `bt_send_key`, `bt_type_text`, `bt_press_enter`, `bt_press_escape` | **UNRELIABLE** — `bt_inject_key` writes to C# internal buffer, NOT to standard BIOS BDA at 0x0040:0x001E (see "Keyboard Injection" section). Use `pause_emulator` + HTTP API `PUT /api/memory/{addr}/byte` instead. |
 
 ### How to Use
 
@@ -586,68 +587,151 @@ fuser -k 20000/tcp 8081/tcp 2>/dev/null
 
 # Start Spice86 with MCP server on port 8081
 dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
-  --Exe "/path/to/game/BTECH.EXE" \
-  --CDrive "/path/to/game/" \
+  --Exe "/home/velteyn/projects/Reversing/BATTLETECH_CHI/UNBTECH.exe" \
+  --CDrive "/home/velteyn/projects/Reversing/BATTLETECH_CHI/" \
   --HeadlessMode Minimal --McpHttpPort 8081 --NoGui --VerboseLogs
 
-# Query available tools
-curl -s -X POST http://localhost:8081/mcp/ \
-  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' \
-  | grep 'data: ' | sed 's/^data: //'
+# Query available tools (use Python http.client — curl fails on SSE chunked)
+python3 -c "
+import http.client, json
+conn = http.client.HTTPConnection('localhost', 8081, timeout=30)
+body = json.dumps({'jsonrpc':'2.0','id':1,'method':'tools/list'})
+conn.request('POST', '/mcp/', body=body,
+    headers={'Content-Type':'application/json','Accept':'application/json'})
+resp = conn.getresponse()
+for line in resp.read().decode().split('\n'):
+    if line.startswith('data: '):
+        print(json.dumps(json.loads(line[6:]), indent=2)[:2000])
+"
 
-# Read game state (response comes as SSE event)
-curl -s -X POST http://localhost:8081/mcp/ \
-  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
-  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"bt_get_state","arguments":{}}}' \
-  | grep 'data: ' | sed 's/^data: //'
+# Read game state (MCP bt_get_state — reliable, but cursor fields may be None)
+python3 -c "
+import http.client, json
+c=http.client.HTTPConnection('localhost',8081,timeout=30)
+c.request('POST','/mcp/',json.dumps({'jsonrpc':'2.0','id':1,'method':'tools/call','params':{'name':'bt_get_state','arguments':{}}}),
+    headers={'Content-Type':'application/json','Accept':'application/json'})
+for l in c.getresponse().read().decode().split('\n'):
+    if l.startswith('data: '): print(json.dumps(json.loads(l[6:]),indent=2)[:2000])
+"
 
-# Send keypress (PREFERRED: bt_inject_key — direct BIOS buffer, pause+resume)
-# Parameters: ascii (int), scanCode (int)
-# Normal keys: ascii=char code, scanCode=PC scancode (Space=0x20/0x39, Enter=0x0D/0x1C)
-# Extended keys (arrows, etc): ascii=0, scanCode=0x4B/0x4D/0x48/0x50 (Left/Right/Up/Down)
-curl -s -X POST http://localhost:8081/mcp/ \
-  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
-  -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"bt_inject_key","arguments":{"ascii":32,"scanCode":57}}}'
+# Get cursor position via read_memory (RELIABLE — works at DS=0x1DE9)
+python3 -c "
+import http.client, json
+c=http.client.HTTPConnection('localhost',8081,timeout=30)
+c.request('POST','/mcp/',json.dumps({'jsonrpc':'2.0','id':1,'method':'tools/call',
+    'params':{'name':'read_memory','arguments':{'segment':0x1DE9,'offset':0xA44B,'length':4}}}),
+    headers={'Content-Type':'application/json','Accept':'application/json'})
+for l in c.getresponse().read().decode().split('\n'):
+    if l.startswith('data: '):
+        d=json.loads(l[6:]).get('result',{}).get('structuredContent',{}).get('Data','')
+        vals=[int(d[i:i+2],16) for i in range(0,len(d),2)]
+        rx=vals[0]|vals[1]<<8; ry=vals[2]|vals[3]<<8
+        tx=(rx&0x7F)>>1; ty=(ry&0x7F)>>1
+        print(f'tile=({tx},{ty}) raw=({rx},{ry})')
+"
 
-# bt_send_key (LEGACY — unreliable in headless mode, uses string key names)
-# EGA question expects "D1" or "D2"; drive letter expects "C" or "A"
-# See PcKeyboardKey.cs for all key name values
-curl -s -X POST http://localhost:8081/mcp/ \
-  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
-  -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"bt_send_key","arguments":{"key":"Space","isPressed":true}}}'
+# ⚠️ bt_inject_key is UNRELIABLE — returns Success=True but writes to C# internal
+#    BIOS keyboard buffer, NOT to standard BIOS BDA memory at 0x0040:0x001E.
+#    The Spice86 INT 16h handler reads from the standard BDA buffer, not the
+#    C# buffer. Keys injected via bt_inject_key may NOT be consumed by the game.
+#    See "Keyboard Injection (RELIABLE)" below for the proven technique.
 ```
 
-### Game Startup Sequence
+### Game Startup Sequence (Verified)
 
 Spice86 loads `BTECH.EXE` (compressed — decompression stub runs first in emulation, transparent to user). The game then enters this startup sequence (works with UNBTECH.exe):
 
-1. **EGA/CGA prompt** — send `4` (ascii=0x34, scan=0x05) — selects EGA mode
+1. **EGA/CGA prompt** — send `4` (ascii=0x34, scan=0x05) — selects MCGA/EGA mode
 2. **Drive letter prompt** — send `3` (ascii=0x33, scan=0x04) — selects drive C
-3. **Cutscenes/intro text** — send `Space`×3 to advance through
-4. **Main menu** — send `Left` arrow (ascii=0x00, scan=0x4B) to select "New Game", then `Space` to confirm
-5. → Training center (building interior, local map, NOT world map)
+3. **Cutscenes/intro text** — send `Space` (ascii=0x20, scan=0x39) × 8-10 to advance through title/Infocom logo/hint screen
+4. **Main menu** — `Space` may select "Continue Game" directly, landing at world map tile (~34,12)
+5. → World map near building complex at ~(34,12)
 
-Use `bt_inject_key` for ALL keypresses — it pauses the emulator, writes atomically to the BIOS keyboard buffer, and resumes.
+**Observed**: Injecting (4, 3) + Space×8 gets you to the world map at tile (34,12) reliably. The game auto-selects an option after enough Space presses.
+
+### Keyboard Injection (RELIABLE)
+
+`bt_inject_key` returns `Success=True` but writes to a **C# internal buffer**, NOT the standard BIOS BDA buffer at `0x0040:0x001E`. The Spice86 INT 16h handler reads from the standard BDA buffer, so `bt_inject_key` is **unreliable** for game key input.
+
+**Proven reliable technique**: Use MCP `pause_emulator` + HTTP API `PUT /api/memory/{addr}/byte` to write the BIOS buffer directly:
+
+```python
+import http.client, json, time
+
+def mcp_call(name, args=None):
+    conn = http.client.HTTPConnection("localhost", 8081, timeout=30)
+    body = json.dumps({"jsonrpc":"2.0","id":1,"method":"tools/call",
+        "params":{"name":name,"arguments":args or {}}})
+    conn.request("POST", "/mcp/", body=body,
+        headers={"Content-Type":"application/json","Accept":"application/json"})
+    resp = conn.getresponse()
+    raw = resp.read().decode()
+    for line in raw.split('\n'):
+        if line.startswith('data: '):
+            return json.loads(line[6:])
+    return {}
+
+def api_put(addr, val):
+    conn = http.client.HTTPConnection("localhost", 20000, timeout=10)
+    conn.request("PUT", f"/api/memory/{addr}/byte",
+        body=json.dumps({"value": val}),
+        headers={"Content-Type": "application/json"})
+    conn.getresponse().read()
+
+def inject_key(ascii, scan):
+    # 1. Pause emulator via MCP
+    mcp_call("pause_emulator", {})
+    time.sleep(0.02)
+    # 2. Clear BIOS keyboard buffer (32 bytes at 0x041E)
+    BUF = 0x041E  # first byte of buffer
+    #    Set head=tail=0x041E (empty buffer)
+    api_put(0x041A, BUF & 0xFF)        # head LSB
+    api_put(0x041B, (BUF >> 8) & 0xFF) # head MSB
+    api_put(0x041C, BUF & 0xFF)        # tail LSB
+    api_put(0x041D, (BUF >> 8) & 0xFF) # tail MSB
+    # 3. Write key code at buffer start
+    api_put(BUF, ascii)      # ASCII code
+    api_put(BUF + 1, scan)   # PC scan code
+    # 4. Set tail = BUF+2 (one entry available)
+    tail = BUF + 2
+    api_put(0x041C, tail & 0xFF)
+    api_put(0x041D, (tail >> 8) & 0xFF)
+    time.sleep(0.02)
+    # 5. Resume emulator — game reads key atomically
+    mcp_call("resume_emulator", {})
+    time.sleep(0.3)
+```
+
+The key is consumed because the INT 16h busy-loop checks head != tail immediately after resume, dequeues the key, and returns it to the game. The buffer clears itself (head advances to catch up with tail).
 
 ### World Map Movement
 
-The world map uses a **hex-grid** with 6 directional keys (NOT arrow keys):
+The world map uses a **hex-grid** with 6 directional keys (NOT arrow keys). Building entry at a tile uses `D` (East key) — the game's east movement doubles as the "door/enter" action.
 
-| Key | ASCII | Scan | Direction | Delta |
-|-----|-------|------|-----------|-------|
-| Q   | 0x51  | 0x10 | Northwest | (-1,-1) |
-| E   | 0x45  | 0x12 | Northeast | (+1,-1) |
-| A   | 0x41  | 0x1E | West      | (-1,0) |
-| D   | 0x44  | 0x20 | East      | (+1,0) |
-| Z   | 0x5A  | 0x2C | Southwest | (-1,+1) |
-| C   | 0x43  | 0x2E | Southeast | (+1,+1) |
+**Key mappings and observed deltas** (depend on position parity):
 
-Building entry at a tile is triggered by pressing `D` (East key) — the game's east movement doubles as the "door/enter" action when standing on a building tile.
+| Key | ASCII | Scan | Named Dir | Observed Effect |
+|-----|-------|------|-----------|-----------------|
+| Q   | 0x51  | 0x10 | Northwest | (-1,-1) or (0,-1) or (-1,0) — depends on parity |
+| E   | 0x45  | 0x12 | Northeast | (+1,-1) or (0,-1) |
+| A   | 0x41  | 0x1E | West      | (-1,0) always |
+| D   | 0x44  | 0x20 | East      | (+1,0) always (also "enter building") |
+| Z   | 0x5A  | 0x2C | Southwest | (-1,+1) or (0,+1) |
+| C   | 0x43  | 0x2E | Southeast | (+1,+1) or (0,+1) |
 
-**Root cause (RESOLVED)**: The game runs with DOS default drive = `A:` (boot floppy in original hardware). `INFOCOM.CMP` was resolved to `A:\INFOCOM.CMP` but A: had no mounted host directory. **Fix**: Both A: and B: drives are now mounted to `cDriveFolderPath` (same as C:) in `DosDriveManager.cs` constructor. Game files are accessible from all three drives. The game's file opens (`INFOCOM.CMP`, `BTTITLE.CMP`, etc.) now resolve to `A:\<file>` and find the files on disk.
+The hex grid delta depends on the Y coordinate parity (even vs odd rows) and potentially the X parity as well. D and A are always (±1,0). Diagonal keys vary by row parity. Bookmark `fn207F_0581` in the decompiled C to reverse-engineer the exact formula.
 
-### Game Startup Sequence
+**Navigation algorithm** (proven to work from any start near (34,12) to (26,5)):
+1. Get current tile via `read_memory` at DS=0x1DE9 offset 0xA44B (4 bytes, 2× uint16 LE)
+2. Convert: `TileX = (RawX & 0x7F) >> 1`, `TileY = (RawY & 0x7F) >> 1`
+3. Prefer Q (NW) to move toward target X,Y
+4. If blocked (Q doesn't move), try A (W), Z (SW), C (SE), E (NE), D (E) in sequence
+5. At target tile, press D to enter building
+6. Inside building (DS switches to 0x3858), press Space to advance dialog
+
+**Obstacles**: Buildings (tile values 64+) block movement. Read world map tiles at DS:0x0F00 (128×128 grid, row-major) to check passability.
+
+**Root cause (RESOLVED)**: The game runs with DOS default drive = `A:` (boot floppy in original hardware). `INFOCOM.CMP` was resolved to `A:\INFOCOM.CMP` but A: had no mounted host directory. **Fix**: Both A: and B: drives are now mounted to `cDriveFolderPath` (same as C:) in `DosDriveManager.cs` constructor. Game files are accessible from all three drives.
 
 ### Why This Is Invaluable
 
@@ -673,6 +757,88 @@ Building entry at a tile is triggered by pressing `D` (East key) — the game's 
 | Combat Unit X | DS:0x4004 | 24×uint16 | `bt_read_combat_units` |
 | Combat Unit Y | DS:0x4036 | 24×uint16 | `bt_read_combat_units` |
 | Combat Status | DS:0x406A | 24×uint16 | `bt_read_combat_units` |
+
+### Boot & Navigation Workflow (Proven Script)
+
+Full workflow: boot game → world map → navigate to (26,5) → enter training building:
+
+```python
+import http.client, json, time
+
+def mcp_call(name, args=None):
+    conn = http.client.HTTPConnection("localhost", 8081, timeout=30)
+    body = json.dumps({"jsonrpc":"2.0","id":1,"method":"tools/call",
+        "params":{"name":name,"arguments":args or {}}})
+    conn.request("POST", "/mcp/", body=body,
+        headers={"Content-Type":"application/json","Accept":"application/json"})
+    resp = conn.getresponse()
+    raw = resp.read().decode()
+    for line in raw.split('\n'):
+        if line.startswith('data: '):
+            return json.loads(line[6:])
+    return {}
+
+def api_put(addr, val):
+    conn = http.client.HTTPConnection("localhost", 20000, timeout=10)
+    conn.request("PUT", f"/api/memory/{addr}/byte",
+        body=json.dumps({"value": val}),
+        headers={"Content-Type": "application/json"})
+    conn.getresponse().read()
+
+def inject_key(ascii, scan):
+    mcp_call("pause_emulator", {}); time.sleep(0.02)
+    BUF = 0x041E
+    for addr, val in [(0x041A, BUF&0xFF), (0x041B, (BUF>>8)&0xFF),
+                      (0x041C, BUF&0xFF), (0x041D, (BUF>>8)&0xFF)]:
+        api_put(addr, val)
+    api_put(BUF, ascii); api_put(BUF+1, scan)
+    tail = BUF + 2
+    api_put(0x041C, tail&0xFF); api_put(0x041D, (tail>>8)&0xFF)
+    time.sleep(0.02)
+    mcp_call("resume_emulator", {}); time.sleep(0.3)
+
+def get_tile():
+    r = mcp_call("read_memory", {"segment":0x1DE9, "offset":0xA44B, "length":4})
+    data = r.get('result',{}).get('structuredContent',{}).get('Data','')
+    if data and len(data) >= 4:
+        vals = [int(data[i:i+2], 16) for i in range(0, len(data), 2)]
+        rx, ry = vals[0]|vals[1]<<8, vals[2]|vals[3]<<8
+        return ((rx & 0x7F) >> 1, (ry & 0x7F) >> 1, rx, ry)
+    return None
+
+# Step 1: Boot (EGA=4, Drive=3)
+inject_key(0x34, 0x05); time.sleep(2)  # 4 = MCGA/EGA
+inject_key(0x33, 0x04); time.sleep(2)  # 3 = Drive C
+for _ in range(10):
+    inject_key(0x20, 0x39); time.sleep(1.5)  # Space to advance
+
+# Step 2: Navigate to (26,5) using sequential key attempts
+t = get_tile()
+if t:
+    tx, ty = t[0], t[1]
+    for step in range(50):
+        ty = get_tile()[1]
+        inject_key(0x51, 0x10); time.sleep(0.4)  # Q (NW)
+        t2 = get_tile()
+        if t2 and t2[1] >= ty:  # Didn't go NW — try alternatives
+            for k in [(0x41,0x1E),(0x5A,0x2C),(0x43,0x2E),(0x45,0x12),(0x44,0x20)]:
+                inject_key(*k); time.sleep(0.4)
+                t2 = get_tile()
+                if t2 and t2 != t: break
+        nt = get_tile()
+        if nt and nt[0]==26 and nt[1]==5: break
+
+# Step 3: Enter building
+inject_key(0x44, 0x20); time.sleep(3)  # D = enter
+for _ in range(8):
+    inject_key(0x20, 0x39); time.sleep(1.5)  # Space inside building
+```
+
+### Known Issues
+
+1. **`bt_inject_key` writes to wrong buffer**: Returns `Success=True` but writes to C# internal BIOS keyboard buffer, NOT to standard BIOS BDA at 0x0040:0x001E. The Spice86 INT 16h handler reads from the BDA buffer, so injected keys are silently lost.
+2. **MCP `tools/list` returns 0 after extended runtime**: After >1B emulation cycles, `tools/list` may return empty tool array. Individual tools (by name) still work. Restart emulator to restore.
+3. **`bt_get_state` cursor fields sometimes None**: `bt_read_memory` at DS=0x1DE9 offset 0xA44B is more reliable for cursor position.
 
 ### Project Location
 
