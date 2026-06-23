@@ -1,7 +1,7 @@
 # Agent Instructions — BattleTech CHI Rebuild
 
-> **Phase 5 ANM Integration** (2026-06-16): AnmPlayer + BorderPanel + BldAnmMap shipped.
-> Next priorities: Runtime ANM decompression, 135D dispatch tables, combat mech panel ANM.
+> **Phase 5 Stock Market Analysis** (2026-06-22): Cases 0x2A/0x2B verified via Reko decompilation — cursor-coord seeded on first visit, source-table copy on subsequent visits. `w014A=2` freeze flag identified as boot blocker.
+> Next priorities: Fix game init freeze (w014A=2) for COMSTAR entry, implement stock market in Godot.
 
 ## ⚠️ Documentation Priority Rule
 
@@ -29,13 +29,13 @@ cd BattleTechCHI && bash build.sh
 # Build Spice86-based emulator (UNBATTLETECH)
 dotnet build UNBATTLETECH.csproj
 
-# Run emulator (headless, verbose, with MCP on port 8081)
+# Run emulator (headless, with MCP on port 8081)
 # Always kill stale ports first — port 20000 (HTTP API) holds over from prior runs
 fuser -k 20000/tcp 8081/tcp 2>/dev/null
 dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
   --Exe "/home/velteyn/projects/Reversing/BATTLETECH_CHI/UNBTECH.exe" \
   --CDrive "/home/velteyn/projects/Reversing/BATTLETECH_CHI/" \
-  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui --VerboseLogs
+  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui
 ```
 
 ## Godot Binary
@@ -120,8 +120,8 @@ Combat lives in `BattleTechCHI/Scripts/Combat/` — 5 files, fully reworked from
 | 0x27 | TRIGGER_ACTION | Emits `ActionTriggered` event (mode trigger 0x01) |
 | 0x28 | DISPATCH_11B8_152F | Emits `RenderingRequested("11B8_152F")`, sets bD334=1 |
 | 0x29 | COMBAT_HEAL | Heal 4 party members |
-| 0x2A | SAVE_POSITIONS | Emits `SaveRequested` event |
-| 0x2B | RESTORE_POSITIONS | Emits `RestoreRequested` event |
+| 0x2A | SAVE_POSITIONS | Stock init (first visit): loop 8×, seed StockEntry from cursor coords, bD398=0x77, bD399=i |
+| 0x2B | RESTORE_POSITIONS | Stock refresh (subsequent): load StockEntry[0] from source tables at DS:0x53CA→seg, bD398=0x70, bD399=0xFF |
 | 0x2C | DISPATCH_11B8_1762 | Emits `RenderingRequested("11B8_1762")` for position/state |
 | 0x2D | COMBAT_ENCOUNTER | → Combat |
 | 0x2E | RESTORE_SLOTS | Restore story slots, bD55E = 0 |
@@ -303,7 +303,7 @@ Initial mapping (tune during playtesting — based on frame counts and expected 
 - **tB764** (seg 0x246C, offset 0xB764): Rendering sub-mode controlling font stride/blitter. Set by `fn207F_2CE1`. Values: 0=CGA, 1=EGA planar, 2=VGA text, 3=VGA mode X.
 - **3-pass rendering**: Pass 1 = right panel content (`fn207F_18EF`, 13×12 tile grid), Pass 2 = left panel border (`fn1F3D_06C3`, 3 variants by w4FBA), Pass 3 = text overlay (`fn1E56_03F5`).
 - **Border dispatch** (`fn1F3D_06C3`): Full border (`fn207F_1CB8`) for w4FBA 0/1, narrow text border (`fn207F_1D3A`) for w4FBA 2, text overlay (`fn207F_245C`) for w4FBA 3.
-- **No dynamic full-layout switching** — the 3-pass pipeline structure is constant. Combat/building-entry narrow the left panel via w4FBC (80px→4px). Special screens like the protection quiz, stat/inventory (`fn0800_3D40`), and title sequences use `w014A=1` to suspend normal refresh and render directly to VRAM with their own layout.
+- **No dynamic full-layout switching** — the 3-pass pipeline structure is constant. Combat/building-entry narrow the left panel via w4FBC (80px→4px). Special screens like the protection quiz, stat/inventory (`fn0800_3D40`), and title sequences use `w014A=1` to suspend normal refresh and render directly to VRAM with their own layout. Value `w014A=2` also exists — suspends ALL processing including timer decrements, key dispatch, and economy ticks. Used during building transition/loading screens. Discovered empirically: game stuck at tile (27,6) with w014A=2 after consuming building-entry dialog.
 
 **Current rebuild** (`ViewportManager.cs`):
 - Uses a pragmatic `SetLayout()` approach that maps our Godot `GameMode` enum to layout presets, approximating the visual result of the original's w4FBA/w4FBC system.
@@ -589,7 +589,7 @@ fuser -k 20000/tcp 8081/tcp 2>/dev/null
 dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
   --Exe "/home/velteyn/projects/Reversing/BATTLETECH_CHI/UNBTECH.exe" \
   --CDrive "/home/velteyn/projects/Reversing/BATTLETECH_CHI/" \
-  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui --VerboseLogs
+  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui
 
 # Query available tools (use Python http.client — curl fails on SSE chunked)
 python3 -c "
@@ -649,77 +649,88 @@ Spice86 loads `BTECH.EXE` (compressed — decompression stub runs first in emula
 
 **Observed**: Injecting (4, 3) + Space×8 gets you to the world map at tile (34,12) reliably. The game auto-selects an option after enough Space presses.
 
+**⚠️ "Continue Game" with no save → blank state**: When `Space` at the main menu selects "Continue Game" but no save data exists, the game boots to a world map with `Credits=0`, `StateArray[0..31]=0`, and movement partially broken (W/X/Numpad keys may work, Q/A/D/E/Z/C may not). NEW_GAME_INIT (case 0x23) never runs. To get a proper initialized game, either:
+  - Use ~18+ Spaces total to navigate through "Continue Game" → auto-detect no save → start new game → advance intro dialogs, OR
+  - Navigate to tile (26,5) to trigger TRAINING.BLD which runs NEW_GAME_INIT, OR  
+  - Manually write `Credits=1500` via HTTP API PUT and set StateArray entries
+
 ### Keyboard Injection (RELIABLE)
 
 `bt_inject_key` returns `Success=True` but writes to a **C# internal buffer**, NOT the standard BIOS BDA buffer at `0x0040:0x001E`. The Spice86 INT 16h handler reads from the standard BDA buffer, so `bt_inject_key` is **unreliable** for game key input.
 
-**Proven reliable technique**: Use MCP `pause_emulator` + HTTP API `PUT /api/memory/{addr}/byte` to write the BIOS buffer directly:
+**Proven reliable technique**: Use HTTP API `POST /api/status/pause` (port 20000, ALWAYS available) + PUT to write BDA directly. MCP port 8081 is flaky (~50% bind rate) — avoid it for key injection.
 
 ```python
 import http.client, json, time
 
-def mcp_call(name, args=None):
-    conn = http.client.HTTPConnection("localhost", 8081, timeout=30)
-    body = json.dumps({"jsonrpc":"2.0","id":1,"method":"tools/call",
-        "params":{"name":name,"arguments":args or {}}})
-    conn.request("POST", "/mcp/", body=body,
-        headers={"Content-Type":"application/json","Accept":"application/json"})
-    resp = conn.getresponse()
-    raw = resp.read().decode()
-    for line in raw.split('\n'):
-        if line.startswith('data: '):
-            return json.loads(line[6:])
-    return {}
+def api_get(addr, length):
+    c = http.client.HTTPConnection("localhost", 20000, timeout=5)
+    c.request("GET", f"/api/memory/{addr}/range/{length}")
+    return json.loads(c.getresponse().read()).get('values', [])
 
 def api_put(addr, val):
-    conn = http.client.HTTPConnection("localhost", 20000, timeout=10)
-    conn.request("PUT", f"/api/memory/{addr}/byte",
+    c = http.client.HTTPConnection("localhost", 20000, timeout=5)
+    c.request("PUT", f"/api/memory/{addr}/byte",
         body=json.dumps({"value": val}),
         headers={"Content-Type": "application/json"})
-    conn.getresponse().read()
+    c.getresponse().read()
 
-def inject_key(ascii, scan):
-    # 1. Pause emulator via MCP
-    mcp_call("pause_emulator", {})
-    time.sleep(0.02)
-    # 2. Clear BIOS keyboard buffer (32 bytes at 0x041E)
-    BUF = 0x041E  # first byte of buffer
-    #    Set head=tail=0x041E (empty buffer)
-    api_put(0x041A, BUF & 0xFF)        # head LSB
-    api_put(0x041B, (BUF >> 8) & 0xFF) # head MSB
-    api_put(0x041C, BUF & 0xFF)        # tail LSB
-    api_put(0x041D, (BUF >> 8) & 0xFF) # tail MSB
-    # 3. Write key code at buffer start
-    api_put(BUF, ascii)      # ASCII code
-    api_put(BUF + 1, scan)   # PC scan code
-    # 4. Set tail = BUF+2 (one entry available)
-    tail = BUF + 2
-    api_put(0x041C, tail & 0xFF)
-    api_put(0x041D, (tail >> 8) & 0xFF)
-    time.sleep(0.02)
-    # 5. Resume emulator — game reads key atomically
-    mcp_call("resume_emulator", {})
-    time.sleep(0.3)
+def api_post(path, body=None):
+    c = http.client.HTTPConnection("localhost", 20000, timeout=5)
+    c.request("POST", path or "/api/status/pause", body=body or "{}",
+        headers={"Content-Type": "application/json"})
+    return json.loads(c.getresponse().read().decode())
+
+def inject_key(ascii, scan, wait=0.3):
+    # 1. Pause emulator via HTTP API (reliable on port 20000)
+    api_post("/api/status/pause")
+    time.sleep(0.01)
+    # 2. Read current head/tail from BDA
+    meta = api_get(0x041A, 4)
+    tail = meta[2] | (meta[3] << 8)
+    # 3. Calculate next buffer slot (32-byte ring at 0x041E-0x043E)
+    next_tail = 0x041E + ((tail - 0x041E + 2) % 32)
+    # 4. Write key code at current tail
+    api_put(tail, ascii)        # ASCII code
+    api_put(tail + 1, scan)     # PC scan code
+    # 5. Set tail = next slot
+    api_put(0x041C, next_tail & 0xFF)
+    api_put(0x041D, (next_tail >> 8) & 0xFF)
+    time.sleep(0.01)
+    # 6. Resume emulator — game reads key atomically
+    api_post("/api/status/unpause")
+    time.sleep(wait)
+
+# Example: inject A (West)
+inject_key(0x41, 0x1E)
 ```
+
+The BDA head pointer auto-advances when the INT 16h handler dequeues the key. The buffer is 32 bytes (16 slots) at 0x041E-0x043E. Key entries are (ASCII, scan) pairs written at the tail pointer, then tail += 2 wrapping modulo 32.
 
 The key is consumed because the INT 16h busy-loop checks head != tail immediately after resume, dequeues the key, and returns it to the game. The buffer clears itself (head advances to catch up with tail).
 
 ### World Map Movement
 
-The world map uses a **hex-grid** with 6 directional keys (NOT arrow keys). Building entry at a tile uses `D` (East key) — the game's east movement doubles as the "door/enter" action.
+The world map uses a **hex-grid**. Building entry at a tile uses `D` (East key) — the game's east movement doubles as the "door/enter" action.
 
-**Key mappings and observed deltas** (depend on position parity):
+**Key mappings** from original game reference:
 
-| Key | ASCII | Scan | Named Dir | Observed Effect |
-|-----|-------|------|-----------|-----------------|
-| Q   | 0x51  | 0x10 | Northwest | (-1,-1) or (0,-1) or (-1,0) — depends on parity |
-| E   | 0x45  | 0x12 | Northeast | (+1,-1) or (0,-1) |
-| A   | 0x41  | 0x1E | West      | (-1,0) always |
-| D   | 0x44  | 0x20 | East      | (+1,0) always (also "enter building") |
-| Z   | 0x5A  | 0x2C | Southwest | (-1,+1) or (0,+1) |
-| C   | 0x43  | 0x2E | Southeast | (+1,+1) or (0,+1) |
+| Key | ASCII | Scan | Named Dir | Notes |
+|-----|-------|------|-----------|-------|
+| Q   | 0x51  | 0x10 | Northwest | Behavior is **position-dependent** — often works as West (0,-1) but can fail from some tiles |
+| W   | 0x57  | 0x11 | North     | (0,-1) reliably from tested positions |
+| E   | 0x45  | 0x12 | Northeast | Position-dependent |
+| A   | 0x41  | 0x1E | West      | Often fails to move from many positions |
+| S   | 0x53  | 0x1F | South     | (±1,-1) from some positions, may work where others fail |
+| D   | 0x44  | 0x20 | East      | Also "enter building" at entrance tiles |
+| Z   | 0x5A  | 0x2C | Southwest | Position-dependent |
+| X   | 0x58  | 0x2D | South     | (0,+1) reliably from tested positions |
+| C   | 0x43  | 0x2E | Southeast | Position-dependent |
+| 1   | 0x31  | 0x02 | Numpad 1  | (+1,0) from some positions |
 
-The hex grid delta depends on the Y coordinate parity (even vs odd rows) and potentially the X parity as well. D and A are always (±1,0). Diagonal keys vary by row parity. Bookmark `fn207F_0581` in the decompiled C to reverse-engineer the exact formula.
+**Empirical findings** (June 2026): W (North) and X (South) are the most reliable directional keys. Q (West) and D (East) work from some positions but not all. The hex grid delta formula in `fn207F_0581` may encode additional facing/direction state in the high bits of raw cursor coordinates (bits 14-15 of raw Y at DS:0xA44B). The block of keys Q/A/E/D/Z/C seems tied to a "hex move" path that can fail when the game is in a degraded state (Continue Game with no save).
+
+**Fallback navigation strategy**: When Q (NW) doesn't move, try W (N), X (S), 1 (E), S (SE-ish), then cycle back to Q. Some keys unstick the cursor where others fail.
 
 **Navigation algorithm** (proven to work from any start near (34,12) to (26,5)):
 1. Get current tile via `read_memory` at DS=0x1DE9 offset 0xA44B (4 bytes, 2× uint16 LE)
@@ -765,44 +776,43 @@ Full workflow: boot game → world map → navigate to (26,5) → enter training
 ```python
 import http.client, json, time
 
-def mcp_call(name, args=None):
-    conn = http.client.HTTPConnection("localhost", 8081, timeout=30)
-    body = json.dumps({"jsonrpc":"2.0","id":1,"method":"tools/call",
-        "params":{"name":name,"arguments":args or {}}})
-    conn.request("POST", "/mcp/", body=body,
-        headers={"Content-Type":"application/json","Accept":"application/json"})
-    resp = conn.getresponse()
-    raw = resp.read().decode()
-    for line in raw.split('\n'):
-        if line.startswith('data: '):
-            return json.loads(line[6:])
-    return {}
+def api_get(addr, length):
+    c = http.client.HTTPConnection("localhost", 20000, timeout=5)
+    c.request("GET", f"/api/memory/{addr}/range/{length}")
+    return json.loads(c.getresponse().read()).get('values', [])
 
 def api_put(addr, val):
-    conn = http.client.HTTPConnection("localhost", 20000, timeout=10)
-    conn.request("PUT", f"/api/memory/{addr}/byte",
+    c = http.client.HTTPConnection("localhost", 20000, timeout=5)
+    c.request("PUT", f"/api/memory/{addr}/byte",
         body=json.dumps({"value": val}),
         headers={"Content-Type": "application/json"})
-    conn.getresponse().read()
+    c.getresponse().read()
 
-def inject_key(ascii, scan):
-    mcp_call("pause_emulator", {}); time.sleep(0.02)
-    BUF = 0x041E
-    for addr, val in [(0x041A, BUF&0xFF), (0x041B, (BUF>>8)&0xFF),
-                      (0x041C, BUF&0xFF), (0x041D, (BUF>>8)&0xFF)]:
-        api_put(addr, val)
-    api_put(BUF, ascii); api_put(BUF+1, scan)
-    tail = BUF + 2
-    api_put(0x041C, tail&0xFF); api_put(0x041D, (tail>>8)&0xFF)
-    time.sleep(0.02)
-    mcp_call("resume_emulator", {}); time.sleep(0.3)
+def api_post(path):
+    c = http.client.HTTPConnection("localhost", 20000, timeout=5)
+    c.request("POST", path, body="{}",
+        headers={"Content-Type": "application/json"})
+    return json.loads(c.getresponse().read().decode())
+
+phys = 0x1DE90  # game data segment physical base
+
+def inject_key(ascii, scan, wait=0.3):
+    api_post("/api/status/pause"); time.sleep(0.01)
+    meta = api_get(0x041A, 4)
+    tail = meta[2] | (meta[3] << 8)
+    next_tail = 0x041E + ((tail - 0x041E + 2) % 32)
+    api_put(tail, ascii)
+    api_put(tail + 1, scan)
+    api_put(0x041C, next_tail & 0xFF)
+    api_put(0x041D, (next_tail >> 8) & 0xFF)
+    time.sleep(0.01)
+    api_post("/api/status/unpause"); time.sleep(wait)
 
 def get_tile():
-    r = mcp_call("read_memory", {"segment":0x1DE9, "offset":0xA44B, "length":4})
-    data = r.get('result',{}).get('structuredContent',{}).get('Data','')
-    if data and len(data) >= 4:
-        vals = [int(data[i:i+2], 16) for i in range(0, len(data), 2)]
-        rx, ry = vals[0]|vals[1]<<8, vals[2]|vals[3]<<8
+    tile = api_get(phys + 0xA44B, 4)
+    if tile and len(tile) >= 4:
+        rx = tile[0] | (tile[1] << 8)
+        ry = tile[2] | (tile[3] << 8)
         return ((rx & 0x7F) >> 1, (ry & 0x7F) >> 1, rx, ry)
     return None
 
@@ -839,6 +849,8 @@ for _ in range(8):
 1. **`bt_inject_key` writes to wrong buffer**: Returns `Success=True` but writes to C# internal BIOS keyboard buffer, NOT to standard BIOS BDA at 0x0040:0x001E. The Spice86 INT 16h handler reads from the BDA buffer, so injected keys are silently lost.
 2. **MCP `tools/list` returns 0 after extended runtime**: After >1B emulation cycles, `tools/list` may return empty tool array. Individual tools (by name) still work. Restart emulator to restore.
 3. **`bt_get_state` cursor fields sometimes None**: `bt_read_memory` at DS=0x1DE9 offset 0xA44B is more reliable for cursor position.
+4. **Game freeze during boot**: The game sets `w014A=2` (suspend ALL processing) and `w0152=4` (disable input) during mode transitions (intro→menu, menu→world map). If frozen, write 0 to both: `api_put(phys+0x14A, 0)` then `api_put(phys+0x152, 0)`. Clear keyboard buffer too: set `head=tail=0x041E` at 0x041A-0x041D.
+5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/D/E/Z/C may not). Fix: manually set `Credits=1500` and navigate to tile (26,5) for TRAINING.BLD, or restart and try to select New Game.
 
 ### Project Location
 

@@ -2027,8 +2027,8 @@ Called from BLD opcode `0xF5` and various game functions. All 47 cases present.
 | `0x27` | TRIGGER_ACTION | Call `fn1467_0002(0x01)` — mode trigger |
 | `0x28` | DISPATCH_11B8_152F | Call `fn11B8_152F`, optionally set `bD334=1` |
 | `0x29` | COMBAT_HEAL | Apply RNG damage/healing to party: `heal = (RNG&1 + 6) * unit_max`, capped at current damage |
-| `0x2A` | SAVE_POSITIONS | Save unit positions (X to `0x4024[]`, Y to `0x4056[]`) + COMSTAR state |
-| `0x2B` | RESTORE_POSITIONS | Restore positions from saved arrays (`0x4024`/`0xD390` for X, `0x4056`/`0xD392` for Y) |
+| `0x2A` | SAVE_POSITIONS | Stock init (first COMSTAR visit): loop 8×, seed StockEntry from cursor coords, bD398=0x77, bD399=i |
+| `0x2B` | RESTORE_POSITIONS | Stock refresh (subsequent): load StockEntry[0] from source tables via DS:0x53CA→seg, bD398=0x70, bD399=0xFF |
 | `0x2C` | DISPATCH_11B8_1762 | Position/state management via `fn11B8_1762` |
 | `0x2D` | COMBAT_ENCOUNTER | **Combat transition**: set `w4FBC = 1` (narrow left panel 80px→4px), setup viewport, template load, border draw |
 | `0x2E` | RESTORE_SLOTS | Restore 4 story slots from temporary backup, update `bD55E`, call `fn1467_0002` |
@@ -2502,17 +2502,44 @@ At segment `0FDC:15E6`. Called from case 0x0B for mech component purchase and fr
 
 #### Stock Market (COMSTAR)
 
-The stock market simulation handles 3 tickers (DefHes, NasDiv, BakPhar) via data fields at the 0x569E segment struct:
-- `wD390`/`wD392`: Stock value arrays (stride 0x1A = 26 bytes per stock)
-- `wD394`/`wD396`: Additional stock fields (alternate value sources)
-- `0x4024`/`0x4056`: Alternate stock value storage
-- `0x4564`/`0x4572`/`0x4596`/`0x45A4`: Source tables for stock values
+The stock market simulation handles 3 tickers (DefHes, NasDiv, BakPhar) via a struct array at `DS:0xD390` (stride 0x1A = 26 bytes per stock), accessed via selector at `DS:0x538A`:
 
-**Case 0x2A (42) — Stock init**: Loops 8 stocks, copies cursor coordinates (`A44B`, `A44D`) as seed values into both `0x4024`/`0x4056` and `D390`/`D392` arrays. Sets type byte to 0x77.
+```
+StockEntry (26 bytes, stride 0x1A):
++0x00: wD390  (uint16) — Stock price / primary value
++0x02: wD392  (uint16) — Price component / secondary value (from 0x45A4)
++0x04: wD394  (uint16) — First data field (from 0x4564)
++0x06: wD396  (uint16) — Second data field (from 0x4596)
++0x08: bD398  (byte)   — Trend/type byte: 0x77 on first visit, 0x70 on subsequent visits
++0x09: bD399  (byte)   — Active flag: loop index (0-7) on first visit, 0xFF on subsequent visits
++0x0A-0x19: (20 bytes) — Unknown/unused padding
+```
 
-**Case 0x2B (43) — Stock refresh**: Reads values from source tables at `0x4572`/`0x45A4`, copies to `0x4024`/`0x4056` and `D390`/`D392`. Sets `wD394`/`wD396` from `0x4564`/`0x4596`. Sets type byte to 0x70.
+**Economy timer bD323** at `DS:0xD323`: Decremented each game tick (approximately 3 in-game days per wrap). When wrapping from 0 to 0xFF, triggers the economy display update in the main loop. This update does NOT modify stock values — it only formats and displays the current values using generic math utilities. Stock values only change on COMSTAR entry/refresh (see cases below).
 
-The market "fluctuation" is driven by per-visit randomization when entering COMSTAR — values are refreshed from source tables each visit. No continuous price simulation tick.
+**Case 0x2A (42) — Stock init (first COMSTAR visit)**: Called from COMSTAR BLD. Verified via Reko pseudocode (line 24435). Iterates 8 entries:
+1. For each stock `i` (0..7):
+   - Copies **raw cursor X** (full uint16 at `A44B`, NOT masked/tile-converted) to `wD390[i]` (StockEntry stride 0x1A) and `0x4024[i*2]` (separate WORD array)
+   - Copies **raw cursor Y** (full uint16 at `A44D`) to `wD392[i]` and `0x4056[i*2]`
+   - Sets `bD398[i] = 0x77` (constant trend byte — NOT from table_3768)
+   - Sets `bD399[i] = i` (active flag = loop index, NOT 0x01)
+   - Increments `A44D` by 1 (cursor Y + 1, positions for next entry)
+2. After loop exits, cursor is at (start_X, start_Y + 8)
+
+**Case 0x2B (43) — Stock refresh (subsequent COMSTAR visits)**: Verified via Reko pseudocode (line 24457). Sets only **StockEntry[0]** (not a loop):
+1. Reads segment selector from `DS:0x53CA` (at runtime → seg 0x0D00)
+2. Copies `w4572` (from that segment) → `wD390[0]` and `0x4024[0]`
+3. Copies `w45A4` (from that segment) → `wD392[0]` and `0x4056[0]`
+4. Copies `w4564` (from that segment) → `wD394[0]`
+5. Copies `w4596` (from that segment) → `wD396[0]`
+6. Sets `bD398[0] = 0x70` (constant, not 0x77)
+7. Sets `bD399[0] = 0xFF` (~0x00, all flags set)
+
+Source tables at `0x4564`, `0x4572`, `0x4596`, `0x45A4` are NOT in the COMSTAR BLD file (BLD is only ~2267 bytes, too small for these offsets). They are accessed via indirection through `DS:0x53CA → segment 0x0D00`, which is populated at runtime by code in segment 0x0D00. The EXE binary at physical address 0x11564 (seg 0x0D00:0x4564) contains x86 code bytes, not pre-populated data — confirming runtime population.
+
+**The market "fluctuation" has two modes**: (1) First visit seeds all 8 stock entries from cursor coordinates as pseudo-random values; (2) Subsequent visits load only entry[0] from source tables populated by code in segment 0x0D00. The bD323 timer only controls when stock VALUES ARE DISPLAYED on screen, not when they change. There is no continuous price simulation tick.
+
+**Correction**: `fn207F_3D1C`/`3D44`/`3D6C` are **not** stock-specific update functions — they are generic 32-bit math wrappers (`fn207F_3E2E`=multiply, `fn207F_3E62`=divide, `fn207F_3EC4`=shift-right) used during the economy display phase to format numeric values for on-screen rendering.
 
 ### 17.12 Player Interface System
 
@@ -2649,11 +2676,19 @@ fn0800_0000(wArg04):
         Decrement: bD323 (economy/production timer, 3-day cycle)
         
         // ══════════ PHASE 4: ECONOMY ══════════
-        When bD323 expires:
-            fn0800_29F5() / fn1631_1FDF()   // Credit display update
-            if (bD310 == 0):                 // World map active
-                For 3 stock tickers:
-                    fn207F_3D1C/3D44/3D6C    // Stock price update (RNG+coefficient)
+        When bD323 wraps (0→0xFF):
+            Calculate (credits + inventory_value) threshold
+            if (bD310 == 0):                 // Building NOT active
+                fn0800_29F5()                // Threshold check → add 15 credits
+                fn1631_1FDF()                // Credit amount display update
+            if (bD310 == 0):                 // World map NOT active (2nd check)
+                fn0800_29F5()                // Different threshold check
+                For 3 stock tickers (0-2):
+                    Check player-owns-stock flag at segment[D30C+0x2A2][i]
+                    if owned:  fn207F_3D1C/3D44 → format actual stock value for display
+                    if !owned: fn207F_3D1C/3D44 → format default value 110
+                    // fn207F_3D1C/3D44/3D6C are generic 32-bit math wrappers
+                    // (mul at 3E2E, div at 3E62, shr at 3EC4), NOT stock-specific
             Decrement economy timers
         
         // ══════════ PHASE 5: ANIMATION + RENDER + BORDER ══════════
