@@ -16,6 +16,10 @@ Do not implement new features if they are based on incorrect documentation assum
 
 ## Build & Run
 
+> **Log disk space**: Each emulator run appends to `/tmp/emu.log` (Spice86 full JSON
+> trace). That file can grow **many GB** in minutes. Either truncate it between runs
+> (`: > /tmp/emu.log`) or redirect to `/dev/null` if you don't need the trace.
+
 ```bash
 # Build C# (fast, catches compile errors)
 cd BattleTechCHI && dotnet build
@@ -32,6 +36,7 @@ dotnet build UNBATTLETECH.csproj
 # Run emulator (headless, with MCP on port 8081)
 # Always kill stale ports first — port 20000 (HTTP API) holds over from prior runs
 fuser -k 20000/tcp 8081/tcp 2>/dev/null
+: > /tmp/emu.log  # truncate before run to save disk space
 dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
   --Exe "/home/velteyn/projects/Reversing/BATTLETECH_CHI/UNBTECH.exe" \
   --CDrive "/home/velteyn/projects/Reversing/BATTLETECH_CHI/" \

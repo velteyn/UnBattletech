@@ -46,14 +46,16 @@ public static class BldLoader
 
     /// <summary>
     /// Decripta i byte del BLD in-place.
-    /// Original encryption: ((plain + 41) & 0xFF) ^ 233
-    /// Inverse (decryption): ((cipher ^ 233) - 41) & 0xFF
+    /// Encryption (original game stores data this way):
+    ///   encrypted[i] = ((plain[i] ^ 233) - 41) & 0xFF
+    /// Decryption (what we apply at runtime):
+    ///   plain[i] = ((encrypted[i] + 41) & 0xFF) ^ 233
     /// </summary>
     public static void DecryptInPlace(byte[] data)
     {
         for (int i = 0xA0; i < data.Length; i++)
         {
-            data[i] = (byte)((data[i] ^ 233) - 41);
+            data[i] = (byte)((data[i] + 41) ^ 233);
         }
     }
 
