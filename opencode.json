@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "spice86-battletech": {
+      "type": "remote",
+      "url": "http://localhost:8086/mcp",
+      "enabled": true
+    }
+  }
+}

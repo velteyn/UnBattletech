@@ -1,6 +1,6 @@
 # Agent Instructions — BattleTech CHI Rebuild
 
-> **Phase 5 Stock Market Analysis** (2026-06-22): Cases 0x2A/0x2B verified via Reko decompilation — cursor-coord seeded on first visit, source-table copy on subsequent visits. `w014A=2` freeze flag identified as boot blocker.
+> **Phase 6 — MCP Transport Fix** (2026-06-24): MCP server now reliably binds via `UseUrls()`, uses `StartAsync() + ManualResetEvent` for background thread keep-alive. Custom GET `/mcp/` handler returns SSE `endpoint` event for opencode remote MCP compatibility. Port changed to 8086 (was 8081).
 > Next priorities: Fix game init freeze (w014A=2) for COMSTAR entry, implement stock market in Godot.
 
 ## ⚠️ Documentation Priority Rule
@@ -33,14 +33,23 @@ cd BattleTechCHI && bash build.sh
 # Build Spice86-based emulator (UNBATTLETECH)
 dotnet build UNBATTLETECH.csproj
 
-# Run emulator (headless, with MCP on port 8081)
+# Run emulator (headless, with MCP on port 8086)
 # Always kill stale ports first — port 20000 (HTTP API) holds over from prior runs
-fuser -k 20000/tcp 8081/tcp 2>/dev/null
+fuser -k 20000/tcp 8086/tcp 2>/dev/null
 : > /tmp/emu.log  # truncate before run to save disk space
 dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
   --Exe "/home/velteyn/projects/Reversing/BATTLETECH_CHI/UNBTECH.exe" \
   --CDrive "/home/velteyn/projects/Reversing/BATTLETECH_CHI/" \
-  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui
+  --HeadlessMode Minimal --McpHttpPort 8086 --NoGui
+
+# Quick start (with MCP):
+: > /tmp/emu.log && nohup dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
+  --Exe "/home/velteyn/projects/Reversing/BATTLETECH_CHI/UNBTECH.exe" \
+  --CDrive "/home/velteyn/projects/Reversing/BATTLETECH_CHI/" \
+  --HeadlessMode Minimal --McpHttpPort 8086 --NoGui > /tmp/emu.out 2>&1 &
+
+# Test MCP (GET returns SSE `endpoint` event, POST accepts JSON-RPC):
+curl -s -m 5 -H "Accept: text/event-stream" http://localhost:8086/mcp/
 ```
 
 ## Godot Binary
@@ -588,58 +597,23 @@ All tools use **DS-relative addressing** `(DS << 4) + offset` at runtime rather 
 
 ```bash
 # Kill stale ports from prior runs (port 20000 blocks startup)
-fuser -k 20000/tcp 8081/tcp 2>/dev/null
+fuser -k 20000/tcp 8086/tcp 2>/dev/null
 
-# Start Spice86 with MCP server on port 8081
+# Start Spice86 with MCP server on port 8086
 dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
   --Exe "/home/velteyn/projects/Reversing/BATTLETECH_CHI/UNBTECH.exe" \
   --CDrive "/home/velteyn/projects/Reversing/BATTLETECH_CHI/" \
-  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui
+  --HeadlessMode Minimal --McpHttpPort 8086 --NoGui
 
-# Query available tools (use Python http.client — curl fails on SSE chunked)
-python3 -c "
-import http.client, json
-conn = http.client.HTTPConnection('localhost', 8081, timeout=30)
-body = json.dumps({'jsonrpc':'2.0','id':1,'method':'tools/list'})
-conn.request('POST', '/mcp/', body=body,
-    headers={'Content-Type':'application/json','Accept':'application/json'})
-resp = conn.getresponse()
-for line in resp.read().decode().split('\n'):
-    if line.startswith('data: '):
-        print(json.dumps(json.loads(line[6:]), indent=2)[:2000])
-"
+# Test MCP is alive (GET returns SSE `endpoint` event):
+curl -s -m 5 -H "Accept: text/event-stream" http://localhost:8086/mcp/
+# Expected: event: endpoint\ndata: /mcp/\n
 
-# Read game state (MCP bt_get_state — reliable, but cursor fields may be None)
-python3 -c "
-import http.client, json
-c=http.client.HTTPConnection('localhost',8081,timeout=30)
-c.request('POST','/mcp/',json.dumps({'jsonrpc':'2.0','id':1,'method':'tools/call','params':{'name':'bt_get_state','arguments':{}}}),
-    headers={'Content-Type':'application/json','Accept':'application/json'})
-for l in c.getresponse().read().decode().split('\n'):
-    if l.startswith('data: '): print(json.dumps(json.loads(l[6:]),indent=2)[:2000])
-"
-
-# Get cursor position via read_memory (RELIABLE — works at DS=0x1DE9)
-python3 -c "
-import http.client, json
-c=http.client.HTTPConnection('localhost',8081,timeout=30)
-c.request('POST','/mcp/',json.dumps({'jsonrpc':'2.0','id':1,'method':'tools/call',
-    'params':{'name':'read_memory','arguments':{'segment':0x1DE9,'offset':0xA44B,'length':4}}}),
-    headers={'Content-Type':'application/json','Accept':'application/json'})
-for l in c.getresponse().read().decode().split('\n'):
-    if l.startswith('data: '):
-        d=json.loads(l[6:]).get('result',{}).get('structuredContent',{}).get('Data','')
-        vals=[int(d[i:i+2],16) for i in range(0,len(d),2)]
-        rx=vals[0]|vals[1]<<8; ry=vals[2]|vals[3]<<8
-        tx=(rx&0x7F)>>1; ty=(ry&0x7F)>>1
-        print(f'tile=({tx},{ty}) raw=({rx},{ry})')
-"
-
-# ⚠️ bt_inject_key is UNRELIABLE — returns Success=True but writes to C# internal
-#    BIOS keyboard buffer, NOT to standard BIOS BDA memory at 0x0040:0x001E.
-#    The Spice86 INT 16h handler reads from the standard BDA buffer, not the
-#    C# buffer. Keys injected via bt_inject_key may NOT be consumed by the game.
-#    See "Keyboard Injection (RELIABLE)" below for the proven technique.
+# Query available tools (via POST):
+curl -s -m 10 -X POST http://localhost:8086/mcp/ \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
 
 ### Game Startup Sequence (Verified)
@@ -663,7 +637,7 @@ Spice86 loads `BTECH.EXE` (compressed — decompression stub runs first in emula
 
 `bt_inject_key` returns `Success=True` but writes to a **C# internal buffer**, NOT the standard BIOS BDA buffer at `0x0040:0x001E`. The Spice86 INT 16h handler reads from the standard BDA buffer, so `bt_inject_key` is **unreliable** for game key input.
 
-**Proven reliable technique**: Use HTTP API `POST /api/status/pause` (port 20000, ALWAYS available) + PUT to write BDA directly. MCP port 8081 is flaky (~50% bind rate) — avoid it for key injection.
+**Proven reliable technique**: Use HTTP API `POST /api/status/pause` (port 20000, ALWAYS available) + PUT to write BDA directly. Use MCP port 8086 for tool queries.
 
 ```python
 import http.client, json, time
@@ -855,7 +829,8 @@ for _ in range(8):
 2. **MCP `tools/list` returns 0 after extended runtime**: After >1B emulation cycles, `tools/list` may return empty tool array. Individual tools (by name) still work. Restart emulator to restore.
 3. **`bt_get_state` cursor fields sometimes None**: `bt_read_memory` at DS=0x1DE9 offset 0xA44B is more reliable for cursor position.
 4. **Game freeze during boot**: The game sets `w014A=2` (suspend ALL processing) and `w0152=4` (disable input) during mode transitions (intro→menu, menu→world map). If frozen, write 0 to both: `api_put(phys+0x14A, 0)` then `api_put(phys+0x152, 0)`. Clear keyboard buffer too: set `head=tail=0x041E` at 0x041A-0x041D.
-5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/D/E/Z/C may not). Fix: manually set `Credits=1500` and navigate to tile (26,5) for TRAINING.BLD, or restart and try to select New Game.
+5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/E/D/Z/C may not). Fix: manually set `Credits=1500` and navigate to tile (26,5) for TRAINING.BLD, or restart and try to select New Game.
+6. **Port 8081 in TIME_WAIT**: After restarting emulator, port 8081 (or any used MCP port) may be in TIME_WAIT for 60s. Use a different port or wait. Our config uses port 8086.
 
 ### Project Location
 

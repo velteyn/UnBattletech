@@ -75,14 +75,14 @@ Spice86 emulator with 19 BattleTech-specific MCP tools for runtime game state in
 - Read CPU registers and memory
 
 ```bash
-# Start emulator with MCP server on port 8081
+# Start emulator with MCP server on port 8086
 dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
   --Exe "/path/to/BTECH.EXE" \
   --CDrive "/path/to/game/" \
-  --HeadlessMode Minimal --McpHttpPort 8081 --NoGui
+  --HeadlessMode Minimal --McpHttpPort 8086 --NoGui
 
-# Read game state
-curl -s -X POST http://localhost:8081/mcp/ \
+# Read game state (POST JSON-RPC; GET returns SSE endpoint event)
+curl -s -X POST http://localhost:8086/mcp/ \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"bt_get_state","arguments":{}}}'
 ```
