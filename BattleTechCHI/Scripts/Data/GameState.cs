@@ -9,6 +9,7 @@ public class GameState
     {
         for (int i = 0; i < 8; i++) UnitSlots[i] = new UnitSlot();
         for (int i = 0; i < 8; i++) StorySlots[i] = new StorySlot();
+        for (int i = 0; i < 3; i++) StockEntries[i] = new StockEntry();
     }
 
     // === UI Mode ===
@@ -90,6 +91,19 @@ public class GameState
     // Backup of StorySlots[0] (aC724[0], 125 bytes = 0x7D) saved when entering a room,
     // restored when exiting. Maps to the [0x54AA]+0x3780 backup area.
     public byte[] RoomStateBackup { get; set; } = new byte[0x7D];
+
+    // === Stock Market (COMSTAR) ===
+    // 3 stock entries for DefHes, NasDiv, BakPhar at DS:0xD390, stride 0x1A.
+    public StockEntry[] StockEntries { get; set; } = new StockEntry[3];
+
+    // Saved unit positions (SAVE_POSITIONS/RESTORE_POSITIONS backup arrays).
+    // Maps to 0x4024[8] (X words) and 0x4056[8] (Y words).
+    public int[] SavedPosX { get; set; } = new int[8];
+    public int[] SavedPosY { get; set; } = new int[8];
+
+    // Economy ticker timer (bD323): decremented each game tick.
+    // When wrapping 0→0xFF, triggers economy display update.
+    public byte EconomyTimer { get; set; }
 }
 
 /// <summary>
@@ -136,4 +150,18 @@ public class UnitSlot
     /// In the original game, this writes value 3 to C618[slot*17 + handler].
     /// </summary>
     public sbyte HandlerTag { get; set; }
+}
+
+/// <summary>
+/// Stock entry (26 bytes, stride 0x1A) at DS:0xD390.
+/// 3 entries for Defiance Industries, Nashsan Diversified, Baker Pharmaceuticals.
+/// </summary>
+public class StockEntry
+{
+    public ushort Price { get; set; }            // wD390 — primary value / stock price
+    public ushort PriceComponent { get; set; }   // wD392 — secondary value
+    public ushort DataField1 { get; set; }       // wD394 — first data field
+    public ushort DataField2 { get; set; }       // wD396 — second data field
+    public byte TrendByte { get; set; }          // bD398 — 0x77=first visit, 0x70=subsequent
+    public byte ActiveFlag { get; set; }         // bD399 — index (0-2) or 0xFF
 }

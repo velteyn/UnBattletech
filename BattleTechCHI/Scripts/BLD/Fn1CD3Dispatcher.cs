@@ -510,6 +510,19 @@ public static partial class Fn1CD3Dispatcher
         state.Milestone = false;
         for (int i = 0; i < state.StateArray.Length; i++) state.StateArray[i] = 0;
         for (int i = 0; i < state.InventoryQuantities.Length; i++) state.InventoryQuantities[i] = 0;
+        // Initialize stock entries with seed prices
+        for (int i = 0; i < state.StockEntries.Length; i++)
+        {
+            if (state.StockEntries[i] != null)
+            {
+                state.StockEntries[i].Price = (ushort)(100 + i * 50);
+                state.StockEntries[i].PriceComponent = 0;
+                state.StockEntries[i].DataField1 = 0;
+                state.StockEntries[i].DataField2 = 0;
+                state.StockEntries[i].TrendByte = 0;
+                state.StockEntries[i].ActiveFlag = (byte)i;
+            }
+        }
     }
 
     // ── Case 0x24: READ_UNIT_SLOT ──────────────────────────────
@@ -557,18 +570,63 @@ public static partial class Fn1CD3Dispatcher
     }
 
     // ── Case 0x2A: SAVE_POSITIONS ──────────────────────────────
-    // Save unit positions + COMSTAR state to backup arrays
+    // Stock init (first COMSTAR visit): seed 3 stock entries from cursor coords,
+    // save 8 unit positions to backup arrays.
+    // Original: loops 8×, seeds StockEntry from cursor coords for each,
+    // sets bD398=0x77, bD399=i, increments cursor Y.
     static void SavePositions(GameState state)
     {
-        GD.Print("    SAVE_POSITIONS");
+        GD.Print("    SAVE_POSITIONS (seed stock from cursor)");
+        for (int i = 0; i < 8; i++)
+        {
+            // Save position to backup arrays (0x4024[i*2], 0x4056[i*2])
+            if (i < state.SavedPosX.Length)
+            {
+                state.SavedPosX[i] = state.CursorX;
+                state.SavedPosY[i] = state.CursorY;
+            }
+            // Seed stock entries for first 3 iterations
+            if (i < state.StockEntries.Length && state.StockEntries[i] != null)
+            {
+                state.StockEntries[i].Price = (ushort)(state.CursorX & 0xFFFF);
+                state.StockEntries[i].PriceComponent = (ushort)(state.CursorY & 0xFFFF);
+                state.StockEntries[i].DataField1 = 0;
+                state.StockEntries[i].DataField2 = 0;
+                state.StockEntries[i].TrendByte = 0x77;  // first visit marker
+                state.StockEntries[i].ActiveFlag = (byte)i;
+            }
+            // Increment cursor Y for next entry position
+            state.CursorY++;
+        }
+        GD.Print($"    SAVE_POSITIONS done — cursor now ({state.CursorX},{state.CursorY})");
         SaveRequested?.Invoke();
     }
 
     // ── Case 0x2B: RESTORE_POSITIONS ───────────────────────────
-    // Restore positions from backup arrays
+    // Stock refresh (subsequent COMSTAR visits): load StockEntry[0]
+    // from source tables, set bD398=0x70, bD399=0xFF.
+    // Original: copies w4572→wD390[0], w45A4→wD392[0],
+    // w4564→wD394[0], w4596→wD396[0], trend=0x70, flag=0xFF.
     static void RestorePositions(GameState state)
     {
-        GD.Print("    RESTORE_POSITIONS");
+        GD.Print("    RESTORE_POSITIONS (refresh stock entry 0)");
+        if (state.StockEntries.Length > 0 && state.StockEntries[0] != null)
+        {
+            // In the original game, these come from segment 0x0D00 tables
+            // populated at runtime. In our rebuild, we use pseudo-random
+            // fluctuation from the existing price as a refresh mechanism.
+            var e = state.StockEntries[0];
+            // Apply a small pseudo-random price fluctuation
+            int rng = (e.Price * 1103515245 + 12345) & 0xFFFF;
+            e.Price = (ushort)((e.Price + (rng & 0x1F) - 15) & 0xFFFF);
+            if (e.Price < 10) e.Price = 10;
+            e.PriceComponent = (ushort)(rng >> 8);
+            e.DataField1 = (ushort)(rng & 0xFF);
+            e.DataField2 = 0;
+            e.TrendByte = 0x70;  // subsequent visit marker
+            e.ActiveFlag = 0xFF; // all flags set
+        }
+        GD.Print("    RESTORE_POSITIONS done");
         RestoreRequested?.Invoke();
     }
 
