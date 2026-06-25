@@ -171,19 +171,19 @@ Assert(flagState2.StateArray[0x51] == 1, "FlagD451 state[0x51]=1");
 
 // --- BldLoader Decryption ---
 Console.Write("\nBldLoader ");
-// DecryptInPlace: ((c ^ 233) - 41) & 0xFF
-// For input 0x00 at offset 0xA0: ((0 ^ 233) - 41) & 0xFF = (233 - 41) = 192 = 0xC0
+// DecryptInPlace: ((c + 41) & 0xFF) ^ 233
+// For input 0x00 at offset 0xA0: ((0 + 41) ^ 233) & 0xFF = 0xC0
 var decData = new byte[0xA5];
 decData[0xA0] = 0x00;
 decData[0x42] = 0xAB; // pre-0xA0 byte
 BldLoaderDecryptInPlace(decData);
 Assert(decData[0xA0] == 0xC0, $"decrypt 0x00 -> 0x{decData[0xA0]:X2}");
 Assert(decData[0x42] == 0xAB, "pre-0xA0 byte unchanged");
-// Edge: 0xFF at 0xA0: ((255 ^ 233) - 41) & 0xFF = (22 - 41) & 0xFF = 0xED
+// Edge: 0xFF at 0xA0: ((0xFF + 41) ^ 233) & 0xFF = (0x28 ^ 233) = 0xC1
 var decData2 = new byte[0xA5];
 decData2[0xA0] = 0xFF;
 BldLoaderDecryptInPlace(decData2);
-Assert(decData2[0xA0] == 0xED, $"decrypt 0xFF -> 0x{decData2[0xA0]:X2}");
+Assert(decData2[0xA0] == 0xC1, $"decrypt 0xFF -> 0x{decData2[0xA0]:X2}");
 // Empty array (smaller than 0xA0) should not crash
 var smallData = new byte[10];
 BldLoaderDecryptInPlace(smallData); // should do nothing
@@ -226,6 +226,104 @@ Assert(rtState.StorySlots[0].StatusByte == 0x12, $"rt restored StatusByte={rtSta
 Assert(rtState.StorySlots[0].FlagsLow == 0x34, "rt restored FlagsLow");
 Assert(rtState.StorySlots[0].StoryState == 0xDE, "rt restored StoryState");
 Assert(rtState.StorySlots[0].LinkedUnitSlot == 0xAA, "rt restored LinkedUnitSlot");
+
+// ===== STOCK MARKET TEST (COMSTAR.BLD) =====
+Console.Write("\nStock ");
+// Test 1: SavePositions (case 0x2A) — seed stock entries from cursor
+Console.Write("Save ");
+var stockState = new GameState();
+stockState.Credits = 5000;
+stockState.CursorX = 100;
+stockState.CursorY = 200;
+DispatcherSavePositions(stockState);
+Assert(stockState.StockEntries[0].Price == 100, $"entry[0].Price={stockState.StockEntries[0].Price}");
+Assert(stockState.StockEntries[0].PriceComponent == 200, $"entry[0].PriceComponent={stockState.StockEntries[0].PriceComponent}");
+Assert(stockState.StockEntries[0].TrendByte == 0x77, $"trend={stockState.StockEntries[0].TrendByte:X2}");
+Assert(stockState.StockEntries[1].ActiveFlag == 1, $"flag1={stockState.StockEntries[1].ActiveFlag}");
+Assert(stockState.StockEntries[2].ActiveFlag == 2, $"flag2={stockState.StockEntries[2].ActiveFlag}");
+
+// Test 2: RestorePositions (case 0x2B) — refresh stock entry 0
+Console.Write("Restore ");
+var rpState = new GameState();
+rpState.CursorX = 100;
+rpState.CursorY = 200;
+DispatcherSavePositions(rpState);
+ushort origPrice = rpState.StockEntries[0].Price;
+DispatcherRestorePositions(rpState);
+Assert(rpState.StockEntries[0].Price != origPrice, $"price unchanged after refresh");
+Assert(rpState.StockEntries[0].TrendByte == 0x70, $"trend after refresh={rpState.StockEntries[0].TrendByte:X2}");
+Assert(rpState.StockEntries[0].ActiveFlag == 0xFF, $"flag after refresh={rpState.StockEntries[0].ActiveFlag}");
+
+// Test 3: ShowPlayerItems (case 0x06) — populate StateArray[0x18-0x1A]
+Console.Write("Items ");
+var piState = new GameState();
+piState.InventoryQuantities[5] = 3;
+piState.InventoryQuantities[12] = 1;
+piState.InventoryQuantities[20] = 7;
+DispatcherShowPlayerItems(piState);
+Assert(piState.StateArray[0x18] == 5, $"state[0x18]={piState.StateArray[0x18]}");
+Assert(piState.StateArray[0x19] == 12, $"state[0x19]={piState.StateArray[0x19]}");
+Assert(piState.StateArray[0x1A] == 20, $"state[0x1A]={piState.StateArray[0x1A]}");
+
+// Test 4: BuyItemBulk (case 0x07) — buy stock
+Console.Write("Buy ");
+var buyState = new GameState();
+buyState.Credits = 5000;
+buyState.StateArray[0x14] = 0;
+buyState.StateArray[0x18] = 5;
+DispatcherBuyItemBulk(buyState, null);
+Assert(buyState.Credits == 5000 - (5 * 125 + 75), $"credits={buyState.Credits} expected={5000 - (5 * 125 + 75)}");
+Assert(buyState.InventoryQuantities[5] == 1, $"inv[5]={buyState.InventoryQuantities[5]}");
+
+// Test 5: SellItemBulk (case 0x08) — sell stock
+Console.Write("Sell ");
+var sellState = new GameState();
+sellState.Credits = 1000;
+sellState.InventoryQuantities[3] = 1;
+sellState.StateArray[0x14] = 0;
+sellState.StateArray[0x18] = 3;
+DispatcherSellItemBulk(sellState, null);
+Assert(sellState.Credits == 1000 + (3 * 125 + 75) / 2, $"credits={sellState.Credits} expected={1000 + (3 * 125 + 75) / 2}");
+Assert(sellState.InventoryQuantities[3] == 0, $"inv[3]={sellState.InventoryQuantities[3]}");
+
+// Test 6: Full COMSTAR.BLD interpreter run
+Console.Write("\nBLD ");
+string bldPath = "/home/velteyn/projects/Reversing/BATTLETECH_CHI/COMSTAR.BLD";
+var comstarState = new GameState();
+comstarState.Credits = 5000;
+comstarState.CursorX = 100;
+comstarState.CursorY = 200;
+comstarState.TrainingComplete = true;
+comstarState.StorySlots = new StorySlot[8];
+for (int i = 0; i < 8; i++) comstarState.StorySlots[i] = new StorySlot();
+comstarState.UnitSlots = new UnitSlot[8];
+for (int i = 0; i < 8; i++) comstarState.UnitSlots[i] = new UnitSlot();
+comstarState.StorySlots[0].StatusByte = 1;
+comstarState.UnitSlots[0].TypeId = 2;
+comstarState.UnitSlots[0].LinkedStorySlot = 0;
+// Menu 10 choices: 2=Leave terminal (to exit); limit iterations to avoid stock loop
+var bldLines = BldInterpreterRun(bldPath, comstarState, new int[] { 2 }, maxOps: 10000);
+Assert(bldLines.Count > 2, $"bld lines={bldLines.Count}");
+Assert(bldLines.Count(l => l.Contains("ComStar") || l.Contains("terminal") || l.Contains("Adept")) > 0, "expected ComStar text");
+
+// Test 7: Room push/pop state (0x21/0x22)
+Console.Write("Room ");
+var rs = new GameState();
+rs.RoomStateBackup = new byte[0x7D];
+rs.StorySlots = new StorySlot[8];
+for (int i = 0; i < 8; i++) rs.StorySlots[i] = new StorySlot();
+rs.UnitSlots = new UnitSlot[8];
+for (int i = 0; i < 8; i++) rs.UnitSlots[i] = new UnitSlot();
+rs.Credits = 3000;
+rs.StorySlots[0].StoryState = 5;
+rs.UnitSlots[1].TypeId = 7;
+DispatcherDispatch0FDC_1C9B(rs);
+Assert(rs.RoomActive, "room active");
+Assert(rs.StorySlots[0].StoryState == 5, $"story={rs.StorySlots[0].StoryState}");
+Assert(rs.UnitSlots[1].TypeId == 0xFF, "slot1 not cleared");
+DispatcherDispatch0FDC_1A26(rs);
+Assert(!rs.RoomActive, "room not inactive");
+Assert(rs.StorySlots[0].StoryState == 5, $"restored={rs.StorySlots[0].StoryState}");
 
 Console.WriteLine($"\n\nResults: {passed} passed, {failed} failed");
 return failed > 0 ? 1 : 0;
@@ -316,8 +414,458 @@ void DispatcherFlagD451(GameState gs)
 
 void BldLoaderDecryptInPlace(byte[] data)
 {
+    // Must match BldLoader.DecryptInPlace: plain = ((encrypted + 41) & 0xFF) ^ 233
     for (int i = 0xA0; i < data.Length; i++)
-        data[i] = (byte)((data[i] ^ 233) - 41);
+        data[i] = (byte)((data[i] + 41) ^ 233);
+}
+
+int BldSeededRng(ushort seed)
+{
+    // LCG used by RESTORE_POSITIONS for price fluctuation
+    return (seed * 1103515245 + 12345) & 0xFFFF;
+}
+
+// ── Stock market / room interaction dispatchers ──
+
+void DispatcherSavePositions(GameState gs)
+{
+    for (int i = 0; i < 8; i++)
+    {
+        if (i < gs.SavedPosX.Length)
+        {
+            gs.SavedPosX[i] = gs.CursorX;
+            gs.SavedPosY[i] = gs.CursorY;
+        }
+        if (i < gs.StockEntries.Length && gs.StockEntries[i] != null)
+        {
+            gs.StockEntries[i].Price = (ushort)(gs.CursorX & 0xFFFF);
+            gs.StockEntries[i].PriceComponent = (ushort)(gs.CursorY & 0xFFFF);
+            gs.StockEntries[i].DataField1 = 0;
+            gs.StockEntries[i].DataField2 = 0;
+            gs.StockEntries[i].TrendByte = 0x77;
+            gs.StockEntries[i].ActiveFlag = (byte)i;
+        }
+        gs.CursorY++;
+    }
+}
+
+void DispatcherRestorePositions(GameState gs)
+{
+    if (gs.StockEntries.Length > 0 && gs.StockEntries[0] != null)
+    {
+        var e = gs.StockEntries[0];
+        int rng = BldSeededRng(e.Price);
+        e.Price = (ushort)((e.Price + (rng & 0x1F) - 15) & 0xFFFF);
+        if (e.Price < 10) e.Price = 10;
+        e.PriceComponent = (ushort)(rng >> 8);
+        e.DataField1 = (ushort)(rng & 0xFF);
+        e.DataField2 = 0;
+        e.TrendByte = 0x70;
+        e.ActiveFlag = 0xFF;
+    }
+}
+
+void DispatcherShowPlayerItems(GameState gs)
+{
+    int count = 0;
+    for (int i = 0; i < gs.InventoryQuantities.Length && count < 3; i++)
+    {
+        if (gs.InventoryQuantities[i] > 0)
+        {
+            gs.StateArray[0x18 + count] = (byte)i;
+            count++;
+        }
+    }
+    for (int i = count; i < 3; i++)
+        gs.StateArray[0x18 + i] = 0;
+    gs.StateArray[0x14] = 0;
+}
+
+void DispatcherBuyItemBulk(GameState gs, object? shop)
+{
+    int slot = gs.StateArray[0x14];
+    int item = gs.StateArray[0x18 + slot];
+    if (item == 0) return;
+    int price = item * 125 + 75;
+    if (gs.Credits >= price)
+    {
+        gs.Credits -= price;
+        if (item < gs.InventoryQuantities.Length)
+            gs.InventoryQuantities[item]++;
+    }
+}
+
+void DispatcherSellItemBulk(GameState gs, object? shop)
+{
+    int slot = gs.StateArray[0x14];
+    int item = gs.StateArray[0x18 + slot];
+    if (item > 0 && item < gs.InventoryQuantities.Length && gs.InventoryQuantities[item] > 0)
+    {
+        gs.InventoryQuantities[item]--;
+        gs.Credits += (item * 125 + 75) / 2;
+    }
+}
+
+void DispatcherDispatch0FDC_1C9B(GameState gs)
+{
+    if (gs.StorySlots.Length > 0 && gs.StorySlots[0] != null)
+    {
+        var slot = gs.StorySlots[0];
+        int idx = 0;
+        gs.RoomStateBackup[idx++] = slot.StatusByte;
+        gs.RoomStateBackup[idx++] = slot.FlagsLow;
+        gs.RoomStateBackup[idx++] = slot.FlagsHigh;
+        gs.RoomStateBackup[idx++] = slot.TimingNibble;
+        gs.RoomStateBackup[idx++] = slot.CounterA;
+        gs.RoomStateBackup[idx++] = slot.CounterB;
+        gs.RoomStateBackup[idx++] = slot.StoryState;
+        gs.RoomStateBackup[idx++] = slot.LatchMarker;
+        gs.RoomStateBackup[idx++] = slot.LinkedUnitSlot;
+        for (int i = idx; i < gs.RoomStateBackup.Length; i++)
+            gs.RoomStateBackup[i] = 0;
+    }
+    for (int i = 1; i < gs.UnitSlots.Length; i++)
+        gs.UnitSlots[i].TypeId = 0xFF;
+    gs.RoomActive = true;
+}
+
+void DispatcherDispatch0FDC_1A26(GameState gs)
+{
+    if (gs.StorySlots.Length > 0 && gs.StorySlots[0] != null
+        && gs.RoomStateBackup.Length >= 9)
+    {
+        var slot = gs.StorySlots[0];
+        var b = gs.RoomStateBackup;
+        slot.StatusByte = b[0];
+        slot.FlagsLow = b[1];
+        slot.FlagsHigh = b[2];
+        slot.TimingNibble = b[3];
+        slot.CounterA = b[4];
+        slot.CounterB = b[5];
+        slot.StoryState = b[6];
+        slot.LatchMarker = b[7];
+        slot.LinkedUnitSlot = b[8];
+    }
+    for (int i = 1; i < gs.UnitSlots.Length; i++)
+        gs.UnitSlots[i].TypeId = 0xFF;
+    gs.RoomActive = false;
+}
+
+// ── Full BLD Interpreter Runner ──
+
+List<string> BldInterpreterRun(string path, GameState gs, int[] menuChoices, int maxOps = -1)
+{
+    var lines = new List<string>();
+    byte[] raw = File.ReadAllBytes(path);
+    BldLoaderDecryptInPlace(raw);
+    int interpBase = 0xA0;
+    int ip = 0;
+    int menuChoiceIdx = 0;
+    int ops = 0;
+    string currentText = "";
+
+    void FlushText()
+    {
+        if (!string.IsNullOrEmpty(currentText))
+        {
+            lines.Add(currentText.Trim());
+            currentText = "";
+        }
+    }
+
+    byte ReadByte()
+    {
+        int p = interpBase + ip;
+        if (p >= raw.Length) return 0;
+        ip++;
+        return raw[p];
+    }
+
+    ushort ReadWord()
+    {
+        int p = interpBase + ip;
+        if (p + 1 >= raw.Length) return 0;
+        ushort v = (ushort)(raw[p] | (raw[p + 1] << 8));
+        ip += 2;
+        return v;
+    }
+
+    while (ip < raw.Length - interpBase)
+    {
+        if (maxOps > 0 && ++ops > maxOps) { lines.Add($"[MAX_OPS={maxOps}]"); break; }
+        int filePos = interpBase + ip;
+        if (filePos >= raw.Length) break;
+        byte b = raw[filePos];
+
+        // Plain ASCII text (0x00-0x7F in BLD files is NOT cipher — verified by
+        // examining COMSTAR.BLD: decrypted bytes at 0xA0 are literal ASCII text,
+        // e.g. 0x6D='m', 0x75='u'. CipherDecoder garbles these (maps 0x75→'w' etc).
+        // The CipherDecoder is ONLY for specific marker bytes 0x81-0x96 and 0xA0.)
+        if (b < 0x80)
+        {
+            if (b >= 0x20 && b <= 0x7E)
+                currentText += (char)b;
+            else if (b == '\t' || b == '\n')
+                currentText += (char)b;
+            // else ignore non-printable control chars
+            ip++;
+            continue;
+        }
+
+        // Narrative markers
+        if (b == 0x9E || b == 0x9C || b == 0x9B || b == 0x9F || b == 0xA5)
+        {
+            FlushText();
+            currentText += "\n";
+            ip++;
+            continue;
+        }
+
+        // Space
+        if (b == 0xA0) { currentText += ' '; ip++; continue; }
+        // 0xC0, 0xBA, 0xBB — structural separators
+        if (b == 0xC0 || b == 0xBA || b == 0xBB) { FlushText(); currentText += "\n"; ip++; continue; }
+        // 0x9D — unknown marker
+        if (b == 0x9D) { ip++; continue; }
+
+        // 0x80-0xE3 cipher text / structural
+        if (b < 0xE4)
+        {
+            if (b == 0x81 || b == 0x82 || b == 0x83 || b == 0x84 || b == 0x85 || b == 0x86 || b == 0x87 ||
+                b == 0x90 || b == 0x91 || b == 0x92 || b == 0x93 || b == 0x94 || b == 0x95 || b == 0x96)
+            {
+                currentText += CipherDecoder.DecodeByte(b);
+            }
+            ip++;
+            continue;
+        }
+
+        // Opcode range 0xE4-0xFF
+        ip++; // consume opcode byte
+
+        switch (b)
+        {
+            case 0xE4: // WriteChar
+                if (ip < raw.Length - interpBase)
+                    currentText += CipherDecoder.DecodeByte(raw[interpBase + ip++]);
+                break;
+
+            case 0xE5: // AddCredits
+            {
+                short add = (short)ReadWord();
+                gs.Credits = Mathf.Max(0, gs.Credits + add);
+                break;
+            }
+
+            case 0xE6: // SetCursorXY
+            {
+                int tx = ReadWord();
+                int ty = ReadWord();
+                gs.TextCursorX = tx;
+                gs.TextCursorY = ty;
+                break;
+            }
+
+            case 0xE7: // CmpCursorX
+            {
+                short cmp = (short)ReadWord();
+                short jmp = (short)ReadWord();
+                if (gs.CursorX == cmp) ip = jmp;
+                break;
+            }
+
+            case 0xE9: // CallRoomHandler
+            {
+                ReadByte(); // handler byte consumed but not implemented
+                break;
+            }
+
+            case 0xEA: // CondStateAction
+            {
+                ReadByte(); ReadByte(); // consumed but not implemented
+                break;
+            }
+
+            case 0xEB: // CheckFlagEB (Milestone)
+            {
+                ushort jmp = ReadWord();
+                if (gs.Milestone) ip = jmp;
+                break;
+            }
+
+            case 0xEC: // CheckFlagEC (TrainingComplete)
+            {
+                ushort jmp = ReadWord();
+                if (gs.TrainingComplete) ip = jmp;
+                break;
+            }
+
+            case 0xED: // UnitCheckLoop
+                ReadWord();
+                break;
+
+            case 0xEE: // SpendCredits
+            {
+                ushort spend = ReadWord();
+                gs.Credits = Mathf.Max(0, gs.Credits - spend);
+                break;
+            }
+
+            case 0xEF: // CheckCredits
+            {
+                ushort need = ReadWord();
+                lines.Add($"[check_credits need={need} have={gs.Credits}]");
+                break;
+            }
+
+            case 0xF0: // SetTextMargins
+            {
+                int ml = ReadByte();
+                int mr = ReadByte();
+                gs.TextMarginLeft = ml;
+                gs.TextMarginRight = mr;
+                break;
+            }
+
+            case 0xF1: // AddToState
+            {
+                int si = ReadByte();
+                int sv = ReadByte();
+                gs.StateArray[si] += (byte)sv;
+                break;
+            }
+
+            case 0xF2: // RoomDescription
+                FlushText();
+                break;
+
+            case 0xF3: // ShopInteraction (computed jump)
+            {
+                int sidx = ReadByte();
+                int stateVal = (sbyte)gs.StateArray[sidx];
+                int targetPos = interpBase + ip + stateVal * 2;
+                if (targetPos + 1 < raw.Length)
+                    ip = raw[targetPos] | (raw[targetPos + 1] << 8);
+                break;
+            }
+
+            case 0xF4: // SetStateValue
+            {
+                int ssi = ReadByte();
+                int ssv = ReadByte();
+                gs.StateArray[ssi] = (byte)ssv;
+                break;
+            }
+
+            case 0xF5: // ShopDispatch
+            {
+                FlushText();
+                int caseVal = ReadByte();
+                lines.Add($"[dispatch case=0x{caseVal:X2}]");
+                switch (caseVal)
+                {
+                    case 0x06: DispatcherShowPlayerItems(gs); break;
+                    case 0x07: DispatcherBuyItemBulk(gs, null); break;
+                    case 0x08: DispatcherSellItemBulk(gs, null); break;
+                    case 0x09: gs.Credits = Mathf.Max(0, gs.Credits - 50); break;
+                    case 0x0A: lines.Add($"[credits={gs.Credits}]"); break;
+                    case 0x0C: break; // CloseAction — no-op
+                    case 0x0D: gs.StateArray[0x1A] = 0; break; // EquipmentMenu
+                    case 0x21: DispatcherDispatch0FDC_1C9B(gs); break;
+                    case 0x22: DispatcherDispatch0FDC_1A26(gs); break;
+                    case 0x23:
+                        gs.Credits = 1500;
+                        gs.TrainingComplete = false;
+                        gs.Milestone = false;
+                        for (int i = 0; i < gs.StateArray.Length; i++) gs.StateArray[i] = 0;
+                        for (int i = 0; i < gs.InventoryQuantities.Length; i++) gs.InventoryQuantities[i] = 0;
+                        break;
+                    case 0x2A: DispatcherSavePositions(gs); break;
+                    case 0x2B: DispatcherRestorePositions(gs); break;
+                    default: lines.Add($"[UNHANDLED case 0x{caseVal:X2}]"); break;
+                }
+                break;
+            }
+
+            case 0xF6: // CheckCondition (state != 0)
+            {
+                int condIdx = ReadByte();
+                ushort cjump = ReadWord();
+                if (gs.StateArray[condIdx] != 0)
+                    ip = cjump;
+                break;
+            }
+
+            case 0xF7: // StateCondCheck (state == 0 → skip target word)
+            {
+                int sci = ReadByte();
+                ReadWord(); // always consume target word
+                break;
+            }
+
+            case 0xF8: // JumpForward (absolute)
+            {
+                ushort fwd = ReadWord();
+                ip = fwd;
+                break;
+            }
+
+            case 0xF9: // JumpIndexed (menu)
+            {
+                FlushText();
+                int menuId = ReadByte();
+                int choice = menuChoices[menuChoiceIdx++ % menuChoices.Length];
+                lines.Add($"[menu id={menuId} choice={choice}]");
+                // Find the jump table entry matching our choice
+                for (int ti = 0; ti < 16; ti++)
+                {
+                    int p = interpBase + ip;
+                    if (p + 1 >= raw.Length) break;
+                    ushort v = (ushort)(raw[p] | (raw[p + 1] << 8));
+                    if (v < 0xE4 && v <= raw.Length - interpBase)
+                    {
+                        if (ti == choice)
+                        {
+                            ip = v;
+                            break;
+                        }
+                        ip += 2;
+                    }
+                    else break;
+                }
+                break;
+            }
+
+            case 0xFA: // DrawSprite
+                ReadByte();
+                break;
+
+            case 0xFB: // AdvanceInput — simulate keypress
+                FlushText();
+                lines.Add("[>]");
+                break;
+
+            case 0xFC: // RenderText — simulate keypress
+                FlushText();
+                lines.Add("[>]");
+                break;
+
+            case 0xFD: // SetFont2
+                break;
+
+            case 0xFE: // SetFont
+                ReadByte();
+                break;
+
+            case 0xFF: // StopInterpreter
+                FlushText();
+                lines.Add("[END]");
+                goto done;
+        }
+    }
+done:
+    FlushText();
+    return lines;
 }
 
 // ── Inline class definitions (no Godot dependencies) ──
@@ -362,7 +910,11 @@ public class GameState
     public bool RoomActive;
     public byte[] RoomStateBackup = new byte[0x7D];
     public UnitSlot[] UnitSlots = new UnitSlot[8];
+    public byte EconomyTimer;
     public uint[] InventoryQuantities = new uint[32];
+    public StockEntry[] StockEntries = new StockEntry[] { new(), new(), new() };
+    public int[] SavedPosX = new int[8];
+    public int[] SavedPosY = new int[8];
 }
 
 public class StorySlot
@@ -376,6 +928,16 @@ public class UnitSlot
     public byte Attr1,Attr2,Attr3;
     public byte[] Inventory = new byte[7];
     public byte FieldC61C,FieldC61F,LinkedStorySlot=0x08,FieldC621,FieldC622,DerivedAttr,FieldC624;
+}
+
+public class StockEntry
+{
+    public ushort Price;
+    public ushort PriceComponent;
+    public ushort DataField1;
+    public ushort DataField2;
+    public byte TrendByte;
+    public byte ActiveFlag;
 }
 
 public static class WeaponData { public static Weapon[] Weapons = new[]{new Weapon("Small Laser",1,0,3,1,1,5,0,0),new Weapon("Medium Laser",2,0,5,3,3,8,0,0),new Weapon("Large Laser",3,0,8,8,5,12,0,0),new Weapon("PPC",4,0,10,10,7,15,0,0),new Weapon("AC/2",5,0,2,2,4,8,0,0),new Weapon("AC/5",6,0,5,5,6,12,0,0),new Weapon("AC/10",7,0,10,10,8,16,0,0),new Weapon("AC/20",8,0,20,20,9,18,0,0),new Weapon("SRM-2",9,1,2,2,2,6,0,0),new Weapon("SRM-4",10,1,4,4,3,8,0,0),new Weapon("SRM-6",11,1,6,6,4,10,0,0),new Weapon("LRM-5",12,1,5,5,4,8,0,0),new Weapon("LRM-10",13,1,10,10,5,10,0,0),new Weapon("LRM-15",14,1,15,15,6,12,0,0),new Weapon("LRM-20",15,1,20,20,7,14,0,0),new Weapon("Machine Gun",16,0,2,1,1,3,0,0),new Weapon("Flamer",17,0,2,0,2,4,0,0),new Weapon("Small Laser (NPC)",18,0,3,1,1,5,0,0),new Weapon("Medium Laser (NPC)",19,0,5,3,3,8,0,0),new Weapon("Large Laser (NPC)",20,0,8,8,5,12,0,0),new Weapon("PPC (NPC)",21,0,10,10,7,15,0,0),new Weapon("AC/2 (NPC)",22,0,2,2,4,8,0,0),new Weapon("AC/5 (NPC)",23,0,5,5,6,12,0,0),new Weapon("AC/10 (NPC)",24,0,10,10,8,16,0,0),new Weapon("AC/20 (NPC)",25,0,20,20,9,18,0,0),new Weapon("SRM-2 (NPC)",26,1,2,2,2,6,0,0),new Weapon("SRM-4 (NPC)",27,1,4,4,3,8,0,0),new Weapon("SRM-6 (NPC)",28,1,6,6,4,10,0,0),new Weapon("LRM-5 (NPC)",29,1,5,5,4,8,0,0),new Weapon("LRM-10 (NPC)",30,1,10,10,5,10,0,0),new Weapon("LRM-15 (NPC)",31,1,15,15,6,12,0,0),new Weapon("LRM-20 (NPC)",32,1,20,20,7,14,0,0),new Weapon("Kick (Physical)",33,0,5,0,1,1,0,1)}; }
@@ -402,4 +964,4 @@ static class RleDecompressor
     }
 }
 
-static class Mathf { public static int Min(int a,int b)=>a<b?a:b; }
+static class Mathf { public static int Min(int a,int b)=>a<b?a:b; public static int Max(int a,int b)=>a>b?a:b; }
