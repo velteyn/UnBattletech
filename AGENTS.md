@@ -569,7 +569,7 @@ These scripts work on raw binary data (not r2-pipe):
 
 ## Spice86 MCP — BattleTech Runtime Introspection Tools
 
-A set of **19 BattleTech-specific MCP tools** built on Spice86's MCP (Model Context Protocol) infrastructure. These let you query and control the emulated game at runtime — read/write game state, inject keyboard input, inspect memory — without modifying the original EXE.
+A set of **23 BattleTech-specific MCP tools** built on Spice86's MCP (Model Context Protocol) infrastructure. These let you query and control the emulated game at runtime — read/write game state, inject keyboard input, inspect memory — without modifying the original EXE.
 
 ### How It Works
 
@@ -846,10 +846,10 @@ for _ in range(8):
 ### Project Location
 
 ```
-Spice86/src/BattleTechMcpTools/
-├── BattleTechMcpTools.csproj    # Project file (part of Spice86.sln)
+BattleTechMcpTools/              # In this repo (AIATTEMPT), NOT in Spice86
+├── BattleTechMcpTools.csproj    # Project file (references ../../../Spice86/src/Spice86.Core + Spice86.Shared)
 ├── BattleTechOverrideSupplier.cs  # IOverrideSupplier + IMcpToolSupplier impl
-└── BattleTechMcpTools.cs        # 19 tool implementations
+└── BattleTechMcpTools.cs        # 23 tool implementations
 ```
 
 ## Tool Complement Summary

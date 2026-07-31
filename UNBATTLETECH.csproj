@@ -11,6 +11,7 @@
   <!-- Only compile Spice86-specific files, not Godot project files or old generated code -->
   <ItemGroup>
     <Compile Remove="BattleTechCHI/**/*.cs" />
+    <Compile Remove="BattleTechMcpTools/**/*.cs" />
     <Compile Remove="InceptionTools/**/*.cs" />
     <Compile Remove="spice86/GeneratedCode/**/*.cs" />
     <Compile Remove="MyOverrideSupplier.cs" />
@@ -26,7 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../../Spice86/src/Spice86/Spice86.csproj" />
-    <ProjectReference Include="../../Spice86/src/BattleTechMcpTools/BattleTechMcpTools.csproj" />
+    <ProjectReference Include="BattleTechMcpTools/BattleTechMcpTools.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libportaudio.dll">
