@@ -592,6 +592,17 @@ All tools use **DS-relative addressing** `(DS << 4) + offset` at runtime rather 
 | **Emulator Control** | `pause_emulator`, `resume_emulator`, `step` | **Pause/resume** the emulation thread. Required before/after BIOS buffer writes (see "Keyboard Injection"). Also available via HTTP API: `POST /api/status/pause`, `POST /api/status/unpause`. |
 | **CPU State** | `bt_read_registers` | Dump all CPU segment registers, general registers, IP, and flags |
 | **Keyboard Input** | `bt_inject_key`, `bt_press_key`, `bt_send_key`, `bt_type_text`, `bt_press_enter`, `bt_press_escape` | **UNRELIABLE** — `bt_inject_key` writes to C# internal buffer, NOT to standard BIOS BDA at 0x0040:0x001E (see "Keyboard Injection" section). Use `pause_emulator` + HTTP API `PUT /api/memory/{addr}/byte` instead. |
+| **Screen Capture** | `bt_screenshot`, `bt_read_video_mode` | Render emulator display as ASCII art so the AI can visually orient. Text modes (0x03 etc.) read char/attr pairs from B800:0000 → 80×25 text. Graphics modes (0x13/0x0D/0x0E) read A000:0000 → 80×50 luminance grid via the standard VGA 16-color palette. `bt_read_video_mode` reports the BIOS mode number (0x0040:0x0049) + description. |
+
+### Visual Orientation (Screenshot Workflow)
+
+`bt_screenshot` lets you "see" the emulated screen without a GUI:
+
+1. **Boot prompts (text mode 0x03)**: The graphics-adapter and drive-count prompts are rendered as 80×25 text from the B800:0000 text buffer — fully readable via the `AsciiArt` field.
+2. **In-game (graphics mode 0x13)**: Once the game enters VGA 320×200, the framebuffer is sampled 4×4 px → 80×50 ASCII luminance grid. Text glyphs render as ~2×2-cell letter shapes; large text is legible, small text is decipherable by shape.
+3. Use it after each key injection to confirm the game state transitioned as expected (adapter prompt → drive prompt → intro → world map).
+
+Verified boot flow with screenshots: text mode shows `C:\>CALL C:\UNBTECH.exe` + adapter prompt → after `4` (MCGA) shows drive-count prompt → after `3` (drive C) switches to mode 0x13 → intro text renders as ASCII glyphs. This gives full visual feedback during scripted navigation.
 
 ### How to Use
 

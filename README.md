@@ -73,6 +73,7 @@ Spice86 emulator with 19 BattleTech-specific MCP tools for runtime game state in
 - Read combat grids, unit positions, fog of war
 - Inject keyboard input (script the game through menus)
 - Read CPU registers and memory
+- Capture the screen as ASCII art (`bt_screenshot`: text mode 0x03 → 80×25 text from B800:0000; graphics 0x13/0x0D/0x0E → 80×50 luminance grid from A000:0000)
 
 ```bash
 # Start emulator with MCP server on port 8086
