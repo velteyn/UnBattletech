@@ -70,6 +70,44 @@ So the shared engine module bundles the **VGA mode-13h renderer** and the
 **text/tokenizer + colour-table** code, all in/around segment `207F`. The largest single
 shared block is data (tables), the code matches are the renderer and text routines.
 
+## Shared-function map (25 functions)
+
+Each shared run was mapped to its containing Reko function (via the file↔runtime mapping
+above). **25 Reko functions share code with Mines of Titan**, overwhelmingly in the
+rendering/text segment **207F**:
+
+| Shared bytes | Function | Notes |
+|--------------|----------|-------|
+| 1051 | `fn207F_3EC4` | low-level primitive (`dx_ax`,`cl`), called from `fn207F_3D6C` |
+| 347 | `fn207F_2FDC` | memory/buffer cluster (`fn207F_2E3B`, `fn207F_2F9F`) |
+| 305 | `fn207F_33D0` | text/char-render cluster (`fn207F_32F5/3308/3356/3580/366A/371E`); `fn207F_3308` writes config byte `DS:0x52FC` |
+| 160 | `fn207F_3D6C` | renderer caller of `fn207F_3EC4` |
+| 145 | `fn1F3D_031C` | border/config — calls `fn207F_05D0` (writes seg-`246C` config `t0220/t0234`) |
+| 106 | `fn207F_38FD` | renderer |
+| 103 | `fn207F_3356` | text/char-render cluster |
+| 100 | `fn207F_3BDC` | renderer |
+| 98 | `fn207F_0313` | **VGA write-mode-2 blitter** (confirmed) |
+| 95 | `fn207F_3E62` | renderer |
+| 92 | `fn207F_3580` | text/char-render cluster |
+| 86 | `fn207F_39E0` | renderer |
+| 85 | `fn207F_2368` | text tokenizer region |
+| 85 | `fn207F_38E2` | renderer |
+| 84 | `fn207F_366A` | text/char-render cluster |
+| 74 | `fn207F_3B22` | renderer |
+| 60 | `fn207F_3874` | renderer |
+| 58 | `fn207F_01D7` | renderer |
+| 55 | `fn1E56_01E7` | text renderer (seg `1E56`) |
+| 55 | `fn207F_3B68` | renderer |
+| 53 | `fn1E56_0A3B` | text renderer (seg `1E56`) |
+| 52 | `fn207F_022A` | renderer |
+| 52 | `fn207F_3E2E` | renderer |
+| 50 | `fn207F_371E` | text/char-render cluster |
+| 49 | `fn207F_0B40` | renderer |
+
+**Interpretation**: the shared Westwood engine core is the **graphics/text subsystem**
+(segment `207F` + the text renderer `1E56` + border/config `1F3D`). These are the routines
+to treat as *engine*; the game-specific layer (story, combat, maps, economy) sits on top.
+
 ## Method
 
 Find maximal common byte runs between the two executables (rolling 32-byte
