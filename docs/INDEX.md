@@ -16,6 +16,8 @@ should summarise and link here rather than restate.
 | Topic | Canonical doc |
 |-------|---------------|
 | **Engine recovery plan (Westwood engine-first strategy)** | [`engine/README.md`](engine/README.md) |
+| Engine viewport & rendering workflow | [`engine/viewport.md`](engine/viewport.md) |
+| Engine fingerprint vs Mines of Titan (shared-function map) | [`engine/fingerprint-mines-of-titan.md`](engine/fingerprint-mines-of-titan.md) |
 | File formats (.CMP/.ICN/.MTP/.BLD/.ANM/save/mech) | [`formats/file-formats.md`](formats/file-formats.md) |
 | BLD bytecode, opcodes, cipher, `fn1CD3` cases | [`formats/bld-bytecode.md`](formats/bld-bytecode.md) |
 | ANM animation format | [`formats/anm-format.md`](formats/anm-format.md) |

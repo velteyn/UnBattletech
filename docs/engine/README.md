@@ -45,7 +45,8 @@ more reliable than reverse-engineering each game's quirks in isolation.
 ## Deliverables
 
 - `docs/engine/README.md` — this plan + architecture overview.
-- `docs/engine/fingerprint-mines-of-titan.md` — first cross-binary fingerprint vs Mines of Titan (39 shared runs).
+- `docs/engine/viewport.md` — viewport & rendering workflow (subsystem C).
+- `docs/engine/fingerprint-mines-of-titan.md` — cross-binary fingerprint + shared-function map.
 - `docs/engine/memory-model.md` — segment layout, DS/ES roles, startup/protection flow.
 - `docs/engine/resources.md` — file formats + loader (shared engine routines).
 - `docs/engine/viewport.md` — **the viewport workflow** (priority).
