@@ -13,6 +13,28 @@
 
 Sibling binaries are kept locally under `original/siblings/` (gitignored).
 
+## Packing status (checked before trusting the fingerprint)
+
+Archive.org DOS releases are often EXEPACK-packed, so each binary was checked:
+
+| Binary | Packed? | Evidence |
+|--------|---------|----------|
+| `BTECH.EXE` (BattleTech) | **Yes (EXEPACK)** | `exepack.exe -d BTECH.EXE out.exe` reproduces `UNBTECH.exe` byte-for-byte (sha256 `e2900776…`) |
+| `TITAN.EXE` (Mines of Titan) | **No** | `exepack.exe` refuses it ("relocations before decompression are not supported"); readable strings; data tables byte-identical to BattleTech's |
+
+**Unpack procedure**: `wine BATTLETECH_CHI/exepack.exe -d IN.EXE OUT.EXE` (the tool both packs and unpacks;
+it errors out on non-EXEPACK files). BattleTech was unpacked this way; Mines of Titan needs no unpacking.
+(Archive note: item `msdos_Mars_Saga_1988` is mislabeled — it contains Mines of Titan; the `0MHz` `.vhd`
+holds the same files under `\MARSSAGA\`.)
+
+## First shared run is engine DATA, not code
+
+The largest run (`UNBTECH 0x1FBB5` / `TITAN 0xEF7B`, 299 bytes) is a repeating lookup table —
+`00 00 00 00 01 01 01 01 … 0f 0f 0f 0f` (each colour value repeated 4×), preceded by
+`08 09 0a 0b`/`0c 0d 0e 0f` runs and followed by `00 01 02 03`. This is an **EGA planar
+expansion / colour-index table** in the renderer — shared engine data, confirming the engine
+hypothesis independent of any code match.
+
 ## Method
 
 Find maximal common byte runs between the two executables (rolling 32-byte
