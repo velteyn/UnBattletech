@@ -114,12 +114,12 @@ Phase 5: Economy, Inventory & ANM 🔄
 ├── ANM runtime decompression (RleDecompressor.DecompressAnimationFrames) ✅
 ├── AnmPlayer + ViewportManager + BorderPanel integration ✅
 ├── BldAnmMap (building → O0–O15 mapping) ✅
-├── Animation dispatch on cursor hover (DispatchCursorMove) ✅
-├── Stock market (DefHes, NasDiv, BakPhar, bD323 ticker) ⬜
+├── Animation dispatch on cursor hover (DispatchCursorMove) ✅  (building-name hover only; ANM playback is still a no-op stub)
+├── Stock market (DefHes, NasDiv, BakPhar, bD323 ticker) ◐  (RE + dispatcher cases 0x2A/0x2B + StockEntry/GameState done; Godot stock UI pending)
 ├── Tech screen (component repair, 7 item slots) ⬜
 ├── Full equipment management UI ⬜
-├── Combat mech panel ANM (idle/move/fire/damage) ⬜
-└── Map cursor ANM (replace blink timer) ⬜
+├── Combat mech panel ANM (idle/move/fire/damage) ✅
+└── Map cursor ANM (replace blink timer) ✅
 
 Phase 6: Integration & Testing ⬜
 ├── Wire all BLD files to correct map locations (verify in playtest)
@@ -154,9 +154,9 @@ Phase 7: Polish (Post-MVP) ⬜
 | Map format | 🟢 100% | 🟢 World + local map views |
 | Combat system | 🟢 90% | 🟢 Full combat loop + UI |
 | AI system | 🟢 90% | 🟢 AiController implemented |
-| Economy / shops | 🟢 100% documented | 🟡 Shops work; stock market missing |
+| Economy / shops | 🟢 100% documented | 🟡 Shops work; stock RE + dispatcher cases 0x2A/0x2B done, Godot UI pending |
 | Save format | 🟢 100% | 🟡 Parser exists; round-trip unverified |
-| Animations (ANM) | 🟢 100% format | 🟡 Player + building ANM; combat cursor pending |
+| Animations (ANM) | 🟢 100% format | 🟢 Player + building + combat mech-panel + map-cursor ANM |
 | Sound/music | 🔴 0% | 🔴 Unknown effort |
 | Game loop | 🟢 100% documented | 🟢 GameLoop.cs |
 | Memory map | 🟢 90% | 🟢 GameState mirrors key addresses |

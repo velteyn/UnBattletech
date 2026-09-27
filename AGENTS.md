@@ -1,7 +1,7 @@
 # Agent Instructions — BattleTech CHI Rebuild
 
-> **Phase 6 — MCP Transport Fix** (2026-06-24): MCP server now reliably binds via `UseUrls()`, uses `StartAsync() + ManualResetEvent` for background thread keep-alive. Custom GET `/mcp/` handler returns SSE `endpoint` event for opencode remote MCP compatibility. Port changed to 8086 (was 8081).
-> Next priorities: Fix game init freeze (w014A=2) for COMSTAR entry, implement stock market in Godot.
+> **Phase 6 — Spice86 sync** (2026-09-27): The emulator stack now builds against upstream Spice86 `master` (base `18259ca8`). Upstream removed `ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` and bumped ModelContextProtocol to `2.2.0` — AIATTEMPT was ported accordingly. The MCP transport fix (`UseUrls()` bind + `StartAsync()` keep-alive + custom GET `/mcp/` SSE `endpoint`) is upstreamed as **PR #2246**, rebased on `master` and mergeable. The A:/B: game-data mount moved out of Spice86's `DosDriveManager` into `BattleTechMcpTools/BattleTechOverrideSupplier.cs`. Port is 8086.
+> Next priorities: end-to-end playtest from a proper NEW_GAME_INIT boot through to COMSTAR; add the Godot stock-market UI on top of the new `Fn1CD3Dispatcher` cases 0x2A/0x2B.
 
 ## ⚠️ Documentation Priority Rule
 
@@ -351,7 +351,7 @@ Narrow layout (BuildingName): LeftPanel=16×200, Viewport=16,0 304×192, BottomB
 - O15 (9 frames) has no BLD mapping — may be unused/unreferenced in game.
 - O16 (20 frames) is structurally valid but outside game's 16-file range.
 - ANM file for specific mech/character interactions in combat not yet mapped.
-- Animation dispatch table cursor-hover ANM triggering not yet active — `DispatchCursorMove()` currently detects matches via `AnimationDispatchTable` but is not wired to show ANM on hover (only on building entry).
+- Cursor-hover **building-name** display IS wired (`GameLoop.DispatchCursorMove()` → `PositionInteractionTable`). Cursor-hover **ANM playback** is NOT — `DispatchCursorMove()` looks up `AnimationDispatchTable` but the match body is a no-op stub (`GameLoop.cs:574-580`); ANM currently only plays on building entry.
 
 ### Stats Screen — Full-Screen Overlay (NOT a viewport layout)
 
@@ -443,6 +443,16 @@ Installed at `/usr/lib/x86_64-linux-gnu/radare2/6.0.7/`. User plugins at `~/.loc
 ## Spice86 (x86 Emulator + Code Generator)
 
 Spice86 is an open-source x86 emulator that emulates the original game and generates C# code from execution traces.
+
+### Current Integration (2026-09-27)
+
+AIATTEMPT (`UNBATTLETECH.csproj` / `BattleTechMcpTools.csproj`) builds **directly against the Spice86 source tree** at `../Spice86` (not a NuGet package). That checkout is kept on upstream `master` (base `18259ca8` at last sync).
+
+- **Logging**: upstream removed `Spice86.Shared.Interfaces.ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` (PR #2309). `IOverrideSupplier.GenerateFunctionInformations` now takes `ILogger`; `BattleTechMcpTools` was ported accordingly.
+- **MCP packages**: `ModelContextProtocol.Core` / `.AspNetCore` are pinned to `2.2.0` to match `Spice86.Core`.
+- **A:/B: drive mount**: done in `BattleTechOverrideSupplier.MountGameDataOnFloppyDrives()` via the public `Dos.MountFolderAsFloppy()` API — Spice86 itself is left untouched (previously a residual change in `DosDriveManager.cs`).
+- **MCP transport fix**: upstreamed as **PR #2246** (branch `spice86-mcp-fix`): `UseUrls()` bind, `StartAsync()` keep-alive, custom `GET /mcp/` SSE `endpoint`. Rebased on `master` and mergeable; only `McpHttpHost.cs` changes.
+- **Generated code** under `spice86/GeneratedCode/` was produced by an **older** Spice86 and is stale; it is excluded from all builds (`<Compile Remove="spice86/GeneratedCode/**/*.cs" />`). Regenerate with a current Spice86 before relying on it.
 
 ### Spice86 Directory Layout
 
@@ -839,8 +849,9 @@ for _ in range(8):
 1. **`bt_inject_key` writes to wrong buffer**: Returns `Success=True` but writes to C# internal BIOS keyboard buffer, NOT to standard BIOS BDA at 0x0040:0x001E. The Spice86 INT 16h handler reads from the BDA buffer, so injected keys are silently lost.
 2. **MCP `tools/list` returns 0 after extended runtime**: After >1B emulation cycles, `tools/list` may return empty tool array. Individual tools (by name) still work. Restart emulator to restore.
 3. **`bt_get_state` cursor fields sometimes None**: `bt_read_memory` at DS=0x1DE9 offset 0xA44B is more reliable for cursor position.
-4. **Game freeze during boot**: The game sets `w014A=2` (suspend ALL processing) and `w0152=4` (disable input) during mode transitions (intro→menu, menu→world map). If frozen, write 0 to both: `api_put(phys+0x14A, 0)` then `api_put(phys+0x152, 0)`. Clear keyboard buffer too: set `head=tail=0x041E` at 0x041A-0x041D.
-5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/E/D/Z/C may not). Fix: manually set `Credits=1500` and navigate to tile (26,5) for TRAINING.BLD, or restart and try to select New Game.
+4. **"Game freeze" is usually a BIOS key-wait, not a w014A stall** (re-diagnosed 2026-09-27): when it looks frozen, the CPU is typically spinning in the BIOS `int 16h` wait wrapper at `0x19FC:0xB57` (physical `0x1AB57`; bytes `cd 16 3c 00 75 04 8a c4 f6 d8 98 1f 5e 5f 5d cb`) *inside a building/dialog*, with cycles still advancing. `w014A=[2,2]` / `w0152=[4,4]` are usually side effects, not the cause. Clearing them does **not** unblock it — deliver a key instead: write ASCII at the BIOS buffer tail (`0x0040:0x001C`), scancode at tail+1, then advance tail by 2 (mod 32; ring `0x0040:0x001E`–`0x043D`). Verified: one Space (`0x20`/`0x39`) advances the dialog. Confirm with `bt_read_registers` / `/api/status` that `cs:ip == 19FC:B57`.
+   - Watch the address: the head is `0x0040:0x001A` (**decimal `1050`**), the tail `0x0040:0x001C` (`1052`). Off-by-one reads a garbage pointer.
+5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/E/D/Z/C may not). Fix: manually set `Credits=1500` and navigate to tile (26,5) for TRAINING.BLD, or restart and pick New Game (the reliable route).
 6. **Port 8081 in TIME_WAIT**: After restarting emulator, port 8081 (or any used MCP port) may be in TIME_WAIT for 60s. Use a different port or wait. Our config uses port 8086.
 
 ### Project Location
@@ -859,7 +870,7 @@ BattleTechMcpTools/              # In this repo (AIATTEMPT), NOT in Spice86
 | **r2** | Interactive disassembly, binary investigation, string search, byte-level analysis | Reverse engineer specific bytecode, check opcodes, dump segments |
 | **Reko** | Structural decompilation, C pseudocode, struct/union definitions | Understand high-level logic, data structures, control flow |
 | **Spice86** | Execution trace, memory dump, C# code generation | Verify runtime behavior, get exact register/memory state |
-| **Spice86 MCP (BattleTech)** | Runtime game state introspection + keyboard control via 19 `bt_*` tools | Automated testing against Godot rebuild, scripting playthroughs, combat validation, live game state queries |
+| **Spice86 MCP (BattleTech)** | Runtime game state introspection + keyboard control via 23 `bt_*` tools | Automated testing against Godot rebuild, scripting playthroughs, combat validation, live game state queries |
 | **GDB** | Debugging C# rebuild (Godot) or test binaries | Runtime debugging of the Godot rewrite |
 | **Dosbox-X** | Run original game, verify behavior | Playtest original for reference |
 | **Python tools** | Batch analysis, format conversion, story extraction | Bulk processing, text export, format conversion |
