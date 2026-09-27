@@ -63,9 +63,17 @@ more reliable than reverse-engineering each game's quirks in isolation.
    struct/set-clip exists.
 3. Acquire Mars Saga / Mines of Titan and begin fingerprinting.
 
-**Progress (2026-09-27)**: Mines of Titan (`TITAN.EXE`, authentic DOS) acquired and stashed
-under `original/siblings/` (gitignored). First fingerprint done — 39 shared engine runs,
-3451 bytes: see [`fingerprint-mines-of-titan.md`](fingerprint-mines-of-titan.md).
+**Progress (2026-09-27)**:
+- Mines of Titan (`TITAN.EXE`, authentic DOS) acquired and stashed under `original/siblings/`
+  (gitignored). Fingerprint + shared-function map in
+  [`fingerprint-mines-of-titan.md`](fingerprint-mines-of-titan.md): **25 shared engine functions**,
+  concentrated in the graphics/text core (segments `207F`, `1E56`, `1F3D`).
+- **Mars Saga (1988) DOS is not available**: the archive.org `msdos_Mars_Saga_1988` item is
+  mislabeled (contains Mines of Titan), and the `MarsSaga_449` ISO is a DOSBox bundle that also
+  only ships Mines of Titan. Genuine Mars Saga is **C64 / Apple II** (6502) — not byte-fingerprintable
+  against x86. So Mines of Titan is our only x86 sibling.
+- **Shared scope**: loader / RLE / input are **not** shared (Mines of Titan packs resources into
+  `DISK*.DAT`). The reusable engine surface is rendering + text + drawing primitives.
 
 > Until A and C are settled, further content-level spelunking (story/combat tuning) risks
 > building on an unverified foundation.
