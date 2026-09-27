@@ -50,6 +50,26 @@ engine **code** (all in the rendering segment **207F**):
 pixel plotting**, implemented in segment `207F`. This is the first confirmed shared engine
 subsystem (subsystem C, "Rendering/viewport") and a concrete anchor for the function map.
 
+## Function map (first pass)
+
+File↔runtime mapping for BattleTech (verified against Reko `fn207F_0313`):
+
+```
+runtime_linear = 0x8000 + (file_offset - 0x3400)      # program loads at segment 0x800
+```
+
+| BattleTech runtime | Content | Shared with TITAN |
+|--------------------|---------|-------------------|
+| `207F:0313` (`fn207F_0313`) | VGA write-mode-2 blitter | ✓ |
+| `207F:0A47` | 2-bit mask expansion (`0xF00F`) | ✓ |
+| ~`207F` | framebuffer scroll (`rep movsw`) | ✓ |
+| ~`2385` region (~4 KB) | **text tokenizer** (`cmp al,20h/09h/0Dh/22h/5Ch`) + EGA expansion tables + string tables | ✓ |
+| ~`3ED9–0x444D` | further shared code/data | ✓ |
+
+So the shared engine module bundles the **VGA mode-13h renderer** and the
+**text/tokenizer + colour-table** code, all in/around segment `207F`. The largest single
+shared block is data (tables), the code matches are the renderer and text routines.
+
 ## Method
 
 Find maximal common byte runs between the two executables (rolling 32-byte
