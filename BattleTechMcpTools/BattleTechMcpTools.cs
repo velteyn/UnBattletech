@@ -6,6 +6,7 @@ using Spice86.Shared.Emulator.Mouse;
 using Spice86.Shared.Emulator.Keyboard;
 using Spice86.Core.Emulator.VM;
 using Spice86.Core.Emulator.Devices.Input.Keyboard;
+using Spice86.Core.Emulator.Devices.Video;
 using Spice86.Shared.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -504,6 +505,64 @@ public sealed class BattleTechMcpTools
 
     private static readonly char[] AsciiRamp = " .:-=+*#%@".ToCharArray();
 
+    /// <summary>
+    /// Builds a 256-entry ASCII brightness table from the emulator's actual DAC
+    /// palette. Falls back to the built-in 16-colour EGA table when the DAC is
+    /// unavailable. Without this, custom mode-13h palettes render blank.
+    /// </summary>
+    private int[] BuildBrightnessTable()
+    {
+        byte[]? dac = null;
+        try { dac = _services.VgaFunctionality?.ReadFromDac(0, 256); }
+        catch { /* DAC unavailable */ }
+        bool haveDac = dac is { Length: >= 768 };
+        int[] table = new int[256];
+        for (int i = 0; i < 256; i++)
+        {
+            int r, g, b;
+            if (haveDac)
+            {
+                r = dac![i * 3] * 255 / 63;
+                g = dac[i * 3 + 1] * 255 / 63;
+                b = dac[i * 3 + 2] * 255 / 63;
+            }
+            else
+            {
+                int ci = i & 0x0F;
+                r = VgaPaletteRgb[ci, 0] * 255 / 63;
+                g = VgaPaletteRgb[ci, 1] * 255 / 63;
+                b = VgaPaletteRgb[ci, 2] * 255 / 63;
+            }
+            int lum = (r * 299 + g * 587 + b * 114) / 1000;
+            table[i] = lum * (AsciiRamp.Length - 1) / 255;
+        }
+        return table;
+    }
+
+    [McpServerTool(Name = "bt_read_palette", UseStructuredContent = true)]
+    [Description("Read the VGA DAC palette (256 entries, 6-bit RGB). This is the palette "
+        + "actually used to render mode 13h screens; combine with a framebuffer read to "
+        + "reconstruct true-colour images.")]
+    public CallToolResult ReadPalette()
+    {
+        return ExecuteTool(() =>
+        {
+            byte[]? dac = null;
+            try { dac = _services.VgaFunctionality?.ReadFromDac(0, 256); }
+            catch { /* DAC unavailable */ }
+            if (dac is not { Length: >= 768 })
+            {
+                return new { Available = false, Entries = Array.Empty<int[]>() };
+            }
+            var entries = new int[256][];
+            for (int i = 0; i < 256; i++)
+            {
+                entries[i] = new[] { (int)dac[i * 3], dac[i * 3 + 1], dac[i * 3 + 2] };
+            }
+            return new { Available = true, Entries = entries };
+        });
+    }
+
     [McpServerTool(Name = "bt_screenshot", UseStructuredContent = true)]
     [Description("Capture the emulator's display as ASCII art. "
         + "Reads video mode from BIOS (0x0040:0x0049). "
@@ -566,18 +625,9 @@ public sealed class BattleTechMcpTools
                 uint fbAddr = 0xA0000;
                 byte[] pixels = Memory.GetData(fbAddr, (uint)(width * height));
 
-                // Brightness lookup from standard VGA 16-color palette
-                int[] brightnessLevel = new int[256];
-                for (int i = 0; i < 256; i++)
-                {
-                    int ci = i & 0x0F;
-                    int r = VgaPaletteRgb[ci, 0];
-                    int g = VgaPaletteRgb[ci, 1];
-                    int b = VgaPaletteRgb[ci, 2];
-                    int lum = (r * 299 + g * 587 + b * 114) / 630;
-                    if (lum > 9) lum = 9;
-                    brightnessLevel[i] = lum;
-                }
+                // Brightness lookup from the ACTUAL DAC palette, so custom
+                // palettes (mode 13h games) render correctly instead of blank.
+                int[] brightnessLevel = BuildBrightnessTable();
 
                 int sampleW = 4, sampleH = 4;
                 int cols = width / sampleW;
