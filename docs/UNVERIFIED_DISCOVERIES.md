@@ -45,3 +45,34 @@
   - Trace all cases of `fn1631_11AB` (especially property IDs `0x1C–0x23`) during live gameplay to map each property ID to a narrative concept.
   - Correlate changes in `b0057` with visible in-game events across multiple playthroughs to fully confirm the 0/1/2 meanings.
   - Analyse other functions that read from `0xC79B` / `aC744[].b0057` to see if there are additional branches or side effects beyond the initial plot twist.
+
+## 6. Game-state segment: ES (0x2A0F) vs DS (0x1DE9) — CRITICAL
+
+**Status (2026-09-27): unresolved; the docs and `bt_*` tools are probably reading the wrong segment.**
+
+Observed live via the emulator MCP on the world map (tile (34,13); left panel shows
+`Jason` / `C-Bills: 50`):
+
+| Structure | DS:0x1DE9 | ES:0x2A0F |
+|-----------|-----------|-----------|
+| Credits (`0xD370`) | 0 | **50** (matches the on-screen C-Bills) |
+| State array (`0xD30C`) | all zero | has data (e.g. index 23 = 45) |
+| Story slot 0 (`0xC724`) | all zero | 255, … (populated) |
+| Unit slot 0 (`0xC614`) | all zero | 0,8,9,7,… (populated) |
+| Cursor (`0xA44B`) | 0x0C44,0xC01B → tile (34,13) | 0x5B88,0x95BF → tile (68,95) |
+
+CPU registers sampled repeatedly: **DS is stable at `0x1DE9`**; **ES toggles
+`0x2A0F` ↔ `0xA000`** (`0xA000` = video framebuffer while rendering). The live game
+state therefore appears to be **ES-relative (segment `0x2A0F`)**, whereas the `bt_*`
+tools and the docs read **DS (`0x1DE9`)** and return zeros for credits/state/story/units.
+
+Caveat: writing 1500 to `ES:0xD370` stuck in memory but the panel did not refresh within
+1.5 s (slow economy tick / cached panel), so the write-back test was inconclusive; the
+pre-write value matching the panel is the strongest evidence.
+
+**Investigation needed**:
+- Confirm the real global-data segment (trace the left-panel `C-Bills` render routine, or
+  set a write watchpoint on the credit counter).
+- Determine whether `DS:0x1DE9` is a second (map/render) data segment or an aliased copy.
+- Fix `BattleTechMcpTools` to read the correct segment (ES when `ES != 0xA000`, or the
+  segment the globals actually use) and correct the "DS-relative" claims in the docs.

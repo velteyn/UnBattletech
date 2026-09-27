@@ -16,6 +16,13 @@ RunWithOverrides<BattleTechOverrideSupplier>(args)
 
 All tools use **DS-relative addressing** `(DS << 4) + offset` at runtime rather than hardcoded physical addresses — the DS register varies due to EXE relocation. Tools auto-pause emulation before executing, then resume after the operation.
 
+> ⚠️ **Known issue (2026-09-27): the `bt_*` tools may read the wrong segment.** During a live
+> playthrough the left panel showed `C-Bills: 50` and a populated character, yet every
+> game-state read at `DS:0x1DE9` returned zero, while the same offsets at **`ES:0x2A0F`**
+> held the real data (credits 50, populated state array / story slots / unit slots).
+> `DS` was stable at `0x1DE9`; `ES` toggled `0x2A0F` ↔ `0xA000` (video). See
+> `docs/UNVERIFIED_DISCOVERIES.md` §6. Until resolved, cross-check reads against `ES`.
+
 ### Tool Categories
 
 | Category | Tools | Purpose |
@@ -279,6 +286,9 @@ for _ in range(8):
    - Watch the address: the head is `0x0040:0x001A` (**decimal `1050`**), the tail `0x0040:0x001C` (`1052`). Off-by-one reads a garbage pointer.
 5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/E/D/Z/C may not). Fix: manually set `Credits=1500` and navigate to tile (26,5) for TRAINING.BLD, or restart and pick New Game (the reliable route).
 6. **Port 8081 in TIME_WAIT**: After restarting emulator, port 8081 (or any used MCP port) may be in TIME_WAIT for 60s. Use a different port or wait. Our config uses port 8086.
+7. **`bt_*` reads may use the wrong segment (2026-09-27)**: the tools read `DS` (`0x1DE9`), but live game state (credits/state/story/units) was observed at `ES` (`0x2A0F`). See the warning at the top and `docs/UNVERIFIED_DISCOVERIES.md` §6. This makes issue #5 look like a "blank state" when the data is actually present at `ES`.
+8. **`bt_get_state.DsSegment` is wrong**: it reported `14424` (`0x3855`, actually `SS`), while the real `DS` is `0x1DE9` (`7657`) — use `bt_read_registers` for segments.
+9. **`bt_screenshot` used a 16-colour table for all modes** (fixed 2026-09-27): mode-13h screens with a custom DAC palette rendered blank. It now uses the live DAC palette; `bt_read_palette` was added. The Python harness (`tools/playtest/bt.py`) can also render true-colour PNGs.
 
 ### Project Location
 
