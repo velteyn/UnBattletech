@@ -8,7 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="../../../Spice86/src/Spice86.Core/Spice86.Core.csproj" />
     <ProjectReference Include="../../../Spice86/src/Spice86.Shared/Spice86.Shared.csproj" />
-    <PackageReference Include="ModelContextProtocol.Core" Version="1.3.0" />
-    <PackageReference Include="ModelContextProtocol.AspNetCore" Version="1.3.0" />
+    <PackageReference Include="ModelContextProtocol.Core" Version="2.2.0" />
+    <PackageReference Include="ModelContextProtocol.AspNetCore" Version="2.2.0" />
   </ItemGroup>
 </Project>

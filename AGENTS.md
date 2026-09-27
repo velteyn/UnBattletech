@@ -732,7 +732,7 @@ The world map uses a **hex-grid**. Building entry at a tile uses `D` (East key) 
 
 **Obstacles**: Buildings (tile values 64+) block movement. Read world map tiles at DS:0x0F00 (128×128 grid, row-major) to check passability.
 
-**Root cause (RESOLVED)**: The game runs with DOS default drive = `A:` (boot floppy in original hardware). `INFOCOM.CMP` was resolved to `A:\INFOCOM.CMP` but A: had no mounted host directory. **Fix**: Both A: and B: drives are now mounted to `cDriveFolderPath` (same as C:) in `DosDriveManager.cs` constructor. Game files are accessible from all three drives.
+**Root cause (RESOLVED)**: The game runs with DOS default drive = `A:` (boot floppy in original hardware). `INFOCOM.CMP` was resolved to `A:\INFOCOM.CMP` but A: had no mounted host directory. **Fix**: Both A: and B: drives are mounted to the game data folder via the supported public API `machine.Dos.MountFolderAsFloppy()` from `BattleTechMcpTools/BattleTechOverrideSupplier.cs` (`MountGameDataOnFloppyDrives`). This keeps Spice86 upstream untouched — the mount previously lived in `DosDriveManager.cs` but was moved out so PR #2246 stays generic. Game files are accessible from all three drives.
 
 ### Why This Is Invaluable
 
@@ -863,3 +863,14 @@ BattleTechMcpTools/              # In this repo (AIATTEMPT), NOT in Spice86
 | **GDB** | Debugging C# rebuild (Godot) or test binaries | Runtime debugging of the Godot rewrite |
 | **Dosbox-X** | Run original game, verify behavior | Playtest original for reference |
 | **Python tools** | Batch analysis, format conversion, story extraction | Bulk processing, text export, format conversion |
+
+## Local Ollama Instance
+
+A local Ollama server may be available on `127.0.0.1:11434` (CPU-only, no GPU). Models:
+- `gemma3:1b` (815 MB) — small general-purpose model
+- `qwen3:0.6b` (522 MB) — thinking model
+- `qwen2.5vl:3b` (3.2 GB) — vision model for image/screenshot analysis
+
+The server auto-unloads models after 30 minutes of inactivity. Use it when a local,
+no-credit inference or vision model would help; if it is not running or not needed,
+proceed without it.
