@@ -45,6 +45,7 @@ more reliable than reverse-engineering each game's quirks in isolation.
 ## Deliverables
 
 - `docs/engine/README.md` — this plan + architecture overview.
+- `docs/engine/fingerprint-mines-of-titan.md` — first cross-binary fingerprint vs Mines of Titan (39 shared runs).
 - `docs/engine/memory-model.md` — segment layout, DS/ES roles, startup/protection flow.
 - `docs/engine/resources.md` — file formats + loader (shared engine routines).
 - `docs/engine/viewport.md` — **the viewport workflow** (priority).
@@ -61,6 +62,10 @@ more reliable than reverse-engineering each game's quirks in isolation.
    seg-`0x246C` rendering-config struct; determine whether a canonical viewport
    struct/set-clip exists.
 3. Acquire Mars Saga / Mines of Titan and begin fingerprinting.
+
+**Progress (2026-09-27)**: Mines of Titan (`TITAN.EXE`, authentic DOS) acquired and stashed
+under `original/siblings/` (gitignored). First fingerprint done — 39 shared engine runs,
+3451 bytes: see [`fingerprint-mines-of-titan.md`](fingerprint-mines-of-titan.md).
 
 > Until A and C are settled, further content-level spelunking (story/combat tuning) risks
 > building on an unverified foundation.
