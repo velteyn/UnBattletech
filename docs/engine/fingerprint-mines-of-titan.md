@@ -108,6 +108,21 @@ rendering/text segment **207F**:
 (segment `207F` + the text renderer `1E56` + border/config `1F3D`). These are the routines
 to treat as *engine*; the game-specific layer (story, combat, maps, economy) sits on top.
 
+## What is NOT shared: loader / RLE / input
+
+Lowering the run threshold to 32 bytes found **no new segments** — every match stays in the
+graphics/text core (segment `207F`), the coordinate primitive (segment `1F6F`), or data
+regions (`~2385–246E`, `3ED9–444D`). In particular the **resource loader, RLE decompressor,
+and input handlers do not match** between the two titles. The likely reason is that the
+resource packaging differs:
+
+- BattleTech: individual files (`BTTITLE.CMP`, `MAP.ICN`, `*.MTP`, `*.ANM`, `*.BLD`).
+- Mines of Titan: packed archives (`DISK1.DAT`, `DISK2.DAT`, `DISKS.DAT`).
+
+So Mines of Titan (a later engine revision) kept the **graphics/text core** but evolved the
+loader/input. The shared surface is therefore the rendering + text subsystem, not the whole
+engine.
+
 ## Method
 
 Find maximal common byte runs between the two executables (rolling 32-byte
