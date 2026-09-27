@@ -28,6 +28,7 @@ should summarise and link here rather than restate.
 | Rebuild progress / status | [`rebuild/progress.md`](rebuild/progress.md) |
 | Spice86 MCP runtime tools (23 `bt_*`) | [`tools/spice86-mcp.md`](tools/spice86-mcp.md) |
 | Analysis tooling (Reko/Spice86/Ghidra/InceptionTools/Python) | [`tools/analysis-tools.md`](tools/analysis-tools.md) |
+| Playtest harness (drive the original via MCP) | [`../tools/playtest/bt.py`](../tools/playtest/bt.py) |
 | Open theories / unverified discoveries | [`UNVERIFIED_DISCOVERIES.md`](UNVERIFIED_DISCOVERIES.md) |
 | Gameplay walkthroughs (reference) | [`walkthrough/`](walkthrough/) |
 

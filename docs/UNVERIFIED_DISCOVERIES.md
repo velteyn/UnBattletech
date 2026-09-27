@@ -76,3 +76,35 @@ pre-write value matching the panel is the strongest evidence.
 - Determine whether `DS:0x1DE9` is a second (map/render) data segment or an aliased copy.
 - Fix `BattleTechMcpTools` to read the correct segment (ES when `ES != 0xA000`, or the
   segment the globals actually use) and correct the "DS-relative" claims in the docs.
+
+## 7. Westwood engine viewport abstraction — how complete is our coverage?
+
+The game was written by **Westwood Associates** (in-game copyright: "Computer program by
+Westwood Associates"). Westwood's engine is viewport-centric: later titles (Eye of the
+Beholder, Kyrandia, Lands of Lore) use an explicit viewport/page system (set-viewport,
+clipped blit, page flip). It is **unclear whether BattleTech (1988) uses the same primitive
+and whether we have fully mapped its workflow**.
+
+**What we have** (see `story/story-system.md` §"Viewport Clipping System", `context.md`):
+- 3-pass render pipeline: Pass 1 right panel tiles (`fn207F_18EF`, 13×12 grid); Pass 2 left
+  panel border (`fn1F3D_06C3` → `fn207F_1CB8` full / `fn207F_1D3A` narrow / `fn207F_245C`
+  text); Pass 3 text overlay (`fn1E56_03F5`).
+- Mode flags: `w4FBA` (4 modes, startup only), `w4FBC` (narrow-panel binary flag — the real
+  dynamic mechanism), `tB764` (pixel-format/blitter selector at seg `246C`).
+- Clipping: `fn207F_24D7`, 4 cases by `tB764` (CGA 80px / VGA-text 40-col / EGA 160px / full 320px).
+- Left panel width hardcoded `0x50` (80px).
+- Corrected earlier error: `fn207F_1B80` ("configure viewport dimensions") does **not** exist.
+
+**Unverified / gaps**:
+- Is there a canonical **viewport struct** (`x, y, w, h, buffer, page`) plus a set/clip
+  function, or is the viewport implicit in the fixed panel widths?
+- The **rendering-config struct at segment `0x246C`** (holding `tB764` + border/source
+  pointers) is only partially mapped — is this the Westwood viewport/config table?
+- How viewports are **pushed/popped** per screen (modal screens, combat, stat screen): we know
+  `w4FBC`/`w014A`, but not a general save/restore of viewport state.
+- Relationship to the later Westwood engine (Beholder/Kyrandia) viewport model.
+- Whether a viewport primitive lives in the **not-decompiled segments** (the docs note the
+  combat/movement code at segments `19EF`/`1000` is absent from the Reko output).
+
+**Investigation needed**: trace `fn207F_24D7` callers and the seg-`0x246C` config struct;
+check whether a viewport struct is passed to the blit routines.

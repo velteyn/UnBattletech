@@ -114,6 +114,18 @@ cd BattleTechCHI && dotnet build
 dotnet build UNBATTLETECH.csproj
 ```
 
+### Playtest harness
+
+`tools/playtest/bt.py` drives the original game in the emulator (MCP on 8086 + HTTP memory API on 20000): BDA keyboard injection, state reads, and true-colour PNG rendering.
+
+```bash
+python3 tools/playtest/bt.py state     # mode/cursor/credits/flags/state snapshot
+python3 tools/playtest/bt.py tile      # world-map tile under the cursor
+python3 tools/playtest/bt.py keys w    # press a named key (space/enter/esc/w/a/s/d/arrows/...)
+python3 tools/playtest/bt.py png out.png   # true-colour screenshot
+python3 tools/playtest/bt.py boot      # adapter+drive keys, then spaces -> title/menu
+```
+
 ## Disclaimer
 
 This repository contains **no original game assets** (BLD, CMP, EXE, etc.). Only reverse engineering analysis, documentation, and original source code for a clean-room rebuild are included. The original game assets remain in `original/` for local development only (gitignored).
