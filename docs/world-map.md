@@ -1,4 +1,33 @@
-# World Map Analysis: BattleTech - The Crescent Hawk's Inception
+# World Map & Navigation — Reverse-Engineering Specification
+
+> Canonical world-map reference. Consolidated from `WORLD_MAP_FINDINGS.md` plus the
+> world-map/navigation sections of the former `TECHNICAL_ANALYSIS.md`
+> (local-map destinations, §17 random encounters, §18 NPC movement).
+> The old `TECHNICAL_ANALYSIS.md` §20 was a condensed subset and is merged here.
+> See `docs/INDEX.md` for the documentation map.
+
+## Local map destinations (MAP1–MAP14)
+
+## Identified Destination Maps
+
+- **MAP1.MTP**: Training Center (Start location).
+- **MAP2.MTP**: Main City (Chameleon training, Arena).
+- **MAP3.MTP**: Small outpost/village.
+- **MAP4.MTP**: Large industrial complex / city.
+- **MAP5.MTP**: Medium settlement.
+- **MAP6.MTP**: Medium settlement.
+- **MAP7.MTP**: Medium settlement.
+- **MAP8.MTP**: Medium settlement.
+- **MAP9.MTP**: Outpost.
+- **MAP10.MTP**: Medium settlement.
+- **MAP11.MTP**: Destroyed Training Center (Post-attack).
+- **MAP12.MTP**: Large city/base.
+- **MAP13.MTP**: Medium settlement.
+- **MAP14.MTP**: Cave / Underground complex.
+
+
+---
+
 
 ## Summary
 
@@ -319,3 +348,282 @@ Legend: ~=Water  ░=Light  ▒=Medium  ▓=Dark  █=City  ═=Road  ║=Wall  
 10. **fn0800_2A93 is the world map renderer** - called each frame when `bD310 != 0` (world map active flag)
 
 For reconstruction in Godot: replicate the 64x64 tile grid as a `TileMap` (or 2D array), load MAP.ICN tiles as atlas/subresources, implement the same cursor-to-tile coordinate mapping, and add the visibility 2D bit-grid as a Fog of War layer.
+
+
+---
+
+## Random encounter system (formerly TECHNICAL_ANALYSIS §17)
+
+### 17. WORLD MAP RANDOM ENCOUNTER SYSTEM
+
+**RESOLVED:** Full encounter mechanics documented below.
+
+The random encounter system is triggered by **walking on the world map** (not by entering buildings or the action menu). It is checked **every frame** in the main game loop at segment `0800`.
+
+#### 17.1 Core Check
+
+**File:** `UNBTECH.reko/UNBTECH_0800.c:192-201` (segment `0800`)
+**Spice86:** `spice86/GeneratedCode.cs:1527-1549` (segment `0170:0287`)
+
+```c
+int16 ax_540 = fn207F_0BC0();          // RNG → random byte (0-255)
+selector es_547 = ...;
+if ((ax_540 & es_547->bD330) == 0x00   // Probability mask check
+    && es_547->bD310 != 0x00           // On world map
+    && es_547->bD346 == 0x00)          // NOT on star map / alternate view
+{
+    fn183B_000A(..., 0, ...);          // Initiate encounter → combat setup
+}
+```
+
+#### 17.2 Probability Mask (`bD330` at segment offset `0xD330`)
+
+The check is: **`RNG_byte & bD330 == 0`**. Since RNG returns 0-255 uniformly, the mask determines probability:
+
+| Value | Binary | Match Condition | Probability | Context |
+|-------|--------|----------------|-------------|---------|
+| `0x1F` | `00011111` | 8/256 values match (0x00, 0x20, 0x40, 0x60, 0x80, 0xA0, 0xC0, 0xE0) | **1/32 ≈ 3.125% per frame** | World map walking (set at `UNBTECH_11B8.c:1120`) |
+| `0x7F` | `01111111` | 2/256 values match (0x00, 0x80) | **1/128 ≈ 0.78% per frame** | After encounter/combat (set at `UNBTECH_183B.c:804`) |
+
+**There is NO terrain/tile modifier**: the probability is flat regardless of which tile the player is on. No encounter rate table per tile type exists.
+
+#### 17.3 Encounter Population (`fn0DAB_0D3D`, segment 0DAB:0D3D)
+
+**File:** `UNBTECH.reko/UNBTECH_0DAB.c:972-1105`
+
+When `fn183B_000A` is called, it invokes `fn0DAB_0D3D` to populate the enemy encounter group:
+
+1. **Random position**: Units placed at (±10-17 from 26, ±10-17 from 12) on the 32×24 world map grid, independent of terrain type. Generated via `RNG & 0x07 + 0x0A`, with 50% sign negation.
+2. **Clear all slots**: Slots 0-23 cleared (status=0, coords=0xFFFF) first
+3. **Enemy infantry slots 8-15** (50% chance per slot):
+   - Random equipment from table via 7-round loop: each round `RNG & 0x03` indexes 1 of 4 weapon types at `DS:[0x5434] + 0x2CF4` (weapon instance data, stride 0x11)
+   - `bC61F[1][slot]` set to 0x08 (some type/weapon class)
+   - `C618[slot][0..6]` each filled with `RNG & 0x03` (random item types 0-3)
+   - HP/weapon state initialized via `fn0800_19DD` calls, combining 2D6 results
+4. **Enemy mech slots 4-7** (50% chance per slot):
+   - Guard check at `0xC530[slot * 0x7D] != ~0x00` — only populates if a valid template exists
+   - Template selection: `RNG() % 3` indexes a table of **3 fixed word entries** (near offsets) at segment `[DS:0x5436]:0x2DF8`
+   - Full 125-byte mech data copy from template to story slot
+   - Post-copy: `D566[slot]` = 0x00 if template 0 selected, 0x92 if template 1 or 2 (∼67% chance of 0x92)
+5. **Secondary weapon/position setup** (slots 8-15, if populated): terrain validation loop places each infantry unit on valid tiles, skipping if terrain property at `+0x7AD[tile] >= t0150` (blocked)
+
+**IMPORTANT: No dynamic balancing** — There is NO code that reads the player's lance composition to calibrate enemy spawns. The 3 mech templates at `[DS:0x5436]:0x2DF8` are **read-only** (never written to after init). The template pointers are allocated at runtime (segment beyond EXE load image) and populated during game init from the static mech definitions in segment 1A00.
+
+**Known mech definitions** (125-byte structs, stride 0x7D, mech ID at offset 0x7B):
+
+| Mech ID | Name | Tonnage | Walk | Jump | Notes |
+|---------|------|---------|------|------|-------|
+| 0x00 | LOCUST | 20t | 8 | 0 | Fast scout |
+| 0x01 | WASP | 20t | 6 | 6 | Jump-capable |
+| 0x02 | STINGER | 20t | 6 | 6 | Jump-capable |
+| 0x03 | COMMANDO | 25t | 6 | 0 | SRM-armed |
+| 0x06 | URBANMECH | 30t | 2 | 2 | Slow heavy armor |
+| 0x09 | JENNER | 35t | 7 | 5 | Story-only, Kuritan |
+| 0xC8 | CHAMELEON | 50t | 6 | 6 | Player starting mech, story-only |
+
+**Melee-only enemies:** The Spectator (decoy/non-combatant, mech ID 0x00 same as Locust) exists in the codebase but was not found in the EXE binary data.
+
+**Known weapons** (17-byte stride, table at `DS:+0x2EE4`): 33 weapons total, range includes: Cludgel, Knife, Sword, Vibroblade, Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SRMissile, Inferno, LaserPistol, LaserRifle, Flamer, Small/Medium/Large Laser, PPC, AC/2/5/10/20, LRM5/10/15/20, SRM2/4/6, Kick.
+
+**Key insight**: The encounter system generates up to 4 random mechs from a **fixed pool of 3 light mech templates** (likely Locust, Wasp, Stinger — the 20t lights), plus up to 8 random infantry. Heavier units like the Jenner (35t), UrbanMech (30t), and Chameleon (50t) are **story-controlled only** and never appear in random walking encounters. The game has zero assault or heavy mechs — the 50t Chameleon is the maximum weight. The player's perception of "not encountering heavy mechs when piloting lights" is a consequence of the fixed light-mech template pool, not any dynamic balancing algorithm.
+
+#### 17.4 Encounter Positioning (`fn183B_28DB`, segment 183B:28DB)
+
+After population, `fn183B_28DB` positions the encounter on the world map:
+
+1. Reads cursor position (`A44B`/`A44D`) and location offsets (`t400C`/`t403E`)
+2. Checks special encounter flag at `DS:55D4→bC620` — if `!= 0x08`, overrides position with unit 0's coordinates from `0x4004`/`0x4036`
+3. Moves cursor to calculated position via `fn0800_17BB`
+4. Scans extended pool (slots 12-23) for active units, records first found
+5. Sets `t3770 = 0x1E` (30-step search range)
+6. Iteratively adds `t458E`/`t4590` offsets toward target position, decrementing step counter until position match or 30 steps exhausted
+7. Returns 1 (success) if a valid position was found, 0 otherwise
+8. On success, `fn183B_000A` loads and displays the encounter BLD narrative text (index 13314)
+
+**Key insight**: Enemies are placed relative to center (26, 12) regardless of terrain. The encounter system has no terrain-type modifiers for probability or composition. Story-progression gating happens through the bD330 probability mask changes (0x7F post-combat) and bD310/bD346 guards.
+
+#### 17.5 Mode Guards
+
+**`bD310`** (at `0xD310`) — **World map active flag**:
+- Set to `0x01` when entering the world map view (`UNBTECH_0FDC.c:1075` / `GeneratedCode7.cs:2754`)
+- Must be non-zero for encounters (player must be on world map, not in a building/menu)
+
+**`bD346`** (at `0xD346`) — **Star map / alternate view flag**:
+- Set to `0x01` by `fn0800_2DA8` when `wArg06 == 0x0E` (`UNBTECH_0800.c:2913-2917`)
+- Must be zero for encounters (player must not be on the star map or in combat view)
+
+#### 17.6 Encounter Initiation: `fn183B_000A` (segment `183B:000A`)
+
+**File:** `UNBTECH.reko/UNBTECH_183B.c:7-303`
+
+Called with `wArg04 = 0` when encounter triggers. Steps:
+
+1. **Lines 104-117**: Saves current unit state into encounter save buffers
+2. **Lines 118-153**: Initializes combat arrays:
+   - Clears position data (`0x4004`/`0x4036` = -1 for all 24 slots)
+   - Sets all unit slots to inactive/dead (`w406A = 0`)
+   - Initializes visibility maps (24 rows × 24 columns for fog of war)
+3. **Lines 154-166**: Initializes unit flags and counters (8 iterations for various flag arrays)
+4. **Lines 167-224**: Positions units based on current `A44B`/`A44D` coordinates, applying offset via `fn0800_191B`/`fn0800_186F`
+5. **Lines 230-251**: Calls `fn0DAB_0D3D` for unit population, sets `w37FE = 0x0F`, counts active units
+6. **Lines 252-253**: Calls `fn183B_28DB` for encounter-specific enemy/environment setup
+7. **Lines 254-303**: Loads and executes BLD script `0x33FC` for encounter narration, displays enemy count UI, and transitions into combat
+8. **Line 804**: Sets `bD330 = 0x7F` to reduce re-encounter probability during/after combat
+
+#### 17.7 World Map Movement System (How Walking Happens)
+
+**File:** `UNBTECH.reko/UNBTECH_207F.c:1920-2074`
+
+| Function | Description |
+|----------|-------------|
+| `fn207F_158C` | Move cursor **up** (decrement Y, with scroll wrap) |
+| `fn207F_163B` | Move cursor **down** (increment Y, with scroll wrap) |
+| `fn207F_16E3` | Move cursor **left** (decrement X, with scroll wrap) |
+| `fn207F_17C5` | Move cursor **right** (increment X, with scroll wrap) |
+
+High-level movement dispatch at `fn0800_17BB`/`fn0800_186F`/`fn0800_191B` in `UNBTECH_0800.c:1142-1219`. Keyboard input handled by `fn0800_231D` at `UNBTECH_0800.c:2004-2078`.
+
+All direction functions handle screen scrolling by copying video memory when cursor crosses tile boundaries (wrapping at 0x00/0xF0 for coordinate high byte).
+
+#### 17.8 World Map Coordinate System
+
+From `UNBTECH_0FDC.c:868-869`:
+```c
+tile_x = (A44B & 0x7F) >> 1;   // 0-63 range
+tile_y = (A44D & 0x7F) >> 1;   // 0-63 range
+```
+
+- Low byte: sub-tile position within a 16×16 grid (step size 2 pixels)
+- High byte: tile column/row index
+- Star map (MAP15) tiles accessed as `tile[y * 32 + x]` where x=0..31, y=0..23 (768 bytes, linear format)
+
+#### 17.9 Relationship to Segment 0D27 (Action Menu)
+
+Segment `0D27:0044` is **NOT** the random encounter handler. It is the **action menu handler** triggered by pressing SPACE at a location. It presents options 1-4 (actions like enter building, leave city, etc.) and processes the player's choice. The `w4FBA = 2` transition seen there is from the menu choice going into combat (e.g., selecting "fight" at a location), not from random walking encounters.
+
+#### 17.10 Encounter Flow Summary
+
+```
+Main Game Loop (fn0800_0000)
+  │
+  ├─ Read keyboard → fn0800_231D (key dispatch)
+  │   └─ Arrow keys → movement functions (update A44B/A44D)
+  │
+  ├─ Space bar → fn0800_2C50 (action menu at 0D27)
+  │
+  ├─ ENCOUNTER CHECK (0800:192-201 every frame):
+  │   RNG & bD330 == 0  AND  bD310 != 0  AND  bD346 == 0
+  │   │
+  │   └─ True → fn183B_000A
+  │       ├─ Save current positions
+  │       ├─ Initialize combat arrays (clear all units)
+  │       ├─ Populate enemies via fn0DAB_0D3D + fn183B_28DB
+  │       ├─ Execute BLD script 0x33FC for encounter narration
+  │       ├─ Set bD330 = 0x7F (reduce re-encounter probability)
+  │       └─ Transition to combat mode (w4FBA → 2)
+  │
+  ├─ Decrement timers (bD320-bD323)
+  │
+  └─ fn0800_240B/fn0800_24C2 (refresh cycle)
+```
+
+---
+
+
+---
+
+## NPC world-map movement (formerly TECHNICAL_ANALYSIS §18)
+
+## 18. NPC World-Map Movement Engine
+
+### 18.1 Overview
+
+The game drives autonomous NPC movement through `fn0800_24C2` (segment `0800:24C2`), called every 3rd frame from the main game loop (`fn0800_0000`). It handles **8 story character slots** (indices 0-7) — named NPCs like Rick Atlas, Rex Pearce, and other plot-relevant characters that walk around the game world.
+
+Generic background NPCs (the ones walking around the training center compound) are part of the **tile animation system** (`fn0800_240B`) — they are drawn as animated tile sprites, not as independently moving units.
+
+### 18.2 Data Structures
+
+| Address | Size | Field | Description |
+|---------|------|-------|-------------|
+| `seg 0x538A : 0xD398[slot]` | 1 byte × 8 | Direction/state nibble | High nibble = BLD index (which building NPC is in). Low nibble = facing direction (0-7). Packed as `(bld_idx << 4) \| direction` |
+| `seg 0x538A : 0xD399[slot]` | 1 byte × 8 | Movement delay timer | Counts down each frame. When 0, NPC takes a step. Initialized to specific values per slot at game start. Reset to `~0x00` (0xFF) when slot 0 (`bD339`) triggers |
+| `0x4024[slot * 2]` | word × 8 | Destination X | Target X coordinate NPC is walking toward |
+| `0x4056[slot * 2]` | word × 8 | Destination Y | Target Y coordinate NPC is walking toward |
+| `0x4004[(slot+0x10) * 2]` | word × 8 | Current X | NPC's actual X position on the map |
+| `0x4036[(slot+0x10) * 2]` | word × 8 | Current Y | NPC's actual Y position on the map |
+| `seg 0x53CA : 0x4564[idx * 2]` | word × 8 | Waypoint X table | 8 destination X coordinates indexed by direction (0-7) |
+| `seg 0x53CC : 0x57D6[idx * 2]` | word × 8 | Waypoint Y table | 8 destination Y coordinates indexed by direction (0-7) |
+
+### 18.3 Movement Algorithm (`fn0800_24C2`)
+
+```
+For each NPC slot (0..7):
+  1. Check if NPC is active (non-zero at slot offset `0x1A` in story state)
+  2. Decrement movement timer `bD399[slot]`
+  3. IF timer just reached 0:
+     a. Read direction nibble from `0xD398[slot] >> 4`
+     b. Use direction as index into waypoint tables:
+        Destination X = `0x4564[direction * 2]`
+        Destination Y = `0x57D6[direction * 2]`
+        
+  4. IF NPC active (slot's `~0x2C66` offset != 0):
+     a. Save current cursor (A44B/A44D)
+     b. Call `fn0800_191B` to adjust cursor toward destination
+     c. Compare adjusted cursor X with NPC's current X (from `0x4004[(slot+0x10)*2]`)
+     d. Try moving toward destination by adjusting cursor + calling `fn0800_191B`
+        in each axis (X first, then Y)
+     e. Call `fn1631_0006` (LoS tile-step pathfinding) to validate the move
+     f. Update position arrays:
+        `0x4004[(slot+0x10)*2]` = new X
+        `0x4036[(slot+0x10)*2]` = new Y
+     g. Update direction-relative sprite offset for rendering
+        
+  5. IF NPC reached destination (current X/Y == waypoint X/Y):
+     a. Generate new random direction: `RNG() & 0x1F`
+     b. Extract low 3 bits as new direction: `al_407 = random & 0x07`
+     c. Update `0xD398[slot]`:
+        high nibble = old high nibble (BLD index preserved)
+        low nibble = new direction
+     d. Look up new waypoint from tables at `0x4564[dir*2]` / `0x57D6[dir*2]`
+     e. Reset destination in story state at `54164[slot*0x1A]`/`54166[slot*0x1A]`
+     f. Clear current position to 0 (NPC vanishes until next step)
+        
+  6. Restore original cursor (A44B/A44D)
+```
+
+### 18.4 Building Entry / NPC Detection
+
+When the player enters a building, code at `fn0FDC` (~line 1750) checks which NPCs are inside:
+
+1. For each NPC slot (0..7), checks `bD399[slot] != 0` as an activity flag
+2. Reads `0xD398[slot] >> 4 & 0x07` to get the NPC's BLD index
+3. If BLD index matches the building being entered:
+   - Marks NPC as present in this building
+   - Counts total matching NPCs
+4. If any NPCs present:
+   - Loads NPC dialogue text from BLD strings
+   - If multiple NPCs, presents selection menu
+   - Renders dialogue via `fn1E56_03F5`
+5. Special cases:
+   - If `bD339 != 0 && current_dir == 7 && selection == 0 && some_flag != 0`:
+     Sets `bD33A = 1`, resets `bD399[slot] = 0` (story trigger)
+   - If world map not active (`bD310 == 0`): loads additional room-specific text
+
+### 18.5 Key Observations
+
+- **No follow-player AI**: NPCs do not track or follow the player. They wander between fixed waypoints.
+- **No A* pathfinding**: Movement uses `fn1631_0006` (LoS tile-step, 8-direction delta tables), which only checks immediate tile blocking. NPCs can get stuck on obstacles.
+- **Building warping**: When NPCs enter buildings (BLD index matches), their world-map position clears to 0 and they "appear" inside via the BLD dialogue system.
+- **Movement granularity**: Position coordinates use sub-tile precision (similar to cursor at `0xA44B`/`0xA44D` with sub-pixel flags). Movement step size is controlled by `fn0800_191B` which wraps coordinates in ranges.
+- **Timer granularity**: `bD399` counts game frames (every 3rd frame = ~5 FPS at 60fps). Different slots may have different initial timer values, causing desynchronized movement.
+
+### 18.6 Known Gaps
+
+1. How NPC initial positions and BLD indices are assigned at game start
+2. Exact waypoint table contents (8 coordinate pairs × direction)
+3. How `fn0800_191B` cursor adjustment maps to grid-aligned NPC positions
+4. Interaction between NPC movement and combat initialization (`fn183B_000A`)
+
+---
+

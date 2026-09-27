@@ -18,7 +18,7 @@
 
 ## 3. .BLD File Internals (Scripting)
 - **Hypothesis**: `.BLD` files contain bytecode/triggers for room interactions.
-- **Status (RESOLVED)**: Fully documented — 26 BLD files, substitution cipher text encoding, 26 opcodes (0xE4-0xFF), 4-layer interpreter. Full round-trip JSON conversion verified byte-identical. Story complete extracted. See `BLD_BYTECODE.md`, `decode_bld_interp.py`, `bld_json_converter.py`.
+- **Status (RESOLVED)**: Fully documented — 26 BLD files, substitution cipher text encoding, 26 opcodes (0xE4-0xFF), 4-layer interpreter. Full round-trip JSON conversion verified byte-identical. Story complete extracted. See `formats/bld-bytecode.md`, `decode_bld_interp.py`, `bld_json_converter.py`.
 
 ## 4. "Palace" Dialogue
 - **Hypothesis**: The "Palace" mentioned by the user is the "Citadel".

@@ -1,6 +1,6 @@
 # UnBattletech — Reverse Engineering BattleTech: The Crescent Hawk's Inception (1988)
 
-[![RE Status](https://img.shields.io/badge/RE-95%25-brightgreen)](docs/CONTEXT.md)
+[![RE Status](https://img.shields.io/badge/RE-95%25-brightgreen)](docs/context.md)
 [![Godot Rebuild](https://img.shields.io/badge/Rebuild-Phase_6-green)](BattleTechCHI/)
 
 Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Crescent Hawk's Inception**, the 1988 MS-DOS game by Infocom.
@@ -9,15 +9,16 @@ Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Cresc
 
 ```
 ├── docs/               # RE documentation & findings
-│   ├── CONTEXT.md      # Master context (1050+ lines)
-│   ├── TECHNICAL_ANALYSIS.md  # Comprehensive technical analysis (3211 lines)
-│   ├── MEMORY_MAP.md   # Full memory map (603 lines)
-│   ├── ADDRESS_REFERENCE.md   # Address reference (1035 lines)
-│   ├── BLD_BYTECODE.md # BLD bytecode specification (342 lines)
-│   ├── WORLD_MAP_FINDINGS.md  # World map analysis (321 lines)
-│   ├── REBUILD_PLAN.md # Godot rebuild plan
-│   ├── REBUILD_ROADMAP.md     # Rebuild roadmap
-│   └── STORY_TEXT.txt  # Extracted full story text
+│   ├── INDEX.md        # Documentation map (canonical source per topic)
+│   ├── context.md      # Master overview + known/unknown
+│   ├── combat-system.md           # Canonical combat spec
+│   ├── world-map.md               # Canonical world-map spec
+│   ├── formats/        # file-formats, bld-bytecode, anm-format, memory-map
+│   ├── story/          # story-arc, story-system, STORY_TEXT.txt
+│   ├── rebuild/        # roadmap, progress
+│   ├── tools/          # spice86-mcp, analysis-tools
+│   ├── walkthrough/    # gameplay walkthroughs
+│   └── UNVERIFIED_DISCOVERIES.md
 │
 ├── tools/              # Python analysis tools
 │   ├── bld/            # BLD script tools (decoder, converter, viewer)
@@ -63,12 +64,12 @@ The rebuild is in **Phase 6** (ANM integration + combat ANM). ~8,000 lines C# ac
 - ✅ Phase 3: BLD interpreter (26 opcodes), cipher decoder, 47-case dispatcher (all real impl.), dialogue, ShopScreen
 - ✅ Phase 4: Combat — init, turn order, movement, LoS, to-hit (2D6), damage, AI, heat/ammo, fog, HUD, encounters
 - ✅ Phase 5: AnmPlayer + ViewportManager + BldAnmMap, runtime ANM decompress
-- ✅ Phase 6: Combat mech panel ANM (MechPortrait), map cursor ANM, StorySlots 16→8 fix, emulator A: drive fix
+- ✅ Phase 6: Combat mech panel ANM (MechPortrait), map cursor ANM, stock-market RE + dispatcher cases 0x2A/0x2B, StorySlots 16→8 fix. (A:/B: drive mount now lives in `BattleTechMcpTools/BattleTechOverrideSupplier.cs`.)
 - ⬜ Phase 7: End-to-end playtesting, polish (VFX, BTSTATS, sound, w4FBC refactor, TileMapLayer migration)
 
 ## Emulator & Runtime Introspection
 
-Spice86 emulator with 19 BattleTech-specific MCP tools for runtime game state introspection:
+Spice86 emulator with 23 BattleTech-specific MCP tools for runtime game state introspection:
 - Read/write game state (state array, story slots, unit slots, cursor, credits, flags)
 - Read combat grids, unit positions, fog of war
 - Inject keyboard input (script the game through menus)

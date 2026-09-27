@@ -41,7 +41,7 @@ public class GameState
     // Layer 2: Per-slot data (aC724[0..7], stride 0x7D)
     // Dual-purpose: player mechs (slots 0-3) + enemy mech templates (slots 4-7)
     // Each slot holds both mech combat data AND story progression state.
-    // Not 16 — original game has exactly 8 slots. See TECHNICAL_ANALYSIS.md §17.10.
+    // Not 16 — original game has exactly 8 slots. See docs/story/story-system.md §17.10.
     public StorySlot[] StorySlots { get; set; } = new StorySlot[8];
     
     // Layer 3: Flags

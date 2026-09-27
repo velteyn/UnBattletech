@@ -70,7 +70,7 @@ Files: BTTITLE, INFOCOM, ENDMECH, BTSTATS, MECHSHAP, BTBORDER.
 
 ## .BLD (Building Data / Scripts)
 
-For complete BLD bytecode opcode reference, see [BLD_BYTECODE.md](BLD_BYTECODE.md).
+For the complete BLD bytecode opcode reference, see [bld-bytecode.md](bld-bytecode.md).
 
 ### File List
 26 files at `../../../*.BLD`: TRAINING, CITADEL, BARRACKS, BARRACK2, COMSTAR, FINDIT, FROB, GARAGE, HOSPITAL, HUT, INSTRUCT, JAIL, LOUNGE, MAYOR, PARTY, REPAIR, THEATER, VIEWDISK, WEAPON, WEAPON2, WINSCENE, CLOTHES, ARMOR, ENTRANCE, ARENA, ENDMECH.

@@ -221,7 +221,7 @@ The argument `wArg04` selects the interaction type.
 
 ## Text Encoding
 
-Text bytes use a substitution cipher (see CONTEXT.md section 4 for the complete table):
+Text bytes use a substitution cipher (see docs/formats/file-formats.md for the complete table):
 - Ranges: 0x57-0x5F, 0x60, 0x61-0x7F (except 0x6B), specific 0x80-0x96 values
 - 0xA0 = space separator
 - 0x6B = control byte (not text)
