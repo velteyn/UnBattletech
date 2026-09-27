@@ -35,6 +35,21 @@ The largest run (`UNBTECH 0x1FBB5` / `TITAN 0xEF7B`, 299 bytes) is a repeating l
 expansion / colour-index table** in the renderer — shared engine data, confirming the engine
 hypothesis independent of any code match.
 
+## Identified shared engine routines (rendering segment 207F)
+
+Relocation-normalised matching plus a Reko cross-reference identified the first shared
+engine **code** (all in the rendering segment **207F**):
+
+| Routine | Evidence | Role |
+|---------|----------|------|
+| VGA write-mode-2 blitter — `UNBTECH 0x1BF0C` ↔ `TITAN 0x37EA` (Reko `fn207F_0313` family) | `mov dx,0x3CE; mov ax,0x0205; out dx,ax` (GC mode 5 = **write mode 2**), `mov ax,8; out dx,ax` (bit-mask 0), stride `0x140`=320, `DS=0xA800` | Mode-13h sprite/tile blitter |
+| 2-bit mask expansion — `UNBTECH 0x1C633` ↔ `TITAN 0x36C8` (Reko `207F:0A49`) | `mov dx,0xF00F`, masks `0xC0/0x30/0x0C/0x03`, `not al; stosb` | Write-mode-2 pixel plot |
+| Framebuffer scroll — `UNBTECH 0x1BDD0` ↔ `TITAN 0x3778` | `add si,0x3E40; add di,0x7C80; rep movsw; sub si,0x80; sub di,0xC0` | Video page scroll |
+
+**Conclusion**: the shared Westwood renderer is **VGA mode-13h (320×200) with write-mode-2
+pixel plotting**, implemented in segment `207F`. This is the first confirmed shared engine
+subsystem (subsystem C, "Rendering/viewport") and a concrete anchor for the function map.
+
 ## Method
 
 Find maximal common byte runs between the two executables (rolling 32-byte
