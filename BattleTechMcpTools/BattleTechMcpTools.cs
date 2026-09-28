@@ -301,7 +301,7 @@ public sealed class BattleTechMcpTools
             {
                 GridA = new
                 {
-                    Segmented = $"DS:0x{FogGridAOff:X4}",
+                    Segmented = $"GS:0x{FogGridAOff:X4}",
                     Rows = FogGridRows,
                     Cols = FogGridCols,
                     Data = To2DArray(a, FogGridRows, FogGridCols),
@@ -309,7 +309,7 @@ public sealed class BattleTechMcpTools
                 },
                 GridB = new
                 {
-                    Segmented = $"DS:0x{FogGridBOff:X4}",
+                    Segmented = $"GS:0x{FogGridBOff:X4}",
                     Rows = FogGridRows,
                     Cols = FogGridCols,
                     Data = To2DArray(b, FogGridRows, FogGridCols),

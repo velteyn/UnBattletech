@@ -71,6 +71,13 @@ accordingly, but a **live in-combat capture is still pending** — the current g
 "continue", state array all zero) does not spawn random encounters, so reach combat first (proper
 NEW_GAME training mission, or the arena).
 
+**UPDATE 2026-09-28 — LIVE-CONFIRMED.** Found a **save pack** already in the game folder
+(`GAME1`–`GAME6`, dated 2002–2004; GAME5/6 are late-game with 3 mechs). Loading slot **Five** in
+game (system menu → Load Game → Five) lands Jason/Rex/Russ directly in a **combat encounter**, and
+`0x2A0F` then holds: unit arrays `0x4004/0x4036/0x406A` with active units, and the fog grids
+`0x40B4/0x41D4` **288/288 fogged (0x02)**. The `bt_*` combat tools (reading `0x2A0F`) return this
+data. Combat segment **confirmed at `0x2A0F`** — no longer inferred.
+
 ## 7. Westwood engine viewport abstraction — how complete is our coverage?
 
 The game was written by **Westwood Associates** (in-game copyright: "Computer program by
