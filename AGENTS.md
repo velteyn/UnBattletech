@@ -1,6 +1,6 @@
 # Agent Instructions — BattleTech CHI Rebuild
 
-> **Phase 6 — Spice86 sync** (2026-09-27): The emulator stack now builds against upstream Spice86 `master` (base `18259ca8`). Upstream removed `ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` and bumped ModelContextProtocol to `2.2.0` — AIATTEMPT was ported accordingly. The MCP transport fix (`UseUrls()` bind + `StartAsync()` keep-alive + custom GET `/mcp/` SSE `endpoint`) is upstreamed as **PR #2246**, rebased on `master` and mergeable. The A:/B: game-data mount moved out of Spice86's `DosDriveManager` into `BattleTechMcpTools/BattleTechOverrideSupplier.cs`. Port is 8086.
+> **Phase 6 — Spice86 sync** (updated 2026-09-28): The emulator stack builds against upstream Spice86 `master`, now at **`cf595c3d`** (was `18259ca8`). Upstream removed `ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` and bumped ModelContextProtocol to `2.2.0` — AIATTEMPT was ported accordingly. The MCP transport fix (`UseUrls()` bind + `StartAsync()` keep-alive + custom GET `/mcp/` SSE `endpoint`) was **merged upstream as PR #2246** (`cf595c3d`), so the local `spice86-mcp-fix` branch is now redundant. The A:/B: game-data mount lives in `BattleTechMcpTools/BattleTechOverrideSupplier.cs`. Port is 8086. AIATTEMPT rebuilds clean against the new master (exclude recovered `reko/**/*.cs` from compilation — it targets the old API).
 > Next priorities: end-to-end playtest from a proper NEW_GAME_INIT boot through to COMSTAR; add the Godot stock-market UI on top of the new `Fn1CD3Dispatcher` cases 0x2A/0x2B.
 
 ## ⚠️ Documentation Priority Rule
@@ -447,13 +447,14 @@ Spice86 is an open-source x86 emulator that emulates the original game and gener
 
 ### Current Integration (2026-09-27)
 
-AIATTEMPT (`UNBATTLETECH.csproj` / `BattleTechMcpTools.csproj`) builds **directly against the Spice86 source tree** at `../Spice86` (not a NuGet package). That checkout is kept on upstream `master` (base `18259ca8` at last sync).
+AIATTEMPT (`UNBATTLETECH.csproj` / `BattleTechMcpTools.csproj`) builds **directly against the Spice86 source tree** at `../../Spice86` (= `/home/velteyn/projects/Spice86`; not a NuGet package). Keep that checkout on upstream `master` — currently **`cf595c3d`** (2026-09-28).
 
 - **Logging**: upstream removed `Spice86.Shared.Interfaces.ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` (PR #2309). `IOverrideSupplier.GenerateFunctionInformations` now takes `ILogger`; `BattleTechMcpTools` was ported accordingly.
 - **MCP packages**: `ModelContextProtocol.Core` / `.AspNetCore` are pinned to `2.2.0` to match `Spice86.Core`.
 - **A:/B: drive mount**: done in `BattleTechOverrideSupplier.MountGameDataOnFloppyDrives()` via the public `Dos.MountFolderAsFloppy()` API — Spice86 itself is left untouched (previously a residual change in `DosDriveManager.cs`).
-- **MCP transport fix**: upstreamed as **PR #2246** (branch `spice86-mcp-fix`): `UseUrls()` bind, `StartAsync()` keep-alive, custom `GET /mcp/` SSE `endpoint`. Rebased on `master` and mergeable; only `McpHttpHost.cs` changes.
-- **Generated code / dumps**: the old `spice86/` tree (generated C# for ~23 segments, plus `spice86dump*` memory/execution dumps, logs, breakpoints) was produced by an **older** Spice86 and has been **removed (2026-09-28)** as stale. Regenerate with a current Spice86 if needed.
+- **MCP transport fix**: **MERGED upstream as PR #2246** (`cf595c3d`, 2026-09-28): `UseUrls()` bind, `StartAsync()` keep-alive, custom `GET /mcp/` SSE `endpoint` in `McpHttpHost.cs`. The local `spice86-mcp-fix` branch is now redundant.
+- **Code generator / debugger**: the current Spice86 can emit the CFG→C# override via the **GDB debugger's `dumpall`** command + `-r <dir>` (see [`docs/engine/segments-19ef-1000.md`](docs/engine/segments-19ef-1000.md)).
+- **Generated code / dumps**: the `spice86/` tree (dumps/logs/breakpoints) was removed as stale (2026-09-28). Its **generated C#** (23 files) was the only decompilation of the combat/movement segments and has been **recovered to [`reko/gencode/`](reko/gencode/)** (see [`docs/engine/segments-19ef-1000.md`](docs/engine/segments-19ef-1000.md)). It targets the *old* Spice86 API, so it is **excluded from compilation** (`<Compile Remove="reko/**/*.cs" />`). A clean regeneration is possible via the current Spice86 (GDB `dumpall` + `-r <dir>`).
 
 ### Key Files
 
