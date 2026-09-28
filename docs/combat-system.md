@@ -34,9 +34,13 @@ Re-checked the core formulas against the recovered/regenerated decompilation. **
 | **Ammo (enemy mech)** | `0xC363 + 0x7D·slot + phase`, `0xFF` sentinel | `IMUL 0x7D; + 0xC363`; `cmp …,0xFF; DEC` (`1000:47FA`) ✓ |
 | **RNG (LFSR)** | §16 algorithm, state `384B:4FC0` | `DS=0x1DDC; ES=0x384B; SI=0x4FC0; AL=S0>>2; RCL S2; RCL S1; CMC; SBB AL,S0; SHR AL,1; RCR S0; AL=S0^S1` (`19EF:0BC0`) ✓ |
 | **Hit location A** | `RNG & 0x8` → `[0x566A]:0x2E43` → `[BP-0x60]` | `AND BX,0x8; ES=[0x566A]; AL=ES:[BX+0x2E43]` (`1000:4F60`) ✓ |
+| **Cluster weapons** | skip table if col ≤ 1; `2D6*7 + col` → `[0x566C]:0x2E5E` | `CMP ES:[SI+0x2EE4],1; JBE skip; CALL 30DD; IMUL 7; BX=col+2D6*7; ES=[0x566C]; AL=ES:[BX+0x2E5E]` (`1000:4F92`) ✓ |
+| **Heat dissipation** | pool(`0x92`, seg `0x55A6`)→penalty(`0x6E`, seg `0x5598`); `+6` if `0xD576`; conditional `-4`; clamp `0x1E` | `MOV AL,ES:[SI+0x92]; ES=[0x5598]; ADD ES:[SI+0x6E],AL; CMP ES:[SI+0xD576],0; ADD …,6; DEC; SUB …,4; CMP …,0x1E` (`1000:07D2`, inside fn `1000:0673`) ✓ |
+| **Damage slot-advance** | `[0x11..0x18] → +0xB`; else internal jump table | `CMP arg,0x11 / 0x18 → ADD AX,0xB` (`1000:0B3D`) ✓ |
+| **AI targeting** | scan story props `0x33..0x55`: `0x7D·unit + prop`, `[0x558E]:0xC724`, mask `0x7F`, keep `0x10..0x20` | `[BP-4]=0x33; IMUL 0x7D; ES=[0x558E]; AL=ES:[BX+0xC724]; AND AX,0x7F; range 0x10..0x20` (`1000:0AC9`) ✓ |
 
-**Still to verify** (not yet re-checked in this pass): §6.6 cluster-weapon grouping, §6.4 heat
-dissipation, §7 damage/overflow pipeline (`1000:0B32` slot-advance), §3 AI target selection.
+**Still open:** the damage **overflow** loop internals (`1000:0B32` jump-table tail) and — the real
+goal — a **differential** test running the same inputs in the emulator and the rebuild (roadmap Track 3).
 
 ---
 
