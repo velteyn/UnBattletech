@@ -119,20 +119,27 @@ These are the *real* blockers; the roadmap in §6 is gated on them.
 ## 5. Retro archaeology (outside the binary)
 
 RE from the executable alone has limits (compiler-optimised code, absent segments, inferred
-semantics). Cross-checks that can resolve ambiguities — none of them can *replace* the binary, but
-they can confirm intent:
+semantics). To understand *what is actually in the game* we cross-check several kinds of source —
+none can *replace* the binary, but together they resolve intent and fill gaps:
 
+- **Original documents** — the **manual**, the **clue/hint book**, and 1988–89 **magazine reviews**
+  (design intent, terminology, intended UI). *Not yet acquired — an archaeology task.*
+- **Personal playtesting** — the author's own sessions: what a player actually observes, and the best
+  generator of hypotheses to verify in the emulator.
+- **Published walkthroughs** — already used: `docs/walkthrough/bt-walkthrough-1..3.md` (navigation and
+  event sequence).
 - **Sibling Westwood engine titles** — *Mines of Titan* (1989, x86, already fingerprinted: 25 shared
   functions in graphics/text) and the later viewport engines (*Eye of the Beholder*, *Kyrandia*,
   *Lands of Lore*) for the viewport model.
 - **Other BattleTech CHI ports/releases** — C64 / Apple II / Amiga (if any) and the later "Gold"
   editions; different compilers expose different structure.
-- **Primary documents** — the original manual, the clue book / hint book, magazine reviews (1988–89),
-  and the published walkthroughs already used in `docs/walkthrough/`.
 - **Emulator tooling as ground truth** — Spice86 traces + the 23 `bt_*` MCP tools give exact
   runtime register/memory state to diff against.
 
-Every claim recovered this way must be **marked as sourced** and re-verified against the binary.
+**Precedence:** for *behaviour*, the binary/emulator wins; documents are authoritative for *intent*.
+Every claim recovered from a document or from memory is **marked as sourced and re-verified against
+the binary** before it enters the recreation. The full policy (source classes, evidence tags ✅/🟡/❓,
+and the source→verified workflow) is in [`docs/SOURCES.md`](docs/SOURCES.md).
 
 ---
 
