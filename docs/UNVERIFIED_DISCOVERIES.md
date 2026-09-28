@@ -102,3 +102,21 @@ and whether we have fully mapped its workflow**.
 
 **Investigation needed**: trace `fn207F_24D7` callers and the seg-`0x246C` config struct;
 check whether a viewport struct is passed to the blit routines.
+
+## 8. New-game start state & reaching combat (open, 2026-09-28)
+
+Attempts to reach combat for a **live** confirmation of the combat segment (see §6) revealed:
+
+- **No separate main menu is observed.** Boot goes title → copyright + "Is this your first time
+  playing BattleTech? Yes/No" → gameplay. The game starts (or continues) automatically.
+- **A fresh boot with all `GAME*` saves removed still starts on the world map at ~(34,12)** with
+  character `Jason` and **C-Bills 20** (ticking +15 periodically). So the observed start credits are
+  **20**, not the `1500` recorded for `NEW_GAME_INIT` (case 0x23) — either `NEW_GAME_INIT` did not run
+  on this path, or the starting value differs. (Docs claim 1500; unverified.)
+- **Combat was not reachable this session**: random encounters did not fire (state array all zero →
+  encounter mask unset), and entering the training building was not achieved (world-map `(26,5)` is a
+  *local-map* coordinate; the world-map building tile for the training center wasn't located).
+
+**To finish the combat verification**: start a training mission (enter the training building →
+choose a Mech → the "training grounds"/reactionary-combat missions) or the arena, then capture
+`DS`/`ES` and read `0x40B4`/`0x4004/0x4036/0x406A` to confirm they resolve in segment `0x2A0F`.
