@@ -21,6 +21,7 @@ should summarise and link here rather than restate.
 | Engine combat encounter flow (runtime) | [`engine/combat-flow.md`](engine/combat-flow.md) |
 | Engine input & navigation (runtime) | [`engine/input-navigation.md`](engine/input-navigation.md) |
 | Engine fingerprint vs Mines of Titan (shared-function map) | [`engine/fingerprint-mines-of-titan.md`](engine/fingerprint-mines-of-titan.md) |
+| Runtime segments `0x1000`/`0x19EF` (combat/movement) function map | [`engine/segments-19ef-1000.md`](engine/segments-19ef-1000.md) |
 | File formats (.CMP/.ICN/.MTP/.BLD/.ANM/save/mech) | [`formats/file-formats.md`](formats/file-formats.md) |
 | BLD bytecode, opcodes, cipher, `fn1CD3` cases | [`formats/bld-bytecode.md`](formats/bld-bytecode.md) |
 | BLD opcode coverage (which opcodes the 26 scripts use) | [`formats/bld-opcode-coverage.md`](formats/bld-opcode-coverage.md) |

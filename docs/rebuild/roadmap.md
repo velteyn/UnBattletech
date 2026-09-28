@@ -55,7 +55,7 @@ Ordered by dependency, not by ease.
 
 | # | Blocker | Why it blocks | Kind |
 |---|---------|---------------|------|
-| B1 | Segments `19EF`/`1000` not decompiled | Combat & movement logic source missing | RE |
+| ~B1~ ◐ | Segments `19EF`/`1000` — **decompilation recovered to `reko/gencode/` + function-mapped** (2026-09-28, [`../engine/segments-19ef-1000.md`](../engine/segments-19ef-1000.md)); a *clean* regeneration via the Spice86 debugger `dumpall` is the follow-up | Combat/movement source is now available; formulas still to re-verify (feeds B2) | RE |
 | B2 | Combat not diffed | Any "recreated combat" claim is unverifiable | RE + validation |
 | ~~B3~~ ✅ | Map→BLD trigger table — **DECODED 2026-09-28** (`[0x53CA]:0x4564`/`[0x53CC]:0x4596` building positions → slot → `[0x5460]:0x4602` → building index → MTP name → BLD); see [`../formats/map-bld-triggers.md`](../formats/map-bld-triggers.md) | Entrances are now data-driven | RE |
 | B4 | Story-state semantics (`b0057`, `b0055/56/58`, props `0x1C–0x23`) inferred | Plot gating cannot be proven | RE + archaeology |
