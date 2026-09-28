@@ -57,7 +57,7 @@ Ordered by dependency, not by ease.
 |---|---------|---------------|------|
 | B1 | Segments `19EF`/`1000` not decompiled | Combat & movement logic source missing | RE |
 | B2 | Combat not diffed | Any "recreated combat" claim is unverifiable | RE + validation |
-| B3 | Map→BLD trigger table (`[0x5460]:0x4602` + tile props `0x32C6`) undecoded | Entrances/warping are hand-found; can't drive story data-driven | RE |
+| ~~B3~~ ✅ | Map→BLD trigger table — **DECODED 2026-09-28** (`[0x53CA]:0x4564`/`[0x53CC]:0x4596` building positions → slot → `[0x5460]:0x4602` → building index → MTP name → BLD); see [`../formats/map-bld-triggers.md`](../formats/map-bld-triggers.md) | Entrances are now data-driven | RE |
 | B4 | Story-state semantics (`b0057`, `b0055/56/58`, props `0x1C–0x23`) inferred | Plot gating cannot be proven | RE + archaeology |
 | B5 | Viewport struct / `w4FBC` / push-pop unknown | Rendering can't be made faithful | RE |
 | B6 | Tile property bits (water/wall) + movement reader unknown | Collision/terrain wrong | RE |
@@ -86,8 +86,10 @@ Each track has **gates**. A later track may not be marked done for an area until
 
 ### Track 1 — Close RE blockers (gates T1.1 … T1.6)
 - **T1.1 (B1)** Recover, decompile and annotate segments `19EF` / `1000`.
-- **T1.2 (B3)** Decode tile properties `0x32C6` + the `[0x5460]:0x4602` translation table; produce a
-  data table *map → building → entrance tile*; verify by walking the emulator to the same tiles.
+- ~~**T1.2 (B3)**~~ ✅ **DONE 2026-09-28**: decoded the building-position tables + the
+  `[0x5460]:0x4602` slot→building table; MAP1's entrance tiles reproduce the live-found Citadel
+  `(34,10)` / ComStar `(51,10)`. Remaining: walk the other six MAP1 tiles; check if `0x4602` is
+  per-map. See [`../formats/map-bld-triggers.md`](../formats/map-bld-triggers.md).
 - **T1.3 (B6)** Identify water/wall/movement bits and the routine that reads them.
 - **T1.4 (B5)** Locate the canonical viewport struct + push/pop mechanism (or prove there is none);
   finish mapping seg-`0x246C`.

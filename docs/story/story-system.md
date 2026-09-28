@@ -215,9 +215,18 @@ Called with `wArg04` (story slot index) and `wArg06` (property ID, 0x1C-0x23).
 
 #### Phase 5: Building/Script Trigger Map
 
-Each world map location is tied to a BLD file. The BLD index is determined by:
-1. The map tile property at the player's position (from tile property table at `DS:[0x55DC]→0x32C6`)
-2. A translation table at `segment [0x5460]:0x4602` (16-byte signed array loaded from MTP file header at `0x3092:4602`): remaps tile property value → BLD file index, handled by segment 094C functions `unknown_094C_0008_094C8` and `unknown_094C_17B9_0AC79`
+**Decoded (2026-09-28) — see [`../formats/map-bld-triggers.md`](../formats/map-bld-triggers.md).**
+Each local-map building is tied to a BLD file. The chain is:
+
+1. **Building positions**: word tables `[0x53CA]:0x4564` = X and `[0x53CC]:17814` = Y (live: segment
+   `0x2A0F`), packed as the map cursor — `tile = (word & 0x7F) >> 1`.
+2. **Slot → building index**: standing on a building's tile triggers the Yes/No prompt
+   `fn0800_1A13(1)` ("Will you enter the <name>?"); on **Yes** `fn0FDC_0008(slot)` maps the slot via
+   the 16-byte table at **`[0x5460]:0x4602`** (= segment `0x2A0F`) to a **building index**.
+3. **Index → BLD**: the MTP header's per-map **building-name list** names the BLD.
+
+*(The earlier note that this was keyed off the tile-property table `0x32C6` was wrong — `0x32C6` is
+terrain/passability; the trigger uses the building-position tables above.)*
 
 | Map | BLD File | Trigger | Story Purpose |
 |-----|----------|---------|---------------|

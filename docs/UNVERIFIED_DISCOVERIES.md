@@ -9,6 +9,10 @@
   - Tile data may be loaded dynamically into `384B` (Heap) or exist in `2A02`.
 
 ## 2. Tile Attributes & Terrain Collision
+- **Note (2026-09-28)**: the **map→BLD building-trigger** is now **decoded** — it does *not* use `0x32C6`
+  but the building-position tables + `[0x5460]:0x4602`; see
+  [`formats/map-bld-triggers.md`](formats/map-bld-triggers.md). The **terrain/passability** bits of
+  `0x32C6` (`+0x7AD`) remain open below.
 - **Hypothesis**: `3000:32C6` contains tile properties (Movement cost, blocking).
 - **Observation**: Pattern `4C 04 C0` repeats.
 - **To Verify**:

@@ -24,6 +24,7 @@ should summarise and link here rather than restate.
 | File formats (.CMP/.ICN/.MTP/.BLD/.ANM/save/mech) | [`formats/file-formats.md`](formats/file-formats.md) |
 | BLD bytecode, opcodes, cipher, `fn1CD3` cases | [`formats/bld-bytecode.md`](formats/bld-bytecode.md) |
 | BLD opcode coverage (which opcodes the 26 scripts use) | [`formats/bld-opcode-coverage.md`](formats/bld-opcode-coverage.md) |
+| Map → BLD trigger map (building tiles → BLD) | [`formats/map-bld-triggers.md`](formats/map-bld-triggers.md) |
 | ANM animation format | [`formats/anm-format.md`](formats/anm-format.md) |
 | Memory map + address reference | [`formats/memory-map.md`](formats/memory-map.md) |
 | Combat system | [`combat-system.md`](combat-system.md) |
@@ -78,6 +79,13 @@ story→engine, context, tooling.*
   `formats/bld-bytecode.md` previously said "0 bytes".
 - **`decode_bld_interp.py` marked stale for opcodes/control-flow** (walks the raw file from offset 8
   without decrypting); its text output remains valid.
+
+### Map→BLD trigger map decoded (2026-09-28) — roadmap B3
+
+- Building position tables (`[0x53CA]:0x4564` X, `[0x53CC]:17814` Y; live segment `0x2A0F`) give each
+  local-map building's entrance tile; `[0x5460]:0x4602` (16 bytes) maps the slot to the MTP
+  building-name index. MAP1's slots 1/2 reproduce the live Citadel `(34,10)` / ComStar `(51,10)`.
+  Added [`formats/map-bld-triggers.md`](formats/map-bld-triggers.md). Confirmed the **start map = MAP1**.
 
 ## Consolidation notes (2026-09-27)
 

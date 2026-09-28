@@ -596,7 +596,7 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 | `DS:[0x566C]` | `0x2E5E` | Cluster hits table (LRM/SRM) |
 | `DS` | `0x311A`-`0x313A` | 8-direction delta tables for LoS stepping |
 | `DS` | `0x328A`/`0x329A`/`0x32AA`/`0x32BA`/`0x32CA` | 8-direction movement vectors |
-| `DS:[0x5460]` | `0x4602` | BLD index translation table (22 entries, maps tile property→BLD file) |
+| `DS:[0x5460]` | `0x4602` | **Building slot→index table** (16 bytes; live selector → seg `0x2A0F`). Maps the local-map building slot to the MTP building-name index. See [`../formats/map-bld-triggers.md`](../formats/map-bld-triggers.md). |
 | `DS` | `0x4F26`/`0x4F28` | Hospital cost table |
 | `DS` | `0x4F44`/`0x4F46` | Unit selection buy cost table |
 | `DS` | `0x4F6E` | Garage service cost table |
@@ -606,7 +606,7 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 1. ~~**SoundBlaster/PC Speaker data** — Segment 204B handles interrupt 0x08/0x1C, but format of sound/music data is unknown~~ **WONT_DO**: Irrelevant for reconstruction, replaceable with modern audio
 2. **ANM animation file mapping** — How segment 135D maps animation IDs to specific .ANM files
 3. **Exact tile dimensions and animation frame mapping** in segment 0x3092 tile buffer
-4. **Complete BLD index translation table** at `0x4602` — only partial decode
+4. ~~**Complete BLD index translation table** at `0x4602`~~ **DECODED (2026-09-28)** — building slot→index, see [`../formats/map-bld-triggers.md`](../formats/map-bld-triggers.md)
 5. **`w3988` animation guard** — What sets it, when is animation paused
 6. **Item-to-unit ammo bridge** — How global inventory `aD374` connects to per-unit mech ammo bins at offset `+0x29`
 7. **`fn1CD3_0004` case 0x05 C618 anomaly** — Post-buy increment suggests packed type/count encoding
@@ -907,7 +907,7 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 | `DS:[0x558A]→t0150` | byte | — | Skill gate threshold (global) |
 | `ES:[BX + 0x2D1A]` | byte | — | Additional terrain/status table modifier |
 | `DS:(0x32C6)` at segment [0x5460] | byte | 16 (translation) | BLD index translation table loaded from MTP header |
-| `0x3092:4602` | byte[16] | — | Translation table: tile property → BLD file index |
+| `[0x5460]:0x4602` | byte[16] | — | Building slot→index table; live selector → seg **`0x2A0F`** (**not** `0x3092`) |
 
 ---
 
@@ -936,7 +936,7 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 | `DS:0x5648` | `ptr5648` | `→[BX+0xD358]` | Enemy shot counter |
 | `DS:0x5434` | `ptr5434` | `→0x2CF4` | Weapon instance data for infantry |
 | `DS:0x5436` | `ptr5436` | `→0x2DF8` | Enemy mech template table (3 entries) |
-| `DS:0x5460` | `ptr5460` | `→0x4602` | BLD index translation table (16 bytes) |
+| `DS:0x5460` | `ptr5460` | `→0x2A0F` | selector for the building slot→index table at `+0x4602` (16 bytes) |
 | `DS:0x55D4` | `ptr55D4` | `→bC620` | Special encounter flag |
 | `DS:0x5582`-`0x559C` | various | — | LS segment pointers for LoS checks |
 | `DS:0x569E` | `ptr569E` | struct Eq_80552 | Main game state struct (w4FBA, shop data, etc.) |
