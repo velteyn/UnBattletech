@@ -57,9 +57,12 @@ should summarise and link here rather than restate.
   opcodes/cipher/content-types/price-encoding, rendering, mech/encounter tables, layered/BLD
   architecture, map-file catalogue, map→BLD index, shop cases) were replaced with pointers to their
   canonical docs; struct/offset/pointer tables remain. Duplicate `### 13.` numbering fixed.
-- **Still to consolidate:** economy
-  portions in `combat-system.md` §19; combat/memory duplicates in `engine/combat-flow.md` and
-  `tools/spice86-mcp.md`; RNG stated 3× inside `combat-system.md`.
+- **`combat-system.md` cleaned**: impact-VFX rendering → `engine/viewport.md`; inventory/equip-slot
+  exposition (System A/B) → `story/story-system.md` §17.11; cursor packing → `engine/input-navigation.md`;
+  RNG deduplicated (§6.1 and §10 now point to §16); §1 gained a scope note (trigger → `world-map.md`,
+  `w4FBC` → `engine/viewport.md`).
+- **Still to consolidate:** combat-data duplicates in `engine/combat-flow.md`; `context.md` §7/§8/§13
+  restating canonical detail; `tools/spice86-mcp.md` world-map-movement/address sections.
 
 ## Consolidation notes (2026-09-27)
 

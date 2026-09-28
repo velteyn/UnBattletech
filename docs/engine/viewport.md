@@ -254,3 +254,29 @@ Core EGA framebuffer blitter, 4 cases by `tB764` (seg 246C rendering-config stru
 - `w3988` animation guard (what sets it / when animation pauses).
 - `w37FE` text-mode flag semantics.
 - Exact stats/combat screen layout (confirmed w4FBA 0+2+3 combos, not modes 4–6).
+
+### Impact VFX (moved from `combat-system.md` §7.10)
+
+**Function:** `unknown_19EF_18EF_1B7DF` (segment:offset `19EF:18EF`, linear `0x1B7DF`). Called
+**after** damage is applied, to render the weapon impact effect:
+
+```
+DS = 0x1DDC
+DI = 0x34 + 0x244B = 0x247F   ← screen buffer offset
+[0xA452] = 8                   ← drawing width
+[0xA454] = 0x994               ← Y coordinate parameter
+[0xA456] = 0x494               ← X coordinate parameter
+
+// VGA hardware acceleration (mode X, when tB764 == 2):
+DX = 0x3CE                     ← VGA Graphics Controller port
+AX = 0x205                     ← Set/Reset register: set bit 0 (plane 0)
+OUT DX, AX
+AX = 0x8                       ← Bit Mask register
+OUT DX, AX
+
+// 13-iteration loop (CX = 0xD): draws the impact sprite frame at the cursor position
+// Cleanup: restore VGA registers
+```
+
+**Purpose:** draws the weapon-impact animation at the cursor/target position using the VGA
+Set/Reset + Bit Mask registers (`0x3CE`); the 13 iterations are the splash/explosion frame sequence.

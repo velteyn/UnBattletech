@@ -518,6 +518,11 @@ struct Eq_80552 at segment 0x569E:
   D376[]: Per-item-type player data array (uint16 stride 2)
 ```
 
+**Per-unit equip slots (System B):** `C61D[slot]` = equip slot 5 (case 0x0F, 500 cr); `C61E[slot]` =
+equip slot 6 (case 0x15, 500 cr); flag bits at `C624[slot]` (bit 0 = slot 5 populated, bit 1 = slot 6
+populated). These are purchased upgrades tracking which equipment slots a unit has — **not** connected
+to ammo bins or `aD374`.
+
 #### Purchase Cases
 
 **Case 0x05 — Single item buy (formula pricing)**
