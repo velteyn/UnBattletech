@@ -65,8 +65,11 @@ matched at `0x1DE9:0xA44B`.
 story/units/flags and `MapDataSegment = 0x1DE9` for the cursor. Verified live (`bt_read_credits`
 → 20, `bt_read_unit_slot` → populated). Constants assume the standard Spice86 load base `0x17D`.
 
-Combat grids/units (`0x40B4/0x4004/…`) are still read from `0x1DE9` and remain **unverified**
-(need an in-combat capture).
+Combat grids/units (`0x40B4/0x4004/…`) are **inferred** to also live in `0x2A0F`: the documented
+fog pointer `DS:[0x55D8]→0x40B4` resolves to `[0x3858:0x55D8] = 0x2A0F`. The tools were updated
+accordingly, but a **live in-combat capture is still pending** — the current game state (degraded
+"continue", state array all zero) does not spawn random encounters, so reach combat first (proper
+NEW_GAME training mission, or the arena).
 
 ## 7. Westwood engine viewport abstraction — how complete is our coverage?
 

@@ -290,13 +290,13 @@ public sealed class BattleTechMcpTools
     }
 
     [McpServerTool(Name = "bt_read_combat_grids", UseStructuredContent = true)]
-    [Description("Read both combat fog grids (12×24, 0x40B4 and 0x41D4; segment unverified). Returns 2D arrays.")]
+    [Description("Read both combat fog grids (12×24, game-state seg 0x2A0F:0x40B4 and 0x41D4). Returns 2D arrays.")]
     public CallToolResult ReadCombatGrids()
     {
         return ExecuteTool(() =>
         {
-            byte[] a = Memory.GetData(DsAddr(FogGridAOff), FogGridRows * FogGridCols);
-            byte[] b = Memory.GetData(DsAddr(FogGridBOff), FogGridRows * FogGridCols);
+            byte[] a = Memory.GetData(StateAddr(FogGridAOff), FogGridRows * FogGridCols);
+            byte[] b = Memory.GetData(StateAddr(FogGridBOff), FogGridRows * FogGridCols);
             return new
             {
                 GridA = new
@@ -320,7 +320,7 @@ public sealed class BattleTechMcpTools
     }
 
     [McpServerTool(Name = "bt_read_combat_units", UseStructuredContent = true)]
-    [Description("Read 24 combat unit positions/statuses (0x4004, 0x4036, 0x406A; segment unverified).")]
+    [Description("Read 24 combat unit positions/statuses (game-state seg 0x2A0F:0x4004, 0x4036, 0x406A).")]
     public CallToolResult ReadCombatUnits()
     {
         return ExecuteTool(() =>
@@ -328,9 +328,9 @@ public sealed class BattleTechMcpTools
             var units = new List<object>();
             for (int i = 0; i < CombatUnitCount; i++)
             {
-                ushort x = Memory.UInt16[DsAddr((ushort)(CombatUnitXOff + i * 2))];
-                ushort y = Memory.UInt16[DsAddr((ushort)(CombatUnitYOff + i * 2))];
-                ushort status = Memory.UInt16[DsAddr((ushort)(CombatUnitStatusOff + i * 2))];
+                ushort x = Memory.UInt16[StateAddr((ushort)(CombatUnitXOff + i * 2))];
+                ushort y = Memory.UInt16[StateAddr((ushort)(CombatUnitYOff + i * 2))];
+                ushort status = Memory.UInt16[StateAddr((ushort)(CombatUnitStatusOff + i * 2))];
                 units.Add(new { UnitId = i, X = x, Y = y, Status = status, IsActive = status != 0 });
             }
             return new { Units = units };
@@ -357,7 +357,7 @@ public sealed class BattleTechMcpTools
 
             int activeUnits = 0;
             for (int i = 0; i < CombatUnitCount; i++)
-                if (Memory.UInt16[DsAddr((ushort)(CombatUnitStatusOff + i * 2))] != 0)
+                if (Memory.UInt16[StateAddr((ushort)(CombatUnitStatusOff + i * 2))] != 0)
                     activeUnits++;
 
             return new
