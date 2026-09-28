@@ -330,8 +330,9 @@ recovered files for its label (`label_1000_<OFF>_<LIN>` / `label_19EF_...`).
 
   1. Run with the **GDB debugger** + a recording dir:
      `--GdbPort <port> -r <dir>` (`-r` = `RecordedDataDirectory`/state-serialization folder).
-  2. **Exercise combat** so the CFG covers `0x1000`/`0x19EF` — e.g. load the `GAME5` save (drops
-     straight into a battle) and let it run.
+  2. **Exercise combat** so the CFG covers `0x1000`/`0x19EF` — load the `GAME5` save (puts you on the
+     map with your party), then **walk until a random encounter fires** (`Attacking force: … / Engage
+     in combat?`) and fight a round or two.
   3. Attach GDB and issue the custom command **`dumpall`** (`GdbCustomCommandsHandler` →
      `EmulationStateDataWriter.Write()`), which writes the generated C# override + a buildable project
      into `<dir>`.

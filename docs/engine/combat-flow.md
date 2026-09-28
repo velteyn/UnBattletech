@@ -6,9 +6,10 @@
 > **game-state segment `0x2A0F`** (see `../UNVERIFIED_DISCOVERIES.md` §6).
 
 ## Trigger
-A **random encounter** while moving on the **world map** (the party's mechs are the red sprites
-you move). No encounter in the starting/degraded state (state array unset); it fires normally with
-a progressed save.
+A **random encounter** while **walking** on the map (the party's mechs are the red sprites you move).
+No encounter in the starting/degraded state (state array unset); it fires normally with a **progressed
+save** (e.g. load slot 5 → you are placed on the map with your party — *not* in combat — then walk
+until `Attacking force: …` appears).
 
 ## Setup prompts (in the left panel)
 1. `Attacking force: <N>.` / `Engage in combat?  Yes No`  (Yes highlighted)

@@ -77,10 +77,14 @@ NEW_GAME training mission, or the arena).
 
 **UPDATE 2026-09-28 — LIVE-CONFIRMED.** Found a **save pack** already in the game folder
 (`GAME1`–`GAME6`, dated 2002–2004; GAME5/6 are late-game with 3 mechs). Loading slot **Five** in
-game (system menu → Load Game → Five) lands Jason/Rex/Russ directly in a **combat encounter**, and
-`0x2A0F` then holds: unit arrays `0x4004/0x4036/0x406A` with active units, and the fog grids
-`0x40B4/0x41D4` **288/288 fogged (0x02)**. The `bt_*` combat tools (reading `0x2A0F`) return this
-data. Combat segment **confirmed at `0x2A0F`** — no longer inferred.
+game (SPACE menu → **Load Game** → Five) puts you on the **map with your party** (Jason/Rex/Russ, red
+mech sprites) — **not** in combat. Combat is a **random encounter triggered by walking**: move a few
+tiles and the prompt `Attacking force: <N>. / Engage in combat? Yes No` appears; confirming it makes
+`0x2A0F` hold the unit arrays `0x4004/0x4036/0x406A` and the fog grids `0x40B4/0x41D4`
+**288/288 fogged (0x02)**, which the `bt_*` tools return. Combat segment **confirmed at `0x2A0F`**.
+
+> **Correction:** an earlier note said loading slot 5 lands you *directly in a combat encounter*.
+> That is **wrong** (verified 2026-09-28) — you land on the map; the encounter is triggered by walking.
 
 ## 7. Westwood engine viewport abstraction — how complete is our coverage?
 
@@ -130,10 +134,11 @@ Attempts to reach combat for a **live** confirmation of the combat segment (see 
   *local-map* coordinate; the world-map building tile for the training center wasn't located).
 
 **Update (2026-09-28)**: a **save pack already exists in the game folder** (`GAME1`–`GAME6`; GAME5/6
-are late-game with 3 mechs, 66k credits). Loading slot 5 in-game drops straight into **combat**, which
-resolved the §6 verification — see above. Using these saves is now the fast way to reach late-game
-states (combat, cities, COMSTAR) without a full playthrough: enable a slot (`GAME5.disabled` →
-`GAME5`), then system menu → **Load Game** → pick the slot.
+are late-game with 3 mechs). Loading slot 5 in-game (SPACE menu → **Load Game** → Five) puts you on
+the **map with your party**; to reach combat, **walk** until a random encounter fires (`Attacking
+force: … / Engage in combat?`) and confirm — this resolved the §6 verification (see above). Using
+these saves is the fast way to reach late-game states (cities, COMSTAR, combat) without a full
+playthrough: enable a slot (`GAME5.disabled` → `GAME5`), then SPACE → **Load Game** → pick the slot.
 
 ## 9. COMSTAR (stock market) location (from walkthrough)
 
