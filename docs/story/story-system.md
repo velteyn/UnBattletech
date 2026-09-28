@@ -226,7 +226,7 @@ Each world map location is tied to a BLD file. The BLD index is determined by:
 | MAP2 | BARRACKS | At barracks tile | Recruit NPCs, interact with cadets |
 | MAP2 | BARRACK2 | At secondary barracks | Additional soldier interactions |
 | MAP2 | LOUNGE | At lounge tile | Rick gives device, mentions Starport |
-| MAP2 | COMSTAR | At ComStar building | Banking, stock market (DefHes, NasDiv, BakPhar) |
+| start map (+ other cities) | COMSTAR | Entrance tile `(51,10)` on start map — road east (y=12), then north | Banking, stock market (DefHes, NasDiv, BakPhar) |
 | MAP2 | PARTY | At party house | Rex rescues Jason, gives Jeremiah's box |
 | MAP2 | MAYOR | At mayor's house | Read newspaper, view holodisk, escape mayor |
 | MAP2 | JAIL | At jail, if state[?] ≥ threshold | Rescue agent, acquire Stinger from impound |

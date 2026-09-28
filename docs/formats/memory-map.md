@@ -1514,7 +1514,7 @@ Each pair iterated in `unknown_19EF_1886_1B776`, stride 0x40 (64):
 | BARRACKS | MAP2 | Recruit NPCs |
 | BARRACK2 | MAP2 | Additional soldier interactions |
 | LOUNGE | MAP2 | Rick gives device, mentions Starport |
-| COMSTAR | MAP2 | Banking, stock market |
+| COMSTAR | start map (+ other cities) | Banking, stock market; entrance tile `(51,10)` on start map |
 | PARTY | MAP2 | Rex rescues Jason |
 | MAYOR | MAP2 | Read newspaper, holodisk, escape |
 | JAIL | MAP2 | Rescue agent, acquire Stinger |

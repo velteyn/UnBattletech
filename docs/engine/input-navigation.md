@@ -24,11 +24,19 @@ You do **not** press an "enter" key. Walking onto a building's **entrance tile**
 An entrance tile stays "armed": after leaving a building, **walk DOWN (south)** to step off the
 trigger, otherwise moving sideways/up re-fires the same `Will you enter ...?` popup.
 
-## Layout (start map, per walkthrough)
-You start in the **Pacifica Training School** opposite the **Citadel**; **Comstar** (stock market)
-is the building **next door (east/right of the Citadel)**; the **barracks is to your far left**;
-southeast of the barracks is the Mech training-center entrance. Other buildings: Weapons, Armor,
-Lounge, Mechit-Lube.
+## Layout (start map — live-verified)
+
+The buildings are connected by a **road**. You start opposite the **Citadel** (entrance ≈ `(34,10)`).
+Follow the road **east along y=12** to its east end (x≈51), then **north** up the vertical road; the
+**ComStar Station** entrance is at ≈ `(51,10)` — the gap between the building's two red wings (flanked
+by blue domes) → `Will you enter the ComStar Station? Yes/No`. Interior: *"You are standing in the
+entry hall of an official ComStar hyperpulse generator station… Will you: Inspect your accounts /
+Talk to others / Leave."* The **barracks is to your far left**; southeast of the barracks is the Mech
+training-center entrance. Other buildings: Weapons, Armor, Lounge, Mechit-Lube.
+
+> **Correction (2026-09-28):** on the **start map**, COMSTAR is **far east** along the road, *not* "next
+> door" to the Citadel; its entrance is ≈ `(51,10)`. COMSTAR also exists in **other cities**, where the
+> earlier `(27,9)`-style coordinates may apply (the `(27,9)` tile on the *start* map gives no popup).
 
 ## Data notes
 - World/local map cursor: `0x1DE9:0xA44B` (X) / `0xA44D` (Y); tile = `(raw>>1)&0x7F`.

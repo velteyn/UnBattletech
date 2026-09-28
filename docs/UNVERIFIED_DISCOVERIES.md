@@ -139,6 +139,13 @@ left**; southeast of the barracks is the Mech training center. Other buildings: 
 Mechit-Lube. The stock market is also active in the other cities.
 `fn1CD3` case 0x05 is the SPACE-menu stock-market handler (`fn0800_35D3`).
 
-**Reaching it live**: you enter from a city/local map (not the world map); COMSTAR is a building next
-to the Citadel near the start. Actually entering it via key-injection was **not** achieved this session
-(the local-map building-door entry didn't trigger with `D`), so the stock UI is still unvalidated live.
+**Reaching it live (VERIFIED 2026-09-28)**: COMSTAR is entered on the **start map** (a city/local map,
+not the world map). The buildings are joined by a road: walk **east along y=12** to the road's east end
+(x≈51), then **north** up the vertical road — the entrance is at ≈ `(51,10)`, the gap between the
+building's two red wings (flanked by blue domes) → *"Will you enter the ComStar Station? Yes/No"*.
+Inside: *"You are standing in the entry hall of an official ComStar hyperpulse generator station…
+Will you: Inspect your accounts / Talk to others / Leave."*
+
+> COMSTAR is present in **multiple cities**, so the earlier `(27,9) map 2` note may describe a *different*
+> city. On the **start map** it is far east along the road at ≈ `(51,10)` (the `(27,9)` tile there gives no
+> popup). Stock UI still to be walked through in detail.

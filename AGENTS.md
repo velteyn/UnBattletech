@@ -232,7 +232,7 @@ Located at `original/bld/` relative to repository root. Loaded via
 | ENTRANCE.BLD | Star League cache entrance | (33,49) map 7 |
 | BARRACKS.BLD | Barracks | (28,11) map 2 |
 | BARRACK2.BLD | Barracks 2 | (29,11) map 2 |
-| COMSTAR.BLD | ComStar station | (27,9) map 2 |
+| COMSTAR.BLD | ComStar station (present in multiple cities) | (51,10) start map — road east (y=12) then north |
 | GARAGE.BLD | Mechit-Lube garage | (29,12) map 2 |
 | HOSPITAL.BLD | Hospital | (28,12) map 2 |
 | WEAPON.BLD | Weapon shop | (29,10) map 2 |
