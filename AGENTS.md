@@ -376,18 +376,19 @@ The stats/inventory screen (`fn0800_3D40`) is a **full-screen modal overlay**, l
 
 r2 **6.0.7** installed at `/usr/bin/r2`. Project binary is `UNBTECH.exe` (MS-DOS MZ, 16-bit x86 real mode).
 
-### r2 Project File
+### Not an r2 project file
 
-`UNBTECH.exe.bndb` (3MB SQLite) — pre-analyzed r2 project with flags, functions, etc.
+`UNBTECH.exe.bndb` (3MB **SQLite**, tables `snapshot_relations`/`global`) is a **Binary Ninja**
+database — it is **not** an r2 project and r2 cannot load it. Open `UNBTECH.exe` directly in r2.
 
 ### Key Commands
 
 ```bash
-# Open with project (loads all analysis)
-r2 -p UNBTECH.exe.bndb UNBTECH.exe
+# Open the EXE (r2 analyses it itself; there is no r2 project file)
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa; s <ADDR>; pd 20" UNBTECH.exe
 
-# Quick open in write mode (apply relocs)
-r2 -e bin.relocs.apply=true -w UNBTECH.exe
+# Byte-pattern search + disabled relocs
+r2 -e bin.relocs.apply=true -q -c "/x 26803e50d400" UNBTECH.exe
 
 # List segments/sections
 r2 -q -c "iS" UNBTECH.exe

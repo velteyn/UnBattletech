@@ -25,6 +25,28 @@
 - Functions named with pattern: `ghidra_guess_SEGMENT_OFFSET_LINEAR` or `unknown_SEGMENT_OFFSET_LINEAR`
 - Combined disassembly in `UNBTECH_all.asm` (59,567 lines)
 
+### radare2 (r2) — **installed, `/usr/bin/r2`, v6.0.7**
+Used to **verify** RE claims at the **machine-code** level (independent of Reko/Ghidra). Target binary
+is `UNBTECH.exe` (MS-DOS MZ, 16-bit x86). Note the sibling `UNBTECH.exe.bndb` is a **Binary Ninja**
+database (SQLite), **not** an r2 project — r2 cannot load it; open the `.exe` itself.
+
+```bash
+# 16-bit x86, analyse, disassemble
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa; s <ADDR>; pd 20" UNBTECH.exe
+
+# Byte-pattern search (find an instruction byte sequence)
+r2 -q -c "/x 26803e50d400" UNBTECH.exe        # cmp byte es:[0xD450],0
+```
+
+Addresses: find code by **byte search / analysis** rather than assuming a fixed offset — r2's MZ
+mapping does not match Reko's linear addresses one-for-one (observed ≈ `reko_linear − 0x8000` for the
+segments checked, but verify per target). Fuller CLI recipes are in [`AGENTS.md`](../../AGENTS.md).
+
+**Example use (2026-09-28, BLD audit):** located the `fn0FDC_01C0` opcode cases by searching for
+`cmp byte es:[0xD450],0`, then disassembled the shared skip path to read
+`add word [bp-0xa], 2` — proving `0xEB`/`0xEC` consume a **2-byte** operand (Reko cross-check).
+See [`formats/bld-opcode-coverage.md`](../formats/bld-opcode-coverage.md).
+
 ---
 
 
