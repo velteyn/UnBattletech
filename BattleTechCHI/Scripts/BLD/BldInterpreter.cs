@@ -307,23 +307,19 @@ public partial class BldInterpreter : Node
                 break;
 
             case BldOpcode.CheckCondition:
-                if (ReadByte(out byte condIdx))
-                {
-                    // Check if StateArray[condIdx] != 0; if true jump to WORD target
-                    if (_state.StateArray[condIdx] != 0)
-                    {
-                        if (ReadWord(out short cjump))
-                            _ip = cjump;
-                    }
-                    else
-                    {
-                        ReadWord(out _); // skip target word
-                    }
-                }
+                // Operand is a 2-byte WORD target ONLY (no index byte) — Reko fn0FDC_01C0 `case ~0x09`:
+                // call fn0800_1A13(1); if != 0 jump to the WORD, else ip += 2 (skip it).
+                // TODO(model): fn0800_1A13(1)'s "continue" condition is not yet modelled in the
+                // rebuild; consume the target and fall through (condition treated as false) so the
+                // stream stays aligned. This is a known gap — see docs/formats/bld-opcode-coverage.md.
+                ReadWord(out _);
                 break;
 
             case BldOpcode.StateCondCheck:
-                if (ReadByte(out byte sci) && _state.StateArray[sci] == 0) ReadWord(out _);
+                // Operand: 1 byte D30C index + 2-byte WORD target. Jump when D30C[index] != 0,
+                // otherwise ip += 2 (skip the target). Reko `case ~0x08`.
+                if (ReadByte(out byte sci) && ReadWord(out short scJump))
+                    if (_state.StateArray[sci] != 0) _ip = scJump;
                 break;
 
             case BldOpcode.JumpForward:
@@ -367,7 +363,9 @@ public partial class BldInterpreter : Node
                 return true;
 
             default:
-                GD.Print($"  unknown opcode {opcode} (0x{(byte)opcode:X2}) at IP={_ip}");
+                // Unreachable for 0xE4-0xFF (every slot is a BldOpcode member). If this ever fires,
+                // an opcode byte was mis-decoded — fail loudly instead of silently skipping.
+                GD.PrintErr($"  BLD: unexpected opcode 0x{(byte)opcode:X2} at IP={_ip} — not in BldOpcode range");
                 break;
         }
         return false;

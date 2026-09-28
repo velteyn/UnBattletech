@@ -34,7 +34,9 @@ formats, ANM format, shop/economy data structures, the emulator + MCP tooling.
 **Partial / approximate (do not trust as faithful):**
 - Combat (RNG, turn order, to-hit, damage, AI) — reconstruction, never diffed.
 - `Fn1CD3` dispatch — implemented from decomp; several cases approximate.
-- BLD interpreter — 26 opcodes; **unknown opcodes are silently skipped**.
+- BLD interpreter — 28 opcode slots (0xE4–0xFF; 27 present in corpus). All slots are handled (the
+  C# `default` is unreachable in range), so there is no silent opcode drop; unmapped bytes `< 0xE4`
+  are structural markers, skipped by design. See [`../formats/bld-opcode-coverage.md`](../formats/bld-opcode-coverage.md).
 - Viewport/screen layout — no canonical viewport struct located.
 - Story-state semantics (`b0057` et al.) — inferred.
 - Save parser — exists; round-trip unverified.

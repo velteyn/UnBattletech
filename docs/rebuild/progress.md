@@ -6,7 +6,8 @@
 > **verified behaviour**. The rebuild *reads original data files* but *re-implements* engine logic
 > (BLD interpreter, dispatch, combat); it has **never been validated end-to-end** against the
 > original. Combat, viewport and parts of the story state are approximations; unknown BLD opcodes are
-> silently skipped; `Assets/Tilesets|Animations|Fonts` are empty. `README.md` §2 (status matrix) and
+> malformed operands (`0xF6`/`0xF7` were mis-sized until 2026-09-28); `Assets/Tilesets|Animations|Fonts`
+> are empty. `README.md` §2 (status matrix) and
 > §4 (known unknowns) are the authoritative honesty baseline. A "✅" here means **implemented,
 > unverified**, unless a verification artifact is linked.
 
@@ -22,7 +23,7 @@ Legend: **✅** verified · **⚠️** partial/approximate/silent gaps · **❓*
 | System | Reads originals | Behaviour matches original | Validation |
 |---|---|---|---|
 | BLD decrypt + cipher text | ✅ | ✅ (text) | ✅ BLD↔JSON round-trip byte-identical |
-| BLD opcode interpreter (26 ops) | ✅ | ⚠️ unknown opcodes skipped | ❓ no E2E playthrough |
+| BLD opcode interpreter (28 slots) | ✅ | ⚠️ all slots handled; `0xF6` predicate TODO | ❓ no E2E playthrough |
 | `Fn1CD3` dispatch (47 cases) | ✅ | ⚠️ some cases approximate | ❓ |
 | MTP map parse | ✅ | ✅ structure | ⚠️ not frame-diffed |
 | ANM animation decode | ✅ runtime (PNG fallback) | ⚠️ | ❓; repo has **no ANM sheets** |
@@ -41,7 +42,7 @@ Legend: **✅** verified · **⚠️** partial/approximate/silent gaps · **❓*
 - **Core**: game loop, 3-layer state machine, input, EGA palette, `StateManager`.
 - **Maps**: `MapLoader` (MTP), `WorldMapView`/`LocalMapView`, `MapCursor`, `LocationMapper`,
   `DispatchTables`, fog/visibility — load real `.MTP`.
-- **BLD**: `BldLoader` (runtime decrypt from 0xA0), `BldInterpreter` (26 opcodes),
+- **BLD**: `BldLoader` (runtime decrypt from 0xA0), `BldInterpreter` (28 opcode slots),
   `Fn1CD3Dispatcher` (47 cases), `CipherDecoder`, `DialogueBox`, `ShopScreen`, `ShopRegistry`.
 - **Combat**: `CombatManager` (12-phase loop), `CombatResolver`, `AiController`, `CombatState`,
   `CombatView`, `CombatHUD`, `MechPortrait` — **re-implementation, not a verified port**.

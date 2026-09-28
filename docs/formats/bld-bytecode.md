@@ -97,8 +97,8 @@ Works as:
 | `e8` | -24 | `~0x17` | RNG_CHECK | 1 byte | Call `fn207F_0BC0` (RNG). Mask result with operand byte. If `(RNG() & operand) == 0`, skip next opcode. Random conditional. |
 | `e9` | -23 | `~0x16` | CALL_ROOM_HANDLER | 1 byte | Read 1-byte operand, call `fn11B8_0D58` with it. Room/unit interaction handler. |
 | `ea` | -22 | `~0x15` | COND_STATE_ACTION | 2 bytes (cond+action) | Read cond byte, if `w3938 == 0`, read action byte and call `fn0800_48B7(cond, action)`. |
-| `eb` | -21 | `65515` | CHECK_FLAG_EB | 0 bytes | Check if `bD451 != 0`. If flag is 0, skip forward. |
-| `ec` | -20 | `65516` | CHECK_FLAG_EC | 0 bytes | Check if `bD450 != 0`. If flag is 0, skip forward. |
+| `eb` | -21 | `65515` | CHECK_FLAG_EB | 2 bytes (LE target) | Check `bD451`. If set, jump to the 2-byte WORD target; if 0, skip the 2 bytes. |
+| `ec` | -20 | `65516` | CHECK_FLAG_EC | 2 bytes (LE target) | Check `bD450`. If set, jump to the 2-byte WORD target; if 0, skip the 2 bytes. |
 | `ed` | -19 | `~0x12` | UNIT_CHECK_LOOP | 2 bytes | Read 2 operand bytes (byte1=index, byte2=threshold). Loop through 8 units checking `aC60F` state. If any unit matches, pass (no skip). |
 | `ee` | -18 | `~0x11` | SPEND_CREDITS | 2 bytes (LE) | Read 2-byte signed value. Deduct from `tD370`. If `tD372` (credit high word) < 0 or (=0 and value > tD370), set all to 0. Calls `fn1631_1FDF`. |
 | `ef` | -17 | `~0x10` | CHECK_CREDITS | 2 bytes (LE) | Read 2-byte signed value. Compare with `tD370`. If `tD372 < 0` or (`tD372 == 0` and value > `tD370`), skip next opcode (insufficient funds). |
@@ -108,8 +108,8 @@ Works as:
 | `f3` | -13 | `~0x0C` | SHOP_INTERACTION | 1 byte | Read 1 byte as index into state table `bD30C[index]`. Multiply by 2, use as offset into current buffer. Indirect dispatch. |
 | `f4` | -12 | `~0x0B` | SET_STATE_VALUE | 2 bytes | Read 2 bytes: byte1=index into `D30C` state array, byte2=value to set. `state[index] = value`. |
 | `f5` | -11 | `~0x0A` | SHOP_DISPATCH | 1 byte | Read 1 byte operand. Call `fn1CD3_0004` with it as the case number. Dispatches to the room interaction handler. |
-| `f6` | -10 | `~0x09` | CHECK_CONDITION | 0 bytes | Call `fn0800_1A13(0x01)`. If returns 0 (condition false), skip forward. |
-| `f7` | -9 | `~0x08` | STATE_COND_CHECK | 1 byte | Read 1 byte as index into `D30C` state array. If `state[index] != 0`, advance to next opcode. If 0, skip next byte. |
+| `f6` | -10 | `~0x09` | CHECK_CONDITION | 2 bytes (LE target) | Call `fn0800_1A13(0x01)`. If non-zero, jump to the 2-byte WORD target; if 0, skip the 2 bytes. |
+| `f7` | -9 | `~0x08` | STATE_COND_CHECK | 1 byte + 2 bytes (LE target) | Read 1 byte as index into `D30C`. If `state[index] != 0`, jump to the 2-byte WORD target; if 0, skip the 2 bytes. |
 | `f8` | -8 | `~0x07` | JUMP_FORWARD | 2 bytes LE | Read 2-byte WORD → absolute jump target (new IP = word value). Confirmed absolute (not relative) from Reko: `ip = fn0FDC_05F7(segment:(base+ip))`. |
 | `f9` | -7 | `~0x06` | JUMP_INDEXED | 1 byte | Read 1 byte menuId, call `fn1E56_0B5E(menuId)` → returns selection index. Read WORD at `base + operand_pos + 1 + index*2` → new IP (absolute). Jump table entries are WORDs right after operand byte. |
 | `fa` | -6 | `~0x05` | DRAW_SPRITE | 1 byte | Read 1 byte sprite ID. Call `fn1E56_0004(operand)` to draw a sprite. |

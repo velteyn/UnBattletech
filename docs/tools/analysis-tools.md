@@ -47,7 +47,7 @@ A C# console application (`.NET Core 3.1`) at `InceptionTools/` provides:
 
 
 ### Core Tools
-- **BLD interpreter** (`decode_bld_interp.py`): Full bytecode interpreter implementing all 26 opcodes (0xE4-0xFF), cipher text decoding, narrative marker handling, conditional skip/jump-forward branching, state tracking (credits, flags, cursor, state array). Validated against Reko decompilation — 24 of 28 opcodes used in actual BLD files, 4 unused (0xE5/0xF7/0xFA/0xFC).
+- **BLD interpreter** (`decode_bld_interp.py`): bytecode interpreter + text extraction. **⚠️ Stale for opcodes/control-flow** (2026-09-28 audit): it walks the *raw* file from offset 8 **without decrypting**, so its opcode counts and jump/`CHECK_FLAG` traces are false positives. Its **text** output is still fine (CIPHER on raw = decrypted ASCII). For opcode/control-flow use **`opcode_coverage.py`** instead. See [`formats/bld-opcode-coverage.md`](../formats/bld-opcode-coverage.md) (28 opcode slots `0xE4–0xFF`; 27 present in the corpus; only `0xE7` unobserved).
 - **BLD ↔ JSON converter** (`bld_json_converter.py`): Round-trip safe converter — parses BLD into structured JSON blocks (opcodes with annotations, decoded text, markers, control bytes) and reassembles JSON back to exact binary via byte concatenation. CLI: `to-json`, `to-bld`, `roundtrip`. All 26 BLD files verified byte-identical through round-trip.
 - **Story extraction** (`extract_story.py`): Extracts all cipher-decoded narrative text from all 26 BLD files into readable English story script. Output: `STORY_TEXT.txt`.
 - **Text extraction** (`extract_bld_text.py`, `extract_strings.py`): Pull game text from .BLD files and Reko disassembly.

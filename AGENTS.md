@@ -544,7 +544,7 @@ These scripts work on raw binary data (not r2-pipe):
 
 | Script | Purpose |
 |--------|---------|
-| `decode_bld_interp.py` | Full BLD bytecode interpreter (26 opcodes 0xE4-0xFF) |
+| `decode_bld_interp.py` | BLD bytecode interpreter + text extract. **Stale for opcodes/control-flow** (walks raw file from offset 8, no decrypt) — use `opcode_coverage.py` for opcode coverage (see `docs/formats/bld-opcode-coverage.md`) |
 | `decode_bld.py` | BLD cipher decoder |
 | `bld_json_converter.py` | Round-trip BLD ↔ JSON converter |
 | `extract_bld_text.py` | Extract cipher-decoded text from BLD files |

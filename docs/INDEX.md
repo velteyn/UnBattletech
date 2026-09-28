@@ -23,6 +23,7 @@ should summarise and link here rather than restate.
 | Engine fingerprint vs Mines of Titan (shared-function map) | [`engine/fingerprint-mines-of-titan.md`](engine/fingerprint-mines-of-titan.md) |
 | File formats (.CMP/.ICN/.MTP/.BLD/.ANM/save/mech) | [`formats/file-formats.md`](formats/file-formats.md) |
 | BLD bytecode, opcodes, cipher, `fn1CD3` cases | [`formats/bld-bytecode.md`](formats/bld-bytecode.md) |
+| BLD opcode coverage (which opcodes the 26 scripts use) | [`formats/bld-opcode-coverage.md`](formats/bld-opcode-coverage.md) |
 | ANM animation format | [`formats/anm-format.md`](formats/anm-format.md) |
 | Memory map + address reference | [`formats/memory-map.md`](formats/memory-map.md) |
 | Combat system | [`combat-system.md`](combat-system.md) |
@@ -68,6 +69,15 @@ should summarise and link here rather than restate.
 
 *Misplacement pass complete (2026-09-28): memory-map, world-map→combat, combat→story/viewport,
 story→engine, context, tooling.*
+
+### BLD opcode coverage audit (2026-09-28)
+
+- Opcode range is **28 slots (0xE4–0xFF)**; **27 present** in the 26 scripts (only `0xE7` unobserved).
+  Added [`formats/bld-opcode-coverage.md`](formats/bld-opcode-coverage.md) + `tools/bld/opcode_coverage.py`.
+- **`0xEB`/`0xEC` operand corrected** to a 2-byte WORD jump target (Reko + r2 machine code);
+  `formats/bld-bytecode.md` previously said "0 bytes".
+- **`decode_bld_interp.py` marked stale for opcodes/control-flow** (walks the raw file from offset 8
+  without decrypting); its text output remains valid.
 
 ## Consolidation notes (2026-09-27)
 
