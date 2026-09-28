@@ -10,6 +10,13 @@ The executable `UNBTECH.EXE` has **3 physical segments** in the MZ relocation ta
 | `0x1000` | 830 | Combat code segment | (combat system, Spice86 segment 1000) |
 | `0x3000` | 854 | Primary data segment | Tile props, BLD filenames, game state |
 
+**Runtime data segments (empirical, 2026-09-28)**: at runtime the game switches segments; with the
+standard Spice86 load base (`0x17D`) the observed values are: `0x1DE9` = world-map/render data
+(cursor `0xA44B`, tiles `0x0F00`), **`0x2A0F` = game state** (state array `0xD30C`, credits `0xD370`,
+story `0xC724` / unit `0xC614` slots, flags `0xD450`), `0x3858` = UI/viewport struct (+ stack).
+This is why "DS:0x..." entries below may actually live in the game-state segment. See
+`docs/UNVERIFIED_DISCOVERIES.md` §6.
+
 **EXE Entry Point**: `0x187F:0x2D82` (linear `0x1B572`), but the earlier CONTEXT.md analysis states `19EF:2D82` — the difference of `0x170` is the runtime load segment base.
 
 ## Spice86 Runtime Segment Mapping
@@ -1462,7 +1469,7 @@ Each pair iterated in `unknown_19EF_1886_1B776`, stride 0x40 (64):
 
 | Layer | Location | Type | Size | Purpose |
 |-------|----------|------|------|---------|
-| Layer 1 | `DS:0xD30C` | byte[] | 256 | Generic state array |
+| Layer 1 | `GS:0xD30C` | byte[] | 256 | Generic state array (game-state segment `0x2A0F`) |
 | Layer 2 | `fn1631_11AB` (segment `1631:11AB`) | code | — | Story properties (0x1C-0x23) |
 | Layer 3 | `bD450` at `0xD450`, `bD451` at `0xD451` | byte | 2 | BLD flag system |
 

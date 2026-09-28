@@ -46,36 +46,27 @@
   - Correlate changes in `b0057` with visible in-game events across multiple playthroughs to fully confirm the 0/1/2 meanings.
   - Analyse other functions that read from `0xC79B` / `aC744[].b0057` to see if there are additional branches or side effects beyond the initial plot twist.
 
-## 6. Game-state segment: ES (0x2A0F) vs DS (0x1DE9) — CRITICAL
+## 6. Game-state segment: ES (0x2A0F) vs DS (0x1DE9) — RESOLVED
 
-**Status (2026-09-27): unresolved; the docs and `bt_*` tools are probably reading the wrong segment.**
+**Status (2026-09-28): RESOLVED.** BattleTech switches data segments at runtime; the
+`bt_*` tools had read everything from a single fixed segment (`0x1DE9`). Corrected mapping:
 
-Observed live via the emulator MCP on the world map (tile (34,13); left panel shows
-`Jason` / `C-Bills: 50`):
+| Segment | Role | Structures |
+|---------|------|------------|
+| `0x1DE9` | world-map / render data | cursor `0xA44B/0xA44D`, tile buffer `0x0F00` |
+| `0x2A0F` | **game state** | state array `0xD30C`, credits `0xD370`, story slots `0xC724`, unit slots `0xC614`, flags `0xD450` |
+| `0x3858` | UI/viewport struct (+ stack) | `w4FBA 0x4FBA`, `w4FBC 0x4FBC`, `a4FC4/a4FCC/a4FD4` |
 
-| Structure | DS:0x1DE9 | ES:0x2A0F |
-|-----------|-----------|-----------|
-| Credits (`0xD370`) | 0 | **50** (matches the on-screen C-Bills) |
-| State array (`0xD30C`) | all zero | has data (e.g. index 23 = 45) |
-| Story slot 0 (`0xC724`) | all zero | 255, … (populated) |
-| Unit slot 0 (`0xC614`) | all zero | 0,8,9,7,… (populated) |
-| Cursor (`0xA44B`) | 0x0C44,0xC01B → tile (34,13) | 0x5B88,0x95BF → tile (68,95) |
+Evidence: on the world map, `0x2A0F:0xD370` = 20 (matched the on-screen C-Bills) and
+`0x2A0F` story/unit slots were populated, while `0x1DE9` held zeros there; the cursor
+matched at `0x1DE9:0xA44B`.
 
-CPU registers sampled repeatedly: **DS is stable at `0x1DE9`**; **ES toggles
-`0x2A0F` ↔ `0xA000`** (`0xA000` = video framebuffer while rendering). The live game
-state therefore appears to be **ES-relative (segment `0x2A0F`)**, whereas the `bt_*`
-tools and the docs read **DS (`0x1DE9`)** and return zeros for credits/state/story/units.
+**Fix applied**: `BattleTechMcpTools` now uses `GameStateSegment = 0x2A0F` for state/credits/
+story/units/flags and `MapDataSegment = 0x1DE9` for the cursor. Verified live (`bt_read_credits`
+→ 20, `bt_read_unit_slot` → populated). Constants assume the standard Spice86 load base `0x17D`.
 
-Caveat: writing 1500 to `ES:0xD370` stuck in memory but the panel did not refresh within
-1.5 s (slow economy tick / cached panel), so the write-back test was inconclusive; the
-pre-write value matching the panel is the strongest evidence.
-
-**Investigation needed**:
-- Confirm the real global-data segment (trace the left-panel `C-Bills` render routine, or
-  set a write watchpoint on the credit counter).
-- Determine whether `DS:0x1DE9` is a second (map/render) data segment or an aliased copy.
-- Fix `BattleTechMcpTools` to read the correct segment (ES when `ES != 0xA000`, or the
-  segment the globals actually use) and correct the "DS-relative" claims in the docs.
+Combat grids/units (`0x40B4/0x4004/…`) are still read from `0x1DE9` and remain **unverified**
+(need an in-combat capture).
 
 ## 7. Westwood engine viewport abstraction — how complete is our coverage?
 

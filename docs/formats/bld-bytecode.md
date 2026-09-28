@@ -287,8 +287,8 @@ Text bytes use a substitution cipher (see docs/formats/file-formats.md for the c
 | `DS:0x5468` | `w3748` | word | Text left margin (also at 0x3748) |
 | `DS:0xA44B` | `tA44B` | word | Cursor/unit X coordinate |
 | `DS:0xA44D` | `tA44D` | word | Cursor/unit Y coordinate |
-| `DS:0xD30C` | `bD30C[]` | byte[] | State array base (indexed by opcodes F1, F4, F7) |
-| `DS:0xD370` | `tD370` | dword | Credit counter (also at 545C->tD370) |
+| `GS:0xD30C` | `bD30C[]` | byte[] | State array base (game-state segment `0x2A0F`; indexed by opcodes F1, F4, F7) |
+| `GS:0xD370` | `tD370` | dword | Credit counter (game-state segment `0x2A0F`; also at 545C->tD370) |
 | `DS:0xE482` | `wE482` | word | Shop item count |
 | `DS:0xE484` | `wE484` | word | Story progression flag |
 | `DS:0xE48E` | `wE48E` | word | New game init flag |
