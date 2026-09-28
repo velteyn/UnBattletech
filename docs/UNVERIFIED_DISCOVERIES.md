@@ -116,10 +116,11 @@ Attempts to reach combat for a **live** confirmation of the combat segment (see 
 
 - **No separate main menu is observed.** Boot goes title → copyright + "Is this your first time
   playing BattleTech? Yes/No" → gameplay. The game starts (or continues) automatically.
-- **A fresh boot with all `GAME*` saves removed still starts on the world map at ~(34,12)** with
-  character `Jason` and **C-Bills 20** (ticking +15 periodically). So the observed start credits are
-  **20**, not the `1500` recorded for `NEW_GAME_INIT` (case 0x23) — either `NEW_GAME_INIT` did not run
-  on this path, or the starting value differs. (Docs claim 1500; unverified.)
+- **A fresh boot (all `GAME*` saves removed) starts in the Pacifica Training School city** with
+  character `Jason` and a **small starting balance (~20) that ticks up by +15 periodically** — the
+  walkthrough confirms this: *"Every five minutes or so your account is boosted by fifteen credits as
+  your parents send you more allowance."* So the docs' **`NEW_GAME_INIT` = 1500 cr is WRONG**; the real
+  new-game start is a low balance + allowance ticks. (Docs corrected.)
 - **Combat was not reachable this session**: random encounters did not fire (state array all zero →
   encounter mask unset), and entering the training building was not achieved (world-map `(26,5)` is a
   *local-map* coordinate; the world-map building tile for the training center wasn't located).
@@ -129,3 +130,15 @@ are late-game with 3 mechs, 66k credits). Loading slot 5 in-game drops straight 
 resolved the §6 verification — see above. Using these saves is now the fast way to reach late-game
 states (combat, cities, COMSTAR) without a full playthrough: enable a slot (`GAME5.disabled` →
 `GAME5`), then system menu → **Load Game** → pick the slot.
+
+## 9. COMSTAR (stock market) location (from walkthrough)
+
+Per `docs/walkthrough/bt-walkthrough-1.md`: at the start you are in the **Pacifica Training School**,
+*"opposite the Citadel"*, with **Comstar next door** (the stock market) and the **barracks to your far
+left**; southeast of the barracks is the Mech training center. Other buildings: Weapons, Armor, Lounge,
+Mechit-Lube. The stock market is also active in the other cities.
+`fn1CD3` case 0x05 is the SPACE-menu stock-market handler (`fn0800_35D3`).
+
+**Reaching it live**: you enter from a city/local map (not the world map); COMSTAR is a building next
+to the Citadel near the start. Actually entering it via key-injection was **not** achieved this session
+(the local-map building-door entry didn't trigger with `D`), so the stock UI is still unvalidated live.
