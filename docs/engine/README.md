@@ -47,6 +47,7 @@ more reliable than reverse-engineering each game's quirks in isolation.
 - `docs/engine/README.md` — this plan + architecture overview.
 - `docs/engine/viewport.md` — viewport & rendering workflow (subsystem C).
 - `docs/engine/combat-flow.md` — combat encounter flow (runtime-observed).
+- `docs/engine/input-navigation.md` — movement keys, building entry, trigger-spot quirk.
 - `docs/engine/fingerprint-mines-of-titan.md` — cross-binary fingerprint + shared-function map.
 - `docs/engine/memory-model.md` — segment layout, DS/ES roles, startup/protection flow.
 - `docs/engine/resources.md` — file formats + loader (shared engine routines).
