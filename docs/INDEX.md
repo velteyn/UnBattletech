@@ -53,7 +53,11 @@ should summarise and link here rather than restate.
 - **Start-map building entropy/coordinates** (Citadel, ComStar) live in `world-map.md` §3;
   `engine/input-navigation.md` points there.
 - **Stale `NEW_GAME_INIT = 1500 cr`** removed from `tools/spice86-mcp.md`.
-- **Still to consolidate:** behavioural blocks duplicated in `formats/memory-map.md` §19–§31; economy
+- **`formats/memory-map.md` stripped to addresses-only**: the behavioural sections (fire phase, BLD
+  opcodes/cipher/content-types/price-encoding, rendering, mech/encounter tables, layered/BLD
+  architecture, map-file catalogue, map→BLD index, shop cases) were replaced with pointers to their
+  canonical docs; struct/offset/pointer tables remain. Duplicate `### 13.` numbering fixed.
+- **Still to consolidate:** economy
   portions in `combat-system.md` §19; combat/memory duplicates in `engine/combat-flow.md` and
   `tools/spice86-mcp.md`; RNG stated 3× inside `combat-system.md`.
 

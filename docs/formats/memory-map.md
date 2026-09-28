@@ -1,5 +1,10 @@
 # Memory Map: BattleTech - The Crescent Hawk's Inception
 
+> **Scope (2026-09-28).** This file is the **address / memory map only**: segment & offset tables,
+> struct layouts, and pointer/function tables. **Behaviour, narrative, file formats and rendering are
+> NOT here** — they live in their canonical docs (see [`../INDEX.md`](../INDEX.md)). Sections that used
+> to carry behavioural content were replaced with pointers to the canonical doc.
+
 ## MZ EXE Physical Segment Layout
 
 The executable `UNBTECH.EXE` has **3 physical segments** in the MZ relocation table:
@@ -384,7 +389,7 @@ All offsets are relative to the data segment base (`DS` register, typically segm
 | `0xD398` | var | `tD398` | Additional data |
 | `0xD399` | var | `tD399` | Additional data |
 
-### 13. SAVE GAME LAYOUT (at segment 0x3092:0xC164 / memory offset)
+### SAVE GAME LAYOUT (at segment 0x3092:0xC164 / memory offset)
 
 The save file binary (no extension) has this layout:
 
@@ -1136,57 +1141,7 @@ Array `aC744[]` at segment pointed by `DS:0x558E`. Base `0xC724` for slot 0.
 
 ### Shop Case Reference
 
-| Case | Purpose | Called From |
-|------|---------|-------------|
-| 0x01 | ENTER_BUILDING | BLD |
-| 0x02 | SHOW_GREETING | BLD |
-| 0x03 | EXIT_BUILDING | BLD |
-| 0x04 | SHOW_SHOP_ITEMS | BLD |
-| 0x05 | BUY_ITEM_SINGLE | BLD |
-| 0x06 | SHOW_PLAYER_ITEMS | BLD |
-| 0x07 | BUY_ITEM_BULK | BLD |
-| 0x08 | SELL_ITEM_BULK | BLD |
-| 0x09 | HOSPITAL_HEAL | BLD |
-| 0x0A | SHOW_CREDITS | BLD |
-| 0x0B | BUY_WITH_UNIT_SEL | BLD |
-| 0x0C | CLOSE_ACTION | BLD |
-| 0x0D | EQUIPMENT_MENU | BLD |
-| 0x0E | COUNT_UNIT_SLOTS | BLD |
-| 0x0F | EQUIP_SLOT5 | BLD |
-| 0x10 | CHECK_EQUIP_SLOT5 | BLD |
-| 0x11 | COUNT_STORY_SLOTS | BLD |
-| 0x12 | DISPATCH_11B8_0002 | BLD |
-| 0x13 | DISPATCH_11B8_080A | BLD |
-| 0x14 | DISPATCH_11B8_0925 | BLD |
-| 0x15 | EQUIP_SLOT6 | BLD |
-| 0x16 | CHECK_EQUIP_SLOT6 | BLD |
-| 0x17 | EQUIP_CONSISTENCY | BLD |
-| 0x18 | GARAGE_SERVICE | BLD |
-| 0x19 | FLAG_D450 | BLD |
-| 0x1A | FLAG_D451 | BLD |
-| 0x1B | GOTO_2E_SHARED | BLD |
-| 0x1C | CLEAR_ALL_SLOTS | BLD |
-| 0x1D | COUNT_UPPERCASE | BLD |
-| 0x1E | DISPATCH_11B8_104E | BLD |
-| 0x1F | READ_SLOT_FLAG | BLD |
-| 0x20 | COMPLEX_EQUIP | BLD |
-| 0x21 | DISPATCH_0FDC_1C9B | BLD |
-| 0x22 | DISPATCH_0FDC_1A26 | BLD |
-| 0x23 | NEW_GAME_INIT | BLD |
-| 0x24 | READ_UNIT_SLOT | BLD |
-| 0x25 | CLEAR_UNIT_SLOT | BLD |
-| 0x26 | READ_D456 | BLD |
-| 0x27 | TRIGGER_ACTION | BLD |
-| 0x28 | DISPATCH_11B8_152F | BLD |
-| 0x29 | COMBAT_HEAL | BLD |
-| 0x2A | SAVE_POSITIONS | BLD |
-| 0x2B | RESTORE_POSITIONS | BLD |
-| 0x2C | DISPATCH_11B8_1762 | BLD |
-| 0x2D | COMBAT_ENCOUNTER | BLD |
-| 0x2E | RESTORE_SLOTS | BLD |
-| 0x2F | DECREMENT_STATE | BLD |
-
----
+> Shop/dispatch case behaviour is canonical in [`../story/story-system.md`](../story/story-system.md) §17.11.
 
 ## 14. AMMO SLOT MAPPING
 
@@ -1208,21 +1163,9 @@ Array `aC744[]` at segment pointed by `DS:0x558E`. Base `0xC724` for slot 0.
 
 ## 15. FIRE PHASE — 9 BODY PART PAIRS
 
-Each pair iterated in `unknown_19EF_1886_1B776`, stride 0x40 (64):
-
-| Iteration | SI (source) | DI (dest) | Body Location |
-|-----------|-------------|-----------|---------------|
-| 1 | `0x564` | `0x324` | Right Arm |
-| 2 | `0x5A4` | `0x364` | Right Leg |
-| 3 | `0x5E4` | `0x3A4` | Right Torso |
-| 4 | `0x624` | `0x3E4` | Head |
-| 5 | `0x664` | `0x424` | Center Torso |
-| 6 | `0x6A4` | `0x464` | Left Arm |
-| 7 | `0x6E4` | `0x4A4` | Left Leg |
-| 8 | `0x724` | `0x4E4` | Left Torso |
-| 9 | `0x764` | `0x524` | Center Torso (rear) |
-
----
+> The damage-phase **behaviour** (9 body-part pairs, stride `0x40`) is canonical in
+> [`../combat-system.md`](../combat-system.md) §7 (Damage Application Pipeline). This file keeps
+> addresses only.
 
 ## 16. SAVE FILE LAYOUT
 
@@ -1242,184 +1185,26 @@ Each pair iterated in `unknown_19EF_1886_1B776`, stride 0x40 (64):
 
 ## 17. BLD INTERPRETER — OPCODES (0xE4-0xFF)
 
-| Opcode | Reko Case | Operand | Description |
-|--------|-----------|---------|-------------|
-| `0xE4` | `~0x1B` | 1 byte | WRITE_CHAR — Read byte, write as character |
-| `0xE5` | `~0x1A` | 2 bytes LE | ADD_CREDITS — Add signed to `tD370` |
-| `0xE6` | `~0x19` | 4 bytes LE | SET_CURSOR_XY — Set cursor X/Y |
-| `0xE7` | `65511` | 2 bytes LE compare_val, 2 bytes LE abs_jump | CMP_CURSOR_X — If cursor X != compare, skip 2B; else jump |
-| `0xE8` | `~0x17` | 1 byte mask, 2 bytes LE abs_jump | RNG_CHECK — If `RNG() & mask != 0`, jump |
-| `0xE9` | `~0x16` | 1 byte | CALL_ROOM_HANDLER — Call `fn11B8_0D58(operand)` |
-| `0xEA` | `~0x15` | 2 bytes (cond+action) | COND_STATE_ACTION — If `w3938==0`, call `fn0800_48B7(cond, action)` |
-| `0xEB` | `65515` | 0 bytes | CHECK_FLAG_EB — Skip if `bD451 == 0` |
-| `0xEC` | `65516` | 0 bytes | CHECK_FLAG_EC — Skip if `bD450 == 0` |
-| `0xED` | `~0x12` | 2 bytes | UNIT_CHECK_LOOP — Loop 8 units checking `aC60F` |
-| `0xEE` | `~0x11` | 2 bytes LE | SPEND_CREDITS — Deduct from `tD370` (zero-floor) |
-| `0xEF` | `~0x10` | 2 bytes LE | CHECK_CREDITS — Skip if insufficient funds |
-| `0xF0` | `~0x0F` | 2 bytes | SET_TEXT_MARGINS — Set left/right margins |
-| `0xF1` | `~0x0E` | 2 bytes | ADD_TO_STATE — `D30C[index] += value` |
-| `0xF2` | `~0x0D` | 0 bytes | ROOM_DESCRIPTION — Render room description |
-| `0xF3` | `~0x0C` | 1 byte | SHOP_INTERACTION — Index into `D30C`, indirect dispatch |
-| `0xF4` | `~0x0B` | 2 bytes | SET_STATE_VALUE — `D30C[index] = value` |
-| `0xF5` | `~0x0A` | 1 byte | SHOP_DISPATCH — Call `fn1CD3_0004(operand)` |
-| `0xF6` | `~0x09` | 0 bytes | CHECK_CONDITION — Skip if `fn0800_1A13(1)` returns 0 |
-| `0xF7` | `~0x08` | 1 byte | STATE_COND_CHECK — Skip if `D30C[index] == 0` |
-| `0xF8` | `~0x07` | 2 bytes LE | JUMP_FORWARD — Read 2-byte WORD → absolute jump target (new IP = word value) |
-| `0xF9` | `~0x06` | 1 byte | JUMP_INDEXED — Read 1 byte menuId, calls `fn1E56_0B5E(menuId)` → returns index, reads WORD at `base + _ip + index*2` as new IP |
-| `0xFA` | `~0x05` | 1 byte | DRAW_SPRITE — Draw sprite via `fn1E56_0004(operand)` |
-| `0xFB` | `~0x04` | 0 bytes | ADVANCE_INPUT — Wait for key |
-| `0xFC` | `~0x03` | N bytes | RENDER_TEXT — Display cipher text, advance past string |
-| `0xFD` | `~0x02` | 0 bytes | SET_FONT2 — Font/display params |
-| `0xFE` | `~0x01` | 1 byte | SET_FONT — Set font |
-| `0xFF` | `~0x00` | 0 bytes | EXIT — Set exit flag, stop interpreter |
-
----
+> Opcode semantics are canonical in [`bld-bytecode.md`](bld-bytecode.md).
 
 ## 18. BLD TEXT CIPHER
 
-| Byte Range | Maps To | Note |
-|------------|---------|------|
-| `0x57-0x5F` | i h k j m l o n a | lowercase |
-| `0x60` | q | lowercase |
-| `0x61-0x76` | c b e d g f y x i z l m n o p s r u t w v | lowercase |
-| `0x77-0x7F` | I H K J M L O N A | uppercase (in "lowercase" range) |
-| `0x80-0x96` (skip 0x88-0x8F) | C B E D G F Y P S R U T W V | uppercase |
-| `0xA0` | space | separator |
-| `0x6B` | control byte | not text |
-| `0xAF-0xBF` | numeric digit display | price encoding |
-| `0xC0` | no-op (structural separator) | consumed silently |
-
----
+> Cipher tables are canonical in [`bld-bytecode.md`](bld-bytecode.md).
 
 ## 19. RENDERING / GRAPHICS SYSTEM
 
-### Framebuffer Layout
-
-| Address | Purpose | Format |
-|---------|---------|--------|
-| `A000:0000` | VGA framebuffer base | EGA planar |
-| `A000:2000` | Odd scanlines (bank 1) | Plane offset `0x2000` |
-| `B800:0000` | CGA framebuffer | tB764 mode 0x00 |
-| `A000:AC00` | VGA text buffer | tB764 mode 0x02 |
-
-### EGA Planar Layout
-
-| Property | Value |
-|----------|-------|
-| Bit planes | 4 (Blue=0, Green=1, Red=2, Intensity=3) |
-| Bytes/plane/scanline | 40 (320px / 8) |
-| Plane stride | `0x2000` (8192 bytes) |
-| Row-pair stride | `0x50` (80 bytes) |
-| Total framebuffer | ~32768 bytes (`0x8000`) |
-| VGA ports | `0x3C4` (sequencer), `0x3CE` (graphics controller) |
-| VGA write mode 2 | `out 0x03CE, 0x0105` |
-
-### Pixel Format Flag (tB764 at segment 246C)
-
-| Value | Mode | Framebuffer | Stride | Description |
-|-------|------|-------------|--------|-------------|
-| `0x00` | CGA/Herc | `0xB800` | `0x28` (40) | 2-bit pixels, odd/even `0x2000` plane shift |
-| `0x02` | VGA text | `0xAC00`→`0xA000` | `0x28` (40) | Linear, write mode 2, no planar |
-| `0x01` | EGA planar | `0xA000` | `0x28` (40) | 4-bit planar interleave (bx = row & 0x03) |
-| default | Full frame | `0xA000` | `0x0140` (320) | Linear full-width copy |
-
-### Viewport Hardware Registers (fn207F_1B80)
-
-| Register | Purpose |
-|----------|---------|
-| `tB78E`/`tB790` | Destination base address |
-| `tB792`/`tB794` | Source X/Y |
-| `tB79A`/`tB79C` | Clip width/height |
-
-### Screen Layout
-
-| Panel | Width (px) | Content |
-|-------|-----------|---------|
-| Left panel | `80` (`0x50`) | Location graphic + action menu |
-| Right area | `240` (320-80) | Main viewport (map, tiles, text) |
-
-### Border Variants (fn1F3D_06C3)
-
-| Variant | Function | Used For |
-|---------|----------|----------|
-| Full border | `fn207F_1CB8` | w4FBA=0,1 (100 rows×54B or 50 rows×108B) |
-| Narrow border | `fn207F_1D3A` | w4FBA=2 (200 rows×27 words) |
-| Text overlay | `fn207F_245C` | w4FBA=3 (13-column strip) |
-
-### World Map Tile Calculation
-
-| Expression | Range | Purpose |
-|------------|-------|---------|
-| `(A44B & 0x7F) >> 1` | 0-63 | Tile X from cursor |
-| `(A44D & 0x7F) >> 1` | 0-63 | Tile Y from cursor |
-| `(tA44B >> 1 & 0x07) + 2` | 2-9 | Cursor grid X (fn207F_1DF8) |
-| `(tA44D >> 1 & 0x07) + 2` | 2-9 | Cursor grid Y |
-| `tileX + tileY * 24` | — | Tile index (map grid 24 tiles wide) |
-| `0x246C:0x244B` | — | Tile buffer (world map, local) |
-
-### Combat Fog Grids
-
-| Address | Dimensions | Init Value | Purpose |
-|---------|-----------|------------|---------|
-| `DS:[0x55D8]→0x40B4` | 12 × 24 = 288 bytes | `0x02`=fogged | Combat Fog Grid A |
-| `DS:[0x55D8]→0x41D4` | 12 × 24 = 288 bytes | `0x02`=fogged | Combat Fog Grid B |
-
-### Animation / Tile System
-
-| Address/Symbol | Type | Purpose |
-|----------------|------|---------|
-| `3000:CC30` | filename[] | BLD filename list |
-| `w5800` | uint16 | Page counter (0→1→2→0), source = `(w5800 << 7) + 54658` |
-| 54658 | uint16 | Tile buffer base offset (0xD582?) |
-| 4100 | count | Number of tiles per page |
-| 128 | bytes | Stride per tile (`fn207F_28A8` memcpy size) |
-| `w3988` | uint16 | Animation guard flag |
-| `0x57FE` | uint16 | Animation frame counter (wraps at 3) |
-| `0x1A` (26) | stride | Unit slot stride for fn0800_24C2 |
-
-### Coordinate Packing (Combat)
-
-| Formula | Purpose |
-|---------|---------|
-| `X = (val & 0xF00) >> 1 \| (val & 0x7F)` | Packed X extraction |
-| `Y = (val & 0xF000) >> 5 \| (val & 0x7F)` | Packed Y extraction |
-| Mask `0xF7F` | grid/sub-pixel precision |
-| Mask `0xF07F` | grid/sub-pixel precision |
-
-### BTSTATS.CMP
-
-| Address | Purpose |
-|---------|---------|
-| Segment 0x246C via `fn207F_104E` | BTSTATS tile render (48 rows) |
-| `fn0800_3D40` | Stat/inventory screen |
-| `fn0800_3FAE` | Stat screen rendering (8-phase) |
-
----
+> Rendering and viewport behaviour (framebuffer, `tB764`, screen layout, borders, 3-pass pipeline,
+> world-map tile calculation, coordinate packing) is canonical in
+> [`../engine/viewport.md`](../engine/viewport.md).
 
 ## 20. ENEMY TEMPLATES — MECH TABLE
 
-| Mech ID | Name | Tonnage | Walk | Jump | Notes |
-|---------|------|---------|------|------|-------|
-| `0x00` | LOCUST | 20t | 8 | 0 | Random encounter pool (template) |
-| `0x01` | WASP | 20t | 6 | 6 | Random encounter pool (template) |
-| `0x02` | STINGER | 20t | 6 | 6 | Random encounter pool (template) |
-| `0x03` | COMMANDO | 25t | 6 | 0 | Random encounter pool |
-| `0x06` | URBANMECH | 30t | 2 | 2 | Story-only |
-| `0x09` | JENNER | 35t | 7 | 5 | Story-only (Kuritan) |
-| `0xC8` | CHAMELEON | 50t | 6 | 6 | Player starting mech, story-only |
-
----
+> Mech combat data is canonical in [`../combat-system.md`](../combat-system.md) §20.
 
 ## 21. ENEMY ENCOUNTER DATA
 
-| Address | Type | Purpose |
-|---------|------|---------|
-| `[DS:0x5436]:0x2DF8` | word[3] | Fixed 3-entry enemy mech template table (near offsets) |
-| `DS:[0x5434] + 0x2CF4` | byte[] | Infantry weapon instance data (stride 0x11) |
-| Position center: (26, 12) | coordinate | Encounter spawn center on 32×24 world grid |
-| Offset: ±10-17 from center | formula via `RNG & 0x07 + 0x0A` | Random position offset |
-
----
+> Encounter composition/positions are canonical in [`../combat-system.md`](../combat-system.md) §20
+> and [`../world-map.md`](../world-map.md) §17.
 
 ## 22. BMP-RELATED ADDRESSES (from CONTEXT, in codebase)
 
@@ -1467,13 +1252,7 @@ Each pair iterated in `unknown_19EF_1886_1B776`, stride 0x40 (64):
 
 ## 25. LAYERED STATE SYSTEM
 
-| Layer | Location | Type | Size | Purpose |
-|-------|----------|------|------|---------|
-| Layer 1 | `GS:0xD30C` | byte[] | 256 | Generic state array (game-state segment `0x2A0F`) |
-| Layer 2 | `fn1631_11AB` (segment `1631:11AB`) | code | — | Story properties (0x1C-0x23) |
-| Layer 3 | `bD450` at `0xD450`, `bD451` at `0xD451` | byte | 2 | BLD flag system |
-
----
+> Story-state architecture is canonical in [`../story/story-system.md`](../story/story-system.md) §17.1.
 
 ## 26. FOUR-LAYER BLD INTERPRETER ARCHITECTURE
 
@@ -1488,54 +1267,11 @@ Each pair iterated in `unknown_19EF_1886_1B776`, stride 0x40 (64):
 
 ## 27. MAP FILES
 
-| File | Map | Description |
-|------|-----|-------------|
-| MAP1.MTP | — | Training Center / Citadel (start) |
-| MAP2.MTP | — | Main City, Chameleon training, Arena |
-| MAP3.MTP | — | Small outpost/village |
-| MAP4.MTP | — | Large industrial complex |
-| MAP5-8.MTP | — | Medium settlements |
-| MAP9.MTP | — | Outpost |
-| MAP10.MTP | — | Medium settlement |
-| MAP11.MTP | — | Destroyed Training Center (post-attack) |
-| MAP12.MTP | — | Large city/base |
-| MAP13.MTP | — | Medium settlement |
-| MAP14.MTP | — | Cave / Underground complex |
-| MAP15.MTP | — | Star Map (32×24, linear format) |
-
----
+> The map-file catalogue is canonical in [`file-formats.md`](file-formats.md).
 
 ## 28. BLD FILE INDEX / MAP EVENT MAPPING
 
-| BLD File | Map(s) | Story Purpose |
-|----------|--------|---------------|
-| TRAINING | MAP1/11 | Training missions + citadel attack |
-| CITADEL | MAP1/11 | Post-attack citadel (b0057 ≥ 1) |
-| BARRACKS | MAP2 | Recruit NPCs |
-| BARRACK2 | MAP2 | Additional soldier interactions |
-| LOUNGE | MAP2 | Rick gives device, mentions Starport |
-| COMSTAR | start map (+ other cities) | Banking, stock market; entrance tile `(51,10)` on start map |
-| PARTY | MAP2 | Rex rescues Jason |
-| MAYOR | MAP2 | Read newspaper, holodisk, escape |
-| JAIL | MAP2 | Rescue agent, acquire Stinger |
-| WEAPON/WEAPON2 | MAP2 | Buy infantry weapons |
-| ARMOR | MAP2 | Armor shop |
-| CLOTHES | MAP2 | Civilian clothes shop |
-| HOSPITAL | MAP2 | Healing services |
-| GARAGE | MAP2 | Vehicle services |
-| REPAIR | MAP2 | Recruit tech, modify Mechs |
-| ARENA | MAP2 | Mech combat arena |
-| ENTRANCE | MAP2 | Story transition |
-| THEATER | MAP2 | Entertainment/plot |
-| FINDIT | MAP3-10 | Search for cache clues |
-| HUT | MAP14 (Cave) | Tellhim's holographic tests |
-| FROB | MAP14 (Cave) | Tellhim's gauntlet puzzle |
-| INSTRUCT | MAP14 (Cave) | Cache entrance instructions |
-| VIEWDISK | MAP14 (Cave) | Jeremiah's holodisk |
-| WINSCENE | Endgame | Hyperpulse Generator → Katrina |
-| ENDMECH | Endgame | Endgame image/credits |
-
----
+> Map→BLD mapping is canonical in [`../story/story-system.md`](../story/story-system.md) §17.6.
 
 ## 29. C STRUCT EQ REFERENCE (UNBTECH.h)
 
@@ -1553,30 +1289,11 @@ Each pair iterated in `unknown_19EF_1886_1B776`, stride 0x40 (64):
 
 ## 30. BLD CONTENT TYPE CODES
 
-| Code | Meaning |
-|------|---------|
-| `c0 ec` | Dialogue/story content |
-| `c0 f5` | Shop/service content |
-| `c0 f4` | Special content |
-| `c0 da` | Endgame marker |
-| `9e` | Third-person narrative |
-| `9c` | Character speech continuation |
-| `9b` | Player internal thought |
-| `9f` | Player-directed thought |
-| `a5` | Sentence continuation (appends lowercase) |
-
----
+> BLD content-type codes are canonical in [`bld-bytecode.md`](bld-bytecode.md).
 
 ## 31. PRICE DISPLAY ENCODING (BLD text)
 
-| Byte Range | Encoded Values |
-|------------|----------------|
-| `0xAF-0xB3` | Values 40-44 (left column of numpad font) |
-| `0xB4-0xB8` | Values 105-113 (right column, odd numbers) |
-| `0xBE` | 125 |
-| `0xBF` | 127 |
-
----
+> BLD price encoding is canonical in [`../story/story-system.md`](../story/story-system.md) §17.11.
 
 ## 32. GAME ENTRY / MAIN FLOW
 
