@@ -418,3 +418,5 @@ java_project/*.class
 # Build logs
 build_log.txt
 .wiki
+# allow the freshly regenerated decompilation to be tracked
+!reko/gencode-current/*.cs

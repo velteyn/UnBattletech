@@ -323,8 +323,27 @@ recovered files for its label (`label_1000_<OFF>_<LIN>` / `label_19EF_...`).
 
 ## Provenance / regeneration
 
-- **Recovered** from git history: `git show f0037ea^:spice86/GeneratedCode/GeneratedCodeN.cs`
-  (the `spice86/` tree was removed as stale on 2026-09-28; the decompilation itself is still valid).
+**✅ Fresh regeneration done (2026-09-28)** with the current Spice86 — output in
+[`../../reko/gencode-current/`](../../reko/gencode-current/) (`CfgGeneratedOverrides.cs`, 2.79 MB +
+`Program.cs`/`.csproj` + a fresh `listing.asm`). It **covers the combat/movement code** (contains the
+combat constants `0x2EE4` weapon table, `0x32C6` terrain, `0x4004` unit-X, `0x40B4` fog, `0x458C`).
+
+> **Segment naming differs between generators.** The *old* codegen aliased the game's internal
+> segments (`cs7=0x1000` combat, `cs12=0x19EF` render/movement) — the names the docs cite. The
+> *current* generator uses the **runtime** segments: `cs1=0x017D, cs2=0x06A4, cs3=0x0728, cs4=0x0CDA,
+> cs5=0x0DAE, cs6=0x0EC0, cs7=0x0FAE, cs8=0x11B8, cs9=0x1465, cs10=0x1650, cs11=0x17D3, cs12=0x18BA,
+> cs13=0x19C8, cs14=0x19FC, cs15=0xF000`.
+
+**How it was produced** (headless): run the emulator with **`-u false`** (overrides OFF — otherwise the
+C# dump is skipped: *"code overrides are active, so the CFG … not representative"*), `--GdbPort N`,
+`-r <dir>`; get into combat (load the `GAME5` save → walk until the encounter fires → fight a few
+rounds); then send the GDB custom command **`qRcmd,<hex("dumpall")>`** (a `monitor dumpall` from gdb, or
+a two-line raw socket client). The writer emits `spice86dumpCfgGeneratedOverrides.cs` + a buildable
+`GeneratedProject/`. Boot without overrides works fine (the A:/B: mount in the override supplier is not
+required at startup).
+
+- **Also recovered** from git history (older Spice86, game-segment names, used by the docs' citations):
+  `git show f0037ea^:spice86/GeneratedCode/GeneratedCodeN.cs` → [`../../reko/gencode/`](../../reko/gencode/).
 - **Regenerate** with a current Spice86 (it runs the program, keeps the CFG of executed code, and
   `CfgCSharpDumper` emits the override class + project — `../Spice86/doc/codeGeneratorReadme.md`):
 
