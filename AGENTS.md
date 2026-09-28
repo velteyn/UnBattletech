@@ -452,21 +452,7 @@ AIATTEMPT (`UNBATTLETECH.csproj` / `BattleTechMcpTools.csproj`) builds **directl
 - **MCP packages**: `ModelContextProtocol.Core` / `.AspNetCore` are pinned to `2.2.0` to match `Spice86.Core`.
 - **A:/B: drive mount**: done in `BattleTechOverrideSupplier.MountGameDataOnFloppyDrives()` via the public `Dos.MountFolderAsFloppy()` API — Spice86 itself is left untouched (previously a residual change in `DosDriveManager.cs`).
 - **MCP transport fix**: upstreamed as **PR #2246** (branch `spice86-mcp-fix`): `UseUrls()` bind, `StartAsync()` keep-alive, custom `GET /mcp/` SSE `endpoint`. Rebased on `master` and mergeable; only `McpHttpHost.cs` changes.
-- **Generated code** under `spice86/GeneratedCode/` was produced by an **older** Spice86 and is stale; it is excluded from all builds (`<Compile Remove="spice86/GeneratedCode/**/*.cs" />`). Regenerate with a current Spice86 before relying on it.
-
-### Spice86 Directory Layout
-
-| Path | Description |
-|------|-------------|
-| `spice86/GeneratedCode/` | Generated C# code for ~23 segments (GeneratedCode.cs – GeneratedCode22.cs) |
-| `spice86/GeneratedCode/GeneratedOverridesManual.cs` | Manual function overrides (e.g., MainGameLoop at 1000:1ABA) |
-| `spice86/spice86dumpMemoryDump.bin` | Full memory dump from emulation replay |
-| `spice86/spice86dumpGhidraSymbols.txt` | 1427 Ghidra-recognized symbols |
-| `spice86/spice86dumpExecutionFlow.json` | Execution flow records |
-| `spice86/spice86dumpCpuRegisters.json` | CPU register trace |
-| `spice86/Spice86CodeGenerator.txt` | Code generator log (355K lines) |
-| `spice86/Spice86DataImport.txt` | Data import log |
-| `spice86/Breakpoints.json` | Per-run breakpoints config |
+- **Generated code / dumps**: the old `spice86/` tree (generated C# for ~23 segments, plus `spice86dump*` memory/execution dumps, logs, breakpoints) was produced by an **older** Spice86 and has been **removed (2026-09-28)** as stale. Regenerate with a current Spice86 if needed.
 
 ### Key Files
 
@@ -531,21 +517,9 @@ Full decompilation at `reko/` using Reko v0.12.2.0 (Microsoft C 5.0 detected).
 
 ## Dosbox-X (Debug)
 
-Dosbox-X installed at `/usr/bin/dosbox`. Configurations at `dosbox_test/`.
-
-| File | Description |
-|------|-------------|
-| `dosbox_test/dosbox-x.conf` | Standard run configuration (svga_s3, 16MB, normal2x) |
-| `dosbox_test/dosbox-x-debug.conf` | Debug configuration with `debug=high` |
-| `dosbox_test/UNBTECH.exe` | Symlink/copy of the unpacked binary |
-
-```bash
-# Run the original game
-dosbox -conf dosbox_test/dosbox-x.conf
-
-# Run with debug output
-dosbox -conf dosbox_test/dosbox-x-debug.conf
-```
+Dosbox-X is installed at `/usr/bin/dosbox`. The old `dosbox_test/` configs were removed
+(2026-09-28); use the Spice86 emulator + MCP tooling as the primary runtime. To run the
+original manually, point dosbox at the unpacked `UNBTECH.exe` in this repo.
 
 ## Python Analysis Tools (`tools/`)
 

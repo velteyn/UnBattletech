@@ -10,7 +10,8 @@ The combat system is split across two code segments that are **not** covered by 
 - **Segment 1000** (linear 0x105C5-0x14672): Combat loop, targeting, LoS/range check, weapon data access
 - **Segment 0000** (linear 0x30DD-0x3113): **2D6 to-hit roll generator** (`ghidra_guess_0000_30DD_030DD`)
 
-Source files: `spice86/GeneratedCode18.cs` (segment 19EF), `spice86/GeneratedCode13.cs`, `spice86/GeneratedCode10.cs` (segment 1000)
+Source files: the Spice86-generated code for segment `19EF`, and the segment-`1000` files
+(the old `spice86/GeneratedCode*.cs` tree was removed as stale — regenerate with a current Spice86).
 
 ---
 

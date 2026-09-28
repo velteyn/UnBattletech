@@ -36,7 +36,6 @@ Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Cresc
 │
 ├── json/               # BLD → JSON conversions (26 files)
 │
-├── spice86/            # Spice86 emulation outputs
 │
 ├── BattleTechCHI/      # Godot 4 + C# rebuild
 │

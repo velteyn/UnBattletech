@@ -363,7 +363,7 @@ The random encounter system is triggered by **walking on the world map** (not by
 #### 17.1 Core Check
 
 **File:** `UNBTECH.reko/UNBTECH_0800.c:192-201` (segment `0800`)
-**Spice86:** `spice86/GeneratedCode.cs:1527-1549` (segment `0170:0287`)
+**Spice86:** generated code (segment `0170:0287`) — the old `spice86/GeneratedCode*.cs` tree was removed as stale (regenerate with a current Spice86).
 
 ```c
 int16 ax_540 = fn207F_0BC0();          // RNG → random byte (0-255)

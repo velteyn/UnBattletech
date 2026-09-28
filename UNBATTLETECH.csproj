@@ -13,8 +13,6 @@
     <Compile Remove="BattleTechCHI/**/*.cs" />
     <Compile Remove="BattleTechMcpTools/**/*.cs" />
     <Compile Remove="InceptionTools/**/*.cs" />
-    <Compile Remove="spice86/GeneratedCode/**/*.cs" />
-    <Compile Remove="MyOverrideSupplier.cs" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="Spice86.Core.Emulator.Memory" />
