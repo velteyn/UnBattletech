@@ -61,8 +61,13 @@ should summarise and link here rather than restate.
   exposition (System A/B) → `story/story-system.md` §17.11; cursor packing → `engine/input-navigation.md`;
   RNG deduplicated (§6.1 and §10 now point to §16); §1 gained a scope note (trigger → `world-map.md`,
   `w4FBC` → `engine/viewport.md`).
-- **Still to consolidate:** combat-data duplicates in `engine/combat-flow.md`; `context.md` §7/§8/§13
-  restating canonical detail; `tools/spice86-mcp.md` world-map-movement/address sections.
+- **`engine/combat-flow.md`**, **`context.md`**, **`tools/spice86-mcp.md`** cleaned: combat-data table
+  and movement/address sections now point to canonical docs; `context.md` §7/§8/§13 replaced with
+  links + an honest summary; the stale WASD/hex-grid movement notes in `spice86-mcp.md` corrected to
+  the verified arrow-key / tile-entry model.
+
+*Misplacement pass complete (2026-09-28): memory-map, world-map→combat, combat→story/viewport,
+story→engine, context, tooling.*
 
 ## Consolidation notes (2026-09-27)
 

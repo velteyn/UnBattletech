@@ -32,10 +32,11 @@ Observed attacking forces: `4 humans.`, `1 Mech and 6 humans.`
 - **Flee** (menu option): → `You have eluded your enemies! Press a key.` → returns to the world map.
 
 ## Combat data (verified live)
-In combat, segment `0x2A0F` holds:
-- unit arrays `0x4004` (X) / `0x4036` (Y) / `0x406A` (status), 24 slots;
-- fog grids `0x40B4` / `0x41D4` (12×24), fully fogged (`0x02`) at start.
+This file records the **observation**; the address spec is canonical in
+[`../combat-system.md`](../combat-system.md) §13 and [`../formats/memory-map.md`](../formats/memory-map.md) §3.
 
+Observed live in segment `0x2A0F`: unit arrays `0x4004` (X) / `0x4036` (Y) / `0x406A` (status), 24 slots;
+fog grids `0x40B4` / `0x41D4` (12×24), fully fogged (`0x02`) at start.
 `bt_read_combat_units` / `bt_read_combat_grids` return this.
 
 ## Driving it (playtest notes)

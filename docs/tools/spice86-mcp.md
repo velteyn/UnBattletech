@@ -82,7 +82,7 @@ Spice86 loads `BTECH.EXE` (compressed — decompression stub runs first in emula
 
 **⚠️ "Continue Game" with no save → blank state**: When `Space` at the main menu selects "Continue Game" but no save data exists, the game boots to a world map with `Credits=0`, `StateArray[0..31]=0`, and movement partially broken (W/X/Numpad keys may work, Q/A/D/E/Z/C may not). NEW_GAME_INIT (case 0x23) never runs. To get a proper initialized game, either:
   - Use ~18+ Spaces total to navigate through "Continue Game" → auto-detect no save → start new game → advance intro dialogs, OR
-  - Navigate to tile (26,5) to trigger TRAINING.BLD which runs NEW_GAME_INIT, OR  
+  - Walk onto the training-centre entrance tile to trigger TRAINING.BLD (runs NEW_GAME_INIT), OR
   - Manually write `Credits` via HTTP API PUT and set StateArray entries (note: `NEW_GAME_INIT` = 1500 cr is **wrong** — a new game starts at a small balance ~20 that ticks with the allowance; see `docs/UNVERIFIED_DISCOVERIES.md` §8)
 
 ### Keyboard Injection (RELIABLE)
@@ -140,40 +140,21 @@ The BDA head pointer auto-advances when the INT 16h handler dequeues the key. Th
 
 The key is consumed because the INT 16h busy-loop checks head != tail immediately after resume, dequeues the key, and returns it to the game. The buffer clears itself (head advances to catch up with tail).
 
-### World Map Movement
+### Driving the game (movement & navigation)
 
-The world map uses a **hex-grid**. Building entry at a tile uses `D` (East key) — the game's east movement doubles as the "door/enter" action.
+**Movement is arrow keys** (`bt.py`'s `up/down/left/right`); **building entry is tile-triggered** —
+walk onto the entrance tile. The old WASD "hex-grid" notes that used to live here were **wrong**
+(verified 2026-09-28). Canonical model: [`../engine/input-navigation.md`](../engine/input-navigation.md);
+map/POI data: [`../world-map.md`](../world-map.md).
 
-**Key mappings** from original game reference:
+Tool-side recipe: `tools/playtest/bt.py` (`boot`, `keys`, `state`, `png`) drives the game and renders
+true-colour screenshots. Remember the entrance trigger stays "armed": walk **down** to step off it.
 
-| Key | ASCII | Scan | Named Dir | Notes |
-|-----|-------|------|-----------|-------|
-| Q   | 0x51  | 0x10 | Northwest | Behavior is **position-dependent** — often works as West (0,-1) but can fail from some tiles |
-| W   | 0x57  | 0x11 | North     | (0,-1) reliably from tested positions |
-| E   | 0x45  | 0x12 | Northeast | Position-dependent |
-| A   | 0x41  | 0x1E | West      | Often fails to move from many positions |
-| S   | 0x53  | 0x1F | South     | (±1,-1) from some positions, may work where others fail |
-| D   | 0x44  | 0x20 | East      | Also "enter building" at entrance tiles |
-| Z   | 0x5A  | 0x2C | Southwest | Position-dependent |
-| X   | 0x58  | 0x2D | South     | (0,+1) reliably from tested positions |
-| C   | 0x43  | 0x2E | Southeast | Position-dependent |
-| 1   | 0x31  | 0x02 | Numpad 1  | (+1,0) from some positions |
-
-**Empirical findings** (June 2026): W (North) and X (South) are the most reliable directional keys. Q (West) and D (East) work from some positions but not all. The hex grid delta formula in `fn207F_0581` may encode additional facing/direction state in the high bits of raw cursor coordinates (bits 14-15 of raw Y at DS:0xA44B). The block of keys Q/A/E/D/Z/C seems tied to a "hex move" path that can fail when the game is in a degraded state (Continue Game with no save).
-
-**Fallback navigation strategy**: When Q (NW) doesn't move, try W (N), X (S), 1 (E), S (SE-ish), then cycle back to Q. Some keys unstick the cursor where others fail.
-
-**Navigation algorithm** (proven to work from any start near (34,12) to (26,5)):
-1. Get current tile via `read_memory` at DS=0x1DE9 offset 0xA44B (4 bytes, 2× uint16 LE)
-2. Convert: `TileX = (RawX & 0x7F) >> 1`, `TileY = (RawY & 0x7F) >> 1`
-3. Prefer Q (NW) to move toward target X,Y
-4. If blocked (Q doesn't move), try A (W), Z (SW), C (SE), E (NE), D (E) in sequence
-5. At target tile, press D to enter building
-6. Inside building (DS switches to 0x3858), press Space to advance dialog
-
-**Obstacles**: Buildings (tile values 64+) block movement. Read world map tiles at DS:0x0F00 (128×128 grid, row-major) to check passability.
-
-**Root cause (RESOLVED)**: The game runs with DOS default drive = `A:` (boot floppy in original hardware). `INFOCOM.CMP` was resolved to `A:\INFOCOM.CMP` but A: had no mounted host directory. **Fix**: Both A: and B: drives are mounted to the game data folder via the supported public API `machine.Dos.MountFolderAsFloppy()` from `BattleTechMcpTools/BattleTechOverrideSupplier.cs` (`MountGameDataOnFloppyDrives`). This keeps Spice86 upstream untouched — the mount previously lived in `DosDriveManager.cs` but was moved out so PR #2246 stays generic. Game files are accessible from all three drives.
+**Drive mount (A:/B:):** the game boots with DOS default drive `A:`, so `INFOCOM.CMP` resolved to
+`A:\INFOCOM.CMP`; both `A:` and `B:` are mounted to the game-data folder via the public
+`machine.Dos.MountFolderAsFloppy()` API from
+`BattleTechMcpTools/BattleTechOverrideSupplier.cs` (`MountGameDataOnFloppyDrives`), keeping Spice86
+upstream generic.
 
 ### Why This Is Invaluable
 
@@ -184,6 +165,9 @@ The world map uses a **hex-grid**. Building entry at a tile uses `D` (East key) 
 5. **Combat validation**: Read combat unit positions, fog grids, and unit status to verify AI behavior matches the original.
 
 ### DS-Relative Address Reference
+
+> Field→**tool** cross-reference for the harness. The address spec itself is canonical in
+> [`../formats/memory-map.md`](../formats/memory-map.md).
 
 | Field | DS:Offset | Size | Tool |
 |-------|-----------|------|------|
@@ -200,9 +184,13 @@ The world map uses a **hex-grid**. Building entry at a tile uses `D` (East key) 
 | Combat Unit Y | DS:0x4036 | 24×uint16 | `bt_read_combat_units` |
 | Combat Status | DS:0x406A | 24×uint16 | `bt_read_combat_units` |
 
-### Boot & Navigation Workflow (Proven Script)
+### Boot & Navigation Workflow (proven script)
 
-Full workflow: boot game → world map → navigate to (26,5) → enter training building:
+Boot game → walk onto a building's **entrance tile** → answer the popup. Reminder: movement is
+**arrow keys**, not WASD, and building entry is **tile-triggered** — see
+[`../engine/input-navigation.md`](../engine/input-navigation.md). (`(26,5)` is a *local-map*
+coordinate, not a world-map tile.) The ready-made harness is `tools/playtest/bt.py` (`boot`, `keys`,
+`state`, `png`).
 
 ```python
 import http.client, json, time
@@ -215,64 +203,48 @@ def api_get(addr, length):
 def api_put(addr, val):
     c = http.client.HTTPConnection("localhost", 20000, timeout=5)
     c.request("PUT", f"/api/memory/{addr}/byte",
-        body=json.dumps({"value": val}),
-        headers={"Content-Type": "application/json"})
+        body=json.dumps({"value": val}), headers={"Content-Type": "application/json"})
     c.getresponse().read()
 
 def api_post(path):
     c = http.client.HTTPConnection("localhost", 20000, timeout=5)
-    c.request("POST", path, body="{}",
-        headers={"Content-Type": "application/json"})
+    c.request("POST", path, body="{}", headers={"Content-Type": "application/json"})
     return json.loads(c.getresponse().read().decode())
 
-phys = 0x1DE90  # game data segment physical base
-
-def inject_key(ascii, scan, wait=0.3):
+def inject_key(ascii_, scan, wait=0.3):
     api_post("/api/status/pause"); time.sleep(0.01)
     meta = api_get(0x041A, 4)
     tail = meta[2] | (meta[3] << 8)
     next_tail = 0x041E + ((tail - 0x041E + 2) % 32)
-    api_put(tail, ascii)
+    api_put(tail, ascii_)
     api_put(tail + 1, scan)
     api_put(0x041C, next_tail & 0xFF)
     api_put(0x041D, (next_tail >> 8) & 0xFF)
     time.sleep(0.01)
     api_post("/api/status/unpause"); time.sleep(wait)
 
+UP, DOWN, LEFT, RIGHT = (0x00,0x48), (0x00,0x50), (0x00,0x4B), (0x00,0x4D)
+
 def get_tile():
-    tile = api_get(phys + 0xA44B, 4)
-    if tile and len(tile) >= 4:
-        rx = tile[0] | (tile[1] << 8)
-        ry = tile[2] | (tile[3] << 8)
-        return ((rx & 0x7F) >> 1, (ry & 0x7F) >> 1, rx, ry)
-    return None
+    t = api_get(0x1DE90 + 0xA44B, 4)
+    rx = t[0] | (t[1] << 8); ry = t[2] | (t[3] << 8)
+    return ((rx >> 1) & 0x7F, (ry >> 1) & 0x7F)
 
-# Step 1: Boot (EGA=4, Drive=3)
-inject_key(0x34, 0x05); time.sleep(2)  # 4 = MCGA/EGA
-inject_key(0x33, 0x04); time.sleep(2)  # 3 = Drive C
+# Step 1: boot (EGA=4, Drive=3), Space through the intro
+inject_key(0x34, 0x05); time.sleep(2)   # MCGA/EGA
+inject_key(0x33, 0x04); time.sleep(2)   # Drive C
 for _ in range(10):
-    inject_key(0x20, 0x39); time.sleep(1.5)  # Space to advance
+    inject_key(0x20, 0x39); time.sleep(1.5)
 
-# Step 2: Navigate to (26,5) using sequential key attempts
-t = get_tile()
-if t:
-    tx, ty = t[0], t[1]
-    for step in range(50):
-        ty = get_tile()[1]
-        inject_key(0x51, 0x10); time.sleep(0.4)  # Q (NW)
-        t2 = get_tile()
-        if t2 and t2[1] >= ty:  # Didn't go NW — try alternatives
-            for k in [(0x41,0x1E),(0x5A,0x2C),(0x43,0x2E),(0x45,0x12),(0x44,0x20)]:
-                inject_key(*k); time.sleep(0.4)
-                t2 = get_tile()
-                if t2 and t2 != t: break
-        nt = get_tile()
-        if nt and nt[0]==26 and nt[1]==5: break
+# Step 2: walk onto an entrance tile (start-map example: Citadel ~(34,10))
+for _ in range(4):
+    inject_key(*UP); time.sleep(0.4)
+print(get_tile())
 
-# Step 3: Enter building
-inject_key(0x44, 0x20); time.sleep(3)  # D = enter
-for _ in range(8):
-    inject_key(0x20, 0x39); time.sleep(1.5)  # Space inside building
+# Step 3: answer "Will you enter the <building>? Yes/No" (Y), then Space through dialogue
+inject_key(0x79, 0x15); time.sleep(1.5)
+for _ in range(6):
+    inject_key(0x20, 0x39); time.sleep(1.2)
 ```
 
 ### Known Issues
@@ -282,7 +254,7 @@ for _ in range(8):
 3. **`bt_get_state` cursor fields sometimes None**: `bt_read_memory` at DS=0x1DE9 offset 0xA44B is more reliable for cursor position.
 4. **"Game freeze" is usually a BIOS key-wait, not a w014A stall** (re-diagnosed 2026-09-27): when it looks frozen, the CPU is typically spinning in the BIOS `int 16h` wait wrapper at `0x19FC:0xB57` (physical `0x1AB57`; bytes `cd 16 3c 00 75 04 8a c4 f6 d8 98 1f 5e 5f 5d cb`) *inside a building/dialog*, with cycles still advancing. `w014A=[2,2]` / `w0152=[4,4]` are usually side effects, not the cause. Clearing them does **not** unblock it — deliver a key instead: write ASCII at the BIOS buffer tail (`0x0040:0x001C`), scancode at tail+1, then advance tail by 2 (mod 32; ring `0x0040:0x001E`–`0x043D`). Verified: one Space (`0x20`/`0x39`) advances the dialog. Confirm with `bt_read_registers` / `/api/status` that `cs:ip == 19FC:B57`.
    - Watch the address: the head is `0x0040:0x001A` (**decimal `1050`**), the tail `0x0040:0x001C` (`1052`). Off-by-one reads a garbage pointer.
-5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/E/D/Z/C may not). Fix: manually set `Credits` (a small value — `NEW_GAME_INIT` = 1500 cr is **wrong**) and navigate to the training-centre entrance, or restart and pick New Game (the reliable route).
+5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/E/D/Z/C may not). Fix: manually set `Credits` (a small value — `NEW_GAME_INIT` = 1500 cr is **wrong**) and walk onto the training-centre entrance tile, or restart and pick New Game (reliable). Movement is arrow keys; see `../engine/input-navigation.md`.
 6. **Port 8081 in TIME_WAIT**: After restarting emulator, port 8081 (or any used MCP port) may be in TIME_WAIT for 60s. Use a different port or wait. Our config uses port 8086.
 7. ~~**`bt_*` reads may use the wrong segment**~~ **FIXED (2026-09-28)**: game-state reads now use the game-state segment `0x2A0F`; the cursor uses the map segment `0x1DE9`. See the note at the top and `docs/UNVERIFIED_DISCOVERIES.md` §6.
 8. **`bt_get_state.DsSegment`**: now reports the real `DS` (`0x1DE9` = `7657`). If it ever looks wrong, cross-check with `bt_read_registers`.
