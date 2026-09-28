@@ -146,7 +146,22 @@ Called from BLD opcode `0xF5` and various game functions. All 47 cases present.
 
 Called with `wArg04` (story slot index) and `wArg06` (property ID, 0x1C-0x23).
 
-**Property 0x1C-0x23** are nibble-packed flag management for slot 0x24/0x25 (skill) and slot 0x3A/0x48/0x4F/0x51 (inventory/equipment).
+**Property byte = the struct byte at offset `wArg06`** (`struct[slot] + prop`); bit 7 (`0x80`) is set
+when the property is first armed. Re-verified against the decompilation 2026-09-28 (roadmap B4).
+
+**Property → field map** (the "t0024"/"t0025" fields are the per-slot skill/inventory arrays at struct
+offsets `0x24`/`0x25`; the sub-base selects the item/skill sub-array):
+
+| Prop | Field | Sub-base | Note |
+|------|-------|----------|------|
+| `0x1C` | `0x24` (`t0024`) | `0x33` | nibble mgmt (`& 0xF0`) |
+| `0x1D` | — | `0x3A` | |
+| `0x1E` | `0x24` (`t0024`) | `0x4F` | nibble mgmt (`& 0x0F`) |
+| `0x1F` | — | — | **story flags** (see below) |
+| `0x20` | — | — | **multi-step counters** (see below) |
+| `0x21` | `0x25` (`t0025`) | `0x41` | nibble mgmt (`& 0xF0`) |
+| `0x22` | — | `0x48` | |
+| `0x23` | `0x25` (`t0025`) | `0x51` | nibble mgmt (`& 0x0F`) |
 
 **Property 0x1F (Citadel Attack):**
 - Subcode from `fn0800_19F3` (RNG-based):

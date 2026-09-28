@@ -58,9 +58,9 @@ Ordered by dependency, not by ease.
 | ~~B1~~ ✅ | Segments `19EF`/`1000` — **decompiled + function-mapped**, and **freshly regenerated with current Spice86** (`reko/gencode-current/`, `dumpall` + `-u false`) (2026-09-28, [`../engine/segments-19ef-1000.md`](../engine/segments-19ef-1000.md)) | Combat/movement source available; formulas still to re-verify (feeds B2) | RE |
 | ~B2~ ◐ | Combat formulas — **all core formulas re-verified against the decompilation (2026-09-28)**: to-hit, heat gen + dissipation, ammo, RNG LFSR, hit-location, cluster grouping, damage slot-advance, AI targeting (see [`../combat-system.md`](../combat-system.md) "B2 verification"). Remaining: damage-overflow internals + a full **differential** test vs the emulator | Spec is code-verified, not yet diffed | RE + validation |
 | ~~B3~~ ✅ | Map→BLD trigger table — **DECODED 2026-09-28** (`[0x53CA]:0x4564`/`[0x53CC]:0x4596` building positions → slot → `[0x5460]:0x4602` → building index → MTP name → BLD); see [`../formats/map-bld-triggers.md`](../formats/map-bld-triggers.md) | Entrances are now data-driven | RE |
-| B4 | Story-state semantics (`b0057`, `b0055/56/58`, props `0x1C–0x23`) inferred | Plot gating cannot be proven | RE + archaeology |
+| ~~B4~~ ✅ | Story-state semantics — **DECODED 2026-09-28** (`fn1631_11AB`): `b0057` prop `0x1F` d6{2,5} ++cap2; `b0058` latch 0→0xFF; `b0055`/`b0056` prop `0x20` ++cap3/2; on cap `b0000=0`, `wE484=1`; props `0x1C–0x23` = nibble skill/inventory flags. See [`../story/story-system.md`](../story/story-system.md) §17.5 | Plot gating mechanics confirmed | RE |
 | B5 | Viewport struct / `w4FBC` / push-pop unknown | Rendering can't be made faithful | RE |
-| B6 | Tile property bits (water/wall) + movement reader unknown | Collision/terrain wrong | RE |
+| ~~B6~~ ✅ | Tile properties — **DECODED 2026-09-28**: no bit flags; passability = `property < per-scene gate t0150` (reader `fn1631_0006`; gate set by `fn135D` to `0x21`/`0x8B`). See [`../world-map.md`](../world-map.md) §7a | Collision/terrain understood | RE |
 | B7 | Save round-trip unverified | Load/save fidelity unknown | validation |
 | B8 | Unknown BLD opcodes skipped | Silent story failures | RE |
 | B9 | Sound format undecoded | Missing feature | RE |

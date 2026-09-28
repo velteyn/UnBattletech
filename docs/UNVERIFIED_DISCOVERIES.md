@@ -27,7 +27,26 @@
 - **Hypothesis**: The "Palace" mentioned by the user is the "Citadel".
 - **Status (RESOLVED)**: Story fully extracted — the "Citadel" is the training center. "Palace" may refer to a location in the game's world that was never implemented or is accessible via different context. No "Palace" text found in any of the 26 decoded BLD files or the story output.
 
-## 5. Story State Byte at C79B / Eq_57354::aC744[].b0057
+## 5. Story State Byte at C79B / Eq_57354::aC744[].b0057 — RESOLVED (2026-09-28, roadmap B4)
+
+`fn1631_11AB(slot, prop)` decoded (Reko `UNBTECH_1631.c:1022-1317`). The story-flag fields are now
+pinned to the code:
+
+| Field | Struct off | Set by | Behaviour |
+|-------|-----------|--------|-----------|
+| `b0057` | `0x57` | prop **`0x1F`**, d6 ∈ {2,5} | `++` capped at **2** — the story/citadel-attack progression counter |
+| `b0058` | `0x58` | prop **`0x1F`**, d6 ∈ {1,6} | one-shot latch: `0 → 0xFF` |
+| `b0056` | `0x56` | prop **`0x20`** (two d6 ≤ 3) | `++` capped at **2** |
+| `b0055` | `0x55` | prop **`0x20`** (first d6 ≤ 3, second > 3) | `++` capped at **3** |
+| `b0000` | `0x00` | when b0055/b0056 cap | cleared to 0; then `wE484 = 1` (action complete) |
+
+Property IDs `0x1C–0x23` are **nibble-packed skill/inventory flags** (offsets `0x24`/`0x25`); the
+`0x1C/0x1E/0x21/0x23` variants clear a `0xF0`/`0x0F` nibble via a 2D6-gated path, and `0x1D/0x22` use
+bases `0x3A`/`0x48`. See [`story/story-system.md`](story/story-system.md) §17.5 for the full map.
+(The earlier "inferred" caveats are now code-verified; the *narrative* meaning of b0057 0/1/2 remains
+the story interpretation, but the field's mechanics are confirmed.)
+
+### (old) Story State Byte at C79B / Eq_57354::aC744[].b0057
 - **Hypothesis (now mostly confirmed)**:
   - The byte previously observed at `ES:[BX+0C79B]` in the `INC` instruction is field `b0057` inside struct `Eq_107947`, which is an element of the `aC744` array inside `Eq_57354`.
   - `Eq_107947` has size `0x7D` bytes, and the per-entry index is `wArg04`, matching the `wArg04 *s 0x7D` addressing seen in the disassembly.

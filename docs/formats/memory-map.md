@@ -364,7 +364,7 @@ All offsets are relative to the data segment base (`DS` register, typically segm
 | Segment | Offset | Size | Description |
 |---------|--------|------|-------------|
 | `3000` | `0x32C6` | var | **Tile terrain TN modifier table** (stride 0x30, `0xFF`=impassable, packed X/Y coords) |
-| `246C` | `0x7AD` | 1 per tile | **Tile property table** (LoS blocking, terrain visibility, movement cost factor) |
+| `246C` | `0x7AD` | 1 per tile | **Tile property table** — a **magnitude** (not bits). Passability = `prop < t0150` (per-scene gate); reader `fn1631_0006`. See [`../world-map.md`](../world-map.md) §7a (B6). |
 | `3000` | `0xCC30` | var | **BLD filename list** (array of .BLD file entries) |
 
 ### 13. SHOP / INVENTORY DATA (Offset 0xD300-0xD400)
