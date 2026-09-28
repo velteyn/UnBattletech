@@ -34,10 +34,14 @@ public sealed class BattleTechMcpTools
     private const ushort TrainingCompleteOff = 0xD450;
     private const ushort MilestoneOff = 0xD451;
 
-    // Fixed segment for BattleTech game data. The runtime DS register can
-    // vary (0x1DE9=world map, 0x3858=building, etc.) but the data structures
-    // always live at (0x1DE9 << 4) + offset in physical memory.
-    private const ushort GameDataSegment = 0x1DE9;
+    // BattleTech switches data segments at runtime (CPU DS/ES/SS change per scene):
+    //   0x1DE9 = world-map/render data (cursor 0xA44B, tile buffer 0x0F00)
+    //   0x2A0F = game state (state array 0xD30C, credits 0xD370, story/unit slots, flags)
+    //   0x3858 = UI/viewport struct (w4FBA/w4FBC/a4FC4...) — also the stack segment
+    // The tools read each structure from its actual segment. These constants assume the
+    // standard Spice86 load base (0x17D); shift them if the load base changes.
+    private const ushort MapDataSegment = 0x1DE9;
+    private const ushort GameStateSegment = 0x2A0F;
 
     private const int StateArraySize = 256;
     private const int StorySlotSize = 125;
@@ -94,7 +98,8 @@ public sealed class BattleTechMcpTools
     }
 
     private ushort DsSegment => _services.State.DS;
-    private uint DsAddr(ushort off) => (uint)((GameDataSegment << 4) + off);
+    private uint DsAddr(ushort off) => (uint)((MapDataSegment << 4) + off);
+    private uint StateAddr(ushort off) => (uint)((GameStateSegment << 4) + off);
     private IMemory Memory => _services.Memory;
 
     // ──────────────────────────────────────────────
@@ -102,16 +107,16 @@ public sealed class BattleTechMcpTools
     // ──────────────────────────────────────────────
 
     [McpServerTool(Name = "bt_read_state_array", UseStructuredContent = true)]
-    [Description("Read the 256-byte BattleTech StateArray (DS:0xD30C). Returns hex dump + named fields.")]
+    [Description("Read the 256-byte BattleTech StateArray (game-state seg 0x2A0F:0xD30C). Returns hex dump + named fields.")]
     public CallToolResult ReadStateArray()
     {
         return ExecuteTool(() =>
         {
-            uint addr = DsAddr(StateArrayOff);
+            uint addr = StateAddr(StateArrayOff);
             byte[] data = Memory.GetData(addr, StateArraySize);
             return new
             {
-                Segmented = $"DS:0x{StateArrayOff:X4}",
+                Segmented = $"GS:0x{StateArrayOff:X4}",
                 Physical = $"0x{addr:X}",
                 Size = StateArraySize,
                 Hex = Convert.ToHexString(data),
@@ -131,7 +136,7 @@ public sealed class BattleTechMcpTools
     }
 
     [McpServerTool(Name = "bt_write_state_array", UseStructuredContent = true)]
-    [Description("Write bytes to BattleTech StateArray (DS:0xD30C). Params: offset (0-255), data (hex string).")]
+    [Description("Write bytes to BattleTech StateArray (game-state seg 0x2A0F:0xD30C). Params: offset (0-255), data (hex string).")]
     public CallToolResult WriteStateArray(int offset, string data)
     {
         return ExecuteTool(() =>
@@ -141,13 +146,13 @@ public sealed class BattleTechMcpTools
             byte[] bytes = Convert.FromHexString(data);
             if (offset + bytes.Length > StateArraySize)
                 throw new ArgumentException("Data overflow");
-            uint baseAddr = DsAddr(StateArrayOff);
+            uint baseAddr = StateAddr(StateArrayOff);
             for (int i = 0; i < bytes.Length; i++)
                 Memory.UInt8[baseAddr + (uint)(offset + i)] = bytes[i];
             byte[] readBack = Memory.GetData(baseAddr + (uint)offset, (uint)bytes.Length);
             return new
             {
-                Segmented = $"DS:0x{StateArrayOff + (ushort)offset:X4}",
+                Segmented = $"GS:0x{StateArrayOff + (ushort)offset:X4}",
                 Written = Convert.ToHexString(bytes),
                 ReadBack = Convert.ToHexString(readBack)
             };
@@ -155,7 +160,7 @@ public sealed class BattleTechMcpTools
     }
 
     [McpServerTool(Name = "bt_read_story_slot", UseStructuredContent = true)]
-    [Description("Read a story slot (DS:0xC724 + index*0x7D). Index 0-7. Returns hex + parsed fields.")]
+    [Description("Read a story slot (game-state seg 0x2A0F:0xC724 + index*0x7D). Index 0-7. Returns hex + parsed fields.")]
     public CallToolResult ReadStorySlot(int slotIndex)
     {
         return ExecuteTool(() =>
@@ -163,13 +168,13 @@ public sealed class BattleTechMcpTools
             if (slotIndex < 0 || slotIndex >= StorySlotCount)
                 throw new ArgumentException($"Slot index 0-{StorySlotCount - 1}");
             uint slotOff = (uint)(StorySlotsOff + slotIndex * StorySlotSize);
-            uint addr = DsAddr((ushort)slotOff);
+            uint addr = StateAddr((ushort)slotOff);
             byte[] data = Memory.GetData(addr, StorySlotSize);
             string name = ReadPaddedString(addr, 16);
             return new
             {
                 SlotIndex = slotIndex,
-                Segmented = $"DS:0x{slotOff:X4}",
+                Segmented = $"GS:0x{slotOff:X4}",
                 Physical = $"0x{addr:X}",
                 Hex = Convert.ToHexString(data),
                 StoryFields = new
@@ -204,7 +209,7 @@ public sealed class BattleTechMcpTools
     }
 
     [McpServerTool(Name = "bt_read_unit_slot", UseStructuredContent = true)]
-    [Description("Read a unit slot (DS:0xC614 + index*0x11). Index 0-7. Returns TypeId, attrs, inventory.")]
+    [Description("Read a unit slot (game-state seg 0x2A0F:0xC614 + index*0x11). Index 0-7. Returns TypeId, attrs, inventory.")]
     public CallToolResult ReadUnitSlot(int slotIndex)
     {
         return ExecuteTool(() =>
@@ -212,12 +217,12 @@ public sealed class BattleTechMcpTools
             if (slotIndex < 0 || slotIndex >= UnitSlotCount)
                 throw new ArgumentException($"Slot index 0-{UnitSlotCount - 1}");
             uint slotOff = (uint)(UnitSlotsOff + slotIndex * UnitSlotSize);
-            uint addr = DsAddr((ushort)slotOff);
+            uint addr = StateAddr((ushort)slotOff);
             byte[] data = Memory.GetData(addr, UnitSlotSize);
             return new
             {
                 SlotIndex = slotIndex,
-                Segmented = $"DS:0x{slotOff:X4}",
+                Segmented = $"GS:0x{slotOff:X4}",
                 Physical = $"0x{addr:X}",
                 TypeId = data[0x00],
                 IsEmpty = data[0x00] == 0xFF,
@@ -233,7 +238,7 @@ public sealed class BattleTechMcpTools
     }
 
     [McpServerTool(Name = "bt_read_cursor", UseStructuredContent = true)]
-    [Description("Read world map cursor (DS:0xA44B/A44D, two uint16). Returns raw + tile coords.")]
+    [Description("Read world map cursor (map data seg 0x1DE9:0xA44B/A44D, two uint16). Returns raw + tile coords.")]
     public CallToolResult ReadCursor()
     {
         return ExecuteTool(() =>
@@ -256,24 +261,24 @@ public sealed class BattleTechMcpTools
     }
 
     [McpServerTool(Name = "bt_read_credits", UseStructuredContent = true)]
-    [Description("Read C-Bills (DS:0xD370, uint32). Returns integer value.")]
+    [Description("Read C-Bills (game-state seg 0x2A0F:0xD370, uint32). Returns integer value.")]
     public CallToolResult ReadCredits()
     {
         return ExecuteTool(() =>
         {
-            uint credits = Memory.UInt32[DsAddr(CreditsOff)];
+            uint credits = Memory.UInt32[StateAddr(CreditsOff)];
             return new { Credits = (int)credits, Hex = $"0x{credits:X8}" };
         });
     }
 
     [McpServerTool(Name = "bt_read_flags", UseStructuredContent = true)]
-    [Description("Read TrainingComplete (DS:0xD450) and Milestone (DS:0xD451) flags.")]
+    [Description("Read TrainingComplete (0x2A0F:0xD450) and Milestone (0x2A0F:0xD451) flags.")]
     public CallToolResult ReadFlags()
     {
         return ExecuteTool(() =>
         {
-            byte training = Memory.UInt8[DsAddr(TrainingCompleteOff)];
-            byte milestone = Memory.UInt8[DsAddr(MilestoneOff)];
+            byte training = Memory.UInt8[StateAddr(TrainingCompleteOff)];
+            byte milestone = Memory.UInt8[StateAddr(MilestoneOff)];
             return new
             {
                 TrainingComplete = training != 0,
@@ -285,7 +290,7 @@ public sealed class BattleTechMcpTools
     }
 
     [McpServerTool(Name = "bt_read_combat_grids", UseStructuredContent = true)]
-    [Description("Read both combat fog grids (12×24, DS:0x40B4 and 0x41D4). Returns 2D arrays.")]
+    [Description("Read both combat fog grids (12×24, 0x40B4 and 0x41D4; segment unverified). Returns 2D arrays.")]
     public CallToolResult ReadCombatGrids()
     {
         return ExecuteTool(() =>
@@ -315,7 +320,7 @@ public sealed class BattleTechMcpTools
     }
 
     [McpServerTool(Name = "bt_read_combat_units", UseStructuredContent = true)]
-    [Description("Read 24 combat unit positions/statuses (DS:0x4004, 0x4036, 0x406A).")]
+    [Description("Read 24 combat unit positions/statuses (0x4004, 0x4036, 0x406A; segment unverified).")]
     public CallToolResult ReadCombatUnits()
     {
         return ExecuteTool(() =>
@@ -338,16 +343,16 @@ public sealed class BattleTechMcpTools
     {
         return ExecuteTool(() =>
         {
-            byte[] stateArr = Memory.GetData(DsAddr(StateArrayOff), 64);
+            byte[] stateArr = Memory.GetData(StateAddr(StateArrayOff), 64);
             ushort rawX = Memory.UInt16[DsAddr(CursorXOff)];
             ushort rawY = Memory.UInt16[DsAddr(CursorYOff)];
-            uint credits = Memory.UInt32[DsAddr(CreditsOff)];
-            byte training = Memory.UInt8[DsAddr(TrainingCompleteOff)];
-            byte milestone = Memory.UInt8[DsAddr(MilestoneOff)];
+            uint credits = Memory.UInt32[StateAddr(CreditsOff)];
+            byte training = Memory.UInt8[StateAddr(TrainingCompleteOff)];
+            byte milestone = Memory.UInt8[StateAddr(MilestoneOff)];
 
             int activeSlots = 0;
             for (int i = 0; i < StorySlotCount; i++)
-                if (Memory.UInt8[DsAddr((ushort)(StorySlotsOff + i * StorySlotSize))] != 0xFF)
+                if (Memory.UInt8[StateAddr((ushort)(StorySlotsOff + i * StorySlotSize))] != 0xFF)
                     activeSlots++;
 
             int activeUnits = 0;
