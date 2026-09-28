@@ -225,6 +225,31 @@ The tile buffer values (0-255, with 93 unique) **directly index into the game's 
 
 Likely explanation: **MAP.ICN contains 94 base tiles, but the EGA planar tile system allows tiles to be re-colored or variant-selected through palette manipulation or by loading additional tiles from ANIMATE.ICN, BTTLTECH.ICN, or other ICN files.** The tile IDs in the world map buffer are the actual display indices.
 
+## 7a. Tile properties & passability (B6 — decoded 2026-09-28)
+
+**There are no "water"/"wall" bit flags.** Each tile has a single **property byte** (the `+0x7AD`
+table), and passability is a **magnitude threshold against a per-scene gate `t0150`**:
+
+```
+tile_prop = ([0x5586]->ptr09ED + tile_index)[0x7AD]      # byte
+if (t0150 > tile_prop)  → PASSABLE
+else                    → BLOCKED
+```
+
+- Reader: **`fn1631_0006`** (LoS tile-step pathfinder; also `fn1631_17B9`) — Reko
+  `UNBTECH_1631.c:90` (`if (seg558A->t0150 > …[0x07AD])`) and `:100` (`… >= t0150 → blocked`).
+- **`t0150`** is not constant: `fn135D` sets it per scene — `w0150 = 0x8B` (139) or `= 0x21` (33)
+  (`UNBTECH_135D.c:648/753`). So the same tile is passable or not depending on the location's gate;
+  higher property = harder terrain.
+- **Correction:** the earlier "which bit = Water / Wall" premise was wrong — the property is a
+  magnitude. `0xFF` = maximally blocking.
+
+Two *different* tables are easy to conflate:
+| Table | Access | Used for |
+|-------|--------|----------|
+| **Passability property** | `[0x5586]->ptr09ED + tile + 0x7AD` (also `[0x5588]`) | movement blocking (`prop < t0150`) |
+| **Terrain TN modifier** | `[0x5654]->0x32C6`, stride **0x30** per unit | combat to-hit `+ (value + 1)` (§combat-system §6.2) |
+
 ---
 
 ## 8. ASCII Map (64x64)

@@ -8,17 +8,16 @@
   - Locate where `TRAINING.BLD` or `MAP.DAT` is loaded into memory.
   - Tile data may be loaded dynamically into `384B` (Heap) or exist in `2A02`.
 
-## 2. Tile Attributes & Terrain Collision
-- **Note (2026-09-28)**: the **map→BLD building-trigger** is now **decoded** — it does *not* use `0x32C6`
-  but the building-position tables + `[0x5460]:0x4602`; see
-  [`formats/map-bld-triggers.md`](formats/map-bld-triggers.md). The **terrain/passability** bits of
-  `0x32C6` (`+0x7AD`) remain open below.
-- **Hypothesis**: `3000:32C6` contains tile properties (Movement cost, blocking).
-- **Observation**: Pattern `4C 04 C0` repeats.
-- **To Verify**:
-  - Which bit corresponds to "Water" (needs boat/hover)?
-  - Which bit corresponds to "Wall" (impassable)?
-  - Find the function that reads `3000:32C6` during movement (distinct from the Unit Damage check at `13DDC`).
+## 2. Tile Attributes & Terrain Collision — RESOLVED (2026-09-28, roadmap B6)
+- **No bit flags.** Each tile has one **property byte** (the `+0x7AD` table, via `[0x5586]->ptr09ED`).
+  Passability is a magnitude test against a **per-scene gate `t0150`**: `prop < t0150` → passable,
+  else blocked. Reader: **`fn1631_0006`** (Reko `UNBTECH_1631.c:90/100`). `t0150` is set per scene by
+  `fn135D` (`0x8B`=139 or `0x21`=33). `0xFF` = maximally blocking. See
+  [`world-map.md`](world-map.md) §7a. *(The "which bit = Water/Wall" question was based on a wrong premise.)*
+- **Two tables, easy to conflate:** passability property `+0x7AD` (movement) vs the terrain
+  **to-hit** modifier `[0x5654]:0x32C6` (stride `0x30`, combat).
+- **Also resolved:** the **map→BLD building-trigger** uses the building-position tables +
+  `[0x5460]:0x4602` (not `0x32C6`) — [`formats/map-bld-triggers.md`](formats/map-bld-triggers.md).
 
 ## 3. .BLD File Internals (Scripting)
 - **Hypothesis**: `.BLD` files contain bytecode/triggers for room interactions.
