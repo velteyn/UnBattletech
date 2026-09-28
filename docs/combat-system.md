@@ -10,8 +10,33 @@ The combat system is split across two code segments that are **not** covered by 
 - **Segment 1000** (linear 0x105C5-0x14672): Combat loop, targeting, LoS/range check, weapon data access
 - **Segment 0000** (linear 0x30DD-0x3113): **2D6 to-hit roll generator** (`ghidra_guess_0000_30DD_030DD`)
 
-Source files: the Spice86-generated code for segment `19EF`, and the segment-`1000` files
-(the old `spice86/GeneratedCode*.cs` tree was removed as stale — regenerate with a current Spice86).
+Source: the **Spice86-generated decompilation** of both segments, now in-repo —
+[`../reko/gencode/`](../reko/gencode/) (older Spice86; uses the game segments `19EF`/`1000` cited
+below) and [`../reko/gencode-current/`](../reko/gencode-current/) (current Spice86; runtime segments).
+See [`engine/segments-19ef-1000.md`](engine/segments-19ef-1000.md).
+
+---
+
+## B2 verification — combat formulas vs decompilation (2026-09-28)
+
+Re-checked the core formulas against the recovered/regenerated decompilation. **Confirmed accurate:**
+
+| Formula | Spec | Verified in code |
+|---------|------|------------------|
+| **To-hit base** | `targeting_return*2 + 4` | `[BP-0x5c] << 1 + 4` → `[BP-0x30]` (`1000:481A`) ✓ |
+| **Kick override** | weapon 0x20 → TN = 3 | `cmp [BP-0x48],0x20` → `[BP-0x30] = 3` (`1000:4822`) ✓ |
+| **Skill term** | `fn1554(unit, 0x24) + fn1554(unit, 0x25)` | `1000:483C`/`484E` ✓ |
+| **Terrain** | `0x32C6[stride 0x30 × slot] + 1` | `IMUL 0x30`; `ES=[0x5654]; AL=ES:[BX+0x32C6]; INC` (`1000:4863`) ✓ |
+| **Terrain table** | `[0x5656]:0x2D1A` | `1000:4883` ✓ |
+| **Story penalty** | `+2 if 0xC79B != 0` | `cmp ES:[SI+0xC79B],0` → `TN += 2` (`1000:48CC`) ✓ |
+| **Heat generation** | `weapon[0x2EE5] & 0xF` → `unit+0x92` | `IMUL 0x11`; `AND 0xF`; `[BX+0x92] += AL` (`1000:48E3`) ✓ |
+| **Heat penalty** | thresholds **8/13/17/24 → +1 each** | `cmp [BX+0x6E],{8,D,11,18}` → `INC [BP-0x30]` ×4 (`1000:48FD`) ✓ |
+| **Ammo (enemy mech)** | `0xC363 + 0x7D·slot + phase`, `0xFF` sentinel | `IMUL 0x7D; + 0xC363`; `cmp …,0xFF; DEC` (`1000:47FA`) ✓ |
+| **RNG (LFSR)** | §16 algorithm, state `384B:4FC0` | `DS=0x1DDC; ES=0x384B; SI=0x4FC0; AL=S0>>2; RCL S2; RCL S1; CMC; SBB AL,S0; SHR AL,1; RCR S0; AL=S0^S1` (`19EF:0BC0`) ✓ |
+| **Hit location A** | `RNG & 0x8` → `[0x566A]:0x2E43` → `[BP-0x60]` | `AND BX,0x8; ES=[0x566A]; AL=ES:[BX+0x2E43]` (`1000:4F60`) ✓ |
+
+**Still to verify** (not yet re-checked in this pass): §6.6 cluster-weapon grouping, §6.4 heat
+dissipation, §7 damage/overflow pipeline (`1000:0B32` slot-advance), §3 AI target selection.
 
 ---
 
