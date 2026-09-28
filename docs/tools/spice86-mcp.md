@@ -83,7 +83,7 @@ Spice86 loads `BTECH.EXE` (compressed — decompression stub runs first in emula
 **⚠️ "Continue Game" with no save → blank state**: When `Space` at the main menu selects "Continue Game" but no save data exists, the game boots to a world map with `Credits=0`, `StateArray[0..31]=0`, and movement partially broken (W/X/Numpad keys may work, Q/A/D/E/Z/C may not). NEW_GAME_INIT (case 0x23) never runs. To get a proper initialized game, either:
   - Use ~18+ Spaces total to navigate through "Continue Game" → auto-detect no save → start new game → advance intro dialogs, OR
   - Navigate to tile (26,5) to trigger TRAINING.BLD which runs NEW_GAME_INIT, OR  
-  - Manually write `Credits=1500` via HTTP API PUT and set StateArray entries
+  - Manually write `Credits` via HTTP API PUT and set StateArray entries (note: `NEW_GAME_INIT` = 1500 cr is **wrong** — a new game starts at a small balance ~20 that ticks with the allowance; see `docs/UNVERIFIED_DISCOVERIES.md` §8)
 
 ### Keyboard Injection (RELIABLE)
 
@@ -282,7 +282,7 @@ for _ in range(8):
 3. **`bt_get_state` cursor fields sometimes None**: `bt_read_memory` at DS=0x1DE9 offset 0xA44B is more reliable for cursor position.
 4. **"Game freeze" is usually a BIOS key-wait, not a w014A stall** (re-diagnosed 2026-09-27): when it looks frozen, the CPU is typically spinning in the BIOS `int 16h` wait wrapper at `0x19FC:0xB57` (physical `0x1AB57`; bytes `cd 16 3c 00 75 04 8a c4 f6 d8 98 1f 5e 5f 5d cb`) *inside a building/dialog*, with cycles still advancing. `w014A=[2,2]` / `w0152=[4,4]` are usually side effects, not the cause. Clearing them does **not** unblock it — deliver a key instead: write ASCII at the BIOS buffer tail (`0x0040:0x001C`), scancode at tail+1, then advance tail by 2 (mod 32; ring `0x0040:0x001E`–`0x043D`). Verified: one Space (`0x20`/`0x39`) advances the dialog. Confirm with `bt_read_registers` / `/api/status` that `cs:ip == 19FC:B57`.
    - Watch the address: the head is `0x0040:0x001A` (**decimal `1050`**), the tail `0x0040:0x001C` (`1052`). Off-by-one reads a garbage pointer.
-5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/E/D/Z/C may not). Fix: manually set `Credits=1500` and navigate to tile (26,5) for TRAINING.BLD, or restart and pick New Game (the reliable route).
+5. **"Continue Game" with no save → blank state**: When boot reaches world map with `Credits=0` and `StateArray[0..31]=0`, NEW_GAME_INIT never ran. Movement may be partially broken (W/X work, Q/A/E/D/Z/C may not). Fix: manually set `Credits` (a small value — `NEW_GAME_INIT` = 1500 cr is **wrong**) and navigate to the training-centre entrance, or restart and pick New Game (the reliable route).
 6. **Port 8081 in TIME_WAIT**: After restarting emulator, port 8081 (or any used MCP port) may be in TIME_WAIT for 60s. Use a different port or wait. Our config uses port 8086.
 7. ~~**`bt_*` reads may use the wrong segment**~~ **FIXED (2026-09-28)**: game-state reads now use the game-state segment `0x2A0F`; the cursor uses the map segment `0x1DE9`. See the note at the top and `docs/UNVERIFIED_DISCOVERIES.md` §6.
 8. **`bt_get_state.DsSegment`**: now reports the real `DS` (`0x1DE9` = `7657`). If it ever looks wrong, cross-check with `bt_read_registers`.

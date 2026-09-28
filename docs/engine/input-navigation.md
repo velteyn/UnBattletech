@@ -24,19 +24,46 @@ You do **not** press an "enter" key. Walking onto a building's **entrance tile**
 An entrance tile stays "armed": after leaving a building, **walk DOWN (south)** to step off the
 trigger, otherwise moving sideways/up re-fires the same `Will you enter ...?` popup.
 
-## Layout (start map — live-verified)
+## Start-map entrances (navigation)
 
-The buildings are connected by a **road**. You start opposite the **Citadel** (entrance ≈ `(34,10)`).
-Follow the road **east along y=12** to its east end (x≈51), then **north** up the vertical road; the
-**ComStar Station** entrance is at ≈ `(51,10)` — the gap between the building's two red wings (flanked
-by blue domes) → `Will you enter the ComStar Station? Yes/No`. Interior: *"You are standing in the
-entry hall of an official ComStar hyperpulse generator station… Will you: Inspect your accounts /
-Talk to others / Leave."* The **barracks is to your far left**; southeast of the barracks is the Mech
+Building entrances are just trigger tiles (§above). Live-verified on the start map:
+**Citadel ≈ `(34,10)`**; **ComStar ≈ `(51,10)`** (road **east along y=12** to the end, then **north**
+between the two red wings). The **barracks is to your far left**; southeast of the barracks is the Mech
 training-center entrance. Other buildings: Weapons, Armor, Lounge, Mechit-Lube.
 
-> **Correction (2026-09-28):** on the **start map**, COMSTAR is **far east** along the road, *not* "next
-> door" to the Citadel; its entrance is ≈ `(51,10)`. COMSTAR also exists in **other cities**, where the
-> earlier `(27,9)`-style coordinates may apply (the `(27,9)` tile on the *start* map gives no popup).
+> The building/POI layout and entrance coordinates are **world-map content** — canonical list in
+> [`../world-map.md`](../world-map.md) §3; the ComStar interior flow is in
+> [`../story/story-system.md`](../story/story-system.md).
+
+## Cursor system (`tA44B` / `tA44D`)
+
+*(moved from `story/story-system.md` §17.12)*
+
+- **`tA44B`** (segment `0x569E` offset `+0x0131`): cursor X. Low byte = pixel column (0–39 in 8px
+  character units), high byte = sub-pixel / grid flags.
+- **`tA44D`** (offset `+0x012F`): cursor Y. Same format.
+- **Page flip**: `fn1E56_021D()` resets the cursor after page transitions.
+- **Coordinate packing** (used in combat targeting): X = `(val & 0xF00) >> 1 | (val & 0x7F)`,
+  Y = `(val & 0xF000) >> 5 | (val & 0x7F)`; masks `0xF7F`/`0xF07F` for grid/sub-pixel precision.
+
+## Keyboard / menu input (`fn1F3D_0259`)
+
+*(moved from `story/story-system.md` §17.12)*
+
+Key scanning at segment `1F3D:0259`. Returns extended scan codes (combined with `~` bitwise NOT in
+the decompiled code):
+
+| Key | Code | Handler |
+|-----|------|---------|
+| Up/Home/PgUp | `~0x47/48/49` | `fn207F_158C()` — cursor up/world scroll |
+| Down/End/PgDn | `~0x4F/50/4E` | `fn207F_163B()` — cursor down/world scroll |
+| Left | `~0x4C` | `fn207F_16E3()` — cursor left |
+| Right | `~0x4D` | `fn207F_17C5()` — cursor right |
+| Space | `0x20` | `fn0800_2C50()` — action/select menu |
+| Enter | `0x0D` | Confirms selection |
+
+The arrow-key handler (`fn0800_218F`) loops 3 times over world tile entries at offset `0x09F3`,
+rendering tiles beneath the cursor via `fn0800_2DA8()` and `fn207F_1DA8()`.
 
 ## Data notes
 - World/local map cursor: `0x1DE9:0xA44B` (X) / `0xA44D` (Y); tile = `(raw>>1)&0x7F`.

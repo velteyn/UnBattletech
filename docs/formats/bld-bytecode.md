@@ -226,7 +226,10 @@ Text bytes use a substitution cipher (see docs/formats/file-formats.md for the c
 - 0xA0 = space separator
 - 0x6B = control byte (not text)
 
-## Memory Map for State Variables
+## State Variables Used by BLD Opcodes
+
+> The canonical **address map** is [`memory-map.md`](memory-map.md); this is a cross-reference of the
+> variables the BLD opcodes read/write. Report address-format issues there.
 
 | Address | Name | Type | Description |
 |---------|------|------|-------------|
@@ -292,8 +295,8 @@ Text bytes use a substitution cipher (see docs/formats/file-formats.md for the c
 | `DS:0xE482` | `wE482` | word | Shop item count |
 | `DS:0xE484` | `wE484` | word | Story progression flag |
 | `DS:0xE48E` | `wE48E` | word | New game init flag |
-| `DS:0x4FBA` | `w4FBA` | word | Combat mode (0=peaceful, 2=battle, 3=victory) |
-| `DS:0x4FBC` | `w4FBC` | word | Combat state flag |
+| `DS:0x4FBA` | `w4FBA` | word | **Global UI/render mode** (0–3), set at startup — *not* a combat flag; see [`../engine/viewport.md`](../engine/viewport.md) |
+| `DS:0x4FBC` | `w4FBC` | word | **Left-panel narrow flag** (80px→4px) used for combat/building/menus — see [`../engine/viewport.md`](../engine/viewport.md) |
 
 ## Narrative Opcodes
 

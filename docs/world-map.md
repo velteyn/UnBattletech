@@ -112,6 +112,19 @@ Cities and points-of-interest form distinct clusters. Detected via connected-com
 | 8-10 | Southern settlements (3x) | (5,49),(5,54),(5,59) | (0,48)-(12,60) | Row of coastal towns |
 | 11 | Large southern city | (33, 49) | (24,46)-(44,53) | Major southern settlement |
 
+### Start-map building entrances (local-map coordinates, live-verified 2026-09-28)
+
+The **start map**'s buildings are joined by a road (see
+[`engine/input-navigation.md`](engine/input-navigation.md) for how building entry works). Entrances are
+trigger tiles; live-verified ones:
+
+| Building | Entrance tile | Approach |
+|---|---|---|
+| Citadel | ≈ `(34,10)` | north edge of the road |
+| ComStar Station | ≈ `(51,10)` | road **east along y=12** to its end, then **north** up the vertical road, into the gap between the two red wings (flanked by blue domes) |
+
+ComStar is also present in **other cities**; the older `(27,9) map 2` note may describe a different one.
+
 ---
 
 ## 4. Coordinate System
@@ -387,60 +400,17 @@ The check is: **`RNG_byte & bD330 == 0`**. Since RNG returns 0-255 uniformly, th
 
 **There is NO terrain/tile modifier**: the probability is flat regardless of which tile the player is on. No encounter rate table per tile type exists.
 
-#### 17.3 Encounter Population (`fn0DAB_0D3D`, segment 0DAB:0D3D)
+#### 17.3 Encounter population & enemy generation → `combat-system.md`
 
-**File:** `UNBTECH.reko/UNBTECH_0DAB.c:972-1105`
+What happens **after** the trigger — enemy slot population, mech templates, weapon tables, unit
+positioning and combat-array init — is **combat setup**, not world-map behaviour. Moved to
+[`combat-system.md`](combat-system.md) §20 "Encounter Setup & Enemy Generation".
+The world-map side is only the **trigger** (§17.1–§17.2, §17.5).
 
-When `fn183B_000A` is called, it invokes `fn0DAB_0D3D` to populate the enemy encounter group:
+#### 17.4 Encounter positioning → `combat-system.md`
 
-1. **Random position**: Units placed at (±10-17 from 26, ±10-17 from 12) on the 32×24 world map grid, independent of terrain type. Generated via `RNG & 0x07 + 0x0A`, with 50% sign negation.
-2. **Clear all slots**: Slots 0-23 cleared (status=0, coords=0xFFFF) first
-3. **Enemy infantry slots 8-15** (50% chance per slot):
-   - Random equipment from table via 7-round loop: each round `RNG & 0x03` indexes 1 of 4 weapon types at `DS:[0x5434] + 0x2CF4` (weapon instance data, stride 0x11)
-   - `bC61F[1][slot]` set to 0x08 (some type/weapon class)
-   - `C618[slot][0..6]` each filled with `RNG & 0x03` (random item types 0-3)
-   - HP/weapon state initialized via `fn0800_19DD` calls, combining 2D6 results
-4. **Enemy mech slots 4-7** (50% chance per slot):
-   - Guard check at `0xC530[slot * 0x7D] != ~0x00` — only populates if a valid template exists
-   - Template selection: `RNG() % 3` indexes a table of **3 fixed word entries** (near offsets) at segment `[DS:0x5436]:0x2DF8`
-   - Full 125-byte mech data copy from template to story slot
-   - Post-copy: `D566[slot]` = 0x00 if template 0 selected, 0x92 if template 1 or 2 (∼67% chance of 0x92)
-5. **Secondary weapon/position setup** (slots 8-15, if populated): terrain validation loop places each infantry unit on valid tiles, skipping if terrain property at `+0x7AD[tile] >= t0150` (blocked)
-
-**IMPORTANT: No dynamic balancing** — There is NO code that reads the player's lance composition to calibrate enemy spawns. The 3 mech templates at `[DS:0x5436]:0x2DF8` are **read-only** (never written to after init). The template pointers are allocated at runtime (segment beyond EXE load image) and populated during game init from the static mech definitions in segment 1A00.
-
-**Known mech definitions** (125-byte structs, stride 0x7D, mech ID at offset 0x7B):
-
-| Mech ID | Name | Tonnage | Walk | Jump | Notes |
-|---------|------|---------|------|------|-------|
-| 0x00 | LOCUST | 20t | 8 | 0 | Fast scout |
-| 0x01 | WASP | 20t | 6 | 6 | Jump-capable |
-| 0x02 | STINGER | 20t | 6 | 6 | Jump-capable |
-| 0x03 | COMMANDO | 25t | 6 | 0 | SRM-armed |
-| 0x06 | URBANMECH | 30t | 2 | 2 | Slow heavy armor |
-| 0x09 | JENNER | 35t | 7 | 5 | Story-only, Kuritan |
-| 0xC8 | CHAMELEON | 50t | 6 | 6 | Player starting mech, story-only |
-
-**Melee-only enemies:** The Spectator (decoy/non-combatant, mech ID 0x00 same as Locust) exists in the codebase but was not found in the EXE binary data.
-
-**Known weapons** (17-byte stride, table at `DS:+0x2EE4`): 33 weapons total, range includes: Cludgel, Knife, Sword, Vibroblade, Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SRMissile, Inferno, LaserPistol, LaserRifle, Flamer, Small/Medium/Large Laser, PPC, AC/2/5/10/20, LRM5/10/15/20, SRM2/4/6, Kick.
-
-**Key insight**: The encounter system generates up to 4 random mechs from a **fixed pool of 3 light mech templates** (likely Locust, Wasp, Stinger — the 20t lights), plus up to 8 random infantry. Heavier units like the Jenner (35t), UrbanMech (30t), and Chameleon (50t) are **story-controlled only** and never appear in random walking encounters. The game has zero assault or heavy mechs — the 50t Chameleon is the maximum weight. The player's perception of "not encountering heavy mechs when piloting lights" is a consequence of the fixed light-mech template pool, not any dynamic balancing algorithm.
-
-#### 17.4 Encounter Positioning (`fn183B_28DB`, segment 183B:28DB)
-
-After population, `fn183B_28DB` positions the encounter on the world map:
-
-1. Reads cursor position (`A44B`/`A44D`) and location offsets (`t400C`/`t403E`)
-2. Checks special encounter flag at `DS:55D4→bC620` — if `!= 0x08`, overrides position with unit 0's coordinates from `0x4004`/`0x4036`
-3. Moves cursor to calculated position via `fn0800_17BB`
-4. Scans extended pool (slots 12-23) for active units, records first found
-5. Sets `t3770 = 0x1E` (30-step search range)
-6. Iteratively adds `t458E`/`t4590` offsets toward target position, decrementing step counter until position match or 30 steps exhausted
-7. Returns 1 (success) if a valid position was found, 0 otherwise
-8. On success, `fn183B_000A` loads and displays the encounter BLD narrative text (index 13314)
-
-**Key insight**: Enemies are placed relative to center (26, 12) regardless of terrain. The encounter system has no terrain-type modifiers for probability or composition. Story-progression gating happens through the bD330 probability mask changes (0x7F post-combat) and bD310/bD346 guards.
+Enemy placement on the encounter map (`fn183B_28DB`) is combat setup; moved to
+[`combat-system.md`](combat-system.md) §20.
 
 #### 17.5 Mode Guards
 
@@ -452,23 +422,12 @@ After population, `fn183B_28DB` positions the encounter on the world map:
 - Set to `0x01` by `fn0800_2DA8` when `wArg06 == 0x0E` (`UNBTECH_0800.c:2913-2917`)
 - Must be zero for encounters (player must not be on the star map or in combat view)
 
-#### 17.6 Encounter Initiation: `fn183B_000A` (segment `183B:000A`)
+#### 17.6 Encounter initiation (`fn183B_000A`) → `combat-system.md`
 
-**File:** `UNBTECH.reko/UNBTECH_183B.c:7-303`
-
-Called with `wArg04 = 0` when encounter triggers. Steps:
-
-1. **Lines 104-117**: Saves current unit state into encounter save buffers
-2. **Lines 118-153**: Initializes combat arrays:
-   - Clears position data (`0x4004`/`0x4036` = -1 for all 24 slots)
-   - Sets all unit slots to inactive/dead (`w406A = 0`)
-   - Initializes visibility maps (24 rows × 24 columns for fog of war)
-3. **Lines 154-166**: Initializes unit flags and counters (8 iterations for various flag arrays)
-4. **Lines 167-224**: Positions units based on current `A44B`/`A44D` coordinates, applying offset via `fn0800_191B`/`fn0800_186F`
-5. **Lines 230-251**: Calls `fn0DAB_0D3D` for unit population, sets `w37FE = 0x0F`, counts active units
-6. **Lines 252-253**: Calls `fn183B_28DB` for encounter-specific enemy/environment setup
-7. **Lines 254-303**: Loads and executes BLD script `0x33FC` for encounter narration, displays enemy count UI, and transitions into combat
-8. **Line 804**: Sets `bD330 = 0x7F` to reduce re-encounter probability during/after combat
+Called with `wArg04 = 0` when the trigger fires. The combat-array initialisation, unit positioning,
+BLD `0x33FC` narration and the transition into combat are documented in
+[`combat-system.md`](combat-system.md) §1 (Overall Combat Flow) and §20. Only the trigger condition
+lives on the world map. It also sets `bD330 = 0x7F` on the way out (reduces re-encounter probability).
 
 #### 17.7 World Map Movement System (How Walking Happens)
 
@@ -503,6 +462,8 @@ Segment `0D27:0044` is **NOT** the random encounter handler. It is the **action 
 
 #### 17.10 Encounter Flow Summary
 
+World-map side of the loop only (the combat-setup branch is in `combat-system.md` §20):
+
 ```
 Main Game Loop (fn0800_0000)
   │
@@ -513,14 +474,7 @@ Main Game Loop (fn0800_0000)
   │
   ├─ ENCOUNTER CHECK (0800:192-201 every frame):
   │   RNG & bD330 == 0  AND  bD310 != 0  AND  bD346 == 0
-  │   │
-  │   └─ True → fn183B_000A
-  │       ├─ Save current positions
-  │       ├─ Initialize combat arrays (clear all units)
-  │       ├─ Populate enemies via fn0DAB_0D3D + fn183B_28DB
-  │       ├─ Execute BLD script 0x33FC for encounter narration
-  │       ├─ Set bD330 = 0x7F (reduce re-encounter probability)
-  │       └─ Transition to combat mode (w4FBA → 2)
+  │   └─ True → fn183B_000A  → combat setup & transition (combat-system.md §1, §20)
   │
   ├─ Decrement timers (bD320-bD323)
   │
