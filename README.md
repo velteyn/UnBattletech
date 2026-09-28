@@ -9,17 +9,29 @@ Infocom, engine by **Westwood Associates**) — and an in-progress **Godot 4 / C
 
 ---
 
-## 1. What this project actually is (two things)
+## 1. Two deliverables, built in parallel
 
-**(A) The reverse-engineering record.** The `reko/` decompilation, `docs/` specifications, the
+This project produces **two artifacts at the same time**, and the second one *poses on* the first:
+
+**(1) The documented reverse engineering.** The `reko/` decompilation, `docs/` specifications, the
 Spice86 emulator with BattleTech-specific MCP tools, and the Python tooling. This is the real RE work:
 file formats, story text, memory map, and a large part of engine logic are documented and
-cross-checked against decompiler output and live emulator traces.
+cross-checked against decompiler output and live emulator traces. It is a deliverable **in its own
+right**, and it is also the **specification** for (2).
 
-**(B) The Godot recreation (`BattleTechCHI/`).** A C# program that **reads original data files**
-(`.BLD`, `.MTP`, `.ANM`, `GAME*` saves) but **re-implements the engine logic** (the bytecode
-interpreter, the dispatch layer, combat). It is **data-faithful, not behaviour-faithful**, and it has
-**never been validated end-to-end** against the original.
+**(2) The recreation (`BattleTechCHI/`).** A Godot 4 C# program that **derives from (1)**: it reads
+original data files (`.BLD`, `.MTP`, `.ANM`, `GAME*` saves) and re-implements the engine behaviour
+*as documented by (1)*. It is **data-faithful, not behaviour-faithful**, and has **never been
+validated end-to-end** against the original.
+
+They run **in parallel**, but the dependency direction is fixed:
+
+> **(2) can only be as faithful as (1) is complete and verified.**
+> Where (1) says *inferred* or *open*, (2) is a guess.
+
+That is why the roadmap puts closing the RE gaps (Track 1) and **differential validation of (2)
+against the emulator (Track 3)** ahead of feature work. A recreation is only as good as the
+reverse engineering that poses it.
 
 If you are looking for a bit-exact port, it does not exist yet. If you are looking for a tool-assisted
 RE environment plus a data-driven reconstruction that runs on original assets, that is what is here.

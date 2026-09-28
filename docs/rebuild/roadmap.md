@@ -6,6 +6,10 @@
 >
 > Companion docs: `README.md` (§2 status matrix, §4 unknowns), `docs/rebuild/progress.md`.
 
+This roadmap drives **two parallel deliverables**: **(1) the documented RE** and **(2) the recreation
+that poses on (1)**. The dependency is one-way — (2) can only be as faithful as (1) is complete and
+verified — so the RE-closing tracks below come first.
+
 ---
 
 ## 0. Definition of "faithful recreation"
