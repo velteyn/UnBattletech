@@ -223,8 +223,10 @@ The argument `wArg04` selects the interaction type.
 
 Text bytes use a substitution cipher (see docs/formats/file-formats.md for the complete table):
 - Ranges: 0x57-0x5F, 0x60, 0x61-0x7F (except 0x6B), specific 0x80-0x96 values
+  (**skip 0x88-0x8F**, which are not mapped)
 - 0xA0 = space separator
 - 0x6B = control byte (not text)
+- 0xAF-0xBF = numeric price-display encoding (canonical: `../story/story-system.md` §17.11)
 
 ## State Variables Used by BLD Opcodes
 

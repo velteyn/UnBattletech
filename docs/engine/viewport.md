@@ -280,3 +280,20 @@ OUT DX, AX
 
 **Purpose:** draws the weapon-impact animation at the cursor/target position using the VGA
 Set/Reset + Bit Mask registers (`0x3CE`); the 13 iterations are the splash/explosion frame sequence.
+
+### Recovered detail (from the 2026-09-28 doc reorganisation)
+
+Small items that were condensed during the move; kept here so nothing is lost:
+
+- **VGA plane sequencing** (`fn207F_275C`, 4-plane planar write): the four plane-select writes to
+  port `0x03C4` are `0x0102 / 0x0202 / 0x0402 / 0x0802`.
+- **Blitter context registers** (`tB78A`–`tB79C`, set by `fn207F_245C`): `tB78E`/`tB790` = destination
+  base address, `tB792`/`tB794` = source X/Y, `tB79A`/`tB79C` = clip width/height. (NB: the function
+  name `fn207F_1B80` that older docs attached to this does **not** exist.)
+- **Tile buffer base**: offset `0xD582` (the `54658` seen in the animation page-swap
+  `(w5800 << 7) + 54658`).
+- **Stock-owned flag** (economy phase): `segment[D30C + 0x2A2][i]` per ticker.
+- **Arrow handler disabled check**: nested `fn0800_1C12` inside `fn0800_218F`.
+- **Startup keycode alias**: the raw key `1`–`4` is temporarily stored at `t4FBA` before the `-= 0x31`
+  normalisation to `w4FBA`.
+- **w4FBA=2 text render**: 8-wide character grid to `0xAC00` via `fn207F_0377`.
