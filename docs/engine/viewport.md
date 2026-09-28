@@ -66,10 +66,33 @@ The renderer primitives (`fn207F_0313` write-mode-2 blitter, the `fn207F_33xx` t
 cluster, `fn1F3D_031C`) are **shared engine code** — confirming this subsystem is the
 reusable Westwood core, not BattleTech-specific.
 
-## Open
+## Resolved: runtime segment & table values (2026-09-28)
 
-- **Runtime segment of the viewport struct**: Reko uses `ds:0x4FBA`; at runtime `DS=0x1DE9`
-  during the world map, but reading `0x1DE9:0x4FBA` does not yield a 0–3 mode. The table
-  *offsets* are known from Reko; the exact runtime segment (the game likely switches `DS`
-  between map-data and UI-data segments) needs a **live breakpoint** on `fn1F3D_03EB`.
-- Exact contents of `a4FC4`/`a4FCC`/`a4FD4` (masks/shift per mode) — same resolution path.
+Captured live by setting a `CPU_EXECUTION_ADDRESS` breakpoint on `fn1F3D_031C`
+(runtime linear **`0x18EBC`**; NB: Reko loads the image at segment `0x800`, the game
+loads at `0x17D`, so **runtime linear = reko_linear − 0x6830**).
+
+**The game switches `DS`**: `0x1DE9` = map/render data, **`0x3858` = the UI/viewport
+struct**. At the breakpoint, `DS = 0x3858` (not `0x1DE9`), which is why earlier reads at
+`0x1DE9:0x4FBA` looked wrong.
+
+Values read at `0x3858`:
+
+| Symbol | Offset | Value |
+|--------|--------|-------|
+| `w4FBA` | `0x4FBA` | `3` (mode at capture) |
+| `w4FBC` | `0x4FBC` | `1` |
+| `a4FC4` (Y mask) | `0x4FC4` | `[0x0003, 0x0001, 0x0007, 0x0000]` (modes 0–3) |
+| `a4FCC` (X mask) | `0x4FCC` | `[0x01FC, 0x01FE, 0x01F8, 0x01FF]` |
+| `a4FD4` (shift) | `0x4FD4` | `[2, 0, 1, 0]` |
+
+So the per-mode pixel-packing parameters are now known; the viewport system is fully
+located at runtime.
+
+## Remaining / notes
+
+- The **mode** (`w4FBA`) is set at startup from the adapter prompt (keys 1–4) and toggled
+  `0↔1` around the render pass; the `3` captured is the live value at that breakpoint.
+- `w4FBC = 1` at capture (left panel narrowed), consistent with during-combat/building.
+- Runtime-segment mapping for future work: **`runtime_linear = reko_linear − 0x6830`**
+  (Reko base `0x800`, runtime base `0x17D`).
