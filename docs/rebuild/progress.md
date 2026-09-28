@@ -23,7 +23,7 @@ Legend: **✅** verified · **⚠️** partial/approximate/silent gaps · **❓*
 | System | Reads originals | Behaviour matches original | Validation |
 |---|---|---|---|
 | BLD decrypt + cipher text | ✅ | ✅ (text) | ✅ BLD↔JSON round-trip byte-identical |
-| BLD opcode interpreter (28 slots) | ✅ | ⚠️ all slots handled; `0xF6` predicate TODO | ❓ no E2E playthrough |
+| BLD opcode interpreter (28 slots) | ✅ | ✅ operand sizes fixed; all slots handled; F6 = Yes/No | ❓ no E2E playthrough |
 | `Fn1CD3` dispatch (47 cases) | ✅ | ⚠️ some cases approximate | ❓ |
 | MTP map parse | ✅ | ✅ structure | ⚠️ not frame-diffed |
 | ANM animation decode | ✅ runtime (PNG fallback) | ⚠️ | ❓; repo has **no ANM sheets** |

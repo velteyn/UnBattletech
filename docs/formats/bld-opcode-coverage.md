@@ -68,10 +68,12 @@ original (`l0FDC_0504`) and in the C# interpreter, but the shipped scripts do no
    corpus. Earlier docs conflated "slots" with "opcodes used".
 
 3. **`0xF6`/`0xF7` operand sizes + C# bodies fixed.** Reko `fn0FDC_01C0`:
-   - `0xF6` CHECK_CONDITION (`case ~0x09`) takes a **2-byte WORD target only** (no index byte); jump
-     when `fn0800_1A13(1) != 0`, else skip. `bld-bytecode.md` said "0 bytes"; the C# read a phantom
-     index byte first (misaligning the stream after every `0xF6`). Fixed to a 2-byte operand.
-     The `fn0800_1A13(1)` predicate itself is **not yet modelled** (consumed, no jump) — flagged.
+   - `0xF6` CHECK_CONDITION (`case ~0x09`) takes a **2-byte WORD target only** (no index byte), and is
+     really a **Yes/No prompt**: `fn0800_1A13(1)` returns **1=Yes / 0=No** (Y/y → 1, N/n → 0,
+     Space/Enter → keeps the default 1). Jump when Yes. `bld-bytecode.md` said "0 bytes"; the C# read a
+     phantom index byte (misaligning the stream after every `0xF6`) and never branched. **Fixed**: 2-byte
+     operand + Yes/No prompt (reusing the BLD menu path) → jump on Yes, continue on No. The 26 scripts'
+     `0xF6` sites are all Yes/No questions ("Will you buy this armor?", "Do you want to try?", …).
    - `0xF7` STATE_COND_CHECK (`case ~0x08`) takes **1 byte (D30C index) + 2-byte WORD target**; jump
      when `D30C[index] != 0`, else skip. `bld-bytecode.md` said "1 byte"; the C# read the index but
      **never consumed the target word** on the true branch (misalignment). Fixed.

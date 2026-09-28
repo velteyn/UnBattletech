@@ -17,6 +17,7 @@ public partial class BldInterpreter : Node
 
     private bool _waitingForInput;
     private bool _waitingForMenu;
+    private bool _pendingYesNo;   // F6 CHECK_CONDITION: menu is a Yes/No prompt, not a jump table
     private int _pendingMenuIp;
     private bool _running;
 
@@ -46,6 +47,8 @@ public partial class BldInterpreter : Node
         _currentText = "";
         _currentNarrativeMode = NarrativeMode.ThirdPerson;
         _waitingForInput = false;
+        _waitingForMenu = false;
+        _pendingYesNo = false;
         _running = true;
 
         var gl = GetNode<GameLoop>("/root/GameLoop");
@@ -127,6 +130,20 @@ public partial class BldInterpreter : Node
     {
         if (!_waitingForMenu || _script == null) return;
         _waitingForMenu = false;
+
+        // F6 CHECK_CONDITION — Yes/No: index 0 = Yes (jump to the 2-byte target), 1 = No (skip it).
+        if (_pendingYesNo)
+        {
+            _pendingYesNo = false;
+            var ybuf = _script.RawBytes;
+            int yp = _script.InterpreterBase + _pendingMenuIp;
+            if (selectedIndex == 0 && yp + 1 < ybuf.Length)
+                _ip = ybuf[yp] | (ybuf[yp + 1] << 8);
+            else
+                _ip = _pendingMenuIp + 2;
+            ProcessNext();
+            return;
+        }
 
         var buf = _script.RawBytes;
         int base_ = _script.InterpreterBase;
@@ -307,13 +324,16 @@ public partial class BldInterpreter : Node
                 break;
 
             case BldOpcode.CheckCondition:
-                // Operand is a 2-byte WORD target ONLY (no index byte) — Reko fn0FDC_01C0 `case ~0x09`:
-                // call fn0800_1A13(1); if != 0 jump to the WORD, else ip += 2 (skip it).
-                // TODO(model): fn0800_1A13(1)'s "continue" condition is not yet modelled in the
-                // rebuild; consume the target and fall through (condition treated as false) so the
-                // stream stays aligned. This is a known gap — see docs/formats/bld-opcode-coverage.md.
-                ReadWord(out _);
-                break;
+                // Operand: a 2-byte WORD target only (no index byte).
+                // Reko `case ~0x09`: call fn0800_1A13(1) — a YES/NO prompt (returns 1=Yes, 0=No).
+                // If Yes, jump to the WORD target; if No, ip += 2 (skip it). The question text is the
+                // text rendered just before the opcode (e.g. "Will you buy this armor?").
+                _pendingMenuIp = _ip;          // points at the target word
+                _pendingYesNo = true;
+                _waitingForMenu = true;
+                ShowYesNoQuestion();
+                return true;                   // yield until the player answers
+
 
             case BldOpcode.StateCondCheck:
                 // Operand: 1 byte D30C index + 2-byte WORD target. Jump when D30C[index] != 0,
@@ -386,6 +406,20 @@ public partial class BldInterpreter : Node
         GD.Print($"  shop_dispatch case=0x{rawCase:X2}");
         var shop = _script != null ? ShopRegistry.Get(_script.Name) : null;
         return Fn1CD3Dispatcher.Dispatch(rawCase, _state, _script?.Name ?? "", shop);
+    }
+
+    /// <summary>
+    /// F6 CHECK_CONDITION: show the pending question as a Yes/No prompt.
+    /// Reuses the BLD menu path (Yes = index 0, No = index 1).
+    /// </summary>
+    private void ShowYesNoQuestion()
+    {
+        string q = !string.IsNullOrEmpty(_currentText)
+            ? _currentText
+            : (!string.IsNullOrEmpty(_lastRenderedText) ? _lastRenderedText : "Are you sure?");
+        _currentText = "";
+        var gl = GetNode<GameLoop>("/root/GameLoop");
+        gl.ShowMenuForBld(q.TrimEnd() + "\nYes\nNo");
     }
 
     private void HandleMenuSelection(byte menuId)

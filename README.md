@@ -45,7 +45,7 @@ Legend: **✅** true / done · **⚠️** partial, approximate, or with silent g
 | System | Reads original files at runtime | Behaviour matches the original | Validation |
 |---|---|---|---|
 | BLD decrypt + cipher text | ✅ `BldLoader.cs` | ✅ (text) | ✅ round-trip BLD↔JSON byte-identical (`tools/bld`) |
-| BLD opcode interpreter (28 slots 0xE4–0xFF) | ✅ | ⚠️ partial | ❓ never played end-to-end; all slots handled (no silent drop); `0xF6` predicate not modelled |
+| BLD opcode interpreter (28 slots 0xE4–0xFF) | ✅ | ⚠️ partial | ❓ never played end-to-end; operand sizes fixed (EB/EC/F6/F7); all slots handled (no silent drop) |
 | `Fn1CD3` dispatch (47 cases) | ✅ | ⚠️ partial | ❓ implemented from decomp; several cases are approximations |
 | MTP map header/tiles | ✅ `MapLoader.cs` / `LocalMapView.cs` | ✅ (structure) | ⚠️ layout decoded, not diffed frame-by-frame |
 | ANM animation (XOR-delta RLE) | ✅ runtime, PNG fallback | ⚠️ | ❓; **repo has no ANM spritesheets** (`Assets/Animations/` empty) |

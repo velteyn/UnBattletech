@@ -108,7 +108,7 @@ Works as:
 | `f3` | -13 | `~0x0C` | SHOP_INTERACTION | 1 byte | Read 1 byte as index into state table `bD30C[index]`. Multiply by 2, use as offset into current buffer. Indirect dispatch. |
 | `f4` | -12 | `~0x0B` | SET_STATE_VALUE | 2 bytes | Read 2 bytes: byte1=index into `D30C` state array, byte2=value to set. `state[index] = value`. |
 | `f5` | -11 | `~0x0A` | SHOP_DISPATCH | 1 byte | Read 1 byte operand. Call `fn1CD3_0004` with it as the case number. Dispatches to the room interaction handler. |
-| `f6` | -10 | `~0x09` | CHECK_CONDITION | 2 bytes (LE target) | Call `fn0800_1A13(0x01)`. If non-zero, jump to the 2-byte WORD target; if 0, skip the 2 bytes. |
+| `f6` | -10 | `~0x09` | CHECK_CONDITION | 2 bytes (LE target) | **Yes/No prompt** (`fn0800_1A13(0x01)`: 1=Yes, 0=No). Jump to the 2-byte WORD target on Yes; skip it on No. |
 | `f7` | -9 | `~0x08` | STATE_COND_CHECK | 1 byte + 2 bytes (LE target) | Read 1 byte as index into `D30C`. If `state[index] != 0`, jump to the 2-byte WORD target; if 0, skip the 2 bytes. |
 | `f8` | -8 | `~0x07` | JUMP_FORWARD | 2 bytes LE | Read 2-byte WORD → absolute jump target (new IP = word value). Confirmed absolute (not relative) from Reko: `ip = fn0FDC_05F7(segment:(base+ip))`. |
 | `f9` | -7 | `~0x06` | JUMP_INDEXED | 1 byte | Read 1 byte menuId, call `fn1E56_0B5E(menuId)` → returns selection index. Read WORD at `base + operand_pos + 1 + index*2` → new IP (absolute). Jump table entries are WORDs right after operand byte. |
