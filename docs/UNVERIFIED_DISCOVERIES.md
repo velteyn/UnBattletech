@@ -124,6 +124,8 @@ Attempts to reach combat for a **live** confirmation of the combat segment (see 
   encounter mask unset), and entering the training building was not achieved (world-map `(26,5)` is a
   *local-map* coordinate; the world-map building tile for the training center wasn't located).
 
-**To finish the combat verification**: start a training mission (enter the training building →
-choose a Mech → the "training grounds"/reactionary-combat missions) or the arena, then capture
-`DS`/`ES` and read `0x40B4`/`0x4004/0x4036/0x406A` to confirm they resolve in segment `0x2A0F`.
+**Update (2026-09-28)**: a **save pack already exists in the game folder** (`GAME1`–`GAME6`; GAME5/6
+are late-game with 3 mechs, 66k credits). Loading slot 5 in-game drops straight into **combat**, which
+resolved the §6 verification — see above. Using these saves is now the fast way to reach late-game
+states (combat, cities, COMSTAR) without a full playthrough: enable a slot (`GAME5.disabled` →
+`GAME5`), then system menu → **Load Game** → pick the slot.
