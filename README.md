@@ -1,130 +1,220 @@
-# UnBattletech — Reverse Engineering BattleTech: The Crescent Hawk's Inception (1988)
+# UnBattletech
 
-[![RE Status](https://img.shields.io/badge/RE-95%25-brightgreen)](docs/context.md)
-[![Godot Rebuild](https://img.shields.io/badge/Rebuild-Phase_6-green)](BattleTechCHI/)
+Reverse engineering of **BattleTech: The Crescent Hawk's Inception** (1988, MS-DOS; published by
+Infocom, engine by **Westwood Associates**) — and an in-progress **Godot 4 / C# recreation** of it.
 
-Reverse engineering analysis and Godot 4 + C# rebuild of **BattleTech: The Crescent Hawk's Inception**, the 1988 MS-DOS game by Infocom.
+> **Read this section before trusting anything else in this repo.**
+> The project is two efforts with very different maturity, and the word "phase" elsewhere in the
+> docs means *code written*, **not** *behaviour proven*.
 
-## Repository Structure
+---
+
+## 1. What this project actually is (two things)
+
+**(A) The reverse-engineering record.** The `reko/` decompilation, `docs/` specifications, the
+Spice86 emulator with BattleTech-specific MCP tools, and the Python tooling. This is the real RE work:
+file formats, story text, memory map, and a large part of engine logic are documented and
+cross-checked against decompiler output and live emulator traces.
+
+**(B) The Godot recreation (`BattleTechCHI/`).** A C# program that **reads original data files**
+(`.BLD`, `.MTP`, `.ANM`, `GAME*` saves) but **re-implements the engine logic** (the bytecode
+interpreter, the dispatch layer, combat). It is **data-faithful, not behaviour-faithful**, and it has
+**never been validated end-to-end** against the original.
+
+If you are looking for a bit-exact port, it does not exist yet. If you are looking for a tool-assisted
+RE environment plus a data-driven reconstruction that runs on original assets, that is what is here.
+
+---
+
+## 2. Honest status matrix
+
+Legend: **✅** true / done · **⚠️** partial, approximate, or with silent gaps · **❓** unknown / unverified · **❌** absent
+
+| System | Reads original files at runtime | Behaviour matches the original | Validation |
+|---|---|---|---|
+| BLD decrypt + cipher text | ✅ `BldLoader.cs` | ✅ (text) | ✅ round-trip BLD↔JSON byte-identical (`tools/bld`) |
+| BLD opcode interpreter (26 ops) | ✅ | ⚠️ partial | ❓ never played end-to-end; **unknown opcodes are logged and skipped** |
+| `Fn1CD3` dispatch (47 cases) | ✅ | ⚠️ partial | ❓ implemented from decomp; several cases are approximations |
+| MTP map header/tiles | ✅ `MapLoader.cs` / `LocalMapView.cs` | ✅ (structure) | ⚠️ layout decoded, not diffed frame-by-frame |
+| ANM animation (XOR-delta RLE) | ✅ runtime, PNG fallback | ⚠️ | ❓; **repo has no ANM spritesheets** (`Assets/Animations/` empty) |
+| ICN/CMP tiles | ❌ (pre-converted) | — | `TileManager` loads BMP; **`Assets/Tilesets/` empty** |
+| Save files `GAME1–6` (4096 B) | ✅ parser `SaveManager.cs` | ❓ | ❌ round-trip **not** verified against original saves |
+| Story state (`b0057`, props) | ✅ (reads) | ❓ meaning **inferred** | ❓ semantics not confirmed in play |
+| Combat (to-hit, damage, AI, heat, ammo, fog) | — (own logic) | ❌ approximate | ❌ RNG/formulas **never diffed** against the original |
+| Viewport / screen layout | — | ⚠️ approximate | ❓ no canonical viewport struct located |
+| Sound / music | ❌ | ❌ | ❌ format undecoded |
+| Map→BLD trigger mapping | ⚠️ partial | ❓ | tile-property table + `[0x5460]:0x4602` translation **not decoded** |
+
+### What the rebuild can do today
+- Boot the title/startup sequence and the local-map + world-map views.
+- Load and decrypt the real `.BLD` scripts and interpret them (dialogue, menus, shops, many dispatch
+  cases) — with silent gaps on unimplemented opcodes.
+- Parse the real `.MTP` maps, and read/write the real 4096-byte save layout.
+- Run a from-scratch tactical combat loop (own RNG/LoS/to-hit/damage/AI).
+
+### What it cannot do honestly claim
+- That it reproduces the original's behaviour. Combat, viewport rendering, and parts of the story
+  state machine are reconstructions, not verified ports.
+- That it is self-contained visually: **tilesets, animations and fonts are not in the repo**
+  (only 15 converted map PNGs and 44 mech-sprite PNGs are).
+
+---
+
+## 3. What is genuinely RE'd (and where)
+
+| Area | State | Canonical doc |
+|---|---|---|
+| BLD format, cipher, opcodes | 🟢 solid | `docs/formats/bld-bytecode.md` |
+| Story text (all 26 BLD) | 🟢 extracted | `docs/story/STORY_TEXT.txt` |
+| Memory map (100+ addresses, segments) | 🟢 solid | `docs/formats/memory-map.md` |
+| World map / local maps | 🟢 solid | `docs/world-map.md` |
+| Combat model | 🟡 ~90%, some inferred | `docs/combat-system.md` |
+| Economy / shops / stock | 🟡 UI flow now observed live | `docs/story/story-system.md` |
+| ANM format | 🟢 documented | `docs/formats/anm-format.md` |
+| Viewport abstraction | 🔴 incomplete | `docs/engine/viewport.md` |
+| Sound | 🔴 0% | — |
+
+---
+
+## 4. Known unknowns (the RE still to do)
+
+These are the *real* blockers; the roadmap in §6 is gated on them.
+
+1. **Byte-exact combat.** RNG, initiative/turn order, to-hit modifiers, hit-location table, cluster
+   resolution, heat, ammo explosion, AI target selection — currently *inspired by* the disassembly,
+   never diffed. (`docs/combat-system.md`)
+2. **Not-decompiled segments.** Combat/movement code in segments `19EF` / `1000` is missing from the
+   Reko output; those routines must be recovered. (`docs/UNVERIFIED_DISCOVERIES.md` §7)
+3. **Story-state semantics.** `b0057` (0/1/2) and neighbours `b0055/b0056/b0058` are *inferred*;
+   property IDs `0x1C–0x23` unmapped. (§5)
+4. **Map→BLD trigger mapping.** Tile property table (`0x32C6`) + translation table
+   (`[0x5460]:0x4602`) not decoded; entrances are currently found by hand-walking the map
+   (Citadel `(34,10)`, ComStar `(51,10)` on the start map). (`docs/context.md`)
+5. **Viewport model.** No canonical viewport struct found; the seg-`0x246C` config struct is only
+   partly mapped; push/pop semantics unknown. (`docs/engine/viewport.md`)
+6. **Tile properties / collision.** Which bits mean water/wall; which routine reads `0x32C6` for
+   movement. (§2)
+7. **Save format round-trip.** Parser exists; a real `GAME*` load→save→compare has not been done.
+8. **Cadet economy & day cycle.** Allowance tick, stop threshold, barracks sleep, daily-mission gate
+   — mechanic observed, **code not located**. (`docs/story/story-system.md`)
+9. **BLD opcode gaps.** Which opcodes actually occur across the 26 files, and which the interpreter
+   silently skips. (`BldInterpreter.cs` default branch)
+10. **Sound/music format.** Entirely undecoded.
+11. **World-map data location.** Where tile/map data is loaded from (segment `2A02` vs elsewhere). (§1)
+
+---
+
+## 5. Retro archaeology (outside the binary)
+
+RE from the executable alone has limits (compiler-optimised code, absent segments, inferred
+semantics). Cross-checks that can resolve ambiguities — none of them can *replace* the binary, but
+they can confirm intent:
+
+- **Sibling Westwood engine titles** — *Mines of Titan* (1989, x86, already fingerprinted: 25 shared
+  functions in graphics/text) and the later viewport engines (*Eye of the Beholder*, *Kyrandia*,
+  *Lands of Lore*) for the viewport model.
+- **Other BattleTech CHI ports/releases** — C64 / Apple II / Amiga (if any) and the later "Gold"
+  editions; different compilers expose different structure.
+- **Primary documents** — the original manual, the clue book / hint book, magazine reviews (1988–89),
+  and the published walkthroughs already used in `docs/walkthrough/`.
+- **Emulator tooling as ground truth** — Spice86 traces + the 23 `bt_*` MCP tools give exact
+  runtime register/memory state to diff against.
+
+Every claim recovered this way must be **marked as sourced** and re-verified against the binary.
+
+---
+
+## 6. True roadmap (from here to a faithful Godot recreation)
+
+The order is deliberate: **prove the data path and the behaviour before building more screens.**
+Each gate is a *verification*, not a feature.
+
+### Track 0 — Truth upkeep (continuous)
+- Keep this README, `docs/rebuild/progress.md` and the wiki honest; mark every claim
+  **verified / inferred / unknown** and date it.
+- No new "✅" without a verification artifact (trace, diff, or byte-compare).
+
+### Track 1 — Close the RE mysteries (§4, priority order)
+1. Decompile/annotate segments `19EF`/`1000` (combat/movement). ← *unblocks 2*
+2. Diff combat formulas/RNG against emulator traces (byte-exact tables). ← *unblocks Track 3*
+3. Decode the map→BLD trigger table so entrances are data-driven, not hand-found.
+4. Locate the cadet economy / day-cycle code.
+5. Resolve viewport struct + `w4FBC`/push-pop; finish tile-property bits.
+6. Verify save round-trip against real `GAME*` files.
+
+### Track 2 — Make the data path faithful
+- TileManager should decode **ICN/CMP at runtime** (no pre-baked BMP requirement); commit or
+  regenerate tilesets/animations/fonts, or document the exact extraction step.
+- ANM: eliminate the PNG fallback dependence; the runtime decoder is the single source of truth.
+- Enumerate and implement every BLD opcode that actually occurs; fail loudly on unknown ones.
+
+### Track 3 — Differential validation (the missing keystone)
+- Build a harness that runs the **same scripted input** through (a) the Spice86 emulator and
+  (b) the Godot rebuild, then compares: state array, story slots, credits, cursor, unit slots,
+  combat grids, and rendered frames.
+- First targets: a full training day (mission → sleep), a shop transaction, one combat encounter.
+- A system is "done" only when the diff is empty for its scenario.
+
+### Track 4 — Feature completion (only after Track 3 for each area)
+- Stock market UI (dispatcher 0x2A/0x2B exist; UI pending).
+- Tech/BTSTATS screen, full equipment management.
+- Endgame: `WINSCENE` / `ENDMECH` / `TINYLAND`.
+- Sound, if Track 1 decodes the format.
+
+### Track 5 — Retro archaeology (parallel, feeds Track 1)
+- Manual / clue book / magazine scans; sibling-game function map extension.
+
+Detailed per-step checklists live in `docs/rebuild/roadmap.md`; the phase ledger is
+`docs/rebuild/progress.md`.
+
+---
+
+## 7. Repository layout
 
 ```
-├── docs/               # RE documentation & findings
-│   ├── INDEX.md        # Documentation map (canonical source per topic)
-│   ├── context.md      # Master overview + known/unknown
-│   ├── combat-system.md           # Canonical combat spec
-│   ├── world-map.md               # Canonical world-map spec
-│   ├── formats/        # file-formats, bld-bytecode, anm-format, memory-map
-│   ├── story/          # story-arc, story-system, STORY_TEXT.txt
-│   ├── rebuild/        # roadmap, progress
-│   ├── tools/          # spice86-mcp, analysis-tools
-│   ├── walkthrough/    # gameplay walkthroughs
-│   └── UNVERIFIED_DISCOVERIES.md
-│
-├── tools/              # Python analysis tools
-│   ├── bld/            # BLD script tools (decoder, converter, viewer)
-│   ├── assets/         # Asset extraction & rendering tools
-│   └── analysis/       # RE analysis tools
-│
-├── reko/               # Reko decompiler output
-│   ├── UNBTECH.exe.c   # Full C decompilation (2MB)
-│   ├── UNBTECH.exe.h   # Header with struct definitions
-│   ├── UNBTECH_all.asm # Combined disassembly (60K lines)
-│   └── segments/       # Per-segment .c/.asm/.dis files
-│
-├── asm/                # Assembly analysis
-│   └── discoveries.asm # Manual analysis notes
-│
-├── json/               # BLD → JSON conversions (26 files)
-│
-│
-├── BattleTechCHI/      # Godot 4 + C# rebuild
-│
-├── original/           # Original game assets (local only, not uploaded)
-│   ├── bld/  cmp/  icn/  mtp/  anm/  saves/  exe/
-│
-├── extracted_assets/   # Rendered PPM/PNG from game assets
-└── Assets/             # Converted sprite/tile sheets
+docs/                 RE documentation (canonical doc per topic: docs/INDEX.md)
+reko/                 Reko decompiler output (C + asm, per segment)
+tools/
+  bld/                BLD decode / JSON round-trip / story extraction
+  assets/             Asset extraction & rendering
+  analysis/           Binary & memory-dump analysis
+  playtest/           bt.py — drive the emulator via MCP + memory API
+BattleTechCHI/        Godot 4 + C# recreation (~4.9k lines, ~45 scripts)
+  Scripts/{Core,Data,Maps,BLD,Combat,UI}
+  Assets/             15 map PNGs, 44 mech sprites, 9 screens (tilesets/ANM/fonts EMPTY)
+original/             Original game files (local only, gitignored)
+BattleTechMcpTools/   Spice86 override supplier + 23 bt_* MCP tools
 ```
 
-## Key RE Achievements
+---
 
-- **BLD bytecode fully reverse-engineered**: 26 opcodes, substitution cipher, 4-layer interpreter
-- **World map decoded**: 64×64 tile grid, 93 tile types, fog of war system
-- **Combat system documented**: 2D6 to-hit, LoS ray-casting, AI targeting, heat/ammo
-- **Story fully extracted**: All 26 BLD scripts decoded with narrative markers
-- **Memory map complete**: 100+ addresses mapped across all segments
-
-## Godot Rebuild Progress
-
-The rebuild is in **Phase 6** (ANM integration + combat ANM). ~8,000 lines C# across 45+ scripts in `BattleTechCHI/Scripts/`.
-
-- ✅ Phase 0–1: Core engine, data models, asset loaders, game loop, partial save/load
-- ✅ Phase 2: Tile rendering, world map viewport, local maps, LocationMapper, fog of war
-- ✅ Phase 3: BLD interpreter (26 opcodes), cipher decoder, 47-case dispatcher (all real impl.), dialogue, ShopScreen
-- ✅ Phase 4: Combat — init, turn order, movement, LoS, to-hit (2D6), damage, AI, heat/ammo, fog, HUD, encounters
-- ✅ Phase 5: AnmPlayer + ViewportManager + BldAnmMap, runtime ANM decompress
-- ✅ Phase 6: Combat mech panel ANM (MechPortrait), map cursor ANM, stock-market RE + dispatcher cases 0x2A/0x2B, StorySlots 16→8 fix. (A:/B: drive mount now lives in `BattleTechMcpTools/BattleTechOverrideSupplier.cs`.)
-- ⬜ Phase 7: End-to-end playtesting, polish (VFX, BTSTATS, sound, w4FBC refactor, TileMapLayer migration)
-
-## Emulator & Runtime Introspection
-
-Spice86 emulator with 23 BattleTech-specific MCP tools for runtime game state introspection:
-- Read/write game state (state array, story slots, unit slots, cursor, credits, flags)
-- Read combat grids, unit positions, fog of war
-- Inject keyboard input (script the game through menus)
-- Read CPU registers and memory
-- Capture the screen as ASCII art (`bt_screenshot`: text mode 0x03 → 80×25 text from B800:0000; graphics 0x13/0x0D/0x0E → 80×50 luminance grid from A000:0000)
+## 8. Running the pieces
 
 ```bash
-# Start emulator with MCP server on port 8086
+# Emulator + MCP (ground truth for traces)
+fuser -k 20000/tcp 8086/tcp 2>/dev/null
+: > /tmp/emu.log
 dotnet exec bin/Debug/net10.0/UNBATTLETECH.dll \
-  --Exe "/path/to/BTECH.EXE" \
-  --CDrive "/path/to/game/" \
+  --Exe "/path/to/UNBTECH.exe" --CDrive "/path/to/game/" \
   --HeadlessMode Minimal --McpHttpPort 8086 --NoGui
 
-# Read game state (POST JSON-RPC; GET returns SSE endpoint event)
-curl -s -X POST http://localhost:8086/mcp/ \
-  -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"bt_get_state","arguments":{}}}'
-```
+# Playtest harness
+python3 tools/playtest/bt.py state      # mode/cursor/credits/flags snapshot
+python3 tools/playtest/bt.py png out.png # true-colour screenshot
 
-## Tools & Scripts
+# Godot rebuild (needs a display; use xvfb-run headless)
+cd BattleTechCHI && dotnet build && bash run.sh
 
-```bash
-# Convert BLD → JSON and back
+# BLD round-trip / story extraction
 python3 tools/bld/bld_json_converter.py to-json original/bld/
-
-# Extract full story text
 python3 tools/bld/extract_story.py
-
-# Decode all BLD files with opcode analysis
-python3 tools/bld/decode_bld.py
-
-# ASCII terminal viewer for maps
-python3 tools/bld/ascii_viewer.py
-
-# Render CMP assets to PPM
-python3 tools/assets/extract_assets.py
-
-# Build C# rebuild
-cd BattleTechCHI && dotnet build
-
-# Build emulator
-dotnet build UNBATTLETECH.csproj
 ```
 
-### Playtest harness
+---
 
-`tools/playtest/bt.py` drives the original game in the emulator (MCP on 8086 + HTTP memory API on 20000): BDA keyboard injection, state reads, and true-colour PNG rendering.
+## 9. Disclaimer
 
-```bash
-python3 tools/playtest/bt.py state     # mode/cursor/credits/flags/state snapshot
-python3 tools/playtest/bt.py tile      # world-map tile under the cursor
-python3 tools/playtest/bt.py keys w    # press a named key (space/enter/esc/w/a/s/d/arrows/...)
-python3 tools/playtest/bt.py png out.png   # true-colour screenshot
-python3 tools/playtest/bt.py boot      # adapter+drive keys, then spaces -> title/menu
-```
-
-## Disclaimer
-
-This repository contains **no original game assets** (BLD, CMP, EXE, etc.). Only reverse engineering analysis, documentation, and original source code for a clean-room rebuild are included. The original game assets remain in `original/` for local development only (gitignored).
+This repository contains **no original game assets** (EXE, BLD, CMP, ICN, MTP, ANM, saves). Only
+reverse-engineering analysis, documentation, and original source for a clean-room reconstruction are
+included. The 69 PNGs under `BattleTechCHI/Assets/` are converted renders used for local development.
+Original assets stay in `original/` (gitignored) and are required to run the loaders.
