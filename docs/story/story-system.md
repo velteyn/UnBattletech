@@ -647,6 +647,25 @@ Source tables at `0x4564`, `0x4572`, `0x4596`, `0x45A4` are NOT in the COMSTAR B
 
 **Correction**: `fn207F_3D1C`/`3D44`/`3D6C` are **not** stock-specific update functions — they are generic 32-bit math wrappers (`fn207F_3E2E`=multiply, `fn207F_3E62`=divide, `fn207F_3EC4`=shift-right) used during the economy display phase to format numeric values for on-screen rendering.
 
+#### Cadet economy & the day cycle (Pacifica Training Center)
+
+While Jason is a **cadet at the Pacifica Training Center**, time passing earns a **minimal salary /
+allowance**: the account ticks up by **+15 cr** ("your parents send you more allowance"). This
+**stops after a while** — the allowance is finite, so a cadet cannot fund themselves indefinitely by
+idling.
+
+To earn more money you must advance the day by **sleeping at the barracks**. Sleeping is **gated**:
+you must first **go to the training center and complete that day's mission** (one mission per day).
+So the core early-game loop is:
+
+> training-center mission (1/day) → **sleep at the barracks** → new day → allowance/salary accrues again → repeat
+
+- Allowance tick: **+15 cr**, finite (stops after a while).
+- Day advance: **sleep at the barracks**.
+- Sleep gate: **one training-center mission per day** must be completed first.
+
+*(Mechanic reported from playtesting 2026-09-28; exact tick period / stop threshold / mission counter still to be located in code.)*
+
 ### 17.12 Player Interface System
 
 #### Screen Layout
