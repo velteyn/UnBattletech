@@ -43,7 +43,11 @@ recovered files for its label (`label_1000_<OFF>_<LIN>` / `label_19EF_...`).
 | `1000:3224` `ghidra_guess_1000_3224_13224` | (§1) |
 | `1000:0BBB` `ghidra_guess_1000_0BBB_10BBB` | (§1) |
 | `1000:A8C6` `split_1000_A8C6_1A8C6` | movement helper (§2) |
-| `1000:5847` `ghidra_guess_1000_5847_15847` | combat entry/init (§1) |
+| `1000:5847` `ghidra_guess_1000_5847_15847` | **post-fire presentation** — messages, name/panel updates, weapon-class cue dispatch, kill/dummy FX (C3, §25.5) |
+| `1000:17BB` `ghidra_guess_1000_17BB_117BB` | **combat message emitter** — emits a string far pointer via `1000:8055` when `DS:[0x2E38]≠0` (§25.5) |
+| `1000:159F` `ghidra_guess_1000_159F_1159F` | per-hit-location damage/crit hook, called on a hit (§25.5) |
+| `1000:17DC` `ghidra_guess_1000_17DC_117DC` | combat panel refresh at end of a shot (§25.5) |
+| `1000:9352` `ghidra_guess_1000_9352_19352` | cue player reached from `0000:30BF` (weapon-class FX/sound id; §25.5) |
 | `19EF:0971` `unknown_19EF_0971_1A861` | **movement direction calc** (§2) |
 | `19EF:0BC0` `unknown_19EF_0BC0_1AAB0` | **RNG** (24-bit LFSR) (§16) |
 | `19EF:0BFB` `unknown_19EF_0BFB_1AAEB` | fired per body-part pair (§7.9) |
@@ -71,10 +75,10 @@ recovered files for its label (`label_1000_<OFF>_<LIN>` / `label_19EF_...`).
 | `0xBBB` | `ghidra_guess_1000_0BBB_10BBB` | ✓ |
 | `0x1005` | `split_1000_1005_11005` |  |
 | `0x1554` | `ghidra_guess_1000_1554_11554` | ✓ |
-| `0x159F` | `ghidra_guess_1000_159F_1159F` |  |
+| `0x159F` | `ghidra_guess_1000_159F_1159F` | ✓ |
 | `0x160E` | `ghidra_guess_1000_160E_1160E` | ✓ |
-| `0x17BB` | `ghidra_guess_1000_17BB_117BB` |  |
-| `0x17DC` | `ghidra_guess_1000_17DC_117DC` |  |
+| `0x17BB` | `ghidra_guess_1000_17BB_117BB` | ✓ |
+| `0x17DC` | `ghidra_guess_1000_17DC_117DC` | ✓ |
 | `0x1808` | `ghidra_guess_1000_1808_11808` |  |
 | `0x18B2` | `ghidra_guess_1000_18B2_118B2` |  |
 | `0x1919` | `ghidra_guess_1000_1919_11919` |  |
@@ -99,7 +103,7 @@ recovered files for its label (`label_1000_<OFF>_<LIN>` / `label_19EF_...`).
 | `0x438B` | `ghidra_guess_1000_438B_1438B` |  |
 | `0x4553` | `ghidra_guess_1000_4553_14553` |  |
 | `0x458C` | `ghidra_guess_1000_458C_1458C` | ✓ |
-| `0x5847` | `ghidra_guess_1000_5847_15847` |  |
+| `0x5847` | `ghidra_guess_1000_5847_15847` | ✓ |
 | `0x63C6` | `ghidra_guess_1000_63C6_163C6` |  |
 | `0x65E5` | `split_1000_65E5_165E5` |  |
 | `0x6ABC` | `split_1000_6ABC_16ABC` |  |
@@ -112,7 +116,7 @@ recovered files for its label (`label_1000_<OFF>_<LIN>` / `label_19EF_...`).
 | `0x8AD1` | `split_1000_8AD1_18AD1` |  |
 | `0x8B23` | `ghidra_guess_1000_8B23_18B23` |  |
 | `0x933A` | `ghidra_guess_1000_933A_1933A` |  |
-| `0x9352` | `ghidra_guess_1000_9352_19352` |  |
+| `0x9352` | `ghidra_guess_1000_9352_19352` | ✓ |
 | `0x95F3` | `ghidra_guess_1000_95F3_195F3` |  |
 | `0x963B` | `ghidra_guess_1000_963B_1963B` |  |
 | `0x9695` | `ghidra_guess_1000_9695_19695` |  |

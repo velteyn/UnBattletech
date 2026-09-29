@@ -8,7 +8,25 @@
 
 ## ▶ SESSION STATUS — pick up here next
 
-**Last session (2026-09-28/29) — "combat depth + fidelity audit".** Docs-first, no RE tooling left running;
+**This session (2026-09-29) — "C3 close-out".** Docs-first, decompilation only (no RE tooling left
+running). **C3 ✅ resolved** — the post-fire message path after `1000:521D` is fully enumerated in
+[`combat-system.md`](combat-system.md) **§25.5**:
+
+- the three fixed combat messages and their `DS` pointers — `0x3EDE` **"Missed!"**,
+  `0x3EE7` **"Hit!"**, `0x41FC` **"Killed him!"** (all emitted through `1000:17BB` when `DS:[0x2E38]≠0`);
+- the **11-arg call** into `1000:5847` (acting/target slots, weapon slot, destroyed/dummy/hit flags,
+  the `0x2A02:0x4314` text buffer);
+- `1000:5847`'s structure: name/panel updates via `0170:1732`, **weapon-class cue dispatch**
+  (`0000:30BF` → `1000:9352`), hit/miss presentation, the **kill** bookkeeping
+  (`0xC623==0` → `[BP-0x2c]=1` → mark dead, `0x7E` display byte), and the training-dummy FX chain;
+- the post-call path (`1000:17DC` panel refresh, `0000:5FB7(0x10/0x5,0)`, stage reset to `0xC`).
+
+**▶ Next:** **C5** (find the weapon-**definition** table reader) + **C10** (Kick damage / Inferno),
+then **C11 / U1** (80 px panel animation + status screen / "Scan Unit").
+
+---
+
+**Previous session (2026-09-28/29) — "combat depth + fidelity audit".** Docs-first, no RE tooling left running;
 repo `main` tip **`d5dde67`**. What landed:
 
 - **Combat-arc gaps closed / clarified** (all in [`combat-system.md`](combat-system.md)):
@@ -26,7 +44,8 @@ repo `main` tip **`d5dde67`**. What landed:
 - The combat "hit blink" is the **impact VFX `19EF:18EF`** (13 frames), **not** an ANM; combat never calls the building-ANM dispatch.
 
 **▶ Do this first next session (cheap, high value):**
-1. **C3** — enumerate the post-fire message path after `1000:521D` (decompilation only).
+1. ~~**C3** — enumerate the post-fire message path after `1000:521D` (decompilation only).~~
+   ✅ **done this session** — [`combat-system.md`](combat-system.md) §25.5.
 2. **C5** — find the weapon-**definition** table reader (resolves `+0x0A/+0x0D/+0x0E` range packing) and **C10** (Kick dmg / Inferno).
 3. **C11 / U1** — decode the 80 px combat panel animation + the status screen fields / "Scan Unit".
 4. Then the bigger ones: **C6/C7/C8** (infantry armour map, infantry AI, enemy-AI decisions), **P1/P2** (salvage, injuries).
@@ -45,7 +64,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 |---|-----|--------|
 | C1 | Round/activation semantics | ✅ **resolved**: `[BP-0x42]` = per-unit **attack sub-phase** (0..0xB), outer `[BP-0x4]` (0..0xB), unit `[BP-0x28]` — §25.1 |
 | C2 | Damage-overflow internals | ✅ **resolved**: jump table at `CS:0x118E` (`1000:0B62`); armour→structure `+0xB` — §25.4 |
-| C3 | Post-fire / message path (`1000:5847…`) | ⬜ open (needs enumerating after `521D`) |
+| C3 | Post-fire / message path (`1000:5847…`) | ✅ **resolved**: 3 fixed messages (miss/hit/kill) + the 11-arg `5847` presentation routine + post-call stage advance — **§25.5** |
 | C4 | Heat `[0x5624]:0x4592` (`penalty/5`) | ✅ **resolved**: read as a non-zero **flag** (`1000:399C`/`39C6`) — §24.5 |
 | C5 | Weapon-definition field offsets `+0x0A/+0x0D/+0x0E` | ⬜ open (find the def-table reader; the code uses the *instance* table `0x2EE3-0x2EE8`) |
 | C6 | Infantry armour types (`+0x0D`↔FlakVest…) | ◐ partial: type written by equip code (`0000:501B`, `0170:4F07`); value↔item map still unknown |
@@ -99,3 +118,8 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 - Emulator must be **shut down after each session** (saves restored, ports 8086/20000/2159 freed).
 - The old `spice86-mcp-fix` branch is **deleted** (local + fork); Spice86 checkout on `master`.
 - Docs honesty baseline: `README.md` §2, `docs/SOURCES.md`, `docs/INDEX.md`.
+- **Canonical working tree = `Reversing/AIATTEMPT`.** The sibling `Reversing/UNBATTLETECH` clone is an
+  obsolete prototype (old commit, no `docs/`; its `GeneratedCode*.cs` are already `reko/gencode/GC*.cs`).
+- Imported from that clone (2026-09-29): `tools/pack/exepack.exe` (original EXE packer/unpacker;
+  `.gitignore` exception added) and `reko/gencode/prototype-overrides/*.cs` (the "register one
+  function at a time" prototype — kept for reference, excluded from compilation by `reko/**/*.cs`).

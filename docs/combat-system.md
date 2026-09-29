@@ -2217,7 +2217,7 @@ Unit-class boundaries checked: `0x04` (player lance 0-3 → combat units 4+), `0
 | 8 | **Cluster** | `0000:30DD` | if `col>1`: `2D6·7 + col` → `[0x566C]:0x2E5E` hits; `dmg = per_missile × hits` (§6.6) ✅ |
 | 9 | **Damage** | `19EF:1886`, `0B32` | armour → structure → **overflow** to next location (`0B32` slot-advance), crits (`19EF:1886`), ammo/explosion (§7) ✅ store |
 | 10 | **Heat gen** | — | `weapon[0x2EE5]&0xF` → pool `0x92`/`0x8A` (§24.1) ✅ |
-| 11 | **Post-fire** | `1000:5847`, `17DC`, `BDBE`, … | messages/cleanup; mem `17BB` coord writes |
+| 11 | **Post-fire** | `1000:5847`, `17BB` (msg), `159F`, `BDBE`, `17DC` | miss/hit/kill messages + presentation/cleanup; fully enumerated **§25.5** |
 | 12 | **Infantry variant** | — | units 4-11 use the 17-byte record: burst cap 4, armour `+0x0E`→health `+0x0F` (§23) ✅ |
 
 ### 25.3 End of round
@@ -2235,7 +2235,79 @@ Unit-class boundaries checked: `0x04` (player lance 0-3 → combat units 4+), `0
 - ✅ **C4 resolved:** `[0x5624]:0x4592` (= `penalty/5`) is read as a **non-zero flag** (`1000:399C`/
   `39C6`) that gates a per-unit follow-up (alongside flag `[0x5626]:0x377C`); it is not a discrete
   effect value.
-- ⚠️ **C3 open:** the post-fire message path (`1000:5847…`) is not fully enumerated.
+- ✅ **C3 resolved:** the post-fire message path (miss/hit/kill strings + the `1000:5847`
+  presentation routine) is enumerated in **§25.5**.
+
+### 25.5 Post-fire message & presentation path (C3 — resolved 2026-09-29)
+
+Enumerated statically from the Spice86 decompilation (`reko/gencode/GC12.cs`, the `1000:458C`
+combat handler; `reko/gencode/GC13.cs`, `1000:5847`).
+
+**a. The three combat messages.** The combat loop emits fixed strings through the text routine
+`1000:17BB` (`ghidra_guess_1000_17BB_117BB` = Reko `fn1631_1DAB`), which forwards the far pointer to
+the text renderer `1000:8055` **only when the text flag `DS:[0x2E38] ≠ 0`**:
+
+| Message | Trigger in `1000:458C` | Pointer (DS = `0x3EDB`) | Renders |
+|---------|------------------------|-------------------------|---------|
+| **miss** | 2D6 < TN → `1000:4FCF` | `DS:0x3EDE` | `Missed!` |
+| **hit** | 2D6 ≥ TN → `1000:50A3` | `DS:0x3EE7` | `Hit!` |
+| **kill** | target health `[0x5648]:0x11·slot+0xC623 == 0` → `1000:4E95` sets `[BP-0x2c]=1`; emitted inside `5847`@`6095` | `DS:0x41FC` | `Killed him!` |
+
+- On **hit** the string is followed by `1000:159F(hit-location offset [BP-0x60])` (per-location
+  damage/crit hook); the hit flag `[BP-0x56]` is set to `1` (`1000:50A3`).
+- On **miss** `[BP-0x56]=0` and `[BP-0x7C]=0`; unit visibility `[0x5662]:[slot+0x32AE]` decides the
+  return-fire setup (`1000:4FEB`).
+
+**b. The call site (`1000:521D`…`527A`).** After the message/damage path: `1000:0B32` advances the
+damage slot (`[BP-0x60]=AX`, `1000:5220`); the training-dummy check `[0x564A]:0xE484` runs; then
+**11 args** are pushed to `1000:5847` (`GC12.cs:5411-5455`):
+
+| Arg | Source | Meaning (inferred) |
+|-----|--------|--------------------|
+| `[BP+0x06]` | `[BP-0x2]`  | acting unit slot |
+| `[BP+0x08]` | `[BP-0x28]` | target unit slot |
+| `[BP+0x0a]` | `[BP-0x48]` | weapon mount/slot (`0x20` = Kick) |
+| `[BP+0x0c]` | `[BP-0x58]` | unused by `5847` (role unknown) |
+| `[BP+0x0e]` | `[BP-0x6]`  | if ≠0, also refresh the target's name/panel slot |
+| `[BP+0x10]` | `[BP-0x2c]` | **target-destroyed flag** → kill message + death bookkeeping |
+| `[BP+0x12]` | `[BP-0x3a]` | **training-dummy flag** (set at `1000:5227`/`5391`) |
+| `[BP+0x14]` | `[BP-0xc]`  | target story-slot id (kill writes `0x11·id+0xC614`) |
+| `[BP+0x16]` | `[BP-0x56]` | hit flag (`1` = hit) |
+| `[BP+0x18]` | `0x4314`    | far-pointer arg (`0x2A02:0x4314`) passed to `1000:1919` |
+| `[BP+0x1a]` | `0x2A02`    | far-pointer segment |
+
+**c. `1000:5847` structure.** Guards (`[0x5646]:0x2E3A`, `[0x5630]:0x14A` ≠ 0, else return), then:
+
+1. Reads unit class/panel byte `[0x5648]:0xC620` clamped to `4` (`[BP-0x18]`) and unit screen
+   coords (`[0x5638]:slot·2+0x4004` X, `[0x5636]:+0x4036` Y).
+2. **Names/panels:** `0170:1732(slot)` → display byte `[0x5642]:slot+0x409A`, looped over the far
+   pointer table `[0x5640]:+0x1F6` until `0xFF` (both units when arg5 ≠ 0).
+3. **Weapon-class cue dispatch:** weapon slot `[BP+0xa]` selects a cue id passed to `0000:30BF`
+   (→ `1000:9352`, played only while `DS:[0x15C] ≠ 0`): `<3 → 0xD`; `{0x9,0x13–0x17} → 0x3`;
+   `==3 → 0x5`; `{4,5,6} → 0xB`; `{7,8} → 0x6`.
+4. **Hit/miss presentation:** hit (`[BP+0x16] ≠ 0`, weapon ≥ 7) → cue `0x4` +
+   `1000:1919`/`1983`/`9193`; miss → `1000:1919`. Panel animation branches on unit class
+   `[BP-0x18]` (cue `0x1`).
+5. **Kill (arg6 ≠ 0):** emit `DS:0x41FC`; mark target dead — `[0x5632]:slot·2+0x406A=0` (alive
+   flag), `[0x5698]:slot·2+0x393C=1`, `[0x5648]:0x11·unit+0xC614=0xFF`, display byte
+   `[0x5642]:slot+0x409A=0x7E`, `[0x567A]:slot+0xD55E=0`; draw `1000:4279(0x7E,X,Y)`.
+6. **Training dummy (arg7 ≠ 0, arg2 == 0xD, `[0x5660]:0xE48E ≠ 0`):** dummy/destruction FX chain
+   `1000:7BF6`, `30BF(0x7)`, `1000:7C1A`, `1000:8D29`, `0000:2EBB`, `1000:B204`, `1000:BDBE`,
+   `0000:3B0B`, `19EF:18EF` (impact VFX), `0000:254B`, `1000:9193`.
+7. **Cleanup:** if `[0x5646]:0x2E3A ≠ 0`, clear the weapon→body map `[0x563C]:slot+0x396C=0xFF`.
+
+**d. After `5847` (`527D`…`5344`).** If the internal-structure flag `[0x5676]:0x3986` is set:
+`[0x564C]:0x4586=0`, and when `[0x5646]:0x2E3A ≠ 0` call `0000:5FB7(0x10,0)`. If
+`[0x564C]:0x4586 ≠ 0` **and** `[0x5648]:0xC620 == [BP-0xc]` **and** `[0x5646]:0x2E3A ≠ 0` →
+`0000:5FB7(0x5,0)`. Then `1000:17DC` refreshes the panel, the attack stage is forced to `0xC`
+(`[0x564E]:0x3800[0xC·[BP-2]+[BP-0x42]] |= 0x80`, `[0x5676]:0x3986=0`), `0000:2EBB` fixes the
+projection and the cursor `0xA44B/0xA44D` is restored, then `[BP-0x42]++` starts the next sub-phase.
+
+> **Result:** the "post-fire path" is now fully enumerated: 3 fixed message strings (miss/hit/kill),
+> the 11-arg call into `1000:5847`, its weapon-class cue dispatch / name / panel / kill / dummy-FX
+> branches, and the stage-advance bookkeeping. `arg4` (`[BP-0x58]`) and the exact semantics of the
+> cue ids (sound vs. animation) remain the only unresolved details (the cue player `1000:9352` is
+> still unnamed; sound is WONT_DO, §6).
 
 ---
 
@@ -2285,7 +2357,7 @@ means its damage is computed elsewhere (tonnage-based), not read from the table.
 | Animation | What it is | Status |
 |-----------|------------|--------|
 | **Weapon-impact VFX** (the "little animation at times") | `19EF:18EF` (`unknown_19EF_18EF_1B7DF`): a **13-iteration** sprite loop drawn at the **target tile** with VGA Set/Reset `0x3CE` — the hit sparkle/flash. Called **from the combat loop right after damage** (`1000:57FC`, `GC12:6886`) plus several other call sites. | ✅ documented (`engine/viewport.md` → "Impact VFX"; §7.10 pointer) |
-| **Left-panel mech portrait / state animation** | Meant to show the mech idle/move/fire/damage loop in the 80 px panel | ⚠️ **NOT decoded.** The rebuild's `MechPortrait.cs` (MECHSHAP 24×24 scaled, 4–8 fps, invented state map) is an **unverified re-implementation** (`rebuild/progress.md` flags it as such; roadmap defers "mech-panel animation" until after **T3.5**) |
+| **Left-panel mech portrait / state animation** | Meant to show the mech idle/move/fire/damage loop in the 80 px panel | ⚠️ **NOT decoded.** `1000:5847` (**§25.5**) is the per-attack driver of this panel (class branch `[BP-0x18]`, cue ids via `0000:30BF` → `1000:9352`), but the drawn art/state map itself is still unknown. The rebuild's `MechPortrait.cs` (MECHSHAP 24×24 scaled, 4–8 fps, invented state map) is an **unverified re-implementation** (`rebuild/progress.md` flags it as such; roadmap defers "mech-panel animation" until after **T3.5**) |
 | **Destruction / explosion** | On unit kill (status `0x406A → 0`) | ◐ the destruction **handler** is mapped (§7.9) but the visual effect is not decoded |
 | **Facing/turret animation** | — | n/a (no facing model — §7.15) |
 

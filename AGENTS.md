@@ -3,6 +3,24 @@
 > **Phase 6 — Spice86 sync** (updated 2026-09-28): The emulator stack builds against upstream Spice86 `master`, now at **`cf595c3d`** (was `18259ca8`). Upstream removed `ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` and bumped ModelContextProtocol to `2.2.0` — AIATTEMPT was ported accordingly. The MCP transport fix (`UseUrls()` bind + `StartAsync()` keep-alive + custom GET `/mcp/` SSE `endpoint`) was **merged upstream as PR #2246** (`cf595c3d`), so the local `spice86-mcp-fix` branch is now redundant. The A:/B: game-data mount lives in `BattleTechMcpTools/BattleTechOverrideSupplier.cs`. Port is 8086. AIATTEMPT rebuilds clean against the new master (exclude recovered `reko/**/*.cs` from compilation — it targets the old API).
 > Next priorities: end-to-end playtest from a proper NEW_GAME_INIT boot through to COMSTAR; add the Godot stock-market UI on top of the new `Fn1CD3Dispatcher` cases 0x2A/0x2B.
 
+## ▶ Current status — pick up here (2026-09-29)
+
+**Canonical working tree: this repo (`Reversing/AIATTEMPT`).** The sibling
+`Reversing/UNBATTLETECH` clone is an **obsolete prototype** (old commit, no `docs/`, generated code
+already folded into `reko/gencode/GC*.cs`) — do not work there.
+
+**Last work — C3 closed:** the combat **post-fire message path** (`1000:521D` → `1000:5847`) is fully
+enumerated in [`docs/combat-system.md`](docs/combat-system.md) **§25.5** — the three fixed messages
+(miss `DS:0x3EDE` "Missed!", hit `DS:0x3EE7` "Hit!", kill `DS:0x41FC` "Killed him!"), the 11-arg
+call, the weapon-class cue dispatch (`0000:30BF`→`1000:9352`), the kill/dummy FX, and the stage advance.
+
+**Next:** **C5** (weapon-**definition** table reader) + **C10** (Kick damage / Inferno), then **C11/U1**
+(80 px combat-panel animation; status screen / "Scan Unit"). Full living list: [`docs/WIP.md`](docs/WIP.md).
+
+**Imported from the obsolete clone (2026-09-29):** `tools/pack/exepack.exe` (original EXE
+packer/unpacker) and `reko/gencode/prototype-overrides/{MyOverrideSupplier,GeneratedOverridesManual}.cs`
+(the "register one function at a time" prototype; excluded from compilation via `reko/**/*.cs`).
+
 ## ⚠️ Documentation Priority Rule
 
 **Documentation correctness has priority over implementation.** When you discover new information that contradicts existing docs:
