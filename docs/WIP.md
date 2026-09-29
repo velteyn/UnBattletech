@@ -21,6 +21,18 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C6 | **Infantry armour types** — `+0x0D` (`0xC621`) compared to `1`; the type→item (FlakVest…) map is unknown. | §23.2b | Cross-ref the Armor-shop item ids with the record's armour-type byte. |
 | C7 | **Infantry AI / weapon selection** — how an infantry unit picks its target/weapon each turn. | §23 | Trace the unit 4-11 branch of the combat loop. |
 
+## Post-combat & party (to uncover)
+
+| # | Gap | Known hooks | Next action |
+|---|-----|-------------|-------------|
+| P1 | **Salvage management** — after a battle, which enemy mechs/equipment are recoverable, where stored, and how they enter the roster | mech bay (`fn0FDC_15E6`), unit slots `aC614`/story slots `aC724`, REPAIR/GARAGE | Find the post-combat outcome path (combat exit) and the salvage→roster code. |
+| P2 | **Party injuries** — how pilots/party take injuries from combat and how they heal | hospital "Heal Characters" (`fn1CD3` cases 0x09/0x29, 50 cr), combat health fields | Link combat damage → per-character health; find the injury/recovery code. |
+| P3 | **New pilots joining** — recruitment of new party members | `fn1CD3` case 0xE9 `CALL_ROOM_HANDLER` (creates a hireling in an empty slot; `fn11B8_0D58`), BARRACKS/BARRACK2/BARRACKS recruit NPCs, PARTY (Rex), story joins | Trace each recruitment path + the roster/slot update it performs. |
+
+> These are **currently undocumented** (no canonical section yet). Once traced, fold them into
+> [`combat-system.md`](combat-system.md) (post-combat resolution) and/or
+> [`story/story-system.md`](story/story-system.md) (party/roster).
+
 ## Track 1 blockers (from [`rebuild/roadmap.md`](rebuild/roadmap.md))
 
 | # | Blocker | Status |
