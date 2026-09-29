@@ -590,9 +590,10 @@ Heat does NOT dissipate gradually between turns. Instead, at the **end of each c
    ES:[BX + 0x92] = 0       // reset heat pool for next round
    ```
 
-3. **Optional extra penalty**: If a counter at `ES:[SI + 0xD576]` is non-zero:
+3. **Heat-surge penalty** (`ES:[SI + 0xD576]`, the "Inferno counter"): if non-zero:
    - Adds an additional +6 to the penalty at `0x6E`
    - Decrements the counter
+   - Armed to **3** by a successful **Inferno** hit (`1000:50E7`, §27.2) → +18 over 3 rounds
 
 4. **Conditional penalty reduction**: Under certain conditions (weapon range check):
    - Subtracts 4 from the penalty at `0x6E`
@@ -1063,13 +1064,13 @@ The loop entry at `0x50C3` (line 4986):
     JNZ → continue
     JMP → exit (no more valid slots)
 
-    CMP [BP-0x48], 0xB           ← weapon slot counter == 0xB?
+    CMP [BP-0x48], 0xB           ← weapon slot counter == 0xB (Inferno)?
     JNZ → skip_special
-    // Special handling for slot 0xB:
+    // Inferno special handling:
     ES = UInt16[DS, 0x5674]
-    ES:[BX + 0xD576] = 3         ← set some status flag
+    ES:[BX + 0xD576] = 3         ← arm the target's heat-surge counter (§24.2/§27.2)
     [BP-0x34] = 0                ← reset counter
-    [BP-0x7C] = 0                ← clear remaining damage
+    [BP-0x7C] = 0                ← damage := 0 (Inferno does no direct damage)
 
     // Falls through to armor read at §7.5 with new [BP-0x60]
 ```
@@ -2055,8 +2056,10 @@ short/medium bands from `+0x0E` (bits 7-5 / bits 4-0); `L` = long range `+0x0F`;
 
 **Reader:** the range-band classifier `ghidra_guess_1000_0934_10934` (`1000:0934`) reads `+0x0E`,
 `+0x0F`; the fire code (`1000:4F79`…) reads `+0x0B`, `+0x0C`; heat (`1000:48E3`) reads `+0x0D & 0x0F`;
-skill (`1000:4CA7`) reads `+0x10`. `Inferno`'s `dmg=0xFF` and `Kick`'s `dmg=0` are computed
-elsewhere (Kick's damage byte is written at `1000:4F55` into `ES:[0x3103]` = Kick record `+0x0B`).
+skill (`1000:4CA7`) reads `+0x10`. The two sentinels are runtime-substituted (both **C10 ✅**):
+`Kick`'s static `dmg=0` is overwritten at `1000:4F55` with **tonnage ÷ 5** (`ES:[0x3103]` = Kick record
+`+0x0B`), and `Inferno`'s `dmg=0xFF` is forced to **0** while it arms the target's heat-surge counter
+(`1000:50E7`) — see §27.1/§27.2.
 
 ### 5. Cross-references
 
@@ -2398,17 +2401,58 @@ the 33-entry weapon table at file `0x3D088` and the combat code):
 | Tabletop rule | In this game? | Evidence |
 |---------------|---------------|----------|
 | **Hand-to-hand / melee weapons** | ✅ **yes** (personal scale) | weapon table entries **0–6**: `Cudgel, Knife, Sword, VibroBlade, Shortbow, Longbow, Crossbow`, skill class `0 = B&Blades`. Used by **infantry/personal** combat (§23) |
-| **Mech Kick** | ✅ **yes** | weapon **#32 `Kick`** (skill `4 = Kick`); menu action "Kick"; **TN override = 3** (`cmp [BP-0x48],0x20`, `1000:4822`); AI uses it as the special `[BP-0x48]=0x20` (`1000:460C`) |
+| **Mech Kick** | ✅ **yes** | weapon **#32 `Kick`** (skill `4 = Kick`); menu action "Kick"; **TN override = 3** (`cmp [BP-0x48],0x20`, `1000:4822`); AI uses it as the special `[BP-0x48]=0x20` (`1000:460C`). **Damage = the attacker mech's tonnage ÷ 5** (see below) |
 | **Punch / Club / Charge** | ❌ **no** | no weapon-table entries and no code paths found |
 | **Death From Above (DFA)** — jump onto a mech | ❌ **no** | "Jump" is only a **movement mode** (menu / Walk·Run·Jump); no landing-on-a-unit damage code found |
-| **Tiles taking fire / area effect** | ❌ no area/fire-on-tile mechanic found | damage is per-target only; `Inferno` (#11, `dmg=255`) is a **special sentinel** — effect not yet verified (candidate: infantry-only / sets fire) |
+| **Tiles taking fire / area effect** | ❌ no area/fire-on-tile mechanic found | damage is per-target only |
+| **Inferno** | ✅ resolved | weapon **#11 `Inferno`** (`+0x0B=0xFF` sentinel): firing it **forces 0 damage** and sets the target's **heat-surge counter `0xD576` = 3** (`1000:50E7`) — i.e. **+6 heat penalty per round for 3 rounds (+18 total)**, no HP damage (see below) |
 | **Infantry close combat** | ✅ **yes** | personal weapons + the burst/damage model in §23 |
 
+#### 27.1 Kick damage — `1000:4F10`–`4F55` (verified 2026-09-29, WIP C10)
+
+`Kick`'s static table damage byte is **0**; the real value is written into the table at runtime so the
+generic damage path can read it:
+
+```
+CMP  [BP-0x48], 0x20          ; weapon index == Kick?
+JNZ  skip
+; pick the mech struct base by the acting unit's slot:
+if   [BP-0x2] <  4  ->  AX = ES:[0xC734 + 0x7D*unit]   ; player mech struct +0x10
+else                ->  AX = ES:[0xC34C + 0x7D*unit]   ; enemy  mech struct +0x10
+CX = 5; CWD; IDIV CX          ; AX = tonnage / 5
+AL = AX
+ES = [0x5652]
+ES:[0x3103] = AL              ; 0x3103 = Kick record (0x2ED8 + 32*0x11) + 0x0B  = its damage byte
+```
+
+- `0xC724`/`0xC33C` are the player/enemy mech-struct bases; `+0x10` is the **tonnage** byte
+  (mech data format, [`formats/memory-map.md`](formats/memory-map.md) §5/§"Mech Data").
+- So a 20-ton Locust kicks for 4, a 55-ton mech for 11 — classic tabletop `tonnage ÷ 5`.
+
+#### 27.2 Inferno — `1000:50DA` (verified 2026-09-29, WIP C10)
+
+```
+CMP  [BP-0x48], 0x0B          ; weapon index == Inferno?
+JNZ  0x50F5
+BX = [BP-0xC]                 ; target unit
+ES = [0x5674]
+ES:[BX + 0xD576] = 0x3        ; target heat-surge counter = 3
+AX = 0
+[BP-0x34] = 0
+0x50F5: [BP-0x7c] = AX        ; damage := 0
+```
+
+The counter `0xD576` is exactly the "heat surge" the end-of-round dissipation reads (§24.2): if
+non-zero it adds **+6** to the heat-penalty accumulator (`0x6E`) and decrements. Inferno arms it at
+**3**, so the target takes **+6 heat penalty per round for 3 rounds** (which then clamps at 30) and
+**no direct damage**. Inferno is also grouped with the energy weapons `0x10–0x12` for the impact
+VFX (`1000:5005` → `1000:63C6`, sprite `0x7C`).
+
 **Bottom line:** close combat exists at **both scales** — infantry/personal **melee weapons**
-(Cudgel/Knife/Sword/VibroBlade, "B&Blades") and the mech **Kick** (its own skill class, TN 3, and the
-AI's `0x20` special). The **rest of the tabletop physical suite (Punch, Club, Charge, DFA) is not
-implemented**, and there is **no "tiles taking fire" / area-fire** mechanic. `Kick`'s table `dmg=0`
-means its damage is computed elsewhere (tonnage-based), not read from the table.
+(Cudgel/Knife/Sword/VibroBlade, "B&Blades") and the mech **Kick** (own skill class, TN 3, damage =
+tonnage ÷ 5). The **rest of the tabletop physical suite (Punch, Club, Charge, DFA) is not
+implemented**, and there is **no "tiles taking fire" / area-fire** mechanic; the only "fire" effect is
+the **Inferno** weapon's heat surge.
 
 ---
 

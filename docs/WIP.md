@@ -8,9 +8,10 @@
 
 ## ▶ SESSION STATUS — pick up here next
 
-**This session (2026-09-29) — "C5 close-out".** Docs-first, decompilation only. **C5 ✅ resolved** —
-the weapon-**definition** table reader and all seven trailing fields are decoded and verified in
-[`combat-system.md`](combat-system.md) **§21 §4** (and §13/§6/§7/§19 corrected). Key results:
+**This session (2026-09-29) — "C5 + C10 close-out".** Docs-first, decompilation only. **C5 ✅** and
+**C10 ✅** resolved. **C5** — the weapon-**definition** table reader and all seven trailing fields are
+decoded and verified in [`combat-system.md`](combat-system.md) **§21 §4** (and §13/§6/§7/§19
+corrected). Key results:
 
 - The table is at **`DS:0x2ED8`** (file offset `0x3D088`); the old "instance table at
   `DS:[0x5652]:0x2EE4`" is the **same table** (`[0x5652]` = the data segment itself).
@@ -21,8 +22,12 @@ the weapon-**definition** table reader and all seven trailing fields are decoded
 - Reader = the range-band classifier `ghidra_guess_1000_0934_10934` (`1000:0934`); it scales
   short/medium by ×3 and compares to the cursor distance from `1000:05C5`.
 
-**▶ Next:** **C10** (Kick damage / Inferno), then **C11 / U1** (80 px panel animation + status
-screen / "Scan Unit"). Full living list: [`WIP.md`](WIP.md).
+**C10 ✅** — **Kick** damage = **attacker tonnage ÷ 5** (mech struct `+0x10`, written into the Kick
+record at `1000:4F55`); **Inferno** = **0 damage + heat surge** (arms target counter `0xD576=3` →
++6 heat penalty/round ×3). See §27.1/§27.2.
+
+**▶ Next:** **C11 / U1** (80 px panel animation + status screen / "Scan Unit"). Full living list:
+[`WIP.md`](WIP.md).
 
 ---
 
@@ -39,8 +44,8 @@ left running). **C3 ✅ resolved** — the post-fire message path after `1000:52
   (`0xC623==0` → `[BP-0x2c]=1` → mark dead, `0x7E` display byte), and the training-dummy FX chain;
 - the post-call path (`1000:17DC` panel refresh, `0000:5FB7(0x10/0x5,0)`, stage reset to `0xC`).
 
-**▶ Next:** ~~C5~~ ✅ (done later this session) → **C10** (Kick damage / Inferno), then **C11 / U1**
-(80 px panel animation + status screen / "Scan Unit").
+**▶ Next:** ~~C5~~ ✅ and ~~C10~~ ✅ (both done later this session) → **C11 / U1** (80 px panel
+animation + status screen / "Scan Unit").
 
 ---
 
@@ -65,7 +70,7 @@ repo `main` tip **`d5dde67`**. What landed:
 1. ~~**C3** — enumerate the post-fire message path after `1000:521D` (decompilation only).~~
    ✅ **done this session** — [`combat-system.md`](combat-system.md) §25.5.
 2. ~~**C5** — find the weapon-**definition** table reader (resolves `+0x0A/+0x0D/+0x0E` range packing)~~
-   ✅ **done later this session** — §21 §4. Still open: **C10** (Kick dmg / Inferno).
+   ✅ **done later this session** — §21 §4; **C10** (Kick dmg / Inferno) also ✅ — §27.1/§27.2.
 3. **C11 / U1** — decode the 80 px combat panel animation + the status screen fields / "Scan Unit".
 4. Then the bigger ones: **C6/C7/C8** (infantry armour map, infantry AI, enemy-AI decisions), **P1/P2** (salvage, injuries).
 
@@ -89,7 +94,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C6 | Infantry armour types (`+0x0D`↔FlakVest…) | ◐ partial: type written by equip code (`0000:501B`, `0170:4F07`); value↔item map still unknown |
 | C7 | Infantry AI / weapon selection | ◐ partial: unit-class split at `1000:5028` (`[BP-0x28]` vs 4/0xC); target logic not isolated |
 | C9 | **Terrain movement-cost** — no per-terrain MP cost found; confirm the docs' "movement cost" label on `0x32C6` is wrong (only to-hit + passability exist) | ⬜ see [`combat-system.md`](combat-system.md) §26 |
-| C10 | **Kick damage + Inferno effect** — `Kick` table `dmg=0` (computed elsewhere?); `Inferno` `dmg=255` sentinel meaning unknown | ⬜ see [`combat-system.md`](combat-system.md) §27 |
+| C10 | **Kick damage + Inferno effect** | ✅ **resolved** (2026-09-29): Kick damage = **attacker tonnage ÷ 5**, read from the mech struct `+0x10` and written into the Kick record's damage byte (`1000:4F55`, `ES:[0x3103]`). Inferno forces **0 damage** and arms the target's heat-surge counter `0xD576=3` (**+6 heat penalty/round ×3**) — `1000:50E7`. See [`combat-system.md`](combat-system.md) §27.1/§27.2 |
 | U1 | **Stats/status page + combat "Scan Unit"** — decode the status screen layout/fields (`fn0800_3D40`/BTSTATS) and the **inspect-another-unit** path (combat "Scan Unit" handler) | ⬜ see [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
 | C11 | **Combat panel animation** — decode what the original draws in the 80 px combat panel per state (idle/move/fire/damage/destroy) and its trigger; verify/replace the guessed `MechPortrait` (MECHSHAP) | ⬜ see [`combat-system.md`](combat-system.md) §28 |
 | C8 | **Enemy AI beyond targeting** — weapon pick (`[BP-0x48]` from `[BP-0x2]`, specials `0x20`=Kick / `0x80`), movement/approach decision, **flee**, and the "computer fights for you" auto-pilot | ◐/⬜ see [`combat-system.md`](combat-system.md) §3 "AI — coverage & gaps" |
