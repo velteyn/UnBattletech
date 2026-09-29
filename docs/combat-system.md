@@ -2236,3 +2236,22 @@ Unit-class boundaries checked: `0x04` (player lance 0-3 → combat units 4+), `0
   `39C6`) that gates a per-unit follow-up (alongside flag `[0x5626]:0x377C`); it is not a discrete
   effect value.
 - ⚠️ **C3 open:** the post-fire message path (`1000:5847…`) is not fully enumerated.
+
+---
+
+## 26. TERRAIN EFFECTS IN COMBAT (summary)
+
+BattleTech tabletop is terrain-heavy; this game implements only **part** of it. Verified 2026-09-28:
+
+| Terrain effect (tabletop) | In this game? | Evidence |
+|---------------------------|---------------|----------|
+| **Terrain → to-hit modifier** (cover/woods) | ✅ **yes** | `TN += 0x32C6[stride 0x30] + 1` (+ the `0x2D1A` table) — §6.2, `1000:4863` ✅ |
+| **Terrain → movement blocking** | ✅ **yes** | passability `prop < t0150` (per-scene gate); `fn1631_0006` — [§world-map §7a, B6] |
+| **Terrain → movement cost (MP per terrain)** | ⚠️ **not found** | no per-tile MP/step-cost decrement located; movement is threshold-blocked + fixed stepping. (The docs' "movement cost" label on `0x32C6` is **unverified**.) |
+| **Terrain → heat** (water cooling, fire) | ❌ **no** | the heat-dissipation code (`1000:07D2`–`0883`) reads **no tile/terrain** — heat is weapon-heat + penalty only (§24) |
+| **Elevation / partial cover / water depth** | ❌ no model found | |
+
+**Bottom line:** terrain matters for **to-hit** and for **whether you can enter a tile**; it does **not**
+cool mechs and has no per-terrain movement-point cost (as far as the code shows). The to-hit term is
+the classic tabletop "target in cover" modifier. Water cooling — a signature tabletop rule — is **not
+present** in this adaptation.
