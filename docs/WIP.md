@@ -21,6 +21,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C6 | Infantry armour types (`+0x0D`↔FlakVest…) | ◐ partial: type written by equip code (`0000:501B`, `0170:4F07`); value↔item map still unknown |
 | C7 | Infantry AI / weapon selection | ◐ partial: unit-class split at `1000:5028` (`[BP-0x28]` vs 4/0xC); target logic not isolated |
 | C9 | **Terrain movement-cost** — no per-terrain MP cost found; confirm the docs' "movement cost" label on `0x32C6` is wrong (only to-hit + passability exist) | ⬜ see [`combat-system.md`](combat-system.md) §26 |
+| C10 | **Kick damage + Inferno effect** — `Kick` table `dmg=0` (computed elsewhere?); `Inferno` `dmg=255` sentinel meaning unknown | ⬜ see [`combat-system.md`](combat-system.md) §27 |
 | C8 | **Enemy AI beyond targeting** — weapon pick (`[BP-0x48]` from `[BP-0x2]`, specials `0x20`=Kick / `0x80`), movement/approach decision, **flee**, and the "computer fights for you" auto-pilot | ◐/⬜ see [`combat-system.md`](combat-system.md) §3 "AI — coverage & gaps" |
 
 ## Post-combat & party (to uncover)

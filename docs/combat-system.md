@@ -2255,3 +2255,25 @@ BattleTech tabletop is terrain-heavy; this game implements only **part** of it. 
 cool mechs and has no per-terrain movement-point cost (as far as the code shows). The to-hit term is
 the classic tabletop "target in cover" modifier. Water cooling — a signature tabletop rule — is **not
 present** in this adaptation.
+
+---
+
+## 27. PHYSICAL / MELEE / CLOSE COMBAT (summary)
+
+What the classic tabletop physical-attack rules look like in this game (verified 2026-09-28 against
+the 33-entry weapon table at file `0x3D088` and the combat code):
+
+| Tabletop rule | In this game? | Evidence |
+|---------------|---------------|----------|
+| **Hand-to-hand / melee weapons** | ✅ **yes** (personal scale) | weapon table entries **0–6**: `Cudgel, Knife, Sword, VibroBlade, Shortbow, Longbow, Crossbow`, skill class `0 = B&Blades`. Used by **infantry/personal** combat (§23) |
+| **Mech Kick** | ✅ **yes** | weapon **#32 `Kick`** (skill `4 = Kick`); menu action "Kick"; **TN override = 3** (`cmp [BP-0x48],0x20`, `1000:4822`); AI uses it as the special `[BP-0x48]=0x20` (`1000:460C`) |
+| **Punch / Club / Charge** | ❌ **no** | no weapon-table entries and no code paths found |
+| **Death From Above (DFA)** — jump onto a mech | ❌ **no** | "Jump" is only a **movement mode** (menu / Walk·Run·Jump); no landing-on-a-unit damage code found |
+| **Tiles taking fire / area effect** | ❌ no area/fire-on-tile mechanic found | damage is per-target only; `Inferno` (#11, `dmg=255`) is a **special sentinel** — effect not yet verified (candidate: infantry-only / sets fire) |
+| **Infantry close combat** | ✅ **yes** | personal weapons + the burst/damage model in §23 |
+
+**Bottom line:** close combat exists at **both scales** — infantry/personal **melee weapons**
+(Cudgel/Knife/Sword/VibroBlade, "B&Blades") and the mech **Kick** (its own skill class, TN 3, and the
+AI's `0x20` special). The **rest of the tabletop physical suite (Punch, Club, Charge, DFA) is not
+implemented**, and there is **no "tiles taking fire" / area-fire** mechanic. `Kick`'s table `dmg=0`
+means its damage is computed elsewhere (tonnage-based), not read from the table.
