@@ -26,6 +26,7 @@ should summarise and link here rather than restate.
 | BLD bytecode, opcodes, cipher, `fn1CD3` cases | [`formats/bld-bytecode.md`](formats/bld-bytecode.md) |
 | BLD opcode coverage (which opcodes the 26 scripts use) | [`formats/bld-opcode-coverage.md`](formats/bld-opcode-coverage.md) |
 | Map → BLD trigger map (building tiles → BLD) | [`formats/map-bld-triggers.md`](formats/map-bld-triggers.md) |
+| Weapon system (multi-shot SRM/LRM, instance + definition tables) | [`formats/weapon-system.md`](formats/weapon-system.md) |
 | ANM animation format | [`formats/anm-format.md`](formats/anm-format.md) |
 | Memory map + address reference | [`formats/memory-map.md`](formats/memory-map.md) |
 | Combat system | [`combat-system.md`](combat-system.md) |

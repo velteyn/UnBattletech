@@ -1231,14 +1231,20 @@ Combat state at 0xA44B/0xA44D is saved/restored around the combat handler invoca
 
 #### Weapon Data Table (stride = 17 bytes = 0x11)
 
+> ⚠️ **The offsets below are provisional and appear shifted by one vs the binary** (2026-09-28).
+> A fresh dump of the 33-record definition table (`UNBTECH.exe` @ `0x3D088`) indicates
+> **`+0x0B` = damage**, **`+0x0C` = cluster column/volley**, `+0x10` = skill; `+0x0A`/`+0x0D`/`+0x0E`
+> are unresolved. See [`formats/weapon-system.md`](formats/weapon-system.md) §3–§4 for the dump +
+> multi-shot (SRM/LRM) mechanics.
+
 | Field | Offset | Description |
 |-------|--------|-------------|
 | Name | +0x00 | 10 bytes, ASCII null-padded |
-| Damage | +0x0A | uint8 |
-| Shots/Ammo | +0x0B | uint8 (0x81 = infinite?) |
-| Heat | +0x0C | uint8 |
-| Sound/VFX | +0x0D | uint8 |
-| Range | +0x0E | uint16 LE |
+| _(unresolved)_ | +0x0A | uint8 |
+| **Damage (per-missile for cluster)** | **+0x0B** | uint8 |
+| **Cluster column / volley** | **+0x0C** | uint8 (1 = single-shot) |
+| Sound/VFX / heat? | +0x0D | uint8 (ambiguous) |
+| Range (packed) | +0x0E | uint16 LE |
 | Skill | +0x10 | uint8 (0=B&Blades, 1=Pistol, 2=Rifle, 3=Gunnery, 4=Kick) |
 
 Access pattern: `BX = weaponSlot * 0x11`, then `DS:[BX + 0x2EE4]` (range table copy in data segment)
