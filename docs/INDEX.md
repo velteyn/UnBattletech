@@ -9,6 +9,7 @@ should summarise and link here rather than restate.
 |-----|---------|
 | [`../README.md`](../README.md) | Project intro, build & run, repo layout |
 | [`../AGENTS.md`](../AGENTS.md) | Agent/ops manual: build, run, tool CLIs, gotchas, rules |
+| [`WIP.md`](WIP.md) | **Work in progress** — open gaps + next actions (living doc, update each session) |
 | [`context.md`](context.md) | Master overview + what's known / unknown |
 | [`SOURCES.md`](SOURCES.md) | Sources & evidence policy — what each source (binary, manual, walkthroughs, personal playtesting, sibling games) is authoritative for, and how a claim becomes *verified* |
 
