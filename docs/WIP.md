@@ -29,12 +29,12 @@ record at `1000:4F55`); **Inferno** = **0 damage + heat surge** (arms target cou
 **C11 ✅** — combat map art is `MECHSHAP.CMP` unit sprites (Locust/Commando 2-frame walks, wrecks,
 Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`; registered
 by `18AD:070A`, blitted by `1000:1983` at map tiles. **No persistent 80 px portrait**; `MechPortrait.cs`
-is invented. **C11b ◐** — the left-panel clips are **`O*.ANM` BLD/story cutscenes**, not combat-engine animations.
-The **stomp** = the post-training Kurita raid crushing the player's cockpit (`TRAINING.BLD` §17.9),
-played via the BLD/location ANM path (`fn135D`) — hence no combat xref. Best-effort render: cockpit
-`O0`, stomp `O1`, pilot portrait `O5`/`O13`, infantry `O7`, explosion `O9`. Open: a verified ANM
-decoder + the `fn135D` clip selector. (The 1988 ad is an artist's collage of real game pieces, not a
-literal screenshot.) See §28.1.
+is invented. **C11b ◐** — `O*.ANM` are a **generic 88×88 animation resource** (top-left panel), reused for building
+interiors, story beats, and **combat dramatisation** (mech firing, mech stomping a downed pilot) — no
+"combat vs story" split. Seen e.g. at the post-training Kurita raid (`TRAINING.BLD` §17.9). Best-effort
+render: cockpit `O0`, stomp `O1`, pilot portrait `O5`/`O13`, infantry `O7`, explosion `O9`. Open: a
+verified ANM decoder + the full trigger→clip map. (The 1988 ad is an artist's collage of real game
+pieces, not a literal screenshot.) See §28.1.
 
 **U1 ◐ (partial)** — `fn0800_3D40` control flow decoded (suspend flag, cursor save, arrow-key unit
 cycling, SPACE exit, `0800:3FAE` draws `BTSTATS.CMP`); its only Reko caller is the world-map SPACE
@@ -112,7 +112,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C10 | **Kick damage + Inferno effect** | ✅ **resolved** (2026-09-29): Kick damage = **attacker tonnage ÷ 5**, read from the mech struct `+0x10` and written into the Kick record's damage byte (`1000:4F55`, `ES:[0x3103]`). Inferno forces **0 damage** and arms the target's heat-surge counter `0xD576=3` (**+6 heat penalty/round ×3**) — `1000:50E7`. See [`combat-system.md`](combat-system.md) §27.1/§27.2 |
 | U1 | **Stats/status page + combat "Scan Unit"** | ◐ partial (2026-09-29): `fn0800_3D40` control flow decoded (`w014A=1`, cursor save, arrow-key unit cycling, SPACE exit, `0800:3FAE` draws BTSTATS.CMP); **only caller = world-map SPACE menu**, so combat "Scan Unit" uses another (unisolated) path. Still open: the `3FAE` column/field layout + the Scan Unit handler. See [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
 | C11 | **Combat sprites** | ✅ **resolved** (2026-09-29): `MECHSHAP.CMP` unit sprites (Locust/Commando 2-frame walks, wrecks, Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`. Registered by `18AD:070A`, blitted by `1000:1983` at map tile positions. **No persistent 80 px portrait** — `MechPortrait.cs` is an invented panel UI. See [`combat-system.md`](combat-system.md) §28.1 |
-| C11b | **Left-panel ANM cutscenes** | ◐ **art + nature identified, dispatch open** — the top-left panel is a **generic 88×88 ANM surface** and plays `O*.ANM` **BLD/story cutscenes**, *not* combat-engine animations. The **stomp** = the post-training Kurita raid crushing the player's cockpit (`TRAINING.BLD` §17.9); played via the BLD/location ANM path (`fn135D`), which explains the absence of a combat xref. Best-effort render: cockpit `O0`, stomp `O1`, pilot portrait `O5`/`O13`, infantry `O7`, explosion `O9`. Open: verified ANM decoder + the `fn135D` clip selector. See §28.1 |
+| C11b | **ANM usage / left-panel animations** | ◐ **system understood, clip→trigger map open** — `O*.ANM` are a **generic 88×88 animation resource** shown in the top-left panel and reused for many purposes (building interiors, story dramatisation, **combat dramatisation** like a mech firing or stomping a downed pilot). There is **no "combat ANM" vs "story ANM" split**. Best-effort render: cockpit `O0`, stomp `O1`, pilot portrait `O5`/`O13`, infantry `O7`, explosion `O9`. Open: a verified ANM decoder + the full trigger→clip map (BLD `fn135D`, story, combat callers). See §28.1 |
 | C8 | **Enemy AI beyond targeting** — weapon pick (`[BP-0x48]` from `[BP-0x2]`, specials `0x20`=Kick / `0x80`), movement/approach decision, **flee**, and the "computer fights for you" auto-pilot | ◐/⬜ see [`combat-system.md`](combat-system.md) §3 "AI — coverage & gaps" |
 
 ## Post-combat & party (to uncover)
