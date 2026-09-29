@@ -2156,3 +2156,56 @@ subtract heat-sink capacity. Treat heat sinks as flavour/crit-slot filler for co
 ### 24.5 Open
 - The exact consumer of `[0x5624]:0x4592` (`penalty/5`) — likely an overheat flag / movement gating —
   is **not fully traced**. ⚠️
+
+---
+
+## 25. COMBAT TURN STRUCTURE (round → activation → unit → subphase)
+
+> Derived from the **call order of the combat loop `1000:458C`** plus the verified formula sections
+> (§2–§7, §24). This is the ordered "what happens each turn" view that was previously only implicit in
+> §1. Verified pieces are marked; the loop-level semantics marked ⚠️ still need trace-confirmation.
+
+### 25.1 Nesting
+
+```
+ROUND  (repeat until one side is dead, or the exit marker is reached)
+ ├─ ACTIVATION index  [BP-0x42] = 0 .. 0xB   (12)      ⚠️ increment at 1000:535A; 0xC = exit; 0 = reset
+ │    ├─ also selects the AI target: table[ unit + [BP-0x42] ]   (§3)
+ │    │
+ │    └─ UNIT loop     [BP-0x28] = 0 .. 0x17  (24 slots)
+ │         └─ PER-UNIT SUBPHASES (below)
+ └─ END OF ROUND: heat dissipation (§24.2), pool clear, encounter/exit checks
+```
+
+Unit-class boundaries checked: `0x04` (player lance 0-3 → combat units 4+), `0x0C`/`0x0D` (enemy mechs
+12-15), `0x10` (extended pool 16-23) — see §1/§13.
+
+### 25.2 Per-unit subphases (in call order)
+
+| # | Subphase | Function(s) | Calculation / effect |
+|---|----------|-------------|----------------------|
+| 0 | save DSP context | `19EF:2FDC` | segment-context save |
+| 1 | **Act check** | `1000:0934` | action code; `AX ≥ 3` → unit skips its turn |
+| 2 | **AI target** | `1000:0AB2` | `target = pref_table[0x7D·unit + 0x33 + stage]`, mask `0x7F`, keep `0x10..0x20` (§3) ✅ |
+| 3 | **Movement** | `19EF:0971` (dir), `1000:17BB` (steps) | direction toward target; 1 tile/step; collision/bounds; fog cleared |
+| 4 | **Targeting / LoS** | `1000:160E` (+`0000:2EBB`) | 8-dir ray-cast; blocked if `tile_prop >= t0150` (§5, §7a) ✅ |
+| 5 | **To-hit build** | `1000:1554` ×2, tables | `TN = ret·2 + 4` (Kick→3) `+ skill(0x24,0x25)` `+ (0x32C6[0x30·slot]+1)` `+ 0x2D1A[..]` `+ 2 if 0xC79B≠0` `+ 1 per heat thresh 8/13/17/24` (§6.2) ✅ |
+| 6 | **Hit roll** | `0000:30DD` / `30F3` | 2D6 ≥ TN → hit (§6.1, §6.7) ✅ |
+| 7 | **Hit location** | `19EF:0BC0` (RNG) | `RNG & 0x8` → `[0x566A]:0x2E43` → offset `[BP-0x60]` (§6.8) ✅ |
+| 8 | **Cluster** | `0000:30DD` | if `col>1`: `2D6·7 + col` → `[0x566C]:0x2E5E` hits; `dmg = per_missile × hits` (§6.6) ✅ |
+| 9 | **Damage** | `19EF:1886`, `0B32` | armour → structure → **overflow** to next location (`0B32` slot-advance), crits (`19EF:1886`), ammo/explosion (§7) ✅ store |
+| 10 | **Heat gen** | — | `weapon[0x2EE5]&0xF` → pool `0x92`/`0x8A` (§24.1) ✅ |
+| 11 | **Post-fire** | `1000:5847`, `17DC`, `BDBE`, … | messages/cleanup; mem `17BB` coord writes |
+| 12 | **Infantry variant** | — | units 4-11 use the 17-byte record: burst cap 4, armour `+0x0E`→health `+0x0F` (§23) ✅ |
+
+### 25.3 End of round
+- **Heat dissipation** for every mech: `pool → penalty(0x6E)`, pool cleared, `+6`/`-4`, clamp `0x1E`
+  (§24.2) ✅.
+- Weapon/unit status, fog, encounter-flag updates; then the next activation.
+
+### 25.4 Open
+- ⚠️ Whether `[BP-0x42]` is incremented **per round** (each round uses the next AI preference slot) or
+  is a finer per-unit sub-phase — the increment sites are `1000:535A` (INC, CMP 0xC) / `5310` (set 0xC)
+  / `547B` (reset 0). Confirm by tracing a live round.
+- The damage-**overflow** loop internals (§7.8) and the post-fire message path (`1000:5847…`) are not
+  fully enumerated.
