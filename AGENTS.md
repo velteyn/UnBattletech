@@ -438,6 +438,57 @@ r2 -q -c "e asm.arch=x86; e asm.bits=16; s 0x0FDC*0x10+0x01C0; pd 50" UNBTECH.ex
 r2 -q -c "e asm.arch=x86; e asm.bits=16; aaa; afl" UNBTECH.exe
 ```
 
+### Pseudo-code & function analysis (high value — use these first)
+
+`aaa` (full analysis) + `afl` (function list) + `pdc` (pseudo-code) are the fastest way to *understand*
+a routine without hand-decoding assembly; `pdc` prints a C-like body with the call arguments — this is
+how the ANM scene handler and player were cracked (C11b).
+
+```bash
+# Full analysis, list functions, then pseudo-code of one
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa" -c "afl" UNBTECH.exe
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa; s 0x48b7; pdc" UNBTECH.exe      # by address
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa; s sym.fcn.00007dc8; pdc" UNBTECH.exe
+
+# Seek to a function/address, or a far call target: segment*0x10 + offset
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "s sym.fcn.000048b7; pdc" UNBTECH.exe
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "s 0x0FDC*0x10+0x01C0; pd 50" UNBTECH.exe
+
+# Xrefs to/from a function (who calls it)
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa; s 0x48b7; axt" UNBTECH.exe
+```
+
+**`pdc` gotchas:** it needs an analysed function; `af @ <addr>` creates one at `<addr>` (which may be
+mid-function). For a reliable body, `aaa` first and seek to the true entry, or find the enclosing
+function from `afl`. pdc drops `es:`/segment accuracy in places — always confirm addresses/memory
+operands against `pd`/`px` before trusting.
+
+### Address mapping (r2 ↔ Reko ↔ file) — read before trusting any address
+
+The same code appears under **three** numbering schemes; conflating them wastes hours:
+
+| Scheme | Example | Relation |
+|--------|---------|----------|
+| **r2 / physical** | `0x48B7` (`lcall 0:0x48B7`) | ground truth; `phys = seg*0x10 + off` |
+| **Reko / `.cs` codegen** | `1000:52B9`, `0170:48B7` | **`Reko linear = phys + 0x1700`** for the game-code modules |
+| **DS-relative data** | `DS:0x2ED8` | **`file offset = DS_offset + 0x3A1B0`** |
+
+Concrete: `r2 0x13BB9` = Reko `1000:52B9` = the combat `play_anm(0x10)` call; `r2 0x1AC12` = Reko
+`1000:C312` = the ANM decoder; `DS:0x141A` table = file `0x3B5CA`. Because the game aliases segments,
+one routine is emitted under many `ghidra_guess_*`/`unknown_*` names — **resolve by physical address
+and confirm the bytes with `pd`/`px`**, don't trust a symbol name.
+
+### Finding a routine by signature (when strings/xrefs fail)
+
+```bash
+# Byte-pattern search (e.g. `mov dx,0xF20` = the ANM decoder)
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "/x ba200f" UNBTECH.exe
+# `xor es:[di],al` = 26 30 05   |   `mov byte es:[0x12],0x4f` ('O') = 26 c6 06 12 00 4f
+
+# Enumerate far-call sites to an offset (lcall <off> — offset is little-endian):
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "/x 9ab748" UNBTECH.exe   # every `lcall *:0x48B7`
+```
+
 ### Linear Address Calculation
 
 MS-DOS real-mode `SEGMENT:OFFSET` → linear = `SEGMENT * 0x10 + OFFSET`.

@@ -38,9 +38,23 @@ r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa; s <ADDR>; pd 20" UNBTECH.exe
 r2 -q -c "/x 26803e50d400" UNBTECH.exe        # cmp byte es:[0xD450],0
 ```
 
-Addresses: find code by **byte search / analysis** rather than assuming a fixed offset — r2's MZ
-mapping does not match Reko's linear addresses one-for-one (observed ≈ `reko_linear − 0x8000` for the
-segments checked, but verify per target). Fuller CLI recipes are in [`AGENTS.md`](../../AGENTS.md).
+**Pseudo-code + function analysis (added 2026-09-29 — very high value):**
+```bash
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa" -c "afl" UNBTECH.exe        # analyse + list functions
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa; s <ADDR>; pdc" UNBTECH.exe   # C-like pseudo-code
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa; s sym.fcn.00007dc8; pdc" UNBTECH.exe
+r2 -q -e asm.arch=x86 -e asm.bits=16 -c "aaa; s <ADDR>; axt" UNBTECH.exe   # callers/xrefs
+```
+`pdc` is the fastest way to grasp a routine's logic *with its call arguments* — this is how the ANM
+scene handler / player (`0000:48B7`) and the scene→ANM table (`DS:0x141A`) were cracked. Confirm
+`es:`/segment operands against `pd`/`px` (pdc drops some segment accuracy).
+
+**Address mapping (resolved 2026-09-29):** for the game-code modules **`r2 phys = Reko linear − 0x1700`**
+(e.g. `r2 0x13BB9` = Reko `1000:52B9`; `r2 0x1AC12` = Reko `1000:C312`). (The earlier "≈ −0x8000"
+observation applied to the *data* module / strings, not the code.) DS-relative **data**: `file offset =
+DS_offset + 0x3A1B0` (anchor `DS:0x2ED8` = file `0x3D088`). Because the game aliases segments, one
+routine is emitted under many `ghidra_guess_*`/`unknown_*` names — **resolve by physical address and
+confirm the bytes**. Fuller CLI recipes are in [`AGENTS.md`](../../AGENTS.md).
 
 **Example use (2026-09-28, BLD audit):** located the `fn0FDC_01C0` opcode cases by searching for
 `cmp byte es:[0xD450],0`, then disassembled the shared skip path to read
