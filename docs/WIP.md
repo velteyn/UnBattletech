@@ -26,8 +26,13 @@ corrected). Key results:
 record at `1000:4F55`); **Inferno** = **0 damage + heat surge** (arms target counter `0xD576=3` →
 +6 heat penalty/round ×3). See §27.1/§27.2.
 
-**▶ Next:** **C11 / U1** (80 px panel animation + status screen / "Scan Unit"). Full living list:
-[`WIP.md`](WIP.md).
+**C11 ◐ (mostly ✅)** — combat art is `MECHSHAP.CMP` unit sprites (Locust/Commando 2-frame walks,
+wrecks, Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`;
+registered by `18AD:070A`, blitted by `1000:1983` at map tiles. **No 80 px mech portrait exists**;
+`MechPortrait.cs` is invented. Open: the `DS:0x5008` cue table + mech-type→sprite map. See §28.1.
+
+**▶ Next:** **U1** (status screen layout + combat "Scan Unit"), then finish C11's cue table. Full
+living list: [`WIP.md`](WIP.md).
 
 ---
 
@@ -96,7 +101,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C9 | **Terrain movement-cost** — no per-terrain MP cost found; confirm the docs' "movement cost" label on `0x32C6` is wrong (only to-hit + passability exist) | ⬜ see [`combat-system.md`](combat-system.md) §26 |
 | C10 | **Kick damage + Inferno effect** | ✅ **resolved** (2026-09-29): Kick damage = **attacker tonnage ÷ 5**, read from the mech struct `+0x10` and written into the Kick record's damage byte (`1000:4F55`, `ES:[0x3103]`). Inferno forces **0 damage** and arms the target's heat-surge counter `0xD576=3` (**+6 heat penalty/round ×3**) — `1000:50E7`. See [`combat-system.md`](combat-system.md) §27.1/§27.2 |
 | U1 | **Stats/status page + combat "Scan Unit"** — decode the status screen layout/fields (`fn0800_3D40`/BTSTATS) and the **inspect-another-unit** path (combat "Scan Unit" handler) | ⬜ see [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
-| C11 | **Combat panel animation** — decode what the original draws in the 80 px combat panel per state (idle/move/fire/damage/destroy) and its trigger; verify/replace the guessed `MechPortrait` (MECHSHAP) | ⬜ see [`combat-system.md`](combat-system.md) §28 |
+| C11 | **Combat sprite/animation** | ◐/✅ **mostly resolved** (2026-09-29): art = `MECHSHAP.CMP` unit sprites (Locust/Commando 2-frame walks, wrecks, Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`. Registered by `18AD:070A`, blitted by `1000:1983` at map tile positions. **No 80 px mech portrait exists** — `MechPortrait.cs` is invented. Still open: the `DS:0x5008` cue-command table (cue→frame/sound) + mech-type→sprite map. See [`combat-system.md`](combat-system.md) §28.1 |
 | C8 | **Enemy AI beyond targeting** — weapon pick (`[BP-0x48]` from `[BP-0x2]`, specials `0x20`=Kick / `0x80`), movement/approach decision, **flee**, and the "computer fights for you" auto-pilot | ◐/⬜ see [`combat-system.md`](combat-system.md) §3 "AI — coverage & gaps" |
 
 ## Post-combat & party (to uncover)

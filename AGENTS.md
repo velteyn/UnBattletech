@@ -387,7 +387,7 @@ The stats/inventory screen (`fn0800_3D40`) is a **full-screen modal overlay**, l
 
 1. ~~**Runtime ANM decompression**~~ DONE
 2. ~~**Animation dispatch**~~ DONE
-3. ~~**Combat mech panel**: Animate combat left-panel display with ANM frames per mech state (idle/move/fire/damage).~~ **DONE** — `MechPortrait.cs` uses MECHSHAP 24×24 Locust/Commando sprites scaled to 48×48, builds runtime spritesheet, cycles frames on timer. State mapping: Idle (4fps), Moving (8fps), Firing (yellow overlay 300ms), TakingDamage (red overlay 400ms). Integrated into CombatHUD at top of 80px panel, labels shifted down.
+3. ~~**Combat mech panel**: Animate combat left-panel display with ANM frames per mech state (idle/move/fire/damage).~~ **IMPLEMENTED (but INVENTED UI)** — `MechPortrait.cs` uses MECHSHAP 24×24 Locust/Commando sprites scaled to 48×48, builds runtime spritesheet, cycles frames on timer. State mapping: Idle (4fps), Moving (8fps), Firing (yellow overlay 300ms), TakingDamage (red overlay 400ms). Integrated into CombatHUD at top of 80px panel, labels shifted down. **⚠️ 2026-09-29 (C11): the original has NO 80 px mech portrait — MECHSHAP is the on-map unit sprite sheet (`1000:1983` blits it at map tiles); the real per-mech animation is the 2-frame map walk + wreck. `MechPortrait.cs` is an invented panel UI, not a port (see `docs/combat-system.md` §28.1).**
 4. ~~**Map cursor animation**~~ DONE — frame-based spritesheet with RegionRect cycling replaces old Modulate-toggle blink
 
 ## Radare2 (r2) Tooling

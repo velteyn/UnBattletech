@@ -2461,10 +2461,52 @@ the **Inferno** weapon's heat surge.
 | Animation | What it is | Status |
 |-----------|------------|--------|
 | **Weapon-impact VFX** (the "little animation at times") | `19EF:18EF` (`unknown_19EF_18EF_1B7DF`): a **13-iteration** sprite loop drawn at the **target tile** with VGA Set/Reset `0x3CE` — the hit sparkle/flash. Called **from the combat loop right after damage** (`1000:57FC`, `GC12:6886`) plus several other call sites. | ✅ documented (`engine/viewport.md` → "Impact VFX"; §7.10 pointer) |
-| **Left-panel mech portrait / state animation** | Meant to show the mech idle/move/fire/damage loop in the 80 px panel | ⚠️ **NOT decoded.** `1000:5847` (**§25.5**) is the per-attack driver of this panel (class branch `[BP-0x18]`, cue ids via `0000:30BF` → `1000:9352`), but the drawn art/state map itself is still unknown. The rebuild's `MechPortrait.cs` (MECHSHAP 24×24 scaled, 4–8 fps, invented state map) is an **unverified re-implementation** (`rebuild/progress.md` flags it as such; roadmap defers "mech-panel animation" until after **T3.5**) |
-| **Destruction / explosion** | On unit kill (status `0x406A → 0`) | ◐ the destruction **handler** is mapped (§7.9) but the visual effect is not decoded |
+| **Mech unit sprites (map)** | The mechs you see on the combat grid | ✅ **decoded 2026-09-29 (C11, below)**: `MECHSHAP.CMP` unit sprites, 2-frame walk cycles + wrecks; blitted by `1000:1983` at tile positions. |
+| **Fire / impact FX** | Muzzle/fire and hit-effect art | ✅ `MECHSHAP` sprites: **Fire_Large `0x7C`**, Fire_Small `0x7D`, Impact_Small `0x7E`, Impact_Large `0x7F`. `1000:63C6` spawns Fire_Large at the target (energy/PPC/Inferno). |
+| **Destruction / wreck** | On unit kill (status `0x406A → 0`) | ✅ the wreck is a **MECHSHAP sprite** (`Locust_Wreck 0x80`, `Commando_Wreck 0x81`); handler mapped §7.9 |
+| **Left-panel mech portrait** | A scaled mech portrait in the 80 px panel | ❌ **not a thing in the original.** No panel-portrait blit was found — the mech art is the **on-map** MECHSHAP sprite (§28.1). The rebuild's `MechPortrait.cs` (MECHSHAP scaled into the panel, invented states) is an **invented UI**, not a port. |
 | **Facing/turret animation** | — | n/a (no facing model — §7.15) |
 
 **Note:** combat does **not** use the building ANM system (`fn135D` location-graphics dispatch has **no
 combat call sites**) — so the ANM files O0–O16 are building/text-scene art, not combat art. The combat
-"blink" you see on a hit is the `19EF:18EF` impact VFX, not an ANM.
+hit "blink" is the `19EF:18EF` direct-pixel sparkle plus the MECHSHAP fire sprite (below), not an ANM.
+
+### 28.1 Combat sprite system — C11 (verified 2026-09-29)
+
+> The art is fully documented outside this repo's `docs/`: the sprite IDs live in
+> [`InceptionTools/Enums/SpriteEnum.cs`](../InceptionTools/Enums/SpriteEnum.cs) and the extraction
+> grid in [`InceptionTools/AssetExtractor.cs`](../InceptionTools/AssetExtractor.cs) /
+> [`InceptionTools/Graphics/Sprites.cs`](../InceptionTools/Graphics/Sprites.cs). This section ties them
+> to the runtime code.
+
+**Art: `MECHSHAP.CMP`** — the unit sprite sheet (the file list at `3EDB:0CC0`…`0x0CD0`). Sprites are
+24×24 (`0x18×0x18`). Combat-relevant IDs:
+
+| ID | Sprite | Notes |
+|----|--------|-------|
+| `0x78`/`0x79` | Locust combat **Right** 01/02 | 2-frame **walk cycle** |
+| `0x7A`/`0x7B` | Locust combat **Left** 01/02 | 2-frame walk cycle |
+| `0xA2`/`0xA3` | Commando combat **Forward**/**Rear** | |
+| `0xA4`/`0xA5` | Commando combat **Right**/**Left** | |
+| `0x7C`/`0x7D` | **Fire_Large** / **Fire_Small** | muzzle/fire FX |
+| `0x7E`/`0x7F` | **Impact_Small** / **Impact_Large** | hit FX |
+| `0x80`/`0x81` | **Locust_Wreck** / **Commando_Wreck** | destroyed mechs |
+
+**Registration (setup):** `18AD:070A` = *Extract_Sprites_From_MECHSHAP(id, x, y, w, h)* decodes one
+sprite from `MECHSHAP.CMP` into the runtime sprite table `[0x56FC]:0x39FA + id*4` (pointer + pitch).
+Called in loops during game setup (`0697:040B`…, duplicated verbatim in segment `0D27:040B`), which
+loads `MECHSHAP.CMP` into `3092:0x4614` first.
+
+**Blit (combat):** `1000:1983(spriteId, x, y)` looks up `[0x55C0]:0x39FA + id*4` and blits it
+(via `19EF:28EB`, or the text-mode path `1000:A267`). The combat-view redraw `1000:5847` (§25.5) calls
+it to draw the units at their **map tile positions** (`1000:5EDB` x∈[0x68,0x140), `1000:6022`), the
+fire sprite, and the panel text.
+
+**Cue stream:** `0000:30BF(cue)` → `1000:9352` runs a **stored command stream** from the table at
+`DS:0x5008`, writing display parameters via segments `0x56FE`/`0x5700` (`[0x4612]`, `[0x3984]`…). The
+attack/weapon class in `1000:5847` picks the cue id (e.g. `0x30BF(0x3/0x5/0x6/0xB/0xD)`), so this is
+the real "per-state cue" mechanism.
+
+**Still open (follow-up):** the exact `DS:0x5008` cue-command table (cue id → frame/sound/coords), the
+mech-type → base-sprite-id map, and the walk-frame timing. The `19EF:18EF` "impact" is a **direct-pixel**
+sparkle into the map buffer `0x244B:0x1DDC` (not a MECHSHAP sprite).
