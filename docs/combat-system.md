@@ -2277,3 +2277,18 @@ the 33-entry weapon table at file `0x3D088` and the combat code):
 AI's `0x20` special). The **rest of the tabletop physical suite (Punch, Club, Charge, DFA) is not
 implemented**, and there is **no "tiles taking fire" / area-fire** mechanic. `Kick`'s table `dmg=0`
 means its damage is computed elsewhere (tonnage-based), not read from the table.
+
+---
+
+## 28. COMBAT ANIMATIONS — coverage
+
+| Animation | What it is | Status |
+|-----------|------------|--------|
+| **Weapon-impact VFX** (the "little animation at times") | `19EF:18EF` (`unknown_19EF_18EF_1B7DF`): a **13-iteration** sprite loop drawn at the **target tile** with VGA Set/Reset `0x3CE` — the hit sparkle/flash. Called **from the combat loop right after damage** (`1000:57FC`, `GC12:6886`) plus several other call sites. | ✅ documented (`engine/viewport.md` → "Impact VFX"; §7.10 pointer) |
+| **Left-panel mech portrait / state animation** | Meant to show the mech idle/move/fire/damage loop in the 80 px panel | ⚠️ **NOT decoded.** The rebuild's `MechPortrait.cs` (MECHSHAP 24×24 scaled, 4–8 fps, invented state map) is an **unverified re-implementation** (`rebuild/progress.md` flags it as such; roadmap defers "mech-panel animation" until after **T3.5**) |
+| **Destruction / explosion** | On unit kill (status `0x406A → 0`) | ◐ the destruction **handler** is mapped (§7.9) but the visual effect is not decoded |
+| **Facing/turret animation** | — | n/a (no facing model — §7.15) |
+
+**Note:** combat does **not** use the building ANM system (`fn135D` location-graphics dispatch has **no
+combat call sites**) — so the ANM files O0–O16 are building/text-scene art, not combat art. The combat
+"blink" you see on a hit is the `19EF:18EF` impact VFX, not an ANM.
