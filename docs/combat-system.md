@@ -2525,17 +2525,18 @@ hit). The 1988 print ad illustrates this with a **collage of real game pieces** 
 genuine game art, but *not a literal single screenshot* — so treat the real `O*.ANM` files as ground
 truth for pixel details and the ad only as a pointer to which clips exist.
 
-Best-effort render of the real `O*.ANM` files (my decoder is **approximate** — frame boundaries drift on
-later frames, so treat indices as provisional) identified these clips:
+Clip contents below are from a **verified ANM decoder** (2026-09-29): the decoder was reconstructed from
+the real routine at `1000:AC12` (`mov dx,0xF20`; big-endian extended run; `xor es:[di],al` delta —
+`r2`/Reko agree) and reproduces the file structure exactly (`O0 = 19` frames). See
+[`formats/anm-format.md`](formats/anm-format.md).
 
 | Clip | Content (rendered from the actual file) |
 |------|------------------------------------------|
-| `O0` | cockpit dashboard (empty forward view) |
-| `O1` | mech torso/leg close-up over ground (the **stomp** framing) |
-| `O5`/`O13` | pilot/operator portrait in cockpit |
-| `O7` | squad of infantry advancing |
-| `O9` | mechs + growing explosion cloud |
-| `O16` | mech **firing twin beams** into an explosion (outside the game's O0–O15 table) |
+| `O0` | empty cockpit / forward dashboard view |
+| `O2`, `O5`, `O12`, `O13` | character portraits (pilot/operator/female); `O5`'s later frames add a small **walking figure** (the escape) |
+| `O7` | infantry soldier with rifle |
+| `O9` | **mech stomping a downed pilot/wreck** — a large leg/foot descends over a small figure *(this is the "stomp")* |
+| `O16` | mech **firing twin beams** into an explosion (file is outside the game's `0…0x0F` table) |
 
 **ANMs are a generic animation resource, not a "combat" or "story" subsystem.** The `O0.ANM`–`O16.ANM`
 files are 88×88 animations that the top-left (or full) panel displays on demand; the *game logic*
@@ -2543,14 +2544,13 @@ decides when. They are reused across contexts — building/room interiors, story
 dramatisation — so there is **no separate "combat ANM" vs "story ANM" split**. Treat any individual
 clip as a reusable asset.
 
-- **Example of a combat-context clip:** the **stomp** (a Kurita Jenner crushing a downed pilot) is seen
-  around the post-training **Kurita raid** — the `TRAINING.BLD` narrative (~offset 5900–6200) reads
-  *"One of the Kuritan Jenner tries to crush you in your Mech's cockpit — but you barely escape…"*,
-  then *"You manage to hide in the trees"* ([`story/story-system.md`](story/story-system.md) §17.9). It
-  is played through the location/BLD ANM path (`fn135D`), which is why combat code has **no direct
-  xref** — even though the player experiences it *as part of* combat.
+- **Example of a combat-context clip:** the **stomp = `O9`** (a Kurita Jenner crushing a downed pilot)
+  is seen around the post-training **Kurita raid** — the `TRAINING.BLD` narrative (~offset 5900–6200)
+  reads *"One of the Kuritan Jenner tries to crush you in your Mech's cockpit — but you barely
+  escape…"*, then *"You manage to hide in the trees"*
+  ([`story/story-system.md`](story/story-system.md) §17.9). It is played through the location/BLD ANM
+  path (`fn135D`), which is why combat code has **no direct xref** — even though the player
+  experiences it *as part of* combat.
 
-**Still open (C11b):** a *verified* ANM frame decoder (mine drifts, so the index list above is
-provisional), the full **clip→trigger map**, and the callers (BLD `fn135D`, story dispatch, and any
-combat path) that select a clip. `fn135D`'s `TRAINING→O3` mapping is a guess; the stomp framing
-rendered closest to `O1`.
+**Still open (C11b):** the full **clip→trigger map** and the exact callers (BLD `fn135D`, story
+dispatch, and any combat path) that select a clip. `fn135D`'s `TRAINING→O3` mapping is a guess.

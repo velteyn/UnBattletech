@@ -19,15 +19,30 @@ Data always starts at offset 0x33 regardless of type.
 
 ## File Status by Index
 
-| Index | File | Frames | 0x32 | Status |
-|-------|------|--------|------|--------|
-| 0-15  | O0-O15.ANM | 2-56 | ≥0x06 | **Active** — used by game |
-| 16    | O16.ANM    | 20    | 0x08 | Active but beyond game table |
-| 17-20 | O17-O20.ANM | 0*   | 0x00 | **Unused** — partial frames |
-| 21    | O21.ANM    | 0     | —    | Corrupted (hex dump text) |
+Frame counts below are from the **verified decoder** (2026-09-29) — decode the stream in `0xF20`-byte
+frames until exhausted. (Earlier counts in `AGENTS.md` were unverified guesses.)
 
-\* O17-O20 contain valid XOR-delta RLE data but files are too small for a full
-frame (78-95% decompressed). Non-zero content visible at top with black bottom.
+| Index | File | Frames | Status |
+|-------|------|--------|--------|
+| 0 | O0.ANM | 19 | Active (empty-cockpit view) |
+| 1 | O1.ANM | 15 | Active |
+| 2 | O2.ANM | 30 | Active (pilot portrait) |
+| 3 | O3.ANM | 13 | Active |
+| 4 | O4.ANM | 14 | Active |
+| 5 | O5.ANM | 9 | Active (pilot portrait + walking figure) |
+| 6 | O6.ANM | 32 | Active |
+| 7 | O7.ANM | 7 | Active (infantry rifleman) |
+| 8 | O8.ANM | 4 | Active (tower/mast) |
+| 9 | O9.ANM | 13 | Active (**mech stomping a downed pilot/wreck**) |
+| 10 | O10.ANM | 6 | Active |
+| 11 | O11.ANM | 7 | Active (spacecraft / starfield) |
+| 12 | O12.ANM | 12 | Active (blonde-woman portrait) |
+| 13 | O13.ANM | 4 | Active (blue-haired pilot portrait) |
+| 14 | O14.ANM | 10 | Active (spacecraft / starfield) |
+| 15 | O15.ANM | 7 | Active (banner/emblem) |
+| 16 | O16.ANM | 8 | Structurally valid; **outside the game's `0…0x0F` table** |
+| 17-20 | O17-O20.ANM | 2 each | Placeholder (decode to ~1 frame) |
+| 21 | O21.ANM | 1 | Corrupted (hex-dump text) |
 
 ## Compression: XOR-Delta RLE
 
@@ -37,7 +52,11 @@ frame (78-95% decompressed). Non-zero content visible at top with black bottom.
 |-----------|----------|---------|
 | `byte > 0` | `count` then N distinct bytes | Copy `count` literal bytes |
 | `byte < 0` | `-count` then 1 repeated byte | Repeat byte `count` times |
-| `byte == 0` | `0x00` then `WORD` (LE) then 1 byte | Repeat byte `WORD` times |
+| `byte == 0` | `0x00` then `WORD` (**big-endian**) then 1 byte | Repeat byte `WORD` times |
+
+> ⚠️ **Corrected 2026-09-29 (verified against the binary).** The extended count is **big-endian**
+> (`mov ax,[si]; xchg al,ah`), *not* little-endian as previously written. Getting this wrong blows up
+> run lengths (e.g. `05 FE` → 65029 instead of 1534) and desyncs the whole animation.
 
 ### Decompression
 
@@ -46,6 +65,32 @@ Buffer size: `0x0F20` (3872 bytes) = 88×88 pixels / 2 nibbles per byte.
 Each decompressed byte is **XORed** against the running decoded buffer
 (`buffer[i] ^= byte`). This is a delta encoding — frame N+1 stores only the
 difference from frame N.
+
+**Verifier:** the decoder is the routine at **`1000:AC12`** (file offset-derived phys `0x1AC12`;
+Reko/Spice86 label `1000:C312`, aliased `19EF:245C`). One call decodes exactly **one frame** of
+`0xF20` bytes into `ES:DI`, reading from the source pointer and returning the number of input bytes
+consumed in `AX = SI+1 - [0xB78A]` — the caller advances the source pointer by that and loops for the
+next frame. The exact loop (`r2` @ `0x1AC12`):
+
+```
+mov dx,0xF20                    ; AC12  output bytes per frame
+AC15: xor bx,bx                 ; bx=0 → literal mode
+      xor ax,ax ; mov al,[si]   ; control byte
+      or al,al
+      je  AC09                  ; 0x00 → extended
+      jns AC24                  ; positive → literal
+      neg al ; dec bx           ; negative → repeat (bx=0xFFFF)
+AC24: mov cx,ax                 ; run count
+AC26: inc si ; mov al,[si]      ; literal: next data byte each iter
+AC29: xor es:[di],al            ; XOR delta; di++; dx--
+      ... je AC3E (frame full)  ; or bx≠0 → loop AC29 (repeat same byte)
+      ... loop AC26/AC29 ; inc si ; jmp AC15
+AC3E: ret (AX = consumed)
+AC09: inc si ; mov ax,[si] ; xchg al,ah ; inc si ; jmp AC23   ; extended: BIG-ENDIAN count
+```
+
+A frame ends the instant `DX` reaches 0 (runs are frame-aligned). Verified decoder output matches the
+binary: **O0 = 19 frames**, etc.
 
 ### Pixel Conversion (Write2Mode)
 

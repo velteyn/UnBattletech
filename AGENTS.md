@@ -297,6 +297,13 @@ ANM files (O0.ANM–O16.ANM) are 88×88 pixel EGA animations used in the game's 
 
 ### Building-to-ANM Mapping (BldAnmMap)
 
+> **⚠️ Caveat (2026-09-29):** the **Frames** column below is an unverified guess and disagrees with the
+> now-verified ANM decoder (see `docs/formats/anm-format.md`, routine `1000:AC12`): the real counts are
+> O0=19, O1=15, O2=30, O3=13, O4=14, O5=9, O6=32, O7=7, O8=4, O9=13, O10=6, O11=7, O12=12, O13=4,
+> O14=10, O15=7, O16=8. Also, the BLD→ANM assignment itself is a guess — ANMs are a **generic
+> animation resource** reused across contexts (see `docs/combat-system.md` §28.1), not a fixed
+> building→animation map.
+
 Initial mapping (tune during playtesting — based on frame counts and expected content):
 
 | BLD | ANM | Frames | Notes |
