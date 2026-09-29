@@ -2521,8 +2521,9 @@ selects the cue id (`0x3/0x5/0x6/0xB/0xD`).
 **C11b — the left-panel event animations are `O*.ANM` clips (not MECHSHAP, not the `19EF:18EF`
 sparkle).** The top-left panel is a **generic 88×88 ANM surface**: it shows pilot/cockpit portraits,
 building interiors, and **combat clips** (a mech firing, a mech stomping infantry, a pilot taking a
-hit). This is what the 1988 print ad illustrates — *the ad itself is an artist's composition, not a
-screenshot*, so treat the real `O*.ANM` files as ground truth, not the ad.
+hit). The 1988 print ad illustrates this with a **collage of real game pieces** arranged by an artist —
+genuine game art, but *not a literal single screenshot* — so treat the real `O*.ANM` files as ground
+truth for pixel details and the ad only as a pointer to which clips exist.
 
 Best-effort render of the real `O*.ANM` files (my decoder is **approximate** — frame boundaries drift on
 later frames, so treat indices as provisional) identified these clips:
