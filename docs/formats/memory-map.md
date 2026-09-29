@@ -54,6 +54,12 @@ Spice86 observes these runtime segments (relocation-adjusted):
 
 All offsets are relative to the data segment base (`DS` register, typically segment 0x3000 at runtime, reachable via the relocation table).
 
+> **Reading DS-relative tables from the file (2026-09-29):** the anchor is `DS:0x2ED8` (weapon table) =
+> `UNBTECH.exe` file offset `0x3D088`. So **`file offset = DS_offset + 0x3A1B0`** — use this to dump any
+> `DS:xxxx` table above straight from the binary (e.g. `DS:0x141A` → file `0x3B5CA`). Note the Reko
+> **code** addresses in the generated `.cs` are `+0x1700` from the file's physical layout
+> (`r2 phys = Reko linear − 0x1700`).
+
 ### 1. SYSTEM VARIABLES (Offset 0x0000-0x03FF)
 
 | Offset | Size | Name | Description |
