@@ -2560,20 +2560,35 @@ clip as a reusable asset.
 panel blit until a stop flag (`ES:[0x53C4]:0xE48A` / `ES:[0x53C6]:0x42C3`) is set. `mode != 8` adds a
 delay via `18AD:0006(0x32)`. Verified against r2.
 
-Trigger sites (r2 phys → Reko), with the index passed:
+**Index special-cases in the player** (`[BP+6]`=index, `[BP+8]`=mode): index `0`/`2`/`6` or `>7` sets an
+internal "simple" flag; `8` → `[BP-2]=6`; `9<index<0x10` and `index>0x10` take extra branches
+(`0000:3FCC(1/2)` viewport setup, `[0x2A02:0x12]` + `19EF:33D0`). So the player itself understands
+indices beyond 15 (e.g. `0x10`).
 
-| Site (r2) | Context | `index` → clip |
-|-----------|---------|----------------|
-| `0x13BB9` / `1000:52B9` | **combat** post-fire (guarded by `[0x5646]:0x2E3A≠0`) | **`0x10` → `O16`** (mech firing) |
-| `0x13BEE` / `1000:52EE` | **combat** post-fire (`[0x564C]:0x4586≠0`, class match) | **`0x5` → `O5`** (pilot portrait) |
-| `0x1133E` / `1000:1336` | combat support | `2` → `O2` (portrait) |
-| `0x14956` (`1000:4952`), `0x14DE0` (`1000:4DDE`) | combat fire / infantry path | variable (from a stack slot) |
-| `0x15DC6` / `1000:5DC6` | after the **room push/pop** `0FDC:1C9B`/`1A26` | `AX` → the **building/room** clip |
-| `0x7E6C`, `0x827E`, `0x8985` (segment `0000`) | intro / init sequence | variable / constant |
+**All 9 call sites** (r2 `lcall 0:0x48B7`, enumerated; r2 phys → Reko label):
 
-So **combat does play ANMs** — `O16` (firing) and `O5` (pilot) are hard-wired in the post-fire path —
-while building/room interiors go through the room-interaction path (`0x0FDC`), exactly consistent with
-the "generic resource reused everywhere" model.
+| # | Site (r2) | Context (from surrounding code) | `index` → clip |
+|---|-----------|----------------------------------|----------------|
+| 1 | `0x13BB9` (`1000:52B9`) | **combat** post-fire (guard `[0x5646]:0x2E3A≠0`) | **`0x10` → `O16`** (mech firing) |
+| 2 | `0x13BEE` (`1000:52EE`) | **combat** post-fire (`[0x564C]:0x4586≠0`, class match) | **`0x5` → `O5`** (pilot) |
+| 3 | `0x1133E` (`1000:1336`) | combat/training per-scene (`[bp-8]==1`) | `2` → `O2` (portrait) |
+| 4 | `0x14956` (`1000:4952`) | combat fire path (after `lcall 0x173d:6`) | `[bp-0x24]` (**variable**) |
+| 5 | `0x14DE0` (`1000:4DE0`) | per-unit loop (guard `[0x56A0]:0x3938==0`) | `0` → `O0` (cockpit) |
+| 6 | `0x15DC6` (`1000:5DC6`) | after **room push/pop** `0FDC:1C9B`/`1A26` | `0` → `O0` |
+| 7 | `0x8985` (`0000:8985`) | script step (counter reaches 2) | `0` → `O0` |
+| 8 | `0x7E6C` (`0000:7E6C`) | script step (guard `[unit+0x141A]≠0`) | `byte[unit+0x141A]` (**variable**) |
+| 9 | `0x827E` (`0000:827E`) | script-step (guard `[0x5462]:0x3938==0`) | `next-script-byte` (**variable**) |
 
-**Still open (C11b):** the index→clip table for the variable sites (combat fire/infantry, intro) and
-the exact guard meaning of `0x2E3A`/`0x4586`.
+Fixed indices seen: **`O0` (cockpit), `O2` (portrait), `O5` (pilot), `O16` (mech firing)**.
+
+**Sites 7–9 are driven by a small byte-script interpreter** (segment `0000`, ~`0x7Dxx`–`0x83xx`): a
+far pointer `[bp+6]`/`[bp+8]` is walked opcode-by-opcode, and one opcode is "play ANM `(nextByte,
+modeByte)`". This is the **opening/cutscene sequencer** and it is where the non-combat clips
+(`O7`/`O9`/`O12`/`O13`/…) are selected. Site 4's `[bp-0x24]` and site 8's `unit+0x141A` likewise supply
+indices from state, not constants.
+
+So **combat does play ANMs** (`O16` firing + `O5` pilot, hard-wired in the post-fire path; `O2` in the
+training path), rooms use `O0`, and the cutscene sequencer plays the rest.
+
+**Still open (C11b):** parse the `0000` cutscene script (opcode table) to list its clip sequence; resolve
+site 4's `[bp-0x24]` and site 8's `unit+0x141A`; and the guard meanings of `0x2E3A`/`0x4586`.
