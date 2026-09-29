@@ -420,3 +420,5 @@ build_log.txt
 .wiki
 # allow the freshly regenerated decompilation to be tracked
 !reko/gencode-current/*.cs
+# allow the original EXE packer/unpacker tool to be tracked
+!tools/pack/exepack.exe
