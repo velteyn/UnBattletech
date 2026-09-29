@@ -2574,14 +2574,20 @@ linear addresses, which are `+0x1700` from the file's physical layout — do not
 | 1 | `0x13BB9` | `1000:52B9` | **combat** post-fire (guard `[0x5646]:0x2E3A≠0`) | **`0x10` → `O16`** (mech firing) |
 | 2 | `0x13BEE` | `1000:52EE` | **combat** post-fire (`[0x564C]:0x4586≠0`, class match) | **`0x5` → `O5`** (pilot) |
 | 3 | `0x1133E` | `1000:2A3E` | combat/training per-scene (`[bp-8]==1`) | `2` → `O2` (portrait) |
-| 4 | `0x14956` | `1000:6056` | combat/enemy presentation (after `lcall 0x173d:6`) | `[bp-0x24]` (**variable**) |
+| 4 | `0x14956` | `1000:6056` | combat **attack presentation** (after `lcall 0x173d:6`) | `[bp-0x24]` ∈ **{1,3,4,7}** → **`O1`/`O3`/`O4`/`O7`** (see below) |
 | 5 | `0x14DE0` | `1000:64E0` | per-unit loop (guard `[0x56A0]:0x3938==0`) | `0` → `O0` (cockpit) |
 | 6 | `0x15DC6` | `1000:74C6` | after **room push/pop** `0FDC:1C9B`/`1A26` | `0` → `O0` |
 | 7 | `0x8985` | `0800:2085` | script step (counter reaches 2) | `0` → `O0` |
 | 8 | `0x7E6C` | `0800:156C` | script step (guard `[unit+0x141A]≠0`) | `byte[unit+0x141A]` (**variable**) |
 | 9 | `0x827E` | `0800:197E` | script-step (guard `[0x5462]:0x3938==0`) | `next-script-byte` (**variable**) |
 
-Fixed indices seen: **`O0` (cockpit), `O2` (portrait), `O5` (pilot), `O16` (mech firing)**.
+Fixed indices seen: **`O0` (cockpit), `O2` (portrait), `O5` (pilot), `O16` (mech firing), `O1`/`O3`/`O4`/`O7`** (attack clips, below).
+
+**Combat attack-clip selector (site 4).** In the presenter `ghidra_guess_1000_5847`, `[BP-0x24]` is the
+clip index and is set by the attack kind (`Reko` @ `1000:59D2`/`5BB2`/`5BC8`/`5BCF`):
+`[BP-0x24]=1` when `[BP+8] ∈ [0,4) ∪ [0xC,0x10)`; `=3` when the class-3 branch and `[BP+6]≥0xC` and the
+unit field `[BX+0xD55E]≠0`; `=4` when `[BX+0xD55E]==0`; `=7` when `[BX+0xD55E]!=0`. So a combat attack
+plays **`O1`/`O3`/`O4`/`O7`** (site 4) plus the post-fire `O16`/`O5`.
 
 **Sites 7–9 are driven by a byte-script interpreter** — `fcn.00007f80(script_far_ptr)` (found via `pdc`):
 it reads opcode bytes through `ES:SI` (`ES`=`[bp+8]`, `SI`=`[bp+6]`), and for opcodes `0xE4`–`0xFF`
