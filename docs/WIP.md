@@ -142,3 +142,10 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 - Imported from that clone (2026-09-29): `tools/pack/exepack.exe` (original EXE packer/unpacker;
   `.gitignore` exception added) and `reko/gencode/prototype-overrides/*.cs` (the "register one
   function at a time" prototype — kept for reference, excluded from compilation by `reko/**/*.cs`).
+- **Generated code contains duplicated routines** (segment aliasing/overlays) — a `ghidra_guess_*`
+  name is not unique. Resolve the true copy by **physical address** (`seg*16+off`) and confirm against
+  the raw `UNBTECH.exe` bytes. See [`engine/segments-19ef-1000.md`](engine/segments-19ef-1000.md)
+  "Duplicated functions".
+- **Origin of the generated code:** produced by Spice86 on the `UNBATTLETECH` tree during a **combat
+  session** (load `GAME5` → walk into a random encounter → fight a few rounds) — `reko/gencode/GC*.cs`
+  is byte-identical to `UNBATTLETECH/GeneratedCode*.cs`; the fresh run is `reko/gencode-current/`.

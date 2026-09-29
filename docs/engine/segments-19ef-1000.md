@@ -338,6 +338,15 @@ combat constants `0x2EE4` weapon table, `0x32C6` terrain, `0x4004` unit-X, `0x40
 > cs5=0x0DAE, cs6=0x0EC0, cs7=0x0FAE, cs8=0x11B8, cs9=0x1465, cs10=0x1650, cs11=0x17D3, cs12=0x18BA,
 > cs13=0x19C8, cs14=0x19FC, cs15=0xF000`.
 
+> ⚠️ **Duplicated functions — resolve by physical address, not by name.** The game aliases/overlays
+> segments (e.g. the RNG is touched as both `384B:4FC0` and `3EDB:4FC0`), so a single physical routine
+> is often emitted **multiple times** under different `ghidra_guess_*`/`unknown_*` names and segment
+> prefixes — in both the old (`reko/gencode/GC*.cs` = `UNBATTLETECH/GeneratedCodeN.cs`) and the fresh
+> (`reko/gencode-current/`, which also emits speculative entries) output. A `ghidra_guess_*` name is
+> **not** unique; find the true copy via `linear = seg*16 + off` and confirm against the raw
+> `UNBTECH.exe` bytes (`r2`). C5's weapon-table reader was verified this way (old & fresh generators
+> agree with the binary).
+
 **How it was produced** (headless): run the emulator with **`-u false`** (overrides OFF — otherwise the
 C# dump is skipped: *"code overrides are active, so the CFG … not representative"*), `--GdbPort N`,
 `-r <dir>`; get into combat (load the `GAME5` save → walk until the encounter fires → fight a few
