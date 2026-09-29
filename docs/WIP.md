@@ -2,7 +2,37 @@
 
 > **Living document.** Update on every work session so nothing is lost across network/session
 > interruptions. Newest section first. Mark items `✅ done` when closed (with the commit/file).
-> Last updated: 2026-09-28.
+> Last updated: 2026-09-29.
+
+---
+
+## ▶ SESSION STATUS — pick up here next
+
+**Last session (2026-09-28/29) — "combat depth + fidelity audit".** Docs-first, no RE tooling left running;
+repo `main` tip **`d5dde67`**. What landed:
+
+- **Combat-arc gaps closed / clarified** (all in [`combat-system.md`](combat-system.md)):
+  C1 ✅ (`[BP-0x42]` = **per-unit attack sub-phase**, §25.1), C2 ✅ (damage-overflow jump table **`CS:0x118E`**, §25.4),
+  C4 ✅ (heat `penalty/5` read as a **non-zero flag**, §24.5).
+- **New canonical sections:** **§26 terrain effects**, **§27 physical/melee/close combat**, **§28 combat animations**,
+  plus an **AI coverage** table in §3.
+- **UI:** documented the **stats/status screen** (`fn0800_3D40`/BTSTATS) in [`engine/viewport.md`](engine/viewport.md);
+  flagged combat **"Scan Unit"** as undecoded (U1).
+- **P3 ✅**: new-pilot creation decoded (`fn11B8_0D58`).
+
+**Key fidelity findings (surprising, record-worthy):**
+- Terrain affects **to-hit** + **passability** only — **no water-cooling/terrain heat**, **no per-terrain MP cost**.
+- Physical attacks reduced to **Kick** (+ personal melee weapons for infantry) — **no Punch/Club/Charge/DFA**, **no area-fire**.
+- The combat "hit blink" is the **impact VFX `19EF:18EF`** (13 frames), **not** an ANM; combat never calls the building-ANM dispatch.
+
+**▶ Do this first next session (cheap, high value):**
+1. **C3** — enumerate the post-fire message path after `1000:521D` (decompilation only).
+2. **C5** — find the weapon-**definition** table reader (resolves `+0x0A/+0x0D/+0x0E` range packing) and **C10** (Kick dmg / Inferno).
+3. **C11 / U1** — decode the 80 px combat panel animation + the status screen fields / "Scan Unit".
+4. Then the bigger ones: **C6/C7/C8** (infantry armour map, infantry AI, enemy-AI decisions), **P1/P2** (salvage, injuries).
+
+**▶ Keystone after that:** **T3** — build the differential-validation harness (emulator vs rebuild); everything
+marked "unverified re-implementation" (combo of `CombatView`/`CombatHUD`/`MechPortrait`, viewport, sound) depends on it.
 
 ---
 
