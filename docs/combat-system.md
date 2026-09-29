@@ -2075,10 +2075,35 @@ if (cur == fired_weapon):
 ```
 
 So infantry fire a **burst of up to 4** with the equipped weapon. Weapon damage/heat come from the
-same weapon table (`+0x0B` damage, `+0x0C` cluster column, `+0x0D`… ); the personal armour/health are
-the record's `+0x0E`/`+0x0F` fields. Infantry hit/armour resolution reuses the same to-hit build-up
-(§6.2) with the infantry weapon's skill class; the exact armour-minus-damage step for infantry is
-**not yet isolated** (⚠️ known gap — the mech armour pipeline is §7).
+same weapon table (`+0x0B` damage, `+0x0C` cluster column); the personal armour/health are the record's
+`+0x0E`/`+0x0F` fields.
+
+### 23.2b Damage & armour resolution — verified in the decompilation (`1000:4DF0`–`4E8A`)
+
+Infantry have **two damage-absorbing fields** (armour value, then health), applied **per shot** of the
+burst. Record base `BX = 0xC614 + rec*0x11`:
+
+```
+dmg = incoming_damage
+arm = ES:[BX + 0xC622]                 # +0x0E  armour value
+if (arm != 0):
+    if (arm < dmg/2):  dmg -= arm;  arm = 0                 # weak armour absorbs & shatters
+    else:              dmg >>= 1;   arm -= dmg              # strong armour takes half the hit
+hp  = ES:[BX + 0xC623]                 # +0x0F  health
+if (hp > dmg): hp -= dmg  else: hp = 0                      # overflow/spill kills
+```
+
+- The whole block is inside a per-shot loop (`[BP-0x34]`), so a 4-round burst can strip armour and then
+  health across shots; **health `== 0` → the soldier is dead** (`1000:4E8A`).
+- `+0x0D` (`0xC621`) is the **armour type** (compared to `1` at `1000:3F7A`; the shop's personal-armour
+  items — FlakVest/FlakSuit/Env Suit/Ablative — map to these types).
+- So infantry survive roughly as `armour + health` HP, with a halving rule when armour is thick.
+
+### 23.3a Infantry weapons used
+
+The personal weapons (weapon-table entries 0-14, skill classes 0-2) — Cudgel, Knife, Sword, VibroBlade,
+Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SR Missile, Inferno, LaserPistol, LaserRifle,
+Flamer — carry the weapon's `+0x0B` damage; the record's `+0x0B` picks which one is equipped.
 
 ### 23.3 Setup
 
