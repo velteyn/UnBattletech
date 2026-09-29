@@ -2565,19 +2565,21 @@ internal "simple" flag; `8` → `[BP-2]=6`; `9<index<0x10` and `index>0x10` take
 (`0000:3FCC(1/2)` viewport setup, `[0x2A02:0x12]` + `19EF:33D0`). So the player itself understands
 indices beyond 15 (e.g. `0x10`).
 
-**All 9 call sites** (r2 `lcall 0:0x48B7`, enumerated; r2 phys → Reko label):
+**All 9 call sites** (r2 `lcall 0:0x48B7`, enumerated). Addresses are **r2 physical**; the Reko label is
+`physical + 0x1700` (`r2 0x13BB9` = Reko linear `0x152B9` = `1000:52B9`). (The `.cs` codegen uses Reko
+linear addresses, which are `+0x1700` from the file's physical layout — do not conflate them.)
 
-| # | Site (r2) | Context (from surrounding code) | `index` → clip |
-|---|-----------|----------------------------------|----------------|
-| 1 | `0x13BB9` (`1000:52B9`) | **combat** post-fire (guard `[0x5646]:0x2E3A≠0`) | **`0x10` → `O16`** (mech firing) |
-| 2 | `0x13BEE` (`1000:52EE`) | **combat** post-fire (`[0x564C]:0x4586≠0`, class match) | **`0x5` → `O5`** (pilot) |
-| 3 | `0x1133E` (`1000:1336`) | combat/training per-scene (`[bp-8]==1`) | `2` → `O2` (portrait) |
-| 4 | `0x14956` (`1000:4952`) | combat fire path (after `lcall 0x173d:6`) | `[bp-0x24]` (**variable**) |
-| 5 | `0x14DE0` (`1000:4DE0`) | per-unit loop (guard `[0x56A0]:0x3938==0`) | `0` → `O0` (cockpit) |
-| 6 | `0x15DC6` (`1000:5DC6`) | after **room push/pop** `0FDC:1C9B`/`1A26` | `0` → `O0` |
-| 7 | `0x8985` (`0000:8985`) | script step (counter reaches 2) | `0` → `O0` |
-| 8 | `0x7E6C` (`0000:7E6C`) | script step (guard `[unit+0x141A]≠0`) | `byte[unit+0x141A]` (**variable**) |
-| 9 | `0x827E` (`0000:827E`) | script-step (guard `[0x5462]:0x3938==0`) | `next-script-byte` (**variable**) |
+| # | Site (r2 phys) | Reko | Context (from surrounding code) | `index` → clip |
+|---|----------------|------|----------------------------------|----------------|
+| 1 | `0x13BB9` | `1000:52B9` | **combat** post-fire (guard `[0x5646]:0x2E3A≠0`) | **`0x10` → `O16`** (mech firing) |
+| 2 | `0x13BEE` | `1000:52EE` | **combat** post-fire (`[0x564C]:0x4586≠0`, class match) | **`0x5` → `O5`** (pilot) |
+| 3 | `0x1133E` | `1000:2A3E` | combat/training per-scene (`[bp-8]==1`) | `2` → `O2` (portrait) |
+| 4 | `0x14956` | `1000:6056` | combat/enemy presentation (after `lcall 0x173d:6`) | `[bp-0x24]` (**variable**) |
+| 5 | `0x14DE0` | `1000:64E0` | per-unit loop (guard `[0x56A0]:0x3938==0`) | `0` → `O0` (cockpit) |
+| 6 | `0x15DC6` | `1000:74C6` | after **room push/pop** `0FDC:1C9B`/`1A26` | `0` → `O0` |
+| 7 | `0x8985` | `0800:2085` | script step (counter reaches 2) | `0` → `O0` |
+| 8 | `0x7E6C` | `0800:156C` | script step (guard `[unit+0x141A]≠0`) | `byte[unit+0x141A]` (**variable**) |
+| 9 | `0x827E` | `0800:197E` | script-step (guard `[0x5462]:0x3938==0`) | `next-script-byte` (**variable**) |
 
 Fixed indices seen: **`O0` (cockpit), `O2` (portrait), `O5` (pilot), `O16` (mech firing)**.
 
