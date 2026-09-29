@@ -1888,7 +1888,7 @@ ENCOUNTER CHECK (0800:192-201 every frame)  ← world-map trigger, see world-map
 > decompilation ([`../../reko/gencode/`](../../reko/gencode/)). Verified items are marked ✅; uncertain
 > items ⚠️. Last pass: 2026-09-28 (roadmap B2).
 
-## 1. Multi-shot weapons (SRM / LRM) — "SRM 6 and the rest" ✅
+### 1. Multi-shot weapons (SRM / LRM) — "SRM 6 and the rest" ✅
 
 Multi-missile launchers fire as a **single aggregated salvo** — there is **no per-missile hit-location
 rolling**. Verified in the decompilation against `1000:4F92`:
@@ -1908,7 +1908,7 @@ total_damage = per_missile_damage * hits       # applied to ONE hit location
 - So an **SRM-6** rolls 2D6, looks up its column, gets the number of the 6 missiles that hit, and applies
   `2 × hits` damage to a **single** location — not six separate locations. Same for LRM-5/10/15/20.
 
-## 2. Weapon **instance** struct (`DS:[0x5652] → 0x2EE4`, stride **0x11 / 17**) ✅
+### 2. Weapon **instance** struct (`DS:[0x5652] → 0x2EE4`, stride **0x11 / 17**) ✅
 
 Runtime per-mounted-weapon state (read-only `0x2EE4` byte doubles as the cluster column above):
 
@@ -1923,7 +1923,7 @@ Runtime per-mounted-weapon state (read-only `0x2EE4` byte doubles as the cluster
 Ammo: energy weapons are `0x2EE4 == 0xFF` (infinite) and **skip the decrement**; per-mech ammo bins are
 separate (see combat-system.md §19).
 
-## 3. Weapon **definition** table (33 weapons, stride 17) — dumped from the binary
+### 3. Weapon **definition** table (33 weapons, stride 17) — dumped from the binary
 
 Located in `UNBTECH.exe` at file offset **`0x3D088`**, 33 records × 17 bytes, ending with `Kick`.
 Names are 10 bytes ASCIIZ (`+0x00`). The trailing 7 bytes (offsets `+0x0A..+0x10`) are dumped verbatim
@@ -1965,7 +1965,7 @@ below; **field offsets are ⚠️ not fully verified** (see §4).
 | 31 | SRMissile6 | 00 | 02 | 05 | 04 | 1E87 | 03 |
 | 32 | Kick | 00 | 00 | 01 | 00 | 0221 | 04 |
 
-## 4. Field-offset note (⚠️ — read this before trusting the old docs)
+### 4. Field-offset note (⚠️ — read this before trusting the old docs)
 
 The *existing* `combat-system.md` §13 lists `Damage +0x0A, Shots +0x0B, Heat +0x0C, VFX +0x0D,
 Range +0x0E, Skill +0x10`. **That looks shifted by one vs the binary dump above.** Evidence from the
@@ -1984,7 +1984,7 @@ So: **treat the weapon-definition field offsets as provisional**; `+0x0B` = dama
 column, `+0x10` = skill are the safe readings. A focused decode of `+0x0A`/`+0x0D`/`+0x0E` is still
 open. Ping the project if you decode them — this is a known gap.
 
-## 5. Cross-references
+### 5. Cross-references
 
 - Ammo model, heat generation, damage pipeline: [`../combat-system.md`](../combat-system.md) §6, §7, §19.
 - Weapon combat data / templates: §13, §20.
@@ -1999,13 +1999,13 @@ open. Ping the project if you decode them — this is a known gap.
 > the actual on-screen flow and the commands needed to drive it. Combat state lives in the
 > **game-state segment `0x2A0F`** (see `../UNVERIFIED_DISCOVERIES.md` §6).
 
-## Trigger
+### Trigger
 A **random encounter** while **walking** on the map (the party's mechs are the red sprites you move).
 No encounter in the starting/degraded state (state array unset); it fires normally with a **progressed
 save** (e.g. load slot 5 → you are placed on the map with your party — *not* in combat — then walk
 until `Attacking force: …` appears).
 
-## Setup prompts (in the left panel)
+### Setup prompts (in the left panel)
 1. `Attacking force: <N>.` / `Engage in combat?  Yes No`  (Yes highlighted)
    - **No** = avoid → back to the map.
 2. `Do you want the computer to fight for you?  Yes No`  (No highlighted = manual)
@@ -2014,7 +2014,7 @@ until `Attacking force: …` appears).
 
 Observed attacking forces: `4 humans.`, `1 Mech and 6 humans.`
 
-## Tactical combat
+### Tactical combat
 - **Left panel**: unit title `<Pilot>'s <MECH>` (e.g. `Jason's CHAMELEON`) over a command menu:
   `Walk / Run / Jump / Use Weapons / Kick / Computer / Scan Unit / Next Unit / Flee / Begin Fight`.
 - **Right panel**: 12×24 tactical grid (grass/roads/buildings) with mech sprites; the active unit
@@ -2026,7 +2026,7 @@ Observed attacking forces: `4 humans.`, `1 Mech and 6 humans.`
   `Range: IN/OUT`; options `Target here / Next enemy / Cancel`.
 - **Flee** (menu option): → `You have eluded your enemies! Press a key.` → returns to the world map.
 
-## Combat data (verified live)
+### Combat data (verified live)
 This file records the **observation**; the address spec is canonical in
 [`../combat-system.md`](../combat-system.md) §13 and [`../formats/memory-map.md`](../formats/memory-map.md) §3.
 
@@ -2034,7 +2034,7 @@ Observed live in segment `0x2A0F`: unit arrays `0x4004` (X) / `0x4036` (Y) / `0x
 fog grids `0x40B4` / `0x41D4` (12×24), fully fogged (`0x02`) at start.
 `bt_read_combat_units` / `bt_read_combat_grids` return this.
 
-## Driving it (playtest notes)
+### Driving it (playtest notes)
 - The encounter fires while pressing movement keys (`w`/`x` reliably) on the world map.
 - The setup prompts and the command menu respond to **Space** (confirm) + **Up/Down** (navigate).
 - Menu highlight can be position-sensitive; re-sample the screen between steps.
