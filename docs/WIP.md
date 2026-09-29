@@ -11,23 +11,23 @@
 Combat is now consolidated into one document (§1–§20 mech, §21 weapon system, §22 encounter flow,
 §23 infantry, §24 heat, §25 turn structure). The following are **known gaps** in it:
 
-| # | Gap | Where | Next action |
-|---|-----|-------|-------------|
-| C1 | **Round/activation semantics** — is `[BP-0x42]` incremented *per round* (each round uses the next AI-preference slot)? Increment sites `1000:535A` (INC, CMP 0xC), `5310` (set 0xC = exit), `547B` (reset 0). | §25.1, §25.4(a) | Trace one live round: emulator breakpoint on `1000:535A`, log `[BP-0x42]` / `[BP-0x28]`. |
-| C2 | **Damage-overflow loop internals** — `1000:0B32` jump-table tail and how excess damage chains body parts. | §7.8, §25.4(b) | Read `0B32` fully + the `1000:50xx` overflow sites in the decompilation. |
-| C3 | **Post-fire / message path** — the `1000:5847…` sequence (messages, cleanup). | §25.2 #11 | Enumerate the calls after `521D` in GC12. |
-| C4 | **Heat `[0x5624]:0x4592`** — `penalty/5` is written there; its consumer is unknown (overheat flag? movement gate?). | §24.5 | Find readers of `[0x5624]:0x4592` (`1000:399C`/`39C6`) and their effect. |
-| C5 | **Weapon-definition field offsets** — `+0x0A`, `+0x0D`, `+0x0E` (range packing) unresolved; `+0x0B`=damage, `+0x0C`=cluster column, `+0x10`=skill are safe. | §21 §3–§4 | Find code that reads `+0x0A/+0x0D/+0x0E` off a weapon record. |
-| C6 | **Infantry armour types** — `+0x0D` (`0xC621`) compared to `1`; the type→item (FlakVest…) map is unknown. | §23.2b | Cross-ref the Armor-shop item ids with the record's armour-type byte. |
-| C7 | **Infantry AI / weapon selection** — how an infantry unit picks its target/weapon each turn. | §23 | Trace the unit 4-11 branch of the combat loop. |
+| # | Gap | Status |
+|---|-----|--------|
+| C1 | Round/activation semantics | ✅ **resolved**: `[BP-0x42]` = per-unit **attack sub-phase** (0..0xB), outer `[BP-0x4]` (0..0xB), unit `[BP-0x28]` — §25.1 |
+| C2 | Damage-overflow internals | ✅ **resolved**: jump table at `CS:0x118E` (`1000:0B62`); armour→structure `+0xB` — §25.4 |
+| C3 | Post-fire / message path (`1000:5847…`) | ⬜ open (needs enumerating after `521D`) |
+| C4 | Heat `[0x5624]:0x4592` (`penalty/5`) | ✅ **resolved**: read as a non-zero **flag** (`1000:399C`/`39C6`) — §24.5 |
+| C5 | Weapon-definition field offsets `+0x0A/+0x0D/+0x0E` | ⬜ open (find the def-table reader; the code uses the *instance* table `0x2EE3-0x2EE8`) |
+| C6 | Infantry armour types (`+0x0D`↔FlakVest…) | ◐ partial: type written by equip code (`0000:501B`, `0170:4F07`); value↔item map still unknown |
+| C7 | Infantry AI / weapon selection | ◐ partial: unit-class split at `1000:5028` (`[BP-0x28]` vs 4/0xC); target logic not isolated |
 
 ## Post-combat & party (to uncover)
 
-| # | Gap | Known hooks | Next action |
-|---|-----|-------------|-------------|
-| P1 | **Salvage management** — after a battle, which enemy mechs/equipment are recoverable, where stored, and how they enter the roster | mech bay (`fn0FDC_15E6`), unit slots `aC614`/story slots `aC724`, REPAIR/GARAGE | Find the post-combat outcome path (combat exit) and the salvage→roster code. |
-| P2 | **Party injuries** — how pilots/party take injuries from combat and how they heal | hospital "Heal Characters" (`fn1CD3` cases 0x09/0x29, 50 cr), combat health fields | Link combat damage → per-character health; find the injury/recovery code. |
-| P3 | **New pilots joining** — recruitment of new party members | `fn1CD3` case 0xE9 `CALL_ROOM_HANDLER` (creates a hireling in an empty slot; `fn11B8_0D58`), BARRACKS/BARRACK2/BARRACKS recruit NPCs, PARTY (Rex), story joins | Trace each recruitment path + the roster/slot update it performs. |
+| # | Gap | Status / findings |
+|---|-----|-------------------|
+| P1 | **Salvage management** | ⬜ open. **No "salvage"/"scavenge" wording exists in any BLD text** — so there may be no generic post-battle salvage (mechs are acquired via story/jail/impound: *"recover your 'Mechs without paying the parking fee"*). Needs the **combat-exit path** traced to confirm. |
+| P2 | **Party injuries** | ◐ partial. The hospital has a per-character **"wounded"** state (*"(Nobody is wounded)"*) + *"Get healed"*; health lives in the 17-byte record `+0x0F`. Still to link: what sets "wounded" (combat) and the heal cost/effect. |
+| P3 | **New pilots joining** | ✅ **mechanism decoded**: BLD opcode `0xE9 CALL_ROOM_HANDLER` → `fn11B8_0D58` (`11B8:0D58`): finds an empty slot (0-7), assigns a unit id, rolls attributes with 2D6 (`fn0800_19DD`), sets health `0xC623` = attr×10, `0xC620 = 0x08` (unlinked), fills inventory `0xC618[0..6] = RNG&1`, links the unit to a free **story slot** (`0xC724`, stride 0x7D), then renders the name (`fn1E56_03F5`). Recruitment *paths* are the BLD scripts that call `0xE9` (barracks/party/story). |
 
 > These are **currently undocumented** (no canonical section yet). Once traced, fold them into
 > [`combat-system.md`](combat-system.md) (post-combat resolution) and/or

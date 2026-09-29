@@ -2153,9 +2153,11 @@ Heat sinks exist as a mech field (`+0x27`/`+0x28`, `EngineHeatSinks`) and as a c
 (`$22` in the templates), **but the dissipation code does not read them** — the game does **not**
 subtract heat-sink capacity. Treat heat sinks as flavour/crit-slot filler for combat maths.
 
-### 24.5 Open
-- The exact consumer of `[0x5624]:0x4592` (`penalty/5`) — likely an overheat flag / movement gating —
-  is **not fully traced**. ⚠️
+### 24.5 `penalty/5` consumer — resolved
+`penalty/5` is written to `[0x5624]:0x4592` (`1000:3EB1`), and that value is then read as a **non-zero
+flag** — `CMP ES:[0x4592],0` at `1000:399C`/`39C6` — to gate a per-unit follow-up (a "unit is running
+hot" branch, alongside the parallel flag `[0x5626]:0x377C` and message text `0x3BCA`/`0x3BF3`). It is
+not a discrete numeric effect; heat's numeric effect remains the **to-hit penalty** (§24.3).
 
 ---
 
@@ -2168,14 +2170,20 @@ subtract heat-sink capacity. Treat heat sinks as flavour/crit-slot filler for co
 ### 25.1 Nesting
 
 ```
-ROUND  (repeat until one side is dead, or the exit marker is reached)
- ├─ ACTIVATION index  [BP-0x42] = 0 .. 0xB   (12)      ⚠️ increment at 1000:535A; 0xC = exit; 0 = reset
- │    ├─ also selects the AI target: table[ unit + [BP-0x42] ]   (§3)
- │    │
- │    └─ UNIT loop     [BP-0x28] = 0 .. 0x17  (24 slots)
- │         └─ PER-UNIT SUBPHASES (below)
- └─ END OF ROUND: heat dissipation (§24.2), pool clear, encounter/exit checks
+fn1000_458C  (combat handler, called per round; runs until one side is dead)
+ ├─ init: clear 24 unit working slots (1000:45B4 .. < 0x18)
+ ├─ OUTER index  [BP-0x4] = 0 .. 0xB   (1000:5579 CMP 0xC, 1000:5576 INC)
+ │    └─ selects which unit-preferences/target set to use; guarded by ES:[0x14A] (1000:5586)
+ │
+ └─ UNIT loop   [BP-0x28] = 0 .. 0x17  (24 slots)   (1000:5396/53AE/53CE)
+      └─ ATTACK sub-phase  [BP-0x42] = 0 .. 0xB   (1000:535A INC, 1000:535D CMP 0xC)
+           │  each stage selects the n-th AI target: pref_table[0x7D·unit + 0x33 + stage] (§3)
+           └─ PER-UNIT SUBPHASES (below), one shot per stage
 ```
+
+> **Corrected:** `[BP-0x42]` is the **per-unit attack sub-phase** (one shot per stage, the n-th
+> preference target), **not** a round counter; the outer counter is `[BP-0x4]` (0..0xB), and the unit
+> index is `[BP-0x28]`. **End of round** = heat dissipation (§24.2) after the outer loop.
 
 Unit-class boundaries checked: `0x04` (player lance 0-3 → combat units 4+), `0x0C`/`0x0D` (enemy mechs
 12-15), `0x10` (extended pool 16-23) — see §1/§13.
@@ -2204,8 +2212,13 @@ Unit-class boundaries checked: `0x04` (player lance 0-3 → combat units 4+), `0
 - Weapon/unit status, fog, encounter-flag updates; then the next activation.
 
 ### 25.4 Open
-- ⚠️ Whether `[BP-0x42]` is incremented **per round** (each round uses the next AI preference slot) or
-  is a finer per-unit sub-phase — the increment sites are `1000:535A` (INC, CMP 0xC) / `5310` (set 0xC)
-  / `547B` (reset 0). Confirm by tracing a live round.
-- The damage-**overflow** loop internals (§7.8) and the post-fire message path (`1000:5847…`) are not
-  fully enumerated.
+- ✅ **C1 resolved (static):** `[BP-0x42]` = **per-unit attack sub-phase** (0..0xB, `1000:535A` INC /
+  `535D` CMP 0xC / `5310` set-exit / `547B` reset), **not** a round counter. Outer counter = `[BP-0x4]`
+  (0..0xB). Still open: the exact meaning of the outer `[BP-0x4]` pass and the `[0x14A]` guard.
+- ✅ **C2 resolved:** overflow uses a **jump table at `CS:0x118E`** (`1000:0B62`) to pick the next
+  internal-structure location; armour `[0x11..0x18] → +0xB` (matching structure slot); `>0xA` returns
+  unchanged (§7.8/§7.11).
+- ✅ **C4 resolved:** `[0x5624]:0x4592` (= `penalty/5`) is read as a **non-zero flag** (`1000:399C`/
+  `39C6`) that gates a per-unit follow-up (alongside flag `[0x5626]:0x377C`); it is not a discrete
+  effect value.
+- ⚠️ **C3 open:** the post-fire message path (`1000:5847…`) is not fully enumerated.
