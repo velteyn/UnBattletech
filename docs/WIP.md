@@ -30,10 +30,11 @@ record at `1000:4F55`); **Inferno** = **0 damage + heat surge** (arms target cou
 Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`; registered
 by `18AD:070A`, blitted by `1000:1983` at map tiles. **No persistent 80 px portrait**; `MechPortrait.cs`
 is invented. **C11b ◐** — `O*.ANM` are a **generic 88×88 animation resource** (top-left panel) reused across
-building/story/combat contexts; no "combat vs story" split. **ANM decoder ✅ verified** against the real
-routine `1000:AC12` (big-endian extended run; `0xF20`-byte frames) — reproduces `O0`=19. Verified clips:
-cockpit `O0`, portraits `O2`/`O5`/`O12`/`O13`, infantry `O7`, **stomp `O9`**, mech firing `O16`. Open:
-the full trigger→clip map. (The 1988 ad is an artist's collage of real game pieces.) See §28.1.
+building/story/combat contexts; no "combat vs story" split. **Decoder ✅** (`1000:AC12`; big-endian,
+`0xF20` frames; `O0`=19) and **player ✅** `0000:48B7 play_anm(index,mode)` (builds `"O<index>.ANM"`).
+**Combat triggers:** `O16`(0x10 firing) + `O5`(0x5 pilot) in the post-fire path, `O2` at `1000:1336`;
+rooms via `0FDC:1C9B/1A26`. Clips: cockpit `O0`, portraits `O2`/`O5`/`O12`/`O13`, infantry `O7`,
+**stomp `O9`**, firing `O16`. Open: variable-index sites + guards. See §28.1a.
 
 **U1 ◐ (partial)** — `fn0800_3D40` control flow decoded (suspend flag, cursor save, arrow-key unit
 cycling, SPACE exit, `0800:3FAE` draws `BTSTATS.CMP`); its only Reko caller is the world-map SPACE
@@ -111,7 +112,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C10 | **Kick damage + Inferno effect** | ✅ **resolved** (2026-09-29): Kick damage = **attacker tonnage ÷ 5**, read from the mech struct `+0x10` and written into the Kick record's damage byte (`1000:4F55`, `ES:[0x3103]`). Inferno forces **0 damage** and arms the target's heat-surge counter `0xD576=3` (**+6 heat penalty/round ×3**) — `1000:50E7`. See [`combat-system.md`](combat-system.md) §27.1/§27.2 |
 | U1 | **Stats/status page + combat "Scan Unit"** | ◐ partial (2026-09-29): `fn0800_3D40` control flow decoded (`w014A=1`, cursor save, arrow-key unit cycling, SPACE exit, `0800:3FAE` draws BTSTATS.CMP); **only caller = world-map SPACE menu**, so combat "Scan Unit" uses another (unisolated) path. Still open: the `3FAE` column/field layout + the Scan Unit handler. See [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
 | C11 | **Combat sprites** | ✅ **resolved** (2026-09-29): `MECHSHAP.CMP` unit sprites (Locust/Commando 2-frame walks, wrecks, Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`. Registered by `18AD:070A`, blitted by `1000:1983` at map tile positions. **No persistent 80 px portrait** — `MechPortrait.cs` is an invented panel UI. See [`combat-system.md`](combat-system.md) §28.1 |
-| C11b | **ANM usage / left-panel animations** | ◐ **decoder verified, clip→trigger map open** — `O*.ANM` are a **generic 88×88 animation resource** (top-left panel) reused across building/story/combat contexts; **no "combat vs story" split**. **Decoder ✅ verified** against the real routine `1000:AC12` (big-endian extended run, `0xF20` frames; `O0`=19 ✓). Verified clips: cockpit `O0`, portraits `O2`/`O5`/`O12`/`O13`, infantry `O7`, **stomp `O9`**, firing `O16`. Open: the full trigger→clip map (BLD `fn135D`, story, combat callers). See §28.1 |
+| C11b | **ANM usage / left-panel animations** | ◐ **decoder + player + combat triggers found** — `O*.ANM` = generic 88×88 resource (top-left panel), no "combat vs story" split. **Decoder ✅** (`1000:AC12`, big-endian, `0xF20` frames; `O0`=19 ✓). **Player ✅** = `0000:48B7 play_anm(index,mode)` builds `"O<index>.ANM"`. **Combat triggers:** `O16`(0x10, firing) + `O5`(0x5, pilot) in the post-fire path (`1000:52B9`/`52EE`), `O2` at `1000:1336`; rooms via `0FDC:1C9B/1A26`. Clips: cockpit `O0`, portraits `O2`/`O5`/`O12`/`O13`, infantry `O7`, **stomp `O9`**, firing `O16`. Open: variable-index sites + guards. See §28.1a |
 | C8 | **Enemy AI beyond targeting** — weapon pick (`[BP-0x48]` from `[BP-0x2]`, specials `0x20`=Kick / `0x80`), movement/approach decision, **flee**, and the "computer fights for you" auto-pilot | ◐/⬜ see [`combat-system.md`](combat-system.md) §3 "AI — coverage & gaps" |
 
 ## Post-combat & party (to uncover)

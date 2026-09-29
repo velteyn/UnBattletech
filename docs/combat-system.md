@@ -2552,5 +2552,28 @@ clip as a reusable asset.
   path (`fn135D`), which is why combat code has **no direct xref** — even though the player
   experiences it *as part of* combat.
 
-**Still open (C11b):** the full **clip→trigger map** and the exact callers (BLD `fn135D`, story
-dispatch, and any combat path) that select a clip. `fn135D`'s `TRAINING→O3` mapping is a guess.
+#### 28.1a The ANM player and the trigger→clip map (C11b)
+
+**Player = `0000:48B7`** (Reko `0170:48B7`, aliased `0000:5FB7`; r2 phys `0x48B7`). Signature
+`play_anm(index, mode)`: it writes `'O'` into a filename buffer (`ES=[0x53FE]` = seg `0xA800`, at
+`+0x12`), builds `"O<index>.ANM"`, loads it, then loops the frame decoder (`1000:AC12`, §28.1) + the
+panel blit until a stop flag (`ES:[0x53C4]:0xE48A` / `ES:[0x53C6]:0x42C3`) is set. `mode != 8` adds a
+delay via `18AD:0006(0x32)`. Verified against r2.
+
+Trigger sites (r2 phys → Reko), with the index passed:
+
+| Site (r2) | Context | `index` → clip |
+|-----------|---------|----------------|
+| `0x13BB9` / `1000:52B9` | **combat** post-fire (guarded by `[0x5646]:0x2E3A≠0`) | **`0x10` → `O16`** (mech firing) |
+| `0x13BEE` / `1000:52EE` | **combat** post-fire (`[0x564C]:0x4586≠0`, class match) | **`0x5` → `O5`** (pilot portrait) |
+| `0x1133E` / `1000:1336` | combat support | `2` → `O2` (portrait) |
+| `0x14956` (`1000:4952`), `0x14DE0` (`1000:4DDE`) | combat fire / infantry path | variable (from a stack slot) |
+| `0x15DC6` / `1000:5DC6` | after the **room push/pop** `0FDC:1C9B`/`1A26` | `AX` → the **building/room** clip |
+| `0x7E6C`, `0x827E`, `0x8985` (segment `0000`) | intro / init sequence | variable / constant |
+
+So **combat does play ANMs** — `O16` (firing) and `O5` (pilot) are hard-wired in the post-fire path —
+while building/room interiors go through the room-interaction path (`0x0FDC`), exactly consistent with
+the "generic resource reused everywhere" model.
+
+**Still open (C11b):** the index→clip table for the variable sites (combat fire/infantry, intro) and
+the exact guard meaning of `0x2E3A`/`0x4586`.

@@ -110,3 +110,9 @@ Standard 16-color EGA palette (see `EGA.cs` or `Palette.cs`).
 |----------|---------|-------------|
 | `3EDB:0AC0` | `"ANM\0" 03 00 0F 00 3F 00 "BDC\0"` | File type table — ANM max index = 15 |
 | `3EDB:1E90` | `03 03 "O0.ANM\0"` | Weapon shop ammo buy UI |
+| `0000:48B7` (r2 phys `0x48B7`) | `mov es,[0x53FE]; mov byte es:[0x12],'O'` | **ANM player** `play_anm(index, mode)` — builds `"O<index>.ANM"`, loads it, loops decode+blit |
+| `1000:AC12` (r2 phys `0x1AC12`) | `mov dx,0xF20` … `xor es:[di],al` | per-frame decoder (see above) |
+
+> **Triggers** (who calls `play_anm`): combat post-fire calls **`O16` (0x10)** and **`O5` (0x5)**;
+> building/room interiors call it via the room push/pop path (`0FDC:1C9B`/`1A26`); intro/platform
+> init calls it with other indices. See [`../combat-system.md`](../combat-system.md) §28.1a.
