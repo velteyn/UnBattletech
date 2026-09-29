@@ -60,6 +60,14 @@ All offsets are relative to the data segment base (`DS` register, typically segm
 > **code** addresses in the generated `.cs` are `+0x1700` from the file's physical layout
 > (`r2 phys = Reko linear − 0x1700`).
 
+> **Runtime values (verified live via the emulator MCP, 2026-09-29):** load/relocation segment
+> **`L = 0x017D`**; main data segment **`DS = 0x3858`** (so `DS:0 =` file `0x3A1B0`, matching the anchor).
+> Cross-checks: `DS:0x2ED8` → physical `0x3B458` = `"Cudgel"`; the TRAINING line `"Other cadets…"` at
+> physical `0x399B4` = `DS:0x1434`. Stored code/far-call segments relocate by **`+L`** at runtime (e.g.
+> stored `0x187F` → runtime `0x19FC`, the BIOS `int 16h` wait wrapper). Read memory via the Spice86 MCP
+> (`bt_read_memory`) or HTTP `GET :20000/api/memory/{addr}/range/{len}`; the physical↔file map is
+> `physical = L*0x10 + (file − 0x3400)`.
+
 ### 1. SYSTEM VARIABLES (Offset 0x0000-0x03FF)
 
 | Offset | Size | Name | Description |

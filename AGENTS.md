@@ -636,6 +636,18 @@ introspection and keyboard control. Full reference — tool catalogue, DS-relati
 address table, keyboard-injection recipe, boot/navigation workflow and known
 issues — lives in [`docs/tools/spice86-mcp.md`](docs/tools/spice86-mcp.md).
 
+**Wire it as an opencode MCP server for direct tool calls** (already in this repo's `opencode.json`):
+
+```jsonc
+{ "mcp": { "spice86-battletech": { "type": "remote", "url": "http://localhost:8086/mcp", "enabled": true } } }
+```
+
+Then the `bt_*` tools (`bt_read_memory`, `bt_read_registers`, `search_memory`, `bt_read_ds`, …) are
+first-class. Boot the emulator first (see commands above); the MCP is only live while it runs. If the
+tools aren't in the current session, start opencode after the emulator, or use the raw HTTP API
+(`GET :20000/api/memory/{addr}/range/{len}`, MCP JSON-RPC over `POST :8086/mcp/`). **Verified runtime
+bases (2026-09-29): load segment `L=0x017D`, main `DS=0x3858`, `physical = L*0x10 + (file − 0x3400)`.**
+
 
 ## Tool Complement Summary
 
