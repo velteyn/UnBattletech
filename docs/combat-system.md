@@ -1234,7 +1234,7 @@ Combat state at 0xA44B/0xA44D is saved/restored around the combat handler invoca
 > ⚠️ **The offsets below are provisional and appear shifted by one vs the binary** (2026-09-28).
 > A fresh dump of the 33-record definition table (`UNBTECH.exe` @ `0x3D088`) indicates
 > **`+0x0B` = damage**, **`+0x0C` = cluster column/volley**, `+0x10` = skill; `+0x0A`/`+0x0D`/`+0x0E`
-> are unresolved. See [`formats/weapon-system.md`](formats/weapon-system.md) §3–§4 for the dump +
+> are unresolved. See **§21** below for the dump +
 > multi-shot (SRM/LRM) mechanics.
 
 | Field | Offset | Description |
@@ -1878,3 +1878,212 @@ ENCOUNTER CHECK (0800:192-201 every frame)  ← world-map trigger, see world-map
       └─ Transition to combat mode (w4FBC narrow panel; see engine/viewport.md)
 ```
 
+
+---
+
+## 21. WEAPON SYSTEM (all combat — mech *and* infantry)
+
+> Consolidated reference for the weapon system — shareable. Sources: canonical
+> [`../combat-system.md`](../combat-system.md) (§6.5 ammo, §6.6 cluster, §13/§20 weapon data) and the
+> decompilation ([`../../reko/gencode/`](../../reko/gencode/)). Verified items are marked ✅; uncertain
+> items ⚠️. Last pass: 2026-09-28 (roadmap B2).
+
+## 1. Multi-shot weapons (SRM / LRM) — "SRM 6 and the rest" ✅
+
+Multi-missile launchers fire as a **single aggregated salvo** — there is **no per-missile hit-location
+rolling**. Verified in the decompilation against `1000:4F92`:
+
+```
+per_missile_damage = weapon_record[weapon].byte[+0x0B]     # LRM=1, SRM=2
+cluster_col        = weapon_record[weapon].byte[+0x0C]     # 1=non-cluster; SRM2/4/6 → 2/3/5; LRM5/10/15/20 → 4/6/7/8
+if bit7(ammo byte 0x2EE4) set → energy path (no cluster table)   # infinite ammo
+if cluster_col <= 1          → single-shot path (no cluster table)
+
+roll  = 2D6()                                  # 0000:30DD, calls the LFSR RNG
+hits  = cluster_table[ roll*7 + cluster_col ]  # table via DS:[0x566C] + 0x2E5E, stride 7, rows 2..12
+total_damage = per_missile_damage * hits       # applied to ONE hit location
+```
+
+- **Cluster hits table**: `DS:[0x566C] → 0x2E5E`, 7-byte stride per row (columns 0-6), 11 rows (2D6 = 2..12). The **column is per-weapon** (see `[+0x0C]` above).
+- So an **SRM-6** rolls 2D6, looks up its column, gets the number of the 6 missiles that hit, and applies
+  `2 × hits` damage to a **single** location — not six separate locations. Same for LRM-5/10/15/20.
+
+## 2. Weapon **instance** struct (`DS:[0x5652] → 0x2EE4`, stride **0x11 / 17**) ✅
+
+Runtime per-mounted-weapon state (read-only `0x2EE4` byte doubles as the cluster column above):
+
+| Off | Abs | Meaning |
+|-----|-----|---------|
+| `+0x00` | `0x2EE4` | Ammo/type byte: **bit7 = infinite**, low7 = remaining shots; also the cluster-table column |
+| `+0x01` | `0x2EE5` | Heat — **low nibble (`& 0x0F`)** added to the unit heat pool on fire (`1000:48E3`) |
+| `+0x02` | `0x2EE6` | Skill class (low 5 bits; high 3 bits `>>5` as flags) |
+| `+0x03` | `0x2EE7` | Range threshold byte |
+| `+0x04` | `0x2EE8` | Weapon type id (used for comparisons) |
+
+Ammo: energy weapons are `0x2EE4 == 0xFF` (infinite) and **skip the decrement**; per-mech ammo bins are
+separate (see combat-system.md §19).
+
+## 3. Weapon **definition** table (33 weapons, stride 17) — dumped from the binary
+
+Located in `UNBTECH.exe` at file offset **`0x3D088`**, 33 records × 17 bytes, ending with `Kick`.
+Names are 10 bytes ASCIIZ (`+0x00`). The trailing 7 bytes (offsets `+0x0A..+0x10`) are dumped verbatim
+below; **field offsets are ⚠️ not fully verified** (see §4).
+
+| # | Name | `+0A` | `+0B` | `+0C` | `+0D` | `+0E-0F` | `+10` |
+|---|------|------|------|------|------|---------|------|
+| 0 | Cudgel | 00 | 11 | 81 | 00 | 0221 | 00 |
+| 1 | Knife | 00 | 10 | 81 | 00 | 0221 | 00 |
+| 2 | Sword | 00 | 22 | 81 | 00 | 0221 | 00 |
+| 3 | VibroBlade | 00 | 30 | 81 | 00 | 0221 | 00 |
+| 4 | Shortbow | 00 | 11 | 81 | 00 | 0966 | 00 |
+| 5 | Longbow | 00 | 13 | 81 | 00 | 0D87 | 00 |
+| 6 | Crossbow | 00 | 23 | 81 | 00 | 0E88 | 00 |
+| 7 | Pistol | 00 | 23 | 81 | 00 | 0965 | 01 |
+| 8 | Rifle | 00 | 30 | 81 | 00 | 1FF0 | 02 |
+| 9 | MachineGun | 00 | 30 | 84 | 00 | 0B88 | 02 |
+| 10 | SR Missile | 00 | 02 | 01 | 00 | 28FF | 03 |
+| 11 | Inferno | 00 | FF | 01 | 00 | 28FF | 03 |
+| 12 | LaserPistl | 00 | 40 | 81 | 00 | 0D87 | 01 |
+| 13 | LaserRifle | 00 | 42 | 81 | 00 | 2BF6 | 02 |
+| 14 | Flamer | 00 | 20 | 81 | 00 | 0765 | 01 |
+| 15 | SmallLaser | 00 | 03 | 01 | 01 | 0C43 | 03 |
+| 16 | Med Laser | 00 | 05 | 01 | 03 | 1E87 | 03 |
+| 17 | LargeLaser | 00 | 08 | 01 | 08 | 30CB | 03 |
+| 18 | PPC | 00 | 0A | 01 | 3A | 39ED | 03 |
+| 19 | AutoCann/2 | 00 | 02 | 01 | 41 | 4BF0 | 03 |
+| 20 | AutoCann/5 | 00 | 05 | 01 | 31 | 39ED | 03 |
+| 21 | AutoCann10 | 00 | 0A | 01 | 03 | 30CB | 03 |
+| 22 | AutoCann20 | 00 | 14 | 01 | 07 | 1E87 | 03 |
+| 23 | MachineGun | 00 | 02 | 01 | 00 | 0C43 | 03 |
+| 24 | Flamer | 00 | 02 | 01 | 03 | 0C43 | 03 |
+| 25 | LRMissile5 | 00 | 01 | 04 | 62 | 42EF | 03 |
+| 26 | LRMissil10 | 00 | 01 | 06 | 64 | 42EF | 03 |
+| 27 | LRMissil15 | 00 | 01 | 07 | 65 | 42EF | 03 |
+| 28 | LRMissil20 | 00 | 01 | 08 | 66 | 42EF | 03 |
+| 29 | SRMissile2 | 00 | 02 | 02 | 02 | 1E87 | 03 |
+| 30 | SRMissile4 | 00 | 02 | 03 | 03 | 1E87 | 03 |
+| 31 | SRMissile6 | 00 | 02 | 05 | 04 | 1E87 | 03 |
+| 32 | Kick | 00 | 00 | 01 | 00 | 0221 | 04 |
+
+## 4. Field-offset note (⚠️ — read this before trusting the old docs)
+
+The *existing* `combat-system.md` §13 lists `Damage +0x0A, Shots +0x0B, Heat +0x0C, VFX +0x0D,
+Range +0x0E, Skill +0x10`. **That looks shifted by one vs the binary dump above.** Evidence from the
+dump (compare with tabletop stats):
+
+- `+0x0B` matches **damage**: SmallLaser 3, Med 5, Large 8, PPC 0x0A=10, AC/20 0x14=20; LRM = 1 and
+  SRM = 2 (per-missile) — exactly the cluster `0x2EE3` value the docs cite.
+- `+0x0C` matches the **cluster column / volley**: 1 for single-shot; SRM2/4/6 → 2/3/5; LRM5/10/15/20 →
+  4/6/7/8.
+- `+0x10` matches the **skill class** (0 melee, 1 pistol, 2 rifle, 3 gunnery, 4 kick) — as documented.
+- `+0x0D` is **ambiguous** (SmallLaser 1, Med 3, Large 8 look like heat, but PPC 0x3A=58 and AC/2
+  0x41=65 look like sound/VFX ids) — **do not assume**.
+- `+0x0E` range is a packed 16-bit value (not a plain distance); its packing is **undecoded**.
+
+So: **treat the weapon-definition field offsets as provisional**; `+0x0B` = damage, `+0x0C` = cluster
+column, `+0x10` = skill are the safe readings. A focused decode of `+0x0A`/`+0x0D`/`+0x0E` is still
+open. Ping the project if you decode them — this is a known gap.
+
+## 5. Cross-references
+
+- Ammo model, heat generation, damage pipeline: [`../combat-system.md`](../combat-system.md) §6, §7, §19.
+- Weapon combat data / templates: §13, §20.
+- Cluster/hit-location tables: `[0x566C]:0x2E5E` (cluster), `[0x566A]:0x2E43` (hit location).
+
+---
+
+## 22. ENCOUNTER FLOW (runtime-observed)
+
+> Observed live on 2026-09-28 while playing a **late-game save** (slot 5: party
+> Jason/Rex/Russ). Complements [`../combat-system.md`](../combat-system.md) (the RE spec) with
+> the actual on-screen flow and the commands needed to drive it. Combat state lives in the
+> **game-state segment `0x2A0F`** (see `../UNVERIFIED_DISCOVERIES.md` §6).
+
+## Trigger
+A **random encounter** while **walking** on the map (the party's mechs are the red sprites you move).
+No encounter in the starting/degraded state (state array unset); it fires normally with a **progressed
+save** (e.g. load slot 5 → you are placed on the map with your party — *not* in combat — then walk
+until `Attacking force: …` appears).
+
+## Setup prompts (in the left panel)
+1. `Attacking force: <N>.` / `Engage in combat?  Yes No`  (Yes highlighted)
+   - **No** = avoid → back to the map.
+2. `Do you want the computer to fight for you?  Yes No`  (No highlighted = manual)
+3. `Combat messages:  None  Brief  Verbose`
+4. `See combat graphics:  Yes No`
+
+Observed attacking forces: `4 humans.`, `1 Mech and 6 humans.`
+
+## Tactical combat
+- **Left panel**: unit title `<Pilot>'s <MECH>` (e.g. `Jason's CHAMELEON`) over a command menu:
+  `Walk / Run / Jump / Use Weapons / Kick / Computer / Scan Unit / Next Unit / Flee / Begin Fight`.
+- **Right panel**: 12×24 tactical grid (grass/roads/buildings) with mech sprites; the active unit
+  sits on a magenta tile highlight.
+- **Begin Fight** executes the round: combat messages appear in the left panel, e.g.
+  - `An enemy Mech uses a Med Laser on Jason's Mech. Missed!`
+  - `An enemy Mech uses a MachineGun on Jason's Mech. Hit Center Torso.` (hit/damage lines are magenta)
+- **Kick target selection** (physical attack): header `Choose the enemy to kick:`, `Target: <MECH>`,
+  `Range: IN/OUT`; options `Target here / Next enemy / Cancel`.
+- **Flee** (menu option): → `You have eluded your enemies! Press a key.` → returns to the world map.
+
+## Combat data (verified live)
+This file records the **observation**; the address spec is canonical in
+[`../combat-system.md`](../combat-system.md) §13 and [`../formats/memory-map.md`](../formats/memory-map.md) §3.
+
+Observed live in segment `0x2A0F`: unit arrays `0x4004` (X) / `0x4036` (Y) / `0x406A` (status), 24 slots;
+fog grids `0x40B4` / `0x41D4` (12×24), fully fogged (`0x02`) at start.
+`bt_read_combat_units` / `bt_read_combat_grids` return this.
+
+## Driving it (playtest notes)
+- The encounter fires while pressing movement keys (`w`/`x` reliably) on the world map.
+- The setup prompts and the command menu respond to **Space** (confirm) + **Up/Down** (navigate).
+- Menu highlight can be position-sensitive; re-sample the screen between steps.
+---
+
+## 23. INFANTRY / SOLDIER COMBAT (personal weapons & armour)
+
+Infantry ("soldiers") are full combat units — see §1 (slots 4-11) and §20.1 (encounter population).
+They use the **personal weapons** (weapon table entries 0-14: Cudgel, Knife, Sword, VibroBlade,
+Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SR Missile, Inferno, LaserPistol, LaserRifle,
+Flamer) and **personal armour**, and are stored as **17-byte character records** (not 125-byte mechs).
+
+### 23.1 Character record (17 bytes; see `formats/memory-map.md` §Infantry Character Format)
+
+| Off | Field | Off | Field |
+|-----|-------|-----|-------|
+| `+0x00` | character id | `+0x09` | skill: Tech |
+| `+0x01` | Body | `+0x0A` | skill: Medical |
+| `+0x02` | Dexterity | **`+0x0B`** | **equipped weapon type** (index into the weapon table) |
+| `+0x03` | Charisma | `+0x0C` | (unused) |
+| `+0x04` | Bows & Blades | **`+0x0D`** | **armour type** |
+| `+0x05` | Pistol | **`+0x0E`** | **current armour value** |
+| `+0x06` | Rifle | **`+0x0F`** | **current health** |
+| `+0x07` | Gunnery | `+0x10` | (unused) |
+| `+0x08` | Piloting | | |
+
+### 23.2 Burst fire — verified in the decompilation (`1000:476D`–`47B9`)
+
+Each infantry **burst is capped at 4 shots** via a per-(unit, weapon) counter:
+
+```
+# DS:[0x5648] = combat-state segment
+cur = ES:[unit + 0xD360]                 # weapon currently fired
+if (cur == fired_weapon):
+    ES:[unit + 0xD358]++                 # shot/burst counter
+    counter = ES:[ (0xC5D4 + slot*0x11 + weapon) ]   # per-(slot,weapon) burst byte
+    if (counter < 4) ...                 # CAP = 4
+```
+
+So infantry fire a **burst of up to 4** with the equipped weapon. Weapon damage/heat come from the
+same weapon table (`+0x0B` damage, `+0x0C` cluster column, `+0x0D`… ); the personal armour/health are
+the record's `+0x0E`/`+0x0F` fields. Infantry hit/armour resolution reuses the same to-hit build-up
+(§6.2) with the infantry weapon's skill class; the exact armour-minus-damage step for infantry is
+**not yet isolated** (⚠️ known gap — the mech armour pipeline is §7).
+
+### 23.3 Setup
+
+- Encounter population creates up to **8 enemy infantry** (slots 8-15; 50% chance per slot) with a
+  random personal weapon and `RNG & 0x04`-style item fill; HP/weapon state initialised via
+  `fn0800_19DD` (2D6-based). See §20.1.
+- Personal armour items (FlakVest, FlakSuit, Light/Hvy Environment Suit, Ablative) are inventory
+  items purchased at the Armor shop (see `story/story-system.md` §17.11).

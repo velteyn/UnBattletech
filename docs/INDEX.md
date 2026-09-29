@@ -18,7 +18,7 @@ should summarise and link here rather than restate.
 |-------|---------------|
 | **Engine recovery plan (Westwood engine-first strategy)** | [`engine/README.md`](engine/README.md) |
 | Engine viewport & rendering workflow | [`engine/viewport.md`](engine/viewport.md) |
-| Engine combat encounter flow (runtime) | [`engine/combat-flow.md`](engine/combat-flow.md) |
+| Combat encounter flow (runtime-observed) | [`combat-system.md`](combat-system.md) §22 |
 | Engine input & navigation (runtime) | [`engine/input-navigation.md`](engine/input-navigation.md) |
 | Engine fingerprint vs Mines of Titan (shared-function map) | [`engine/fingerprint-mines-of-titan.md`](engine/fingerprint-mines-of-titan.md) |
 | Runtime segments `0x1000`/`0x19EF` (combat/movement) function map | [`engine/segments-19ef-1000.md`](engine/segments-19ef-1000.md) |
@@ -26,7 +26,7 @@ should summarise and link here rather than restate.
 | BLD bytecode, opcodes, cipher, `fn1CD3` cases | [`formats/bld-bytecode.md`](formats/bld-bytecode.md) |
 | BLD opcode coverage (which opcodes the 26 scripts use) | [`formats/bld-opcode-coverage.md`](formats/bld-opcode-coverage.md) |
 | Map → BLD trigger map (building tiles → BLD) | [`formats/map-bld-triggers.md`](formats/map-bld-triggers.md) |
-| Weapon system (multi-shot SRM/LRM, instance + definition tables) | [`formats/weapon-system.md`](formats/weapon-system.md) |
+| Weapon system (multi-shot SRM/LRM, tables) + infantry combat | [`combat-system.md`](combat-system.md) §21, §23 |
 | ANM animation format | [`formats/anm-format.md`](formats/anm-format.md) |
 | Memory map + address reference | [`formats/memory-map.md`](formats/memory-map.md) |
 | Combat system | [`combat-system.md`](combat-system.md) |

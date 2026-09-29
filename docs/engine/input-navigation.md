@@ -1,7 +1,8 @@
 # Engine: Input & Navigation (runtime, observed)
 
 > How to actually drive the original in the emulator: movement keys, building entry, and the
-> trigger-spot quirk. Observed live 2026-09-28. Also see [`combat-flow.md`](combat-flow.md).
+> trigger-spot quirk. Observed live 2026-09-28. Combat is documented in
+> [`../combat-system.md`](../combat-system.md) (§22 encounter flow).
 
 ## Movement = ARROW KEYS
 Despite the old docs' WASD/`QWEA...` tables, the game moves with the **arrow keys**:
