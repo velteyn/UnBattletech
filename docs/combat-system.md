@@ -2583,14 +2583,20 @@ linear addresses, which are `+0x1700` from the file's physical layout — do not
 
 Fixed indices seen: **`O0` (cockpit), `O2` (portrait), `O5` (pilot), `O16` (mech firing)**.
 
-**Sites 7–9 are driven by a small byte-script interpreter** (segment `0000`, ~`0x7Dxx`–`0x83xx`): a
-far pointer `[bp+6]`/`[bp+8]` is walked opcode-by-opcode, and one opcode is "play ANM `(nextByte,
-modeByte)`". This is the **opening/cutscene sequencer** and it is where the non-combat clips
-(`O7`/`O9`/`O12`/`O13`/…) are selected. Site 4's `[bp-0x24]` and site 8's `unit+0x141A` likewise supply
-indices from state, not constants.
+**Sites 7–9 are driven by a byte-script interpreter** — `fcn.00007f80(script_far_ptr)` (found via `pdc`):
+it reads opcode bytes through `ES:SI` (`ES`=`[bp+8]`, `SI`=`[bp+6]`), and for opcodes `0xE4`–`0xFF`
+does `ax = op-0xFFE4; jmp word cs:[bx+0x5B1]` — a **0x1C-entry near-jump table at `cs:[0x5B1]`**. One of
+those handlers is site 9: *play ANM `(next script byte, mode byte)`*. This is the **opening/cutscene
+sequencer**, and it is where the non-combat clips (`O7`/`O9`/`O12`/`O13`/…) are chosen.
 
-So **combat does play ANMs** (`O16` firing + `O5` pilot, hard-wired in the post-fire path; `O2` in the
-training path), rooms use `O0`, and the cutscene sequencer plays the rest.
+**Site 8** is a different handler: `fcn.00007dc8(sceneId)` (arg compared to `0x12`/`0x13`/`0x14`) plays
+`play_anm(byte[sceneId + 0x141A], 1)` — i.e. a **scene→ANM byte table at `DS:0x141A`**.
 
-**Still open (C11b):** parse the `0000` cutscene script (opcode table) to list its clip sequence; resolve
-site 4's `[bp-0x24]` and site 8's `unit+0x141A`; and the guard meanings of `0x2E3A`/`0x4586`.
+So **combat does play ANMs** (`O16` firing + `O5` pilot in the post-fire path; `O2` in the training
+path), rooms use `O0`, and the cutscene sequencer + scene table drive the rest.
+
+**Still open (C11b):** (a) locate the actual `cs:[0x5B1]` jump table (the interpreter's code-segment alias
+makes the static address ambiguous — the code is reached via a computed call, no direct xref) and decode
+its 0x1C opcode handlers; (b) dump the `DS:0x141A` scene table (needs the main-DS base confirmed — see
+[`formats/memory-map.md`](formats/memory-map.md) anchor); (c) resolve site 4's `[bp-0x24]` and the guards
+`0x2E3A`/`0x4586`.
