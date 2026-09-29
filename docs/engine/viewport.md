@@ -270,11 +270,26 @@ overlay**, exactly like the protection screen, *not* a `ViewportLayout`:
 | Input | its own loop: **arrow keys** cycle the selected unit, **SPACE** exits; on exit `w014A = 0` and viewport+cursor redraw | AGENTS |
 | Rebuild | `BattleTechCHI/Scripts/UI/StatsScreen.cs` (full-screen `Control`) | `rebuild/progress.md` |
 
-> **Coverage:** the *screen* is described at a high level (above + AGENTS.md) but has **no
-> field-level/layout decode** in `docs/`. The **combat "Scan Unit"** option (inspecting *another*
-> unit — enemy/ally) appears in the combat menu (`combat-system.md` §… "Walk / Run / Jump / Use
-> Weapons / Kick / Computer / Scan Unit / Next Unit / Flee / Begin Fight") but its handler is
-> **undecoded**. Tracked as **U1** in [`../WIP.md`](../WIP.md).
+> **Coverage:** the *screen* is described at a high level (above + AGENTS.md) but the
+> **field-level/layout decode is still incomplete** (U1). What *is* now decoded:
+>
+> **`fn0800_3D40` control flow** (`reko/segments/UNBTECH_0800.asm:7300`): sets `w014A=1` (suspend
+> rendering), saves the cursor (`0x538C:0xA44B` / `0x538E:0xA44D`), optionally calls the location
+> graphics `135D:0327`, then runs an input loop via `1E56:0D1D` — **arrows** cycle the selected
+> unit / scroll (`0xB8/0xB0/0xAF/0xB1/0xB5/0xB9/0xB3/0xB7` + a `0x2000`/`0x200`/`0x2000` coordinate
+> delta), **SPACE (0x20)** exits. Drawing is done by `0800:3FAE` (BTSTATS.CMP + the data columns).
+> Its **only caller** is the world-map SPACE menu (`0800:2C50` jump table entry `0800:2D8B`).
+>
+> **Still open (U1):** the `0800:3FAE` draw (5 columns × 48 rows of 3×3 subtiles layout/fields), the
+> BTSTATS.CMP load site, and the **combat "Scan Unit"** handler. Note "Scan Unit" is *not* a call to
+> `fn0800_3D40` — that function's sole caller is the world-map SPACE menu — so combat must reach the
+> status view by another path (the combat menu dispatch is still unisolated). The combat menu is
+> `Walk / Run / Jump / Use Weapons / Kick / Computer / Scan Unit / Next Unit / Flee / Begin Fight`
+> (`combat-system.md` §22). Tracked as **U1** in [`../WIP.md`](../WIP.md).
+>
+> **Art (documented in the toolkit):** `BTSTATS.CMP` is a **FullScreen** 320×200 image; its
+> extraction/purpose is in [`../../InceptionTools/AssetExtractor.cs`](../../InceptionTools/AssetExtractor.cs)
+> and [`../../InceptionTools/Enums/ImagePurpose.cs`](../../InceptionTools/Enums/ImagePurpose.cs).
 
 ### Impact VFX (moved from `combat-system.md` §7.10)
 
