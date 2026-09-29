@@ -2112,3 +2112,47 @@ Flamer — carry the weapon's `+0x0B` damage; the record's `+0x0B` picks which o
   `fn0800_19DD` (2D6-based). See §20.1.
 - Personal armour items (FlakVest, FlakSuit, Light/Hvy Environment Suit, Ablative) are inventory
   items purchased at the Armor shop (see `story/story-system.md` §17.11).
+
+---
+
+## 24. HEAT MANAGEMENT (mechs) — consolidated
+
+> Heat is a **runtime combat resource**, not a build stat. All verified in the decompilation
+> (roadmap B2). Code: `1000:48E3` (gen), `1000:07D2`–`0883` (dissipation), `1000:48FD` (to-hit),
+> `1000:3EA9`/`3961` (effects).
+
+### 24.1 Generation (on fire)
+Weapon heat = `weapon_instance[weapon].byte[+0x01] (0x2EE5) & 0x0F`, added to the firing unit's pool:
+**player pool = `+0x92`**, **enemy pool = `+0x8A`** (segment `DS:[0x5658]`). Energy/infinite-ammo
+weapons still generate heat.
+
+### 24.2 End-of-round dissipation (no gradual cooling)
+Runs once per round (guarded). For each mech:
+
+```
+pool(0x92, seg 0x55A6)  ──►  penalty(0x6E, seg 0x5598)   # penalty += pool
+pool = 0                                                  # pool cleared
+if (counter(0xD576, seg 0x55A8) != 0): penalty += 6; counter--   # heat "surge" carry-over
+if (<range condition>):                penalty -= 4              # cooling relief
+penalty = min(penalty, 0x1E)                                  # CLAMP at 30
+```
+
+So heat **never** cools gradually; it accumulates into a **penalty** that is only clamped and
+occasionally relieved.
+
+### 24.3 Effects
+- **To-hit penalty** (main effect): compare the penalty `0x6E` against thresholds **8 / 13 / 17 / 24**;
+  **+1 TN per threshold met** (max +4). See §6.2.
+- The penalty also feeds `penalty / 5` into combat state (`[0x5624]:0x4592`) and, at the **cap (30)**,
+  a message path is taken (`0x3BCA`); separate **overheat text** paths exist (`0x3BF3`).
+- No **shutdown**, no explicit **movement-MP** reduction were found — heat's proven effect is the
+  to-hit penalty (+ the message/flag paths above).
+
+### 24.4 Heat sinks — present but NOT modelled
+Heat sinks exist as a mech field (`+0x27`/`+0x28`, `EngineHeatSinks`) and as a critical-slot item
+(`$22` in the templates), **but the dissipation code does not read them** — the game does **not**
+subtract heat-sink capacity. Treat heat sinks as flavour/crit-slot filler for combat maths.
+
+### 24.5 Open
+- The exact consumer of `[0x5624]:0x4592` (`penalty/5`) — likely an overheat flag / movement gating —
+  is **not fully traced**. ⚠️
