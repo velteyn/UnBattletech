@@ -235,6 +235,20 @@ Called for enemy units (ID 4-11) during the combat loop. The caller at `Generate
 - Compared against 0xB (enemy slot count) and 0xC thresholds
 - Used as the `stage_counter` parameter to select which target preference to use
 
+#### AI — coverage & gaps (2026-09-28)
+
+| Aspect | Status |
+|--------|--------|
+| **Target selection** (`1000:0AB2`, pref table `0x33..0x55`) | ✅ documented here + **code-verified** (§"B2 verification") + implemented (`AiController.SelectTarget`) |
+| **Action / range band** (`1000:0934`, returns 0=none/1=short/2=med/3=long) | ✅ §4; used as the unit's act code |
+| **Weapon pick** | ◐ partial: the per-stage weapon slot is `[BP-0x48]`, derived from an inner index `[BP-0x2]` (`1000:45DF`–`45ED`), with specials **`0x20` = Kick** (`1000:460C`) and **`0x80`** (`1000:4613`); the full "which weapon this stage" rule is **not cleanly decoded** |
+| **Movement / approach** | ◐ partial: direction calc `19EF:0971` + step `1000:17BB`; "approach if out of range" is inferred, not proven |
+| **Flee / disengage decision** | ❌ not traced |
+| **Auto-pilot ("computer fights for you")** | ❌ not traced (same loop? player units auto-resolved?) |
+
+> So enemy AI is **tracked**: targeting is solid and verified; **weapon pick, movement decision and flee
+> are open** — see [`WIP.md`](WIP.md) item C8.
+
 ---
 
 ### 4. TARGETING / LINE OF SIGHT & RANGE CHECK
