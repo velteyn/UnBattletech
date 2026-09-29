@@ -2464,7 +2464,7 @@ the **Inferno** weapon's heat surge.
 | **Mech unit sprites (map)** | The mechs you see on the combat grid | ✅ **decoded 2026-09-29 (C11, below)**: `MECHSHAP.CMP` unit sprites, 2-frame walk cycles + wrecks; blitted by `1000:1983` at tile positions. |
 | **Fire / impact FX** | Muzzle/fire and hit-effect art | ✅ `MECHSHAP` sprites: **Fire_Large `0x7C`**, Fire_Small `0x7D`, Impact_Small `0x7E`, Impact_Large `0x7F`. `1000:63C6` spawns Fire_Large at the target (energy/PPC/Inferno). |
 | **Destruction / wreck** | On unit kill (status `0x406A → 0`) | ✅ the wreck is a **MECHSHAP sprite** (`Locust_Wreck 0x80`, `Commando_Wreck 0x81`); handler mapped §7.9 |
-| **Left-panel event animation** | The top-left panel is **mixed-use**: normally the command menu, but **event animations play there** during combat — observed live: *(a)* the player **taking a hit**, *(b)* a mech **firing**, *(c)* a mech **stomping an infantry** | ◐ **art/trigger still open (C11b).** There is **no persistent** mech portrait (the rebuild's `MechPortrait.cs` is an invented always-on panel UI), but these event clips are real. The only 88×88 animation assets are the `O0–O16.ANM` files, so they are most likely **ANM clips played through a combat-specific dispatch** (the building dispatch `fn135D` has no Reko xref from combat) — or a MECHSHAP sprite sequence. See §28.1. |
+| **Left-panel event animation** | The top-left panel is **mixed-use**: normally the command menu, but it also plays **`O*.ANM` cutscenes**. The clips users see around combat (a mech firing, a mech **stomping** a downed pilot, a pilot hit) are **BLD/story cutscenes**, not combat-engine output — e.g. the stomp = the post-training Kurita raid on the player's cockpit (`TRAINING.BLD` §17.9). | ◐ **art identified, dispatch open (C11b).** No persistent portrait (the rebuild's `MechPortrait.cs` is an invented always-on panel UI). The clips come from `O0–O15.ANM` via the BLD/location ANM path (`fn135D`), which is why there's no combat-engine xref. See §28.1. |
 | **Facing/turret animation** | — | n/a (no facing model — §7.15) |
 
 **Note:** combat does **not** use the building ANM system (`fn135D` location-graphics dispatch has **no
@@ -2537,7 +2537,15 @@ later frames, so treat indices as provisional) identified these clips:
 | `O9` | mechs + growing explosion cloud |
 | `O16` | mech **firing twin beams** into an explosion (outside the game's O0–O15 table) |
 
-**Still open:** the game's ANM type table (`3EDB:0AC0`) lists only **O0–O15**, so the exact index↔event
-map and the **combat-side trigger** that plays these clips each attack still need a *verified* ANM
-frame decoder (mine drifts) plus the dispatch (`fn135D` has no Reko xref from the combat segment; the
-caller is still unisolated). The `O0–O16` clips vs. the combat events is the core of **C11b**.
+**These clips are BLD/story cutscenes, not combat-engine animations.** The **stomp** clip is the
+post-training **Kurita raid**: the narrative in `TRAINING.BLD` (~offset 5900–6200) reads *"One of the
+Kuritan Jenner tries to crush you in your Mech's cockpit — but you barely escape before the deadly
+blow can cut you down"*, then *"You manage to hide in the trees"* (see
+[`story/story-system.md`](story/story-system.md) §17.9). So it fires when the player loses/is downed in
+the training-center encounter and escapes the wreck — the real game begins there. The clip is
+displayed through the **BLD/location-graphics ANM dispatch** (`fn135D`), i.e. the same left-panel ANM
+path as building interiors — which is why Reko shows **no combat-engine xref** to it.
+
+**Still open (C11b):** a *verified* ANM frame decoder (mine drifts) to fix the exact index↔clip map,
+and the BLD/`fn135D` call that selects the clip per story beat. (`fn135D` ANM indices are provisional:
+`TRAINING→O3` is a guess; the stomp framing rendered closest to `O1`.)

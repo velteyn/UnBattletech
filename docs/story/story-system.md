@@ -334,6 +334,12 @@ At the point of attack in TRAINING.BLD:
 → Encounter probability enabled globally
 ```
 
+> **Cutscene note (C11b):** the *"Jenner tries to crush you in your cockpit"* beat is shown as an
+> **`O*.ANM` left-panel cutscene** (a mech **stomping** a downed pilot). The clip plays through the
+> BLD/location-graphics ANM dispatch (`fn135D`) — a story cutscene, **not** a combat-engine animation —
+> which is why it appears when the training-center encounter ends (the player escaping the wreck) and
+> why combat code has no xref to it. See [`../combat-system.md`](../combat-system.md) §28.1.
+
 ### 17.10 Mech/Unit Inventory System
 
 The game uses a **two-tier architecture** for tracking the player's owned units (Mechs and infantry): story slots represent characters, and unit slots represent the actual combat units those characters pilot/operate.
