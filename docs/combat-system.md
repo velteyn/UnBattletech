@@ -108,7 +108,7 @@ COMBAT ENCOUNTER (two triggers: walking on world map 0800:192 or BLD script acti
      │     │     │
      │     │     ├─► TO-HIT SETUP:
      │     │     │   ├─► Weapon slot lookup (enemy units 4-11, slots 0xB):
-     │     │     │   │   AX = 0x11 * weapon_slot → ES:[BX+0x2EE8] = weapon type
+     │     │     │   │   AX = 0x11 * weapon_slot → ES:[BX+0x2EE8] = skill class (+0x10)
      │     │     │   │   Compares with currently equipped weapon, inc counter if match
      │     │     │   │   Ammo check: if finite → check remaining, handle out-of-ammo
      │     │     │   │
@@ -269,10 +269,10 @@ Called for enemy units (ID 4-11) during the combat loop. The caller at `Generate
 - Unit Y: `ES:[SI + 0x4036]`
 - Cursor X: `ES:[0xA44B]`
 - Cursor Y: `ES:[0xA44D]`
-- Weapon data accessed via: `BX = 0x11 * param` (weapon struct stride = 17 bytes)
-  - `DS:[BX + 0x2EE4]` = weapon type/flags byte
-  - `DS:[BX + 0x2EE6]` = skill/class (split: low 5 bits, high 3 bits >>5)
-  - `DS:[BX + 0x2EE7]` = range threshold byte
+- Weapon data accessed via: `BX = 0x11 * param` (weapon struct stride = 17 bytes, base `0x2ED8`)
+  - `DS:[BX + 0x2EE4]` = flags byte: bit 7 = personal weapon, bits 6-0 = cluster column (record +0x0C)
+  - `DS:[BX + 0x2EE6]` = range bands (record +0x0E): bits 7-5 = short, bits 4-0 = medium
+  - `DS:[BX + 0x2EE7]` = long range byte (record +0x0F)
 
 **Logic:**
 1. Classifies Unit ID range (0-3, 4-11, 12-23) → different team assignments
@@ -280,20 +280,21 @@ Called for enemy units (ID 4-11) during the combat loop. The caller at `Generate
 3. Compares with cursor/target position
 4. Adjusts internal target coordinates iteratively
 5. Coordinate masking with `0xF7F` and `0xF07F` → sub-pixel grid granularity
-6. **LoS/Range check** via `ghidra_guess_1000_05C5_105C5` (called twice):
-   - Takes packed coordinates with bit field extraction:
-     - X: mask `0xF00` >> 1 | `0x7F` (low 7 bits + high nibble)
-     - Y: mask `0xF000` >> 5 | `0x7F`
-   - Computes absolute deltas between source and target
-   - Checks against weapon range from the weapon data table:
-     - `AX = weaponRange (from 0x2EE7)` compared with `[BP-0x8]` (calculated distance)
-   - Returns whether target is in range and has line of sight
+6. **Range-band classification** (this function's real job; it is *not* the LoS check — that is
+   `ghidra_guess_1000_160E_1160E`, §5):
+   - Distance from the unit to the targeting cursor is computed by `ghidra_guess_1000_05C5_105C5`
+     (called at `1000:0976`/`1000:09DF`) with the packed coords of unit vs cursor.
+   - The weapon's three range bands come from the definition record (`BX = 0x11 * [BP+0x8]`):
+     - **short** = `(+0x0E >> 5) * 3`, **medium** = `(+0x0E & 0x1F) * 3`, **long** = `+0x0F`
+     - the `×3` is applied to short/medium unless `+0x0C` has bit 7 set or the weapon is Kick (`0x20`)
+   - Classification (verified against `1000:0934`): `dist < short → 0`, `< medium → 1`,
+     `< long → 2`, else → `3`.
 
-**Return value (AX) — action code:**
-- `3` = in range, can fire (long range band)
-- `2` = medium range band
-- `1` = short range band
-- `0` = no valid target / out of range
+**Return value (AX) — range band:**
+- `0` = short range
+- `1` = medium range
+- `2` = long range
+- `3` = out of range (caller skips the unit; `AX < 3` means it can act)
 
 ---
 
@@ -541,10 +542,10 @@ if (status_byte >= 24) TN += 1
 After to-hit TN calculation but before the hit check, weapon heat is accumulated (GeneratedCode13.cs lines 2670-2697):
 
 ```
-// For all units — weapon instance heat value
-SI = 0x11 * weapon_slot              // weapon instance stride
-ES = DS:[0x5652]                      // weapon instance segment
-AL = ES:[SI + 0x2EE5] & 0x0F          // heat per shot from weapon instance byte 1
+// For all units — weapon heat value
+SI = 0x11 * weapon_slot              // weapon definition stride
+ES = DS:[0x5652]                      // (= data segment; same table as DS:0x2ED8)
+AL = ES:[SI + 0x2EE5] & 0x0F          // heat per shot = low nibble of record +0x0D
 
 // Add to unit's heat pool:
 BX = unit_id
@@ -556,11 +557,12 @@ else:                                  // enemy unit
     ES:[BX + 0x8A] += AL              // enemy heat accumulator (different offset)
 ```
 
-The weapon INSTANCE table at `DS:[0x5652]:0x2EE4` with stride 0x11 stores per-equipped-weapon state:
-| Instance Offset | Field | Description |
-|----------------|-------|-------------|
-| `+0x00` (0x2EE4) | Ammo state | Bit 7 = infinite ammo flag, low 7 bits = remaining ammo count |
-| `+0x01` (0x2EE5) | Heat | Low nibble (`& 0x0F`) = heat generated per shot |
+The definition record at `DS:0x2ED8` (stride 0x11) stores the stats below — there is **no separate
+"instance" table**; `[0x5652]` is the data segment and `0x2EE4` = record `+0x0C`:
+| Record Off | Abs | Field |
+|-----------|-----|-------|
+| `+0x0C` | 0x2EE4 | bit 7 = personal/infantry weapon; bits 6-0 = cluster column (1 = single-shot) |
+| `+0x0D` | 0x2EE5 | low nibble (`& 0x0F`) = heat per shot; high nibble = minimum range |
 
 The heat pool offset differs between player (`0x92`) and enemy (`0x8A`) units, at segment `DS:[0x5658]`.
 
@@ -614,26 +616,29 @@ Heat does NOT dissipate gradually between turns. Instead, at the **end of each c
 
 #### 6.5 Ammo Check (lines 4610-4670)
 
-Before firing, the weapon's ammo state is checked:
+**Corrected 2026-09-29 (WIP C5):** this is *not* an ammo check. `+0x0C` (abs `0x2EE4`) is the
+weapon **class/cluster byte**, not a shots count — there is no per-weapon ammo field in the
+definition table at all.
+
 ```
-ES = DS:[0x5652]
+ES = DS:[0x5652]                    // data segment
 SI = 0x11 * weapon_slot
 
-TEST ES:[SI + 0x2EE4], 0x80     // check bit 7 (infinite ammo flag)
-if NZ:  goto skip_ammo_check     // infinite ammo — skip all ammo handling
+TEST ES:[SI + 0x2EE4], 0x80         // bit 7 = personal/infantry weapon
+if NZ:  goto skip_cluster           // personal weapons: no cluster table
 
-// Finite ammo:
-CMP ES:[SI + 0x2EE4], 0x1       // compare remaining count with 1
-if ammo <= 1 (JBE):
-    → out-of-ammo path (skip damage roll, weapon still "fires" but does no damage)
+CMP ES:[SI + 0x2EE4], 0x1          // cluster column ≤ 1 ? (energy, SR Missile, Inferno, Kick)
+if ≤ 1 (JBE):
+    → single-shot path (damage = +0x0B, no cluster table)
 
-if ammo > 1:
-    → roll 2D6 and compute damage variance based on remaining ammo
+else (column ≥ 2):
+    → 2D6 + cluster hits table (LRM/SRM), total = hits × +0x0B
 ```
 
-The ammo count byte `ES:[SI + 0x2EE4]` with bit 7 clear stores initial remaining shots. This weapon instance table at `DS:[0x5652]→0x2EE4` (stride 0x11) is **read-only during combat** — the byte is checked (bit 7 = infinite, CMP ≤ 1 = out-of-ammo) but never written back.
+The class byte `ES:[SI + 0x2EE4]` (record `+0x0C`) is **read-only during combat** — the code only
+tests bit 7 and compares the low bits.
 
-The actual ammo decrement happens on the **mech's 125-byte per-unit struct** in segment `0x2A02`, NOT on the weapon instance table:
+Ammo is tracked entirely on the **mech's 125-byte per-unit struct** in segment `0x2A02`:
 
 **Player units (0-3):**
 ```
@@ -663,12 +668,12 @@ INC byte ptr [0x2A02 : 0xC5D4 + unit_id * 0x11 + weapon_type_field]
 LRM and SRM weapons fire as a **single aggregated salvo** — per-missile hit location rolling is NOT implemented:
 
 ```
-// Read per-missile damage and shots/cluster column index
-damage_per_missile = ES:[SI + 0x2EE3]       // 0x01=LRM, 0x02=SRM (b0000 of weapon instance)
-cluster_col        = ES:[SI + 0x2EE4]        // column index into cluster hits table (bit 7 = infinite)
+// Read per-missile damage and cluster column index
+damage_per_missile = ES:[SI + 0x2EE3]       // record +0x0B (LRM=1, SRM=2 per missile)
+cluster_col        = ES:[SI + 0x2EE4]        // record +0x0C; bit 7 = personal weapon, low 7 = column
 
-if (bit 7 SET): → skip cluster table, use energy weapon path (direct damage)
-if (cluster_col <= 1): → skip cluster table (single-shot weapon)
+if (bit 7 SET): → skip cluster table, direct damage (personal/infantry weapon)
+if (cluster_col <= 1): → skip cluster table (single-shot: energy, SR Missile, Inferno, Kick)
 
 // Cluster hits table lookup
 Call 0000:30DD (2D6 roll)                  // 2D6 (2-12)
@@ -681,7 +686,7 @@ total_damage = damage_per_missile * hits    // single aggregated value → [BP-0
 Key points:
 - **Cluster table** at `DS:[0x566C]→0x2E5E`: 7-byte stride per row (column index 0-6), 11 rows (2D6=2..12)
 - **Result**: single total damage value → applied to ONE hit location (not per-missile distribution)
-- **Ammo**: The `cluster_col` (0x2EE4 & 0x7F) doubles as cluster table column index and is NOT decremented (weapon instance table is read-only). Actual ammo consumption happens on the mech struct ammo bins (see §6.5)
+- **Ammo**: The definition table is read-only; `0x2EE4` is the class/cluster column, **not** a shots count. Actual ammo consumption happens on the mech struct ammo bins (see §6.5)
 - **Energy weapons** (bit 7 set): skip cluster table entirely, using a different direct-damage path
 
 #### 6.7 Hit Determination (lines 4696-4708)
@@ -753,7 +758,7 @@ The two-entry table at `DS:[0x566A]→0x2E43` encodes 2 possible hit locations p
 **Overall flow:**
 
 ```
-Weapon Instance Loading (§7.1)
+Weapon Definition Loading (§7.1)
   │
   ├─► Non-cluster weapon (§7.2a): damage = per-missile damage
   └─► Cluster weapon (§7.2b): damage = per-missile × cluster_table[2D6*7 + col]
@@ -798,7 +803,7 @@ Slot Advance (§7.11): loc_offset = advance(loc_offset)
 
 ---
 
-#### 7.1 Weapon Instance Loading (lines 4586-4648)
+#### 7.1 Weapon Definition Loading (lines 4586-4648)
 
 Sets up weapon data and computes base damage per missile:
 
@@ -809,31 +814,34 @@ Sets up weapon data and computes base damage per missile:
     RNG → BX &= 0x8 → read hit location variant from [0x566A]:0x2E43
     ── [BP-0x60] = hit location offset (see §7.4) ──
 
-    // Weapon data access
+    // Weapon data access (definition record; base 0x2ED8)
     SI = [BP-0x48] * 0x11    // weapon_slot × 17-byte stride
-    ES = UInt16[DS, 0x5652]   // weapon instance segment
+    ES = UInt16[DS, 0x5652]   // = data segment (same table as DS:0x2ED8)
 
-    // Infinite ammo check
-    TEST ES:[SI + 0x2EE4], 0x80
-    if NZ → skip (infinite ammo, e.g. energy weapons)
+    // Personal-weapon check
+    TEST ES:[SI + 0x2EE4], 0x80   // record +0x0C bit 7
+    if NZ → skip cluster table (personal/infantry weapon)
 
     // Base per-missile damage
-    AL = ES:[SI + 0x2EE3]      // damage per missile (0x01 LRM, 0x02 SRM)
+    AL = ES:[SI + 0x2EE3]      // record +0x0B (damage; LRM=1, SRM=2 per missile)
     AH = 0
     [BP-0x7C] = AX             // store as initial damage
 
     // Cluster weapon check
-    CMP ES:[SI + 0x2EE4], 1
+    CMP ES:[SI + 0x2EE4], 1    // record +0x0C (cluster column)
     JBE → skip cluster table (single-shot weapon)
 ```
 
-**Weapon instance table** at `DS:[0x5652]` (stride 0x11 = 17 bytes):
+**Weapon definition record** at `DS:0x2ED8` (stride 0x11 = 17 bytes) — see §21 for the full table:
 
-| Offset | Field | Description |
-|--------|-------|-------------|
-| `+0x00` (0x2EE4) | ammo_type | Bit 7 = infinite ammo, low 7 = remaining shots / cluster column index |
-| `+0x01` (0x2EE5) | heat | Low nibble (`& 0x0F`) = heat per shot |
-| (other fields) | name/damage/range | Copied from master weapon table at init |
+| Offset | Abs | Field |
+|--------|-----|-------|
+| `+0x0B` | 0x2EE3 | damage (per-missile for cluster) |
+| `+0x0C` | 0x2EE4 | bit 7 = personal/infantry weapon; bits 6-0 = cluster column (1 = single-shot) |
+| `+0x0D` | 0x2EE5 | low nibble = heat per shot, high nibble = minimum range |
+| `+0x0E` | 0x2EE6 | range bands: bits 7-5 = short, bits 4-0 = medium |
+| `+0x0F` | 0x2EE7 | long range |
+| `+0x10` | 0x2EE8 | skill class |
 
 ---
 
@@ -851,8 +859,8 @@ For weapons with `0x2EE4 > 1` (LRM, SRM, multi-shot):
     FarCall to 0000:30DD (2D6 roll)    → AX = 2..12
     CX = 7
     IMUL CX                              → AX = 2D6 * 7 (row index into cluster table)
-    ES = UInt16[DS, 0x5652]              ← weapon instance segment (reload)
-    BL = ES:[SI + 0x2EE4]               ← cluster column index (low 7 bits)
+    ES = UInt16[DS, 0x5652]              ← data segment (reload)
+    BL = ES:[SI + 0x2EE4]               ← cluster column index (record +0x0C)
     BH = 0
     BX += AX                             → BX = column + 2D6*7
     ES = UInt16[DS, 0x566C]              ← cluster table segment
@@ -1245,23 +1253,24 @@ Combat state at 0xA44B/0xA44D is saved/restored around the combat handler invoca
 
 #### Weapon Data Table (stride = 17 bytes = 0x11)
 
-> ⚠️ **The offsets below are provisional and appear shifted by one vs the binary** (2026-09-28).
-> A fresh dump of the 33-record definition table (`UNBTECH.exe` @ `0x3D088`) indicates
-> **`+0x0B` = damage**, **`+0x0C` = cluster column/volley**, `+0x10` = skill; `+0x0A`/`+0x0D`/`+0x0E`
-> are unresolved. See **§21** below for the dump +
-> multi-shot (SRM/LRM) mechanics.
+> ✅ **Field layout verified 2026-09-29 (WIP C5).** The 33-record definition table lives at
+> `UNBTECH.exe` file offset `0x3D088` / runtime `DS:0x2ED8`. The old "instance table at
+> `DS:[0x5652]:0x2EE4`" is the **same table** — `[0x5652]` holds the data-segment value, so
+> `0x2EE4` is just `record + 0x0C`. Full verified layout + the reader are in **§21**.
+> (The earlier "shifted-by-one" warning is resolved: the table base is `0x2ED8`, so damage is `+0x0B`.)
 
 | Field | Offset | Description |
 |-------|--------|-------------|
 | Name | +0x00 | 10 bytes, ASCII null-padded |
-| _(unresolved)_ | +0x0A | uint8 |
+| _(unused)_ | +0x0A | uint8 — always 0x00, never read |
 | **Damage (per-missile for cluster)** | **+0x0B** | uint8 |
-| **Cluster column / volley** | **+0x0C** | uint8 (1 = single-shot) |
-| Sound/VFX / heat? | +0x0D | uint8 (ambiguous) |
-| Range (packed) | +0x0E | uint16 LE |
+| **Flags / cluster column** | **+0x0C** | bit 7 = personal/infantry weapon; bits 6-0 = cluster column / burst (1 = single-shot) |
+| **Heat / min range** | **+0x0D** | high nibble = minimum range, low nibble = heat per shot |
+| **Range bands** | **+0x0E** | bits 7-5 = short range, bits 4-0 = medium range |
+| **Long range** | **+0x0F** | uint8 |
 | Skill | +0x10 | uint8 (0=B&Blades, 1=Pistol, 2=Rifle, 3=Gunnery, 4=Kick) |
 
-Access pattern: `BX = weaponSlot * 0x11`, then `DS:[BX + 0x2EE4]` (range table copy in data segment)
+Access pattern: `BX = weaponSlot * 0x11`, then `DS:[BX + 0x2ED8]` (name) / `DS:[BX + 0x2EE3..0x2EE8]` (fields)
 
 #### Mech/Unit State Array (stride = 0x7D = 125 bytes, Eq_107947)
 
@@ -1299,10 +1308,10 @@ The game implements a simplified version of the tabletop BattleTech rules:
 | **Weapon Attack** | Per-body-part weapon mounts checked via 9-location loop (0x564 stride 0x40) | Confirmed |
 | **To-Hit Roll** | 2D6 roll via `ghidra_guess_0000_30DD_030DD` (rejection-sampled D6 1-6). TN = base (action_code*2+4) + skill (popcount of story state bits) + terrain (tile property at 0x32C6 + 1) + heat (thresholds at 8/13/17/24 → +1 each) + story state (+2 if citadel attacked). Roll < TN = miss | CONFIRMED |
 | **Hit Location** | 9 body part pairs processed in `unknown_19EF_1886_1B776` (RA, RL, RT, HD, CT, LA, LL, LT, CTR). RNG & 0x8 selects 1 of 2 hit location variants | Confirmed |
-| **Damage** | Full pipeline: weapon instance load → per-missile damage → cluster hits table (2D6×7 + col → segment 0x566C:0x2E5E) → total = hits × per-missile → armor subtraction at `C724 + unit_id*125 + offset` → overflow to next slot | Fully mapped (§7) |
+| **Damage** | Full pipeline: weapon definition load → per-missile damage → cluster hits table (2D6×7 + col → segment 0x566C:0x2E5E) → total = hits × per-missile → armor subtraction at `C724 + unit_id*125 + offset` → overflow to next slot | Fully mapped (§7) |
 | **Critical Hits** | Grid adjacency `unknown_19EF_11BB_1B0AB` handles slot→slot transfer | Confirmed |
-| **Heat** | Heat thresholds at `ES:[BX+0x6E]` (player) or `0x66` (enemy). 8/13/17/24 → cumulative +1 TN penalty each. Heat pool at `ES:[BX+0x92]` (player) / `0x8A` (enemy) accumulates weapon heat from instance byte `0x2EE5 & 0x0F` | Confirmed |
-| **Ammo** | Weapon instance byte `ES:[SI+0x2EE4]` (stride 0x11): bit 7 = infinite ammo, low 7 bits = initial count. Read-only during combat (CMP check only). **Actual decrement** on mech struct: `0x2A02:C74B + unit_id*125 + stage_counter` for players, `0x2A02:C5D4 + unit_id*0x11` burst cap for enemies. 0xFF = empty bin sentinel | Confirmed |
+| **Heat** | Heat thresholds at `ES:[BX+0x6E]` (player) or `0x66` (enemy). 8/13/17/24 → cumulative +1 TN penalty each. Heat pool at `ES:[BX+0x92]` (player) / `0x8A` (enemy) accumulates weapon heat from definition byte `0x2EE5 & 0x0F` | Confirmed |
+| **Ammo** | Definition byte `ES:[SI+0x2EE4]` (stride 0x11) is the **class/cluster** byte, not a shots count. Ammo lives entirely on the mech struct: `0x2A02:C74B + unit_id*125 + stage_counter` for players, `0x2A02:C5D4 + unit_id*0x11` burst cap for enemies. 0xFF = empty bin sentinel | Confirmed |
 | **AI Targeting** | Data-driven: story state properties 0x33-0x55 encode target preferences. `ghidra_guess_1000_0AB2_10AB2` selects n-th valid target matching stage counter | Confirmed |
 | **Destruction** | Unit status at 0x406A set to 0 when destroyed | Confirmed |
 
@@ -1605,8 +1614,8 @@ The death animation type at `ES:[0x37FE]` (values 1, 2, 8, 0xE, 0xF) controls **
 
 `ghidra_guess_1000_0934_10934` (the targeting/state check function) only checks:
 - Unit coordinates (`ES:[SI+0x4004]`, `ES:[SI+0x4036]`)
-- Weapon range from instance table (`[BX+0x2EE7]`, `[SI+0x2EE6]`)
-- Ammo state (`[SI+0x2EE4]` bit 7 = infinite)
+- Weapon range from the definition record (`[BX+0x2EE7]` long, `[SI+0x2EE6]` short/medium bands)
+- Weapon class (`[SI+0x2EE4]` bit 7 = personal weapon; low bits = cluster column)
 
 **No call to any angle/direction function; no comparison of unit position vs target position for arc compliance.**
 
@@ -1620,7 +1629,7 @@ The direction returned is used for tile stepping, NOT for checking whether a tar
 
 **5. Weapon iteration is per-slot, not per-arc**
 
-Weapon instance table at `0x2EE4` has stride 0x11 (17 bytes per weapon). The targeting function reads exactly ONE weapon slot per invocation (the slot matching the target unit index). There is no iteration over all weapon mounts for a unit.
+Weapon definition records have stride 0x11 (17 bytes per weapon). The targeting function reads exactly ONE weapon record per invocation (the slot matching the target unit index). There is no iteration over all weapon mounts for a unit.
 
 **6. AI target selection ignores facing**
 
@@ -1637,7 +1646,7 @@ Weapon instance table at `0x2EE4` has stride 0x11 (17 bytes per weapon). The tar
 ### 15. KNOWN GAPS (STILL UNVERIFIED)
 
 1. ~~**Damage grouping:** How cluster weapons (LRM/SRM) distribute their multiple shots~~ **RESOLVED**: LRM/SRM fire as single aggregated salvo. 2D6 + cluster hits table at `DS:[0x566C]→0x2E5E` determines number of hits. Total damage = per_missile_damage (at 0x2EE3) × cluster_result, applied to ONE hit location. No per-missile distribution. See §6.6.
-2. ~~**Ammo decrement instruction:** Where the ammo count is decremented~~ **RESOLVED**: Weapon instance table at `0x5652:0x2EE4` is read-only. Ammo decrement on the story slot mech struct (segment `0x3092`, stride 125, ammo at offset `+0x27`): players (combat units 0-3, story slots 0-3) at `0x2A02:C74B + unit_id*125 + stage_counter`, enemy mechs (combat units 12-15, story slots 4-7) at `0x2A02:C363 + unit_id*125 + stage_counter`. Enemies (units 4-11) use a burst counter at `0x2A02:C5D4 + unit_id*0x11` capped at 4. See §6.5 Ammo Check.
+2. ~~**Ammo decrement instruction:** Where the ammo count is decremented~~ **RESOLVED**: The weapon definition table (`0x2ED8`, incl. `0x5652:0x2EE4`) is read-only (it holds class/cluster, not shots). Ammo decrement on the story slot mech struct (segment `0x3092`, stride 125, ammo at offset `+0x27`): players (combat units 0-3, story slots 0-3) at `0x2A02:C74B + unit_id*125 + stage_counter`, enemy mechs (combat units 12-15, story slots 4-7) at `0x2A02:C363 + unit_id*125 + stage_counter`. Enemies (units 4-11) use a burst counter at `0x2A02:C5D4 + unit_id*0x11` capped at 4. See §6.5 Ammo Check.
 3. ~~**Heat dissipation:** The heat sink logic between combat turns — how unit heat pool at `0x92`/`0x8A` decreases between rounds or after combat~~ **RESOLVED**: `ghidra_guess_1000_0673_10673` copies heat pool to penalty accumulator (0x6E) and clears pool to zero at end of each round. No gradual dissipation
 4. ~~**Facing / firing arcs:** Whether torso twist restricts which weapons can fire~~ **RESOLVED**: **Not implemented.** The 9 body-part loop `unknown_19EF_1886_1B776` is a critical hit grid-adjacency propagator (cellular automaton on 6×6 grid with stride 8), NOT a weapon fire loop. No facing-direction variable exists for combat units. The targeting function `ghidra_guess_1000_0934_10934` checks only range, LoS, and ammo — no arc check. AI target selection is purely data-driven from story state preference table. Movement direction is only used for pathfinding tile-stepping. See §7.15.
 5. ~~**Complete damage pipeline:** How to-hit, cluster hits, armor subtraction, damage overflow, and VGA effects chain together~~ **RESOLVED**: Full pipeline documented in §7. The to-hit check (2D6 vs TN at 0x4FC2), cluster table lookup (0x4F9F-0x4FC2), armor read (0x50F5-0x510E), damage subtraction (0x5133-0x5147), overkill/overflow (0x51C4-0x5250), slot advance via jump table (0x0B32), and VGA impact effect (0x18EF) are all mapped. Key discovery: damage overflow loops back to apply excess to the next body part via `ghidra_guess_1000_0B32_10B32`.
@@ -1752,7 +1761,7 @@ Enemy infantry: INC word ptr [0x2A02:C5D4 + unit*0x11] (burst counter, capped at
   - Stages 0-1 → struct offsets +0x27/+0x28 (actuator bytes, not ammo — **ammo starts at +0x29**)
   - Stages 2-0xB → struct offsets +0x29..+0x32 (ammo bytes 0-9)
 - `0xFF` sentinel check: if byte == 0xFF, skip decrement (energy/infinite ammo)
-- Weapon type check: weapon instance byte at `[SI+0x2EE4]` bit 7 = infinite flag; low 7 bits = initial shots
+- Weapon class check: definition byte at `[SI+0x2EE4]` bit 7 = personal weapon; low bits = cluster column (the table does **not** store shot counts)
 
 ### Ammo Reload (Garage/Tech Screen)
 
@@ -1815,7 +1824,7 @@ When `fn183B_000A` is called, it invokes `fn0DAB_0D3D` to populate the enemy enc
 1. **Random position**: Units placed at (±10-17 from 26, ±10-17 from 12) on the 32×24 world map grid, independent of terrain type. Generated via `RNG & 0x07 + 0x0A`, with 50% sign negation.
 2. **Clear all slots**: Slots 0-23 cleared (status=0, coords=0xFFFF) first
 3. **Enemy infantry slots 8-15** (50% chance per slot):
-   - Random equipment from table via 7-round loop: each round `RNG & 0x03` indexes 1 of 4 weapon types at `DS:[0x5434] + 0x2CF4` (weapon instance data, stride 0x11)
+   - Random equipment from table via 7-round loop: each round `RNG & 0x03` indexes 1 of 4 weapon types at `DS:[0x5434] + 0x2CF4` (weapon definition data, stride 0x11)
    - `bC61F[1][slot]` set to 0x08 (some type/weapon class)
    - `C618[slot][0..6]` each filled with `RNG & 0x03` (random item types 0-3)
    - HP/weapon state initialized via `fn0800_19DD` calls, combining 2D6 results
@@ -1842,7 +1851,7 @@ When `fn183B_000A` is called, it invokes `fn0DAB_0D3D` to populate the enemy enc
 
 **Melee-only enemies:** The Spectator (decoy/non-combatant, mech ID 0x00 same as Locust) exists in the codebase but was not found in the EXE binary data.
 
-**Known weapons** (17-byte stride, table at `DS:+0x2EE4`): 33 weapons total, range includes: Cludgel, Knife, Sword, Vibroblade, Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SRMissile, Inferno, LaserPistol, LaserRifle, Flamer, Small/Medium/Large Laser, PPC, AC/2/5/10/20, LRM5/10/15/20, SRM2/4/6, Kick.
+**Known weapons** (17-byte stride, table at `DS:0x2ED8`): 33 weapons total, range includes: Cludgel, Knife, Sword, Vibroblade, Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SRMissile, Inferno, LaserPistol, LaserRifle, Flamer, Small/Medium/Large Laser, PPC, AC/2/5/10/20, LRM5/10/15/20, SRM2/4/6, Kick.
 
 **Key insight**: The encounter system generates up to 4 random mechs from a **fixed pool of 3 light mech templates** (likely Locust, Wasp, Stinger — the 20t lights), plus up to 8 random infantry. Heavier units like the Jenner (35t), UrbanMech (30t), and Chameleon (50t) are **story-controlled only** and never appear in random walking encounters. The game has zero assault or heavy mechs — the 50t Chameleon is the maximum weight. The player's perception of "not encountering heavy mechs when piloting lights" is a consequence of the fixed light-mech template pool, not any dynamic balancing algorithm.
 
@@ -1910,7 +1919,7 @@ rolling**. Verified in the decompilation against `1000:4F92`:
 ```
 per_missile_damage = weapon_record[weapon].byte[+0x0B]     # LRM=1, SRM=2
 cluster_col        = weapon_record[weapon].byte[+0x0C]     # 1=non-cluster; SRM2/4/6 → 2/3/5; LRM5/10/15/20 → 4/6/7/8
-if bit7(ammo byte 0x2EE4) set → energy path (no cluster table)   # infinite ammo
+if bit7(byte +0x0C) set      → skip cluster table                # personal/infantry weapon
 if cluster_col <= 1          → single-shot path (no cluster table)
 
 roll  = 2D6()                                  # 0000:30DD, calls the LFSR RNG
@@ -1922,26 +1931,30 @@ total_damage = per_missile_damage * hits       # applied to ONE hit location
 - So an **SRM-6** rolls 2D6, looks up its column, gets the number of the 6 missiles that hit, and applies
   `2 × hits` damage to a **single** location — not six separate locations. Same for LRM-5/10/15/20.
 
-### 2. Weapon **instance** struct (`DS:[0x5652] → 0x2EE4`, stride **0x11 / 17**) ✅
+### 2. Weapon **definition** record (`DS:0x2ED8`, accessed via `DS:[0x5652]`, stride **0x11 / 17**) ✅
 
-Runtime per-mounted-weapon state (read-only `0x2EE4` byte doubles as the cluster column above):
+> **Corrected 2026-09-29 (WIP C5).** There is **no separate "instance" table**. `DS:[0x5652]` holds
+> the data segment itself, so `0x2EE4` is simply record byte `+0x0C` of the same 33-record table at
+> `0x2ED8`. The record is read-only during combat.
 
 | Off | Abs | Meaning |
 |-----|-----|---------|
-| `+0x00` | `0x2EE4` | Ammo/type byte: **bit7 = infinite**, low7 = remaining shots; also the cluster-table column |
-| `+0x01` | `0x2EE5` | Heat — **low nibble (`& 0x0F`)** added to the unit heat pool on fire (`1000:48E3`) |
-| `+0x02` | `0x2EE6` | Skill class (low 5 bits; high 3 bits `>>5` as flags) |
-| `+0x03` | `0x2EE7` | Range threshold byte |
-| `+0x04` | `0x2EE8` | Weapon type id (used for comparisons) |
+| `+0x0B` | `0x2EE3` | **Damage** (per-missile for cluster: LRM=1, SRM=2) |
+| `+0x0C` | `0x2EE4` | **Class/cluster**: bit7 = personal/infantry weapon, bits6-0 = cluster column (1 = single-shot) |
+| `+0x0D` | `0x2EE5` | **Heat** (low nibble `& 0x0F`, added to the unit heat pool on fire, `1000:48E3`) + **minimum range** (high nibble) |
+| `+0x0E` | `0x2EE6` | **Range bands**: bits7-5 = short, bits4-0 = medium |
+| `+0x0F` | `0x2EE7` | **Long range** (byte) |
+| `+0x10` | `0x2EE8` | **Skill class** (0 blades, 1 pistol, 2 rifle, 3 gunnery, 4 kick; indexed into the `C618` roster skills) |
 
-Ammo: energy weapons are `0x2EE4 == 0xFF` (infinite) and **skip the decrement**; per-mech ammo bins are
-separate (see combat-system.md §19).
+Ammo is **not** in this table — it lives on the per-mech struct (combat-system.md §19). Energy weapons
+never decrement ammo simply because they have no ammo bin (`0xFF` sentinel), not because of a flag here.
 
 ### 3. Weapon **definition** table (33 weapons, stride 17) — dumped from the binary
 
-Located in `UNBTECH.exe` at file offset **`0x3D088`**, 33 records × 17 bytes, ending with `Kick`.
-Names are 10 bytes ASCIIZ (`+0x00`). The trailing 7 bytes (offsets `+0x0A..+0x10`) are dumped verbatim
-below; **field offsets are ⚠️ not fully verified** (see §4).
+Located in `UNBTECH.exe` at file offset **`0x3D088`** (= runtime `DS:0x2ED8`; the name-printer pushes
+`0x36DB:0x2ED8`), 33 records × 17 bytes, ending with `Kick`. Names are 10 bytes ASCIIZ (`+0x00`).
+Field offsets are **✅ verified** (2026-09-29) — see §4. The trailing 7 bytes (`+0x0A..+0x10`) are
+dumped verbatim below.
 
 | # | Name | `+0A` | `+0B` | `+0C` | `+0D` | `+0E-0F` | `+10` |
 |---|------|------|------|------|------|---------|------|
@@ -1979,24 +1992,71 @@ below; **field offsets are ⚠️ not fully verified** (see §4).
 | 31 | SRMissile6 | 00 | 02 | 05 | 04 | 1E87 | 03 |
 | 32 | Kick | 00 | 00 | 01 | 00 | 0221 | 04 |
 
-### 4. Field-offset note (⚠️ — read this before trusting the old docs)
+### 4. Decoded stats (per field) ✅ — 2026-09-29
 
-The *existing* `combat-system.md` §13 lists `Damage +0x0A, Shots +0x0B, Heat +0x0C, VFX +0x0D,
-Range +0x0E, Skill +0x10`. **That looks shifted by one vs the binary dump above.** Evidence from the
-dump (compare with tabletop stats):
+The same 33 records with the fields decoded. `heat`/`min` from `+0x0D` (low/high nibble); `S/M` =
+short/medium bands from `+0x0E` (bits 7-5 / bits 4-0); `L` = long range `+0x0F`; `cls` = `+0x0C`
+(★ = personal/infantry weapon, i.e. bit 7 set; the number is the cluster column).
 
-- `+0x0B` matches **damage**: SmallLaser 3, Med 5, Large 8, PPC 0x0A=10, AC/20 0x14=20; LRM = 1 and
-  SRM = 2 (per-missile) — exactly the cluster `0x2EE3` value the docs cite.
-- `+0x0C` matches the **cluster column / volley**: 1 for single-shot; SRM2/4/6 → 2/3/5; LRM5/10/15/20 →
-  4/6/7/8.
-- `+0x10` matches the **skill class** (0 melee, 1 pistol, 2 rifle, 3 gunnery, 4 kick) — as documented.
-- `+0x0D` is **ambiguous** (SmallLaser 1, Med 3, Large 8 look like heat, but PPC 0x3A=58 and AC/2
-  0x41=65 look like sound/VFX ids) — **do not assume**.
-- `+0x0E` range is a packed 16-bit value (not a plain distance); its packing is **undecoded**.
+| # | Name | dmg `+0B` | cls `+0C` | heat `+0Dlo` | min `+0Dhi` | S `+0E>>5` | M `+0E&1F` | L `+0F` | skill `+10` |
+|---|------|-----------|-----------|--------------|-------------|------------|------------|---------|-------------|
+| 0 | Cudgel | 17 | 81 ★1 | 0 | 0 | 1 | 1 | 2 | 0 blades |
+| 1 | Knife | 16 | 81 ★1 | 0 | 0 | 1 | 1 | 2 | 0 |
+| 2 | Sword | 34 | 81 ★1 | 0 | 0 | 1 | 1 | 2 | 0 |
+| 3 | VibroBlade | 48 | 81 ★1 | 0 | 0 | 1 | 1 | 2 | 0 |
+| 4 | Shortbow | 17 | 81 ★1 | 0 | 0 | 3 | 6 | 9 | 0 |
+| 5 | Longbow | 19 | 81 ★1 | 0 | 0 | 4 | 7 | 13 | 0 |
+| 6 | Crossbow | 35 | 81 ★1 | 0 | 0 | 4 | 8 | 14 | 0 |
+| 7 | Pistol | 35 | 81 ★1 | 0 | 0 | 3 | 5 | 9 | 1 pistol |
+| 8 | Rifle | 48 | 81 ★1 | 0 | 0 | 7 | 16 | 31 | 2 rifle |
+| 9 | MachineGun | 48 | 84 ★4 | 0 | 0 | 4 | 8 | 11 | 2 |
+| 10 | SR Missile | 2 | 1 | 0 | 0 | 7 | 31 | 40 | 3 gunnery |
+| 11 | Inferno | 255 ⚠️ | 1 | 0 | 0 | 7 | 31 | 40 | 3 |
+| 12 | LaserPistl | 64 | 81 ★1 | 0 | 0 | 4 | 7 | 13 | 1 |
+| 13 | LaserRifle | 66 | 81 ★1 | 0 | 0 | 7 | 22 | 43 | 2 |
+| 14 | Flamer | 32 | 81 ★1 | 0 | 0 | 3 | 5 | 7 | 1 |
+| 15 | SmallLaser | 3 | 1 | 1 | 0 | 2 | 3 | 12 | 3 |
+| 16 | Med Laser | 5 | 1 | 3 | 0 | 4 | 7 | 30 | 3 |
+| 17 | LargeLaser | 8 | 1 | 8 | 0 | 6 | 11 | 48 | 3 |
+| 18 | PPC | 10 | 1 | 10 | 3 | 7 | 13 | 57 | 3 |
+| 19 | AutoCann/2 | 2 | 1 | 1 | 4 | 7 | 16 | 75 | 3 |
+| 20 | AutoCann/5 | 5 | 1 | 1 | 3 | 7 | 13 | 57 | 3 |
+| 21 | AutoCann10 | 10 | 1 | 3 | 0 | 6 | 11 | 48 | 3 |
+| 22 | AutoCann20 | 20 | 1 | 7 | 0 | 4 | 7 | 30 | 3 |
+| 23 | MachineGun | 2 | 1 | 0 | 0 | 2 | 3 | 12 | 3 |
+| 24 | Flamer | 2 | 1 | 3 | 0 | 2 | 3 | 12 | 3 |
+| 25 | LRMissile5 | 1 | 4 | 2 | 6 | 7 | 15 | 66 | 3 |
+| 26 | LRMissil10 | 1 | 6 | 4 | 6 | 7 | 15 | 66 | 3 |
+| 27 | LRMissil15 | 1 | 7 | 5 | 6 | 7 | 15 | 66 | 3 |
+| 28 | LRMissil20 | 1 | 8 | 6 | 6 | 7 | 15 | 66 | 3 |
+| 29 | SRMissile2 | 2 | 2 | 2 | 0 | 4 | 7 | 30 | 3 |
+| 30 | SRMissile4 | 2 | 3 | 3 | 0 | 4 | 7 | 30 | 3 |
+| 31 | SRMissile6 | 2 | 5 | 4 | 0 | 4 | 7 | 30 | 3 |
+| 32 | Kick | 0 ⚠️ | 1 | 0 | 0 | 1 | 1 | 2 | 4 kick |
 
-So: **treat the weapon-definition field offsets as provisional**; `+0x0B` = damage, `+0x0C` = cluster
-column, `+0x10` = skill are the safe readings. A focused decode of `+0x0A`/`+0x0D`/`+0x0E` is still
-open. Ping the project if you decode them — this is a known gap.
+**Verification against tabletop stats:**
+- **`+0x0B` = damage** — SmallLaser 3, Med 5, Large 8, PPC 10, AC/20 20; LRM 1 / SRM 2 per missile. ✅
+- **`+0x0C`** — bit7 splits **personal weapons** (0-9, 12-14, all skill 0/1/2) from **mech weapons**
+  (skill 3/4); bits6-0 are the cluster column (SRM2/4/6 → 2/3/5, LRM5/10/15/20 → 4/6/7/8). ✅
+  MachineGun's `0x84` low nibble 4 = its **4-round infantry burst**. ✅
+- **`+0x0D` low nibble = heat** — SmallLaser 1, Med 3, Large 8, PPC `0x3A&0xF`=10, AC/2 1, AC/10 3,
+  AC/20 7, LRM5 2 … LRM20 6, SRM2-6 2/3/4 — all match tabletop. **high nibble = minimum range** —
+  PPC 3, AC/5 3, AC/2 4, LRM 6, everything else 0 — matches tabletop minimums. (The game does not
+  appear to apply a min-range penalty: no traced code reads the high nibble.)
+- **`+0x0E` = packed range bands** — bits 7-5 = short, bits 4-0 = medium. Checked against the
+  classifier: Med Laser S/M/L = 4/7/30 vs tabletop 3/6/9; PPC 7/13/57 vs 6/12/18; LRM 7/15/66 vs
+  7/14/21; AC/2 7(sat)/16/75 vs 8/16/24. The classifier multiplies short/medium by 3 to match the
+  distance metric (long `+0x0F` is already in that metric).
+- **`+0x0F` = long/maximum range** (byte) — the range check compares it directly against the
+  computed distance (`1000:09F5`).
+- **`+0x10` = skill class** — 0 blades, 1 pistol, 2 rifle, 3 gunnery, 4 kick; used to index the
+  pilot's skill in the `C618` roster array (`1000:4CA7`).
+- **`+0x0A` is always `00` and never read** — reserved/padding.
+
+**Reader:** the range-band classifier `ghidra_guess_1000_0934_10934` (`1000:0934`) reads `+0x0E`,
+`+0x0F`; the fire code (`1000:4F79`…) reads `+0x0B`, `+0x0C`; heat (`1000:48E3`) reads `+0x0D & 0x0F`;
+skill (`1000:4CA7`) reads `+0x10`. `Inferno`'s `dmg=0xFF` and `Kick`'s `dmg=0` are computed
+elsewhere (Kick's damage byte is written at `1000:4F55` into `ES:[0x3103]` = Kick record `+0x0B`).
 
 ### 5. Cross-references
 
@@ -2136,9 +2196,9 @@ Flamer — carry the weapon's `+0x0B` damage; the record's `+0x0B` picks which o
 > `1000:3EA9`/`3961` (effects).
 
 ### 24.1 Generation (on fire)
-Weapon heat = `weapon_instance[weapon].byte[+0x01] (0x2EE5) & 0x0F`, added to the firing unit's pool:
-**player pool = `+0x92`**, **enemy pool = `+0x8A`** (segment `DS:[0x5658]`). Energy/infinite-ammo
-weapons still generate heat.
+Weapon heat = weapon **definition** record `+0x0D` (abs `0x2EE5`) `& 0x0F`, added to the firing unit's
+pool: **player pool = `+0x92`**, **enemy pool = `+0x8A`** (segment `DS:[0x5658]`). Energy weapons still
+generate heat.
 
 ### 24.2 End-of-round dissipation (no gradual cooling)
 Runs once per round (guarded). For each mech:

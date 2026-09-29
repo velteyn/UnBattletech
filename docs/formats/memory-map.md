@@ -533,24 +533,26 @@ These represent code sections within the main code segment, as labeled by Reko:
 
 ## Known Combat-Related Memory
 
-### Weapon Data (Segment 0x2000, 17 bytes per weapon, 33 weapons)
+### Weapon Data (runtime `DS:0x2ED8`, file offset `0x3D088`, 17 bytes per weapon, 33 weapons)
+
+> ✅ **Corrected 2026-09-29 (WIP C5).** The old "segment 0x2000" and the shifted `+0x0A…` offsets were
+> wrong. Canonical verified layout is [`../combat-system.md`](../combat-system.md) §21 §4.
 
 | Offset within weapon record | Size | Field |
 |----------------------------|------|-------|
 | `+0x00` | 10 | Name (ASCIIZ) |
-| `+0x0A` | 1 | Damage |
-| `+0x0B` | 1 | Shots/Volley |
-| `+0x0C` | 1 | Heat per shot |
-| `+0x0D` | 1 | Sound effect ID |
-| `+0x0E` | 2 | Range (16-bit) |
-| `+0x10` | 1 | Skill modifier |
+| `+0x0A` | 1 | Unused (always 0) |
+| `+0x0B` | 1 | Damage (per-missile for cluster) |
+| `+0x0C` | 1 | bit 7 = personal/infantry weapon; bits 6-0 = cluster column |
+| `+0x0D` | 1 | high nibble = minimum range; low nibble = heat per shot |
+| `+0x0E` | 1 | range bands: bits 7-5 = short, bits 4-0 = medium |
+| `+0x0F` | 1 | long range |
+| `+0x10` | 1 | skill class (0 blades, 1 pistol, 2 rifle, 3 gunnery, 4 kick) |
 
-Weapon instance byte at `ES:[SI+0x2EE4]` (17-byte stride):
-- Bit 7 = infinite ammo flag
-- Low 7 bits = initial remaining shots
+Record byte at `ES:[SI+0x2EE4]` (17-byte stride, record `+0x0C`): bit 7 = personal/infantry weapon,
+low 7 bits = cluster column (1 = single-shot). **Not** an ammo count — ammo lives on the mech struct.
 
-Weapon instance byte at `ES:[SI+0x2EE3]` (17-byte stride):
-- Per-missile damage for cluster weapons (LRM=1, SRM=2)
+Record byte at `ES:[SI+0x2EE3]` (record `+0x0B`): damage (per-missile for cluster: LRM=1, SRM=2).
 
 ### Combat System Variables (Stack Frame)
 
@@ -830,29 +832,33 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 
 ---
 
-## 5. WEAPON DATA TABLE (stride 17 = 0x11)
+## 5. WEAPON DATA TABLE (stride 17 = 0x11, base `DS:0x2ED8`)
 
-| Field | Instance Offset | Type | Description |
-|-------|-----------------|------|-------------|
-| Name | `+0x00` | 10 bytes ASCII | Weapon name, null-padded |
-| Damage | `+0x0A` | uint8 | Damage value |
-| Shots/Ammo | `+0x0B` | uint8 | Ammo count (0x81 = infinite?) |
-| Heat | `+0x0C` | uint8 | Heat generated per shot |
-| Sound/VFX | `+0x0D` | uint8 | Sound effect / visual effect |
-| Range | `+0x0E` | uint16 LE | Maximum range |
-| Skill | `+0x10` | uint8 | Skill class (0=B&Blades, 1=Pistol, 2=Rifle, 3=Gunnery, 4=Kick) |
+> ✅ **Corrected 2026-09-29 (WIP C5).** Table base is `0x2ED8`; `[0x5652]` is the data segment itself,
+> so `0x2EE4` = record `+0x0C`. Full decode: [`../combat-system.md`](../combat-system.md) §21 §4.
 
-### Weapon Instance Table Access
+| Field | Record Offset | Abs | Type | Description |
+|-------|---------------|-----|------|-------------|
+| Name | `+0x00` | `0x2ED8` | 10 bytes ASCII | Weapon name, null-padded |
+| _(unused)_ | `+0x0A` | `0x2EE2` | uint8 | always 0, never read |
+| Damage | `+0x0B` | `0x2EE3` | uint8 | Damage (per-missile for cluster) |
+| Class/cluster | `+0x0C` | `0x2EE4` | uint8 | bit 7 = personal weapon; bits 6-0 = cluster column (1 = single-shot) |
+| Heat / min range | `+0x0D` | `0x2EE5` | uint8 | low nibble = heat per shot; high nibble = minimum range |
+| Range bands | `+0x0E` | `0x2EE6` | uint8 | bits 7-5 = short, bits 4-0 = medium |
+| Long range | `+0x0F` | `0x2EE7` | uint8 | maximum/long range |
+| Skill | `+0x10` | `0x2EE8` | uint8 | Skill class (0=B&Blades, 1=Pistol, 2=Rifle, 3=Gunnery, 4=Kick) |
+
+### Weapon Definition Table Access
 
 | Address | Type | Purpose |
 |---------|------|---------|
-| `DS:[0x5652]→0x2EE4` | byte (stride 0x11) | Weapon instance table base |
-| `DS:[BX + 0x2EE4]` | byte | Weapon type/flags byte (bit 7=infinite ammo, low 7=remaining shots) |
-| `DS:[BX + 0x2EE5]` | byte | Low nibble `& 0x0F` = heat per shot |
-| `DS:[BX + 0x2EE6]` | byte | Skill/class (split: low 5 bits, high 3 bits>>5) |
-| `DS:[BX + 0x2EE7]` | byte | Range threshold byte |
-| `DS:[BX + 0x2EE3]` | byte | Per-missile damage (0x01=LRM, 0x02=SRM) |
-| `DS:[SI + 0x2EE8]` | byte | Weapon type for comparison |
+| `DS:0x2ED8` (via `DS:[0x5652]`) | byte (stride 0x11) | Weapon definition table base |
+| `DS:[BX + 0x2EE4]` | byte | Class/cluster byte: bit 7 = personal weapon, bits 6-0 = cluster column |
+| `DS:[BX + 0x2EE5]` | byte | Low nibble `& 0x0F` = heat per shot; high nibble = minimum range |
+| `DS:[BX + 0x2EE6]` | byte | Range bands (bits 7-5 short, bits 4-0 medium) |
+| `DS:[BX + 0x2EE7]` | byte | Long range |
+| `DS:[BX + 0x2EE3]` | byte | Damage (per-missile for cluster: 0x01=LRM, 0x02=SRM) |
+| `DS:[SI + 0x2EE8]` | byte | Skill class (indexes the pilot's skill in `C618`) |
 | `DS:[index + 0x2E43]` | byte | Hit location modifier (2-entry table) |
 
 ### Ammo Decrement Targets
@@ -926,7 +932,7 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 | `DS:0x559C` | `ptr559C` | `→E48E` | Combat-in-progress flag |
 | `DS:0x55A6` | `ptr55A6` | `→[SI+0x92]` | Heat pool segment |
 | `DS:0x5598` | `ptr5598` | `→[SI+0x6E]` | Heat penalty segment |
-| `DS:0x5652` | `ptr5652` | `→0x2EE4` | Weapon instance table |
+| `DS:0x5652` | `ptr5652` | `→0x2ED8` | Weapon **definition** table (data segment; `0x2EE4` = record `+0x0C`) |
 | `DS:0x5658` | `ptr5658` | `→[BX+0x92]/[BX+0x8A]` | Heat accumulator segment |
 | `DS:0x5654` | `ptr5654` | `→0x32C6` | Terrain TN modifier table |
 | `DS:0x55D8` | `ptr55D8` | `→0x40B4/0x41D4` | Combat fog grids (12×24 each) |
@@ -934,7 +940,7 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 | `DS:0x566C` | `ptr566C` | `→0x2E5E` | Cluster hits table |
 | `DS:0x5630` | `ptr5630` | `→[0x14A]` | Guard for dissipation call |
 | `DS:0x5648` | `ptr5648` | `→[BX+0xD358]` | Enemy shot counter |
-| `DS:0x5434` | `ptr5434` | `→0x2CF4` | Weapon instance data for infantry |
+| `DS:0x5434` | `ptr5434` | `→0x2CF4` | Weapon definition data for infantry |
 | `DS:0x5436` | `ptr5436` | `→0x2DF8` | Enemy mech template table (3 entries) |
 | `DS:0x5460` | `ptr5460` | `→0x2A0F` | selector for the building slot→index table at `+0x4602` (16 bytes) |
 | `DS:0x55D4` | `ptr55D4` | `→bC620` | Special encounter flag |

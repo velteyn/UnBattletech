@@ -8,8 +8,26 @@
 
 ## ▶ SESSION STATUS — pick up here next
 
-**This session (2026-09-29) — "C3 close-out".** Docs-first, decompilation only (no RE tooling left
-running). **C3 ✅ resolved** — the post-fire message path after `1000:521D` is fully enumerated in
+**This session (2026-09-29) — "C5 close-out".** Docs-first, decompilation only. **C5 ✅ resolved** —
+the weapon-**definition** table reader and all seven trailing fields are decoded and verified in
+[`combat-system.md`](combat-system.md) **§21 §4** (and §13/§6/§7/§19 corrected). Key results:
+
+- The table is at **`DS:0x2ED8`** (file offset `0x3D088`); the old "instance table at
+  `DS:[0x5652]:0x2EE4`" is the **same table** (`[0x5652]` = the data segment itself).
+- **`+0x0A`** = unused (always 0); **`+0x0B`** = damage; **`+0x0C`** = bit7 personal-weapon flag +
+  cluster column (**not** "infinite ammo"); **`+0x0D`** = min-range (high nibble) / **heat** (low
+  nibble); **`+0x0E`** = packed short (bits7-5) / medium (bits4-0) range; **`+0x0F`** = long range;
+  **`+0x10`** = skill class.
+- Reader = the range-band classifier `ghidra_guess_1000_0934_10934` (`1000:0934`); it scales
+  short/medium by ×3 and compares to the cursor distance from `1000:05C5`.
+
+**▶ Next:** **C10** (Kick damage / Inferno), then **C11 / U1** (80 px panel animation + status
+screen / "Scan Unit"). Full living list: [`WIP.md`](WIP.md).
+
+---
+
+**Earlier this session (2026-09-29) — "C3 close-out".** Docs-first, decompilation only (no RE tooling
+left running). **C3 ✅ resolved** — the post-fire message path after `1000:521D` is fully enumerated in
 [`combat-system.md`](combat-system.md) **§25.5**:
 
 - the three fixed combat messages and their `DS` pointers — `0x3EDE` **"Missed!"**,
@@ -21,8 +39,8 @@ running). **C3 ✅ resolved** — the post-fire message path after `1000:521D` i
   (`0xC623==0` → `[BP-0x2c]=1` → mark dead, `0x7E` display byte), and the training-dummy FX chain;
 - the post-call path (`1000:17DC` panel refresh, `0000:5FB7(0x10/0x5,0)`, stage reset to `0xC`).
 
-**▶ Next:** **C5** (find the weapon-**definition** table reader) + **C10** (Kick damage / Inferno),
-then **C11 / U1** (80 px panel animation + status screen / "Scan Unit").
+**▶ Next:** ~~C5~~ ✅ (done later this session) → **C10** (Kick damage / Inferno), then **C11 / U1**
+(80 px panel animation + status screen / "Scan Unit").
 
 ---
 
@@ -46,7 +64,8 @@ repo `main` tip **`d5dde67`**. What landed:
 **▶ Do this first next session (cheap, high value):**
 1. ~~**C3** — enumerate the post-fire message path after `1000:521D` (decompilation only).~~
    ✅ **done this session** — [`combat-system.md`](combat-system.md) §25.5.
-2. **C5** — find the weapon-**definition** table reader (resolves `+0x0A/+0x0D/+0x0E` range packing) and **C10** (Kick dmg / Inferno).
+2. ~~**C5** — find the weapon-**definition** table reader (resolves `+0x0A/+0x0D/+0x0E` range packing)~~
+   ✅ **done later this session** — §21 §4. Still open: **C10** (Kick dmg / Inferno).
 3. **C11 / U1** — decode the 80 px combat panel animation + the status screen fields / "Scan Unit".
 4. Then the bigger ones: **C6/C7/C8** (infantry armour map, infantry AI, enemy-AI decisions), **P1/P2** (salvage, injuries).
 
@@ -66,7 +85,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C2 | Damage-overflow internals | ✅ **resolved**: jump table at `CS:0x118E` (`1000:0B62`); armour→structure `+0xB` — §25.4 |
 | C3 | Post-fire / message path (`1000:5847…`) | ✅ **resolved**: 3 fixed messages (miss/hit/kill) + the 11-arg `5847` presentation routine + post-call stage advance — **§25.5** |
 | C4 | Heat `[0x5624]:0x4592` (`penalty/5`) | ✅ **resolved**: read as a non-zero **flag** (`1000:399C`/`39C6`) — §24.5 |
-| C5 | Weapon-definition field offsets `+0x0A/+0x0D/+0x0E` | ⬜ open (find the def-table reader; the code uses the *instance* table `0x2EE3-0x2EE8`) |
+| C5 | Weapon-definition field offsets `+0x0A/+0x0D/+0x0E` | ✅ **resolved** (2026-09-29): table base `DS:0x2ED8` (file `0x3D088`); `+0x0A` unused; `+0x0D` = min-range (hi) / heat (lo); `+0x0E` = short(bits7-5)/medium(bits4-0); `+0x0F` = long; `+0x0C` bit7 = personal-weapon (not "infinite ammo"). Reader = range classifier `1000:0934`; full decode in §21 §4 |
 | C6 | Infantry armour types (`+0x0D`↔FlakVest…) | ◐ partial: type written by equip code (`0000:501B`, `0170:4F07`); value↔item map still unknown |
 | C7 | Infantry AI / weapon selection | ◐ partial: unit-class split at `1000:5028` (`[BP-0x28]` vs 4/0xC); target logic not isolated |
 | C9 | **Terrain movement-cost** — no per-terrain MP cost found; confirm the docs' "movement cost" label on `0x32C6` is wrong (only to-hit + passability exist) | ⬜ see [`combat-system.md`](combat-system.md) §26 |
