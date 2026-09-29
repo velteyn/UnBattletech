@@ -2518,8 +2518,25 @@ the sound subroutines `1000:95F3`/`1000:963B`; the raw table at `3EDB:5008` hold
 (`0x3E8`=1000 ms, `0x1F4`, `0x64`, `0xA`, `0x1770`, `0x1B58`). The attack/weapon type in `1000:5847`
 selects the cue id (`0x3/0x5/0x6/0xB/0xD`).
 
-**C11b — the left-panel event animations (hit / fire / stomp-infantry) are not yet pinned.** They are
-not the on-map MECHSHAP sprites and not the `19EF:18EF` sparkle. Candidate sources: the `O0–O16.ANM`
-88×88 clips (needs a combat-side ANM dispatch — `fn135D` has no combat xref) or a MECHSHAP sprite
-sequence drawn by `18AD:031C` (`1000:5F16`, called with the attack's pattern/class from the post-fire
-presenter). Reconstructing this needs the ANM frames rendered and matched to the observed scenes.
+**C11b — the left-panel event animations are `O*.ANM` clips (not MECHSHAP, not the `19EF:18EF`
+sparkle).** The top-left panel is a **generic 88×88 ANM surface**: it shows pilot/cockpit portraits,
+building interiors, and **combat clips** (a mech firing, a mech stomping infantry, a pilot taking a
+hit). This is what the 1988 print ad illustrates — *the ad itself is an artist's composition, not a
+screenshot*, so treat the real `O*.ANM` files as ground truth, not the ad.
+
+Best-effort render of the real `O*.ANM` files (my decoder is **approximate** — frame boundaries drift on
+later frames, so treat indices as provisional) identified these clips:
+
+| Clip | Content (rendered from the actual file) |
+|------|------------------------------------------|
+| `O0` | cockpit dashboard (empty forward view) |
+| `O1` | mech torso/leg close-up over ground (the **stomp** framing) |
+| `O5`/`O13` | pilot/operator portrait in cockpit |
+| `O7` | squad of infantry advancing |
+| `O9` | mechs + growing explosion cloud |
+| `O16` | mech **firing twin beams** into an explosion (outside the game's O0–O15 table) |
+
+**Still open:** the game's ANM type table (`3EDB:0AC0`) lists only **O0–O15**, so the exact index↔event
+map and the **combat-side trigger** that plays these clips each attack still need a *verified* ANM
+frame decoder (mine drifts) plus the dispatch (`fn135D` has no Reko xref from the combat segment; the
+caller is still unisolated). The `O0–O16` clips vs. the combat events is the core of **C11b**.
