@@ -252,13 +252,20 @@ All offsets are relative to the data segment base (`DS` register, typically segm
 | `0x5378` | ! | `t5378` | Weapon/data pointer |
 | `0x537A` | ! | `t537A` | Weapon/data pointer |
 | `0x538A` | 2 | `ptr538A` | **Pointer to world map viewport segment** (contains array data at D457, D497, D4D7, D517) |
-| `0x53C6` | 2 | `ptr53C6` | **Pointer to world map tile buffer segment** (resolves dynamically) |
+| `0x53C2` | 2 | `ptr53C2` | **ANM decode workspace segment** (`+0x64`/`+0x66` = ANM source far pointer) |
+| `0x53C4` | 2 | `ptr53C4` | ANM player state (`+0xE48A` = frame-loop stop flag) |
+| `0x53C6` | 2 | `ptr53C6` | **Pointer to world map tile buffer segment** (resolves dynamically); also read as `+0x42C3` ANM stop flag |
+| `0x53FE` | 2 | `ptr53FE` | **ANM filename buffer segment** (seg `0xA800`; `+0x12` = `'O'`) |
 | `0x5436` | 2 | `t5436` | Segment pointer for mech tables |
+| `0x545C` | 2 | `t545C` | Scene handler segment (`0xD316`, `0xD33E`, `0xD31A`, `0x2EE8`…) |
+| `0x545E` | 2 | `t545E` | Scene handler segment (`+0x4584`) |
+| `0x5462` | 2 | `t5462` | Scene/cutscene segment (`+0x3938`) |
 | `0x5460` | 2 | `t5460` | Segment pointer for BLD translation table |
 | `0x5588` | 2 | `t5588` | Segment pointer for tile properties |
 | `0x558A` | 2 | `t558A` | Segment pointer for skill gate threshold |
 | `0x5590` | 2 | `t5590` | Segment pointer for Y positions |
 | `0x5592` | 2 | `t5592` | Segment pointer for X positions |
+| `0x55C0` | 2 | `t55C0` | → **sprite table** read by the MECHSHAP blit `1000:1983(id,x,y)` (`+0x39FA` + id*4) |
 | `0x55D8` | 2 | `t55D8` | Segment pointer for fog grids |
 | `0x55DC` | 2 | `t55DC` | Segment pointer for terrain TN modifiers |
 | `0x5636` | 2 | `t5636` | Data segment pointer |
@@ -590,6 +597,45 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 | `+0x57` | 1 | Story state byte: 0=Training, 1=Citadel Attack, 2=Post-Attack |
 | `+0x58` | 1 | One-shot latch for property 0x1F |
 
+### ANM Animation Playback (verified 2026-09-29 — WIP C11b)
+
+`O*.ANM` are 88×88 EGA animations (see [`../formats/anm-format.md`](anm-format.md)). The top-left panel
+plays them on demand via a **single generic player**. Full detail: [`../combat-system.md`](../combat-system.md) §28.1/§28.1a.
+
+| Address (r2 phys) | Reko | Purpose |
+|-------------------|------|---------|
+| `0000:48B7` | `0170:48B7` (`0000:5FB7`) | **`play_anm(index, mode)`** — writes `'O'` at `ES:[0x12]` (seg from `[0x53FE]`), builds `"O<index>.ANM"`, loads, loops decode+blit until the stop flag clears |
+| `1000:AC12` | `1000:C312` | per-frame decoder (one call = one `0xF20` byte frame; big-endian extended run; `xor es:[di],al`) |
+| `19EF:23EC` | | decoder wrapper (sets `DS=0x1DDC`, `DI`, `ES`; jumps into the loop) |
+| `0170:1AFD` | | decode **one** frame + blit (reads the ANM source far pointer from `[0x53C2]:0x64`/`0x66`) |
+| `19EF:24D7` | (`207F:24D7`) | panel blit (case 0 → 80 px left panel) |
+
+| Location | Description |
+|----------|-------------|
+| `DS:0xB78A` | decoder source base (return-value reference) |
+| `DS:0xB78C` | decoder source **segment** (set to `0x1DDC`) |
+| `DS:0xB78E`,`0x790`,`0x792`,`0x794` | player params (dest offset/seg, size, mode) |
+| `DS:0x53FE` | segment of the **filename buffer** (`0xA800`); `ES:[0x12]` = `'O'` |
+| `DS:0x53C2` | segment of the **ANM decode workspace**; `+0x64`/`+0x66` = ANM source far pointer |
+| `DS:0x53C4` | segment; `+0xE48A` = frame-loop stop flag |
+| `DS:0x545C`,`0x545E`,`0x5462` | scene/state segment pointers used by the scene handler `fcn.00007dc8` |
+| `DS:0x141A` | **scene→ANM index table** (byte per scene id; e.g. scene `0x12`/`0x13`/`0x14` at `+0x12C…`) |
+| `0x1DDC:0x42F6` | ANM stream buffer (the loaded `O*.ANM`) |
+
+### Combat Sprite System (MECHSHAP) — WIP C11
+
+Unit sprites (24×24) come from `MECHSHAP.CMP`; the sprite sheet is tokenised into a runtime table.
+
+| Location | Description |
+|----------|-------------|
+| `DS:0x56FC` | → runtime **sprite table**; entry `id*4` at `+0x39FA` = pointer + pitch. Filled by `18AD:070A` (*Extract_Sprites_From_MECHSHAP*) |
+| `DS:0x55C0` | → sprite table **read** by the blit `1000:1983(id, x, y)` |
+| `3092:0x4614` | `MECHSHAP.CMP` load buffer |
+| — | ids: `0x78`-`0x7B` Locust walks, `0xA2`-`0xA5` Commando, `0x7C`/`0x7D` Fire, `0x7E`/`0x7F` Impact, `0x80`/`0x81` wrecks |
+
+> Sound-cue registers (written by `1000:9352` from the cue stream at `DS:0x5008`): `0x56FE→0x4612`,
+> `0x5704→0x6C`, `0x5706→0x3776`, `0x5708→0x4312`, `0x570A→0x398A`.
+
 ## Known Data Tables
 
 | Segment | Offset | Description |
@@ -606,7 +652,7 @@ In the combat handler `ghidra_guess_1000_458C_1458C`:
 ## Still Unknown / Gaps
 
 1. ~~**SoundBlaster/PC Speaker data** — Segment 204B handles interrupt 0x08/0x1C, but format of sound/music data is unknown~~ **WONT_DO**: Irrelevant for reconstruction, replaceable with modern audio
-2. **ANM animation file mapping** — How segment 135D maps animation IDs to specific .ANM files
+2. ~~**ANM animation file mapping**~~ **MOSTLY DECODED (2026-09-29)** — a single player `0000:48B7 play_anm(index)` builds `"O<index>.ANM"`; combat calls it with `O16`/`O5`/`O2`/`O0`, rooms with `O0`, and a scene→ANM table at `DS:0x141A` + a cutscene byte-script drive the rest. See the "ANM Animation Playback" table above and [`../combat-system.md`](../combat-system.md) §28.1a. *(Open: the full scene table + cutscene script.)*
 3. **Exact tile dimensions and animation frame mapping** in segment 0x3092 tile buffer
 4. ~~**Complete BLD index translation table** at `0x4602`~~ **DECODED (2026-09-28)** — building slot→index, see [`../formats/map-bld-triggers.md`](../formats/map-bld-triggers.md)
 5. **`w3988` animation guard** — What sets it, when is animation paused
