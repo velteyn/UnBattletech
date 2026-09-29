@@ -2464,7 +2464,7 @@ the **Inferno** weapon's heat surge.
 | **Mech unit sprites (map)** | The mechs you see on the combat grid | ✅ **decoded 2026-09-29 (C11, below)**: `MECHSHAP.CMP` unit sprites, 2-frame walk cycles + wrecks; blitted by `1000:1983` at tile positions. |
 | **Fire / impact FX** | Muzzle/fire and hit-effect art | ✅ `MECHSHAP` sprites: **Fire_Large `0x7C`**, Fire_Small `0x7D`, Impact_Small `0x7E`, Impact_Large `0x7F`. `1000:63C6` spawns Fire_Large at the target (energy/PPC/Inferno). |
 | **Destruction / wreck** | On unit kill (status `0x406A → 0`) | ✅ the wreck is a **MECHSHAP sprite** (`Locust_Wreck 0x80`, `Commando_Wreck 0x81`); handler mapped §7.9 |
-| **Left-panel mech portrait** | A scaled mech portrait in the 80 px panel | ❌ **not a thing in the original.** No panel-portrait blit was found — the mech art is the **on-map** MECHSHAP sprite (§28.1). The rebuild's `MechPortrait.cs` (MECHSHAP scaled into the panel, invented states) is an **invented UI**, not a port. |
+| **Left-panel event animation** | The top-left panel is **mixed-use**: normally the command menu, but **event animations play there** during combat — observed live: *(a)* the player **taking a hit**, *(b)* a mech **firing**, *(c)* a mech **stomping an infantry** | ◐ **art/trigger still open (C11b).** There is **no persistent** mech portrait (the rebuild's `MechPortrait.cs` is an invented always-on panel UI), but these event clips are real. The only 88×88 animation assets are the `O0–O16.ANM` files, so they are most likely **ANM clips played through a combat-specific dispatch** (the building dispatch `fn135D` has no Reko xref from combat) — or a MECHSHAP sprite sequence. See §28.1. |
 | **Facing/turret animation** | — | n/a (no facing model — §7.15) |
 
 **Note:** combat does **not** use the building ANM system (`fn135D` location-graphics dispatch has **no
@@ -2507,6 +2507,19 @@ fire sprite, and the panel text.
 attack/weapon class in `1000:5847` picks the cue id (e.g. `0x30BF(0x3/0x5/0x6/0xB/0xD)`), so this is
 the real "per-state cue" mechanism.
 
-**Still open (follow-up):** the exact `DS:0x5008` cue-command table (cue id → frame/sound/coords), the
-mech-type → base-sprite-id map, and the walk-frame timing. The `19EF:18EF` "impact" is a **direct-pixel**
-sparkle into the map buffer `0x244B:0x1DDC` (not a MECHSHAP sprite).
+**Still open (follow-up):** the mech-type → base-sprite-id map and the walk-frame timing. The
+`19EF:18EF` "impact" is a **direct-pixel** sparkle into the map buffer `0x244B:0x1DDC` (not a MECHSHAP
+sprite).
+
+**Cue path — `0000:30BF`/`1000:9352` is (probably) the SOUND sequencer, not the panel art.** `1000:9352`
+decodes the command stream at `DS:0x5008` into sound-driver registers across several segments
+(`0x56FE`→`0x4612`, `0x5704`→`0x6C`, `0x5706`→`0x3776`, `0x5708`→`0x4312`, `0x570A`→`0x398A`) and calls
+the sound subroutines `1000:95F3`/`1000:963B`; the raw table at `3EDB:5008` holds timing values
+(`0x3E8`=1000 ms, `0x1F4`, `0x64`, `0xA`, `0x1770`, `0x1B58`). The attack/weapon type in `1000:5847`
+selects the cue id (`0x3/0x5/0x6/0xB/0xD`).
+
+**C11b — the left-panel event animations (hit / fire / stomp-infantry) are not yet pinned.** They are
+not the on-map MECHSHAP sprites and not the `19EF:18EF` sparkle. Candidate sources: the `O0–O16.ANM`
+88×88 clips (needs a combat-side ANM dispatch — `fn135D` has no combat xref) or a MECHSHAP sprite
+sequence drawn by `18AD:031C` (`1000:5F16`, called with the attack's pattern/class from the post-fire
+presenter). Reconstructing this needs the ANM frames rendered and matched to the observed scenes.
