@@ -334,11 +334,12 @@ At the point of attack in TRAINING.BLD:
 → Encounter probability enabled globally
 ```
 
-> **Cutscene note (C11b):** the *"Jenner tries to crush you in your cockpit"* beat is shown as an
-> **`O*.ANM` left-panel cutscene** (a mech **stomping** a downed pilot). The clip plays through the
-> BLD/location-graphics ANM dispatch (`fn135D`) — a story cutscene, **not** a combat-engine animation —
-> which is why it appears when the training-center encounter ends (the player escaping the wreck) and
-> why combat code has no xref to it. See [`../combat-system.md`](../combat-system.md) §28.1.
+> **Animation note (C11b):** the *"Jenner tries to crush you in your cockpit"* beat is shown as an
+> **`O*.ANM` animation** (a mech **stomping** a downed pilot) in the left panel. It plays through the
+> BLD/location-graphics ANM path (`fn135D`), which is why it appears when the training-center encounter
+> ends (the player escaping the wreck) and why the combat code has no direct xref. ANMs are a **generic
+> animation resource** reused across story and combat contexts — this is just one example. See
+> [`../combat-system.md`](../combat-system.md) §28.1.
 
 ### 17.10 Mech/Unit Inventory System
 
