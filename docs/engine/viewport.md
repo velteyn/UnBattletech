@@ -255,6 +255,27 @@ Core EGA framebuffer blitter, 4 cases by `tB764` (seg 246C rendering-config stru
 - `w37FE` text-mode flag semantics.
 - Exact stats/combat screen layout (confirmed w4FBA 0+2+3 combos, not modes 4–6).
 
+### Stats / status screen (`fn0800_3D40`)
+
+The **unit status page** (your mechs/party, and — see below — other units) is a **full-screen modal
+overlay**, exactly like the protection screen, *not* a `ViewportLayout`:
+
+| Aspect | Detail | Source |
+|--------|--------|--------|
+| Entry | SPACE menu option 6 ("stats/inventory") → `fn0800_3D40`; event-driven from `Fn1CD3Dispatcher` case `0x0D` | `formats/memory-map.md` (`0800:3D40`), AGENTS |
+| Mode | sets `w014A = 1` to **suspend normal refresh**; renders directly | (cf. `w014A` semantics) |
+| Background | `BTSTATS.CMP` 320×200 (left 80 px black, right 240 px pre-rendered borders/text areas) | `formats/file-formats.md` (BTSTATS listed) |
+| Data | unit data drawn dynamically as **5 columns × 48 rows of 3×3 subtiles** from game state | AGENTS |
+| Portrait | plays an **ANM in the left 80 px** | AGENTS |
+| Input | its own loop: **arrow keys** cycle the selected unit, **SPACE** exits; on exit `w014A = 0` and viewport+cursor redraw | AGENTS |
+| Rebuild | `BattleTechCHI/Scripts/UI/StatsScreen.cs` (full-screen `Control`) | `rebuild/progress.md` |
+
+> **Coverage:** the *screen* is described at a high level (above + AGENTS.md) but has **no
+> field-level/layout decode** in `docs/`. The **combat "Scan Unit"** option (inspecting *another*
+> unit — enemy/ally) appears in the combat menu (`combat-system.md` §… "Walk / Run / Jump / Use
+> Weapons / Kick / Computer / Scan Unit / Next Unit / Flee / Begin Fight") but its handler is
+> **undecoded**. Tracked as **U1** in [`../WIP.md`](../WIP.md).
+
 ### Impact VFX (moved from `combat-system.md` §7.10)
 
 **Function:** `unknown_19EF_18EF_1B7DF` (segment:offset `19EF:18EF`, linear `0x1B7DF`). Called

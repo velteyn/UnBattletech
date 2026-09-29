@@ -22,6 +22,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C7 | Infantry AI / weapon selection | ◐ partial: unit-class split at `1000:5028` (`[BP-0x28]` vs 4/0xC); target logic not isolated |
 | C9 | **Terrain movement-cost** — no per-terrain MP cost found; confirm the docs' "movement cost" label on `0x32C6` is wrong (only to-hit + passability exist) | ⬜ see [`combat-system.md`](combat-system.md) §26 |
 | C10 | **Kick damage + Inferno effect** — `Kick` table `dmg=0` (computed elsewhere?); `Inferno` `dmg=255` sentinel meaning unknown | ⬜ see [`combat-system.md`](combat-system.md) §27 |
+| U1 | **Stats/status page + combat "Scan Unit"** — decode the status screen layout/fields (`fn0800_3D40`/BTSTATS) and the **inspect-another-unit** path (combat "Scan Unit" handler) | ⬜ see [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
 | C11 | **Combat panel animation** — decode what the original draws in the 80 px combat panel per state (idle/move/fire/damage/destroy) and its trigger; verify/replace the guessed `MechPortrait` (MECHSHAP) | ⬜ see [`combat-system.md`](combat-system.md) §28 |
 | C8 | **Enemy AI beyond targeting** — weapon pick (`[BP-0x48]` from `[BP-0x2]`, specials `0x20`=Kick / `0x80`), movement/approach decision, **flee**, and the "computer fights for you" auto-pilot | ◐/⬜ see [`combat-system.md`](combat-system.md) §3 "AI — coverage & gaps" |
 
