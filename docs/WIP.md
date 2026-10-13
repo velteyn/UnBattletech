@@ -190,15 +190,24 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 - Emulator must be **shut down after each session** (saves restored, ports 8086/20000/2159 freed).
 - The old `spice86-mcp-fix` branch is **deleted** (local + fork); Spice86 checkout on `master`.
 - Docs honesty baseline: `README.md` §2, `docs/SOURCES.md`, `docs/INDEX.md`.
-- **Canonical working tree = `Reversing/AIATTEMPT`.** The sibling `Reversing/UNBATTLETECH` clone is an
-  obsolete prototype (old commit, no `docs/`; its `GeneratedCode*.cs` are already `reko/gencode/GC*.cs`).
-- Imported from that clone (2026-09-29): `tools/pack/exepack.exe` (original EXE packer/unpacker;
-  `.gitignore` exception added) and `reko/gencode/prototype-overrides/*.cs` (the "register one
-  function at a time" prototype — kept for reference, excluded from compilation by `reko/**/*.cs`).
+- **Canonical working tree = `Reversing/AIATTEMPT`.** Companion trees consolidated away
+  2026-10-13 (`UNBATTLETECH`, `UNBATTLETECHPROVA`, `GHIDRAMCP`, `BTECH_IDA` deleted, ~1 GB freed;
+  uniques harvested first — see session status). Remaining siblings are **unrelated, leave alone**:
+  `ELIMAN` (C64 RE), `GAMETOOLS` (3rd-party DOS utils), `Jhora` (OpenJyotish astrology),
+  `BATTLETECH_CHI` (live emulator C: mount), one 7z archive.
+- Canonical data inside this repo: `game/` (full working set: BLD/CMP/MTP/O0–O21/EXE/GAME1-6) +
+  `original/` (`anm/bld/cmp/exe/icn/mtp/saves` archives + `original/saves/GAME1_ghidramcp`).
+  ⚠️ Found 2026-10-13: `game/` + `original/anm/` held a corrupt 259-byte `O21.ANM`; restored the
+  genuine 3328-byte 1988 file (md5 `ec8f73f3…`) from the deleted trees.
+- Imported from the old clones: `tools/pack/exepack.exe` (2026-09-29) and
+  `reko/gencode/prototype-overrides/*.cs` (the "register one function at a time" prototype —
+  kept for reference, excluded from compilation by `reko/**/*.cs`). Import verified 2026-10-13:
+  content-identical modulo CRLF→LF, plus 2 deliberate registration tweaks in `GC0.cs`
+  (`DefineGeneratedCodeOverrides()` off, `DefineFunction(…,0xCEC6,…)` on).
 - **Generated code contains duplicated routines** (segment aliasing/overlays) — a `ghidra_guess_*`
   name is not unique. Resolve the true copy by **physical address** (`seg*16+off`) and confirm against
   the raw `UNBTECH.exe` bytes. See [`engine/segments-19ef-1000.md`](engine/segments-19ef-1000.md)
   "Duplicated functions".
-- **Origin of the generated code:** produced by Spice86 on the `UNBATTLETECH` tree during a **combat
+- **Origin of the generated code:** produced by Spice86 during a **combat
   session** (load `GAME5` → walk into a random encounter → fight a few rounds) — `reko/gencode/GC*.cs`
-  is byte-identical to `UNBATTLETECH/GeneratedCode*.cs`; the fresh run is `reko/gencode-current/`.
+  preserves it (CRLF→LF + 2 registration tweaks, verified 2026-10-13); the fresh run is `reko/gencode-current/`.

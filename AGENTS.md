@@ -5,9 +5,10 @@
 
 ## ▶ Current status — pick up here (2026-09-29)
 
-**Canonical working tree: this repo (`Reversing/AIATTEMPT`).** The sibling
-`Reversing/UNBATTLETECH` clone is an **obsolete prototype** (old commit, no `docs/`, generated code
-already folded into `reko/gencode/GC*.cs`) — do not work there.
+**Canonical working tree: this repo (`Reversing/AIATTEMPT`).** Companion trees were consolidated
+away 2026-10-13 (`UNBATTLETECH`, `UNBATTLETECHPROVA`, `GHIDRAMCP`, `BTECH_IDA` deleted after
+harvesting uniques into `game/` + `original/` + `tools/bld/` + `docs/archive/`); remaining
+siblings (`ELIMAN`, `GAMETOOLS`, `Jhora`, `BATTLETECH_CHI`) are unrelated — leave alone.
 
 **Last work — C3 closed:** the combat **post-fire message path** (`1000:521D` → `1000:5847`) is fully
 enumerated in [`docs/combat-system.md`](docs/combat-system.md) **§25.5** — the three fixed messages
