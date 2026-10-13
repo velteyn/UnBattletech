@@ -356,7 +356,7 @@ unit-title call; mech-range units (`4..0xF`) additionally get `ds:0x1189` (`Deta
 | Armament count | `[C74A]` + count of props `0x33..0x55` equal `0x22`, via `1858` at (0x0A,6,0x22) | `1E28`–`1E4B` |
 | Armament rows (from row 6) | props `0x33..0x55`, `val&0x7F` in `0x10..0x20` only (same encoding as AI targeting §3); bit 7 set → dim colour; weapon name from seg `0x3EDB:0x2EC7+val*0x11` | `1E6B`–`1F83` |
 | Loc column | prop-index bands → `ds:0x12BF` LA (`0x33..0x39`), `0x12C2` LT (`0x3A..0x40`), `0x12C5` RA (`0x41..0x47`), `0x12C8` RT (`0x48..0x4E`), `0x12CB` LL (`0x4F..0x50`), `0x12CE` RL (`0x51..0x52`), `0x12D1` CT (`0x53..0x54`), `0x12D4` H (`0x55`) — chosen by `>0x39/>0x40/>0x47/>0x4E/>0x50/>0x52/>0x54` tests on the prop index, **not** read from slots `0x1C..0x23` (those are the location-bar value offsets, next row) | Ghidra `1AFE` + strings file `0x3BC6F`… (corrected 2026-10-13) |
-| Actuator block | header `ds:0x12D6` (`Actuators`), labels `ds:0x12E0` (`Left Leg/Right Leg/Left Arm/Right Arm`, rows `0x14..0x17`); per row: low nibble of `[C748]/[C749]` vs `0xF`/`0`, high nibble vs `[C78D]/[C78E]` (Ghidra-confirmed structure). Outcome arg-triples as coded, e.g. row `0x14`: `F→(10,10,0xF)`, `0→(0x14,hl,hl)`, else `(0x1269,?,0xF)` where `hl` = w4FBA colour (2/8). ⚠️ The first-arg small IDs (`10`, `0x14..0x17`) are an **unresolved enum** (not ds pointers) — OPEN micro-item | `1F86`–`21AA` (structure confirmed 2026-10-13) |
+| Actuator block | header `ds:0x12D6` (`Actuators`), labels `ds:0x12E0` (`Left Leg/Right Leg/Left Arm/Right Arm`, rows `0x14..0x17`); per row: low nibble of `[C748]/[C749]` vs `0xF`/`0`, high nibble vs `[C78D]/[C78E]` (Ghidra-confirmed structure). Outcome mapping (resolved 2026-10-13, `UNBTECH_0DAB.asm:3085` + rows `1F86–21AA` — the "enum" was position args + far-string pointers set at entry: `[bp-0x0C/0x0A]=ds:0x1265`, `[bp-0x32/0x30]=ds:0x1269`, `[bp-8/0x-6]=ds:0x126D`): nibble `0xF`/at-max → `ds:0x1265` **" OK"** (`0x0F`); `0` → `ds:0x126D` **"Gone"** (dim); else → `ds:0x1269` **"Hit"** (`0x0F`). Same bytes feed the §3.1 Kick rule | `1F86`–`21AA` (closed 2026-10-13) |
 | 11 location bars | `fn0DAB_174C(x, y, max, value)` ×11 (`local_26`=0..0x0A): max = `story[maxbase+i]`, value = `off==0 ? 0 : story[off]` with offsets table `ds:0x1306` = `1C 1D 1E 1F 20 21 22 23 00 00 00` (file `0x3ADB6`); positions `ds:0x131C`/`0x1332` (11 words each, file-verified) | Ghidra `1AFE` loop (resolved 2026-10-13) |
 | Heat bar | `es:[unit+0x6E]` signed-clamped `0..0x1E`, via `174C(0x100,0xB7,0x1E−heat,heat)` | Ghidra-confirmed 2026-10-13 |
 | Anim tick | `w4FBA==3 ? ds:0x1358 : ds:0x1348` via `1F3D:0525`, frames cycle `0x1378/0x137C` → `[0x134C]/[0x1360]` | `2281`–`22BD` |
@@ -366,7 +366,8 @@ unit-title call; mech-range units (`4..0xF`) additionally get `ds:0x1189` (`Deta
 > heat bar passes `(0x1E−heat, heat)` — all as coded above. Location abbrevs are
 > `LA LT RA RT LL RL CT H` (8, `H` = Head, single char — file `0x3B422` block). Condition
 > words `None/ OK/Hit/Gone` exist in the same string run (just before `BTSTATS.CMP` at
-> file `0x3B422` — byte-verified); which actuator outcome prints which word is **OPEN** (first-arg enum `10`/`0x14..0x17`, see row above).
+> file `0x3B422` — byte-verified); the actuator rows print `ds:0x1265/0x1269/0x126D` per the
+> mapping above (closed 2026-10-13).
 
 #### Combat Scan Unit path (closed)
 

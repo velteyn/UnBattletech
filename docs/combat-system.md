@@ -243,13 +243,13 @@ Called for enemy units (ID 4-11) during the combat loop. The caller at `Generate
 | **Action / range band** (`1000:0934`, returns 0=none/1=short/2=med/3=long) | ✅ §4; used as the unit's act code |
 | **Weapon pick** | ✅ §3.1: stage `0xB` = direct idx (leg-actuator bit3×2 → Kick `0x20`, else `0x80`+flag); other stages = `0AB2` head = subphase-th weapon prop −1, bit7 preserved, `0xFF` on ammo/empty; `0x80`-bit routes to `5344` |
 | **Movement / approach** | ✅ §3.2: `0971` direction-8 (+`0x240` table) + `2EBB` cursor stepper + dest snapshot/commit + gates; exact fork semantics OPEN (micro-item) |
-| **Flee / disengage decision** | ✅ player-only (`eluded` string `3EDB:3A00`; handler unisolated); **no enemy-flee logic found** |
+| **Flee / disengage decision** | ✅ §3.4: player flee isolated (25% `RNG&3==1`, Jenners/arena gates, two `eluded` exits, arena win/lose, pre-combat evade); enemy infantry rout (straggler `>0x19` via `0BB5`, 50% remainder) |
 | **Auto-pilot ("computer fights for you")** | ✅ §3.3: `[0x55F2]:0x90` → `1763` → `1631:03AB` does target/weapon/LoS/step/facing + fills `0x3800`/`0x32C6` |
 
 > Enemy AI is now **decided**: the loop consumes precomputed tables (`0x3800` targets,
 > `0x32C6` orders) filled by `1631:03AB` (auto) or `1543:0004` (manual); per-stage weapon =
-> §3.1 rule; movement = §3.2 mechanism. Remaining: one fork-semantics micro-item + the
-> manual-fill site corroboration — see [`WIP.md`](WIP.md) item C8.
+> §3.1 rule; movement = §3.2 mechanism; flee/rout = §3.4. Remaining: one fork-semantics
+> micro-item + `3772`/`[bp+6]` enums — see [`WIP.md`](WIP.md) item C8.
 
 ##### §3.1 Weapon pick — the per-stage slot `[BP-0x48]` (`GC12.cs`, `1000:45D9`–`4669`)
 
@@ -308,17 +308,45 @@ Two rules, gated on the attack sub-phase `[BP-0x42]`:
   `[0x564E]:unit*0xC+stage+0x3800` (ten `0AB2` calls; `0x380B` = stage-11 cell; heat-capped units
   get `0xFF` + `0x80`-OR'd rows instead) → render tail (`203b_193b`, `203b_1774`,
   `1000:17BB` cursor restore). Manual player units get equivalent rows from `1543:0004`
-  (Use-Weapons handler — corroboration pending, plausible by call-site).
-- Note: the `0x3800` table is written via `[0x564E]` and read via `[0x5650]` (aliased segments —
-  same physical table); the `0x32C6` order rows use stride `0x30`.
+  (Use-Weapons handler — confirmed: entry ORs `0x80` ×12, writes `0xFF`/target cells, kill-scan
+  clears; see the `0x3800` writer/reader enumeration in §3.3's note).
+- Note: the `0x3800` table is written via selectors `[0x564E]/[0x55DA]/[0x554A]/[0x3092]/[0x2A02]`
+  (one aliased physical table — corrected 2026-10-13: reads do NOT go via `[0x5650]`, which is the
+  *heat* alias for `[bx+0x6E/0x66]`); the `0x32C6` order rows use stride `0x30`. Init
+  (`183B:00D6`) clears rows 0–8 plus a `0x3890` mirror; heat-cap ORs `0x80` ×12; `0x380A`
+  (stage 10) is never filled by `03AB` (left `0xFF`); rows 12–23 addressability unconfirmed.
 
-##### §3.4 Flee
+##### §3.4 Flee, rout, and post-combat resolution (`UNBTECH_183B.asm`, byte-verified 2026-10-13)
 
-Player menu option → `You have eluded your enemies! Press a key.` (string at `3EDB:3A00`,
-file `0x3DAEF`) → world map. No code xref to the string in gencode/Reko — handler unisolated.
-**No enemy-flee decision logic was found** in the combat loop: enemies skip via heat-cap
-(`0xFFFF`), dead-target, or blocked-LoS paths, but nothing evaluates morale/retreat — they
-fight to the death as far as traced.
+**Player flee — handler isolated** (`fn183B_000A` + `14C3` end-counters). `14C3` returns `[bp-2]`
+(`176C`): **1 = Flee, 0 = Begin** (Next-Unit at `00C6−3` re-loops instead); player menu
+(`00C6=0xA`) ⇒ Flee 8 / Begin 9, enemy menu (`00C6=8`) ⇒ Flee 6 / Begin 7. Caller (`000A:0605`):
+arena-box force (`es:[3772]≠0` + outside box → `[bp-0x38]=2`); **flee roll** (`0660`, only when
+`[bp-0x38]==1`): `RNG&3; ==1 → escape (25%)`, else `[bp-0x38]=0` → `0x34B8`
+`You do not escape! The enemies engage in combat.`; fight-forcers: `[bp+6]≥2` → 0,
+Jenners (`3772≠0` + not-exited) → `0x3497` `You cannot escape these Jenners!`. Fled + `[bp+6]>0`
+sets `es:[3992]=1`; nonzero `[bp-0x12]` runs the exit chain (`0826→0FFD→102E`).
+Exits: flee-success → `12BF` displays the **first** `eluded` (`DS:0x3936`, `mov ax,3936h` at
+`183B:12CB`) + `0800:2A4F`, then `0x3954` `You return to where you were…` + cursor restore;
+boundary/arena exit (`[bp-0x38]==2`, needs `3772≠0`) → `13E2` displays the **second** `eluded`
+(`DS:0x39F7`, `mov ax,39F7h` at `183B:13EE`); arena win/lose (`136D`): `0x398B`
+`You should return to base now.` / `0x39AA` `Congratulations! You have won!` / `0x39CA`
+`The crowd boos…` — all gated on `es:[014A]≠0` (silent exit when 0). Pre-combat evade gate
+(`043D–04B2`): `0x3428` `Engage in combat?` → decline risks `RNG&3==0` → `0x343A`
+`You did not evade them!`. Residuals: `es:[3772]` writers, `[bp+6]` arg enum.
+
+**Enemy rout — two infantry paths** (`fn183B_000A`, `0D0E–0EF6`; field battles only:
+`[bp+6]==0`, `es:[374C]` armed — set in `03AB` for units `≥0x10`, consumed at `0DB7`):
+- **Straggler rout** (`0DB7–0E83`): for each alive infantry slot `0x10–0x17`, distance =
+  `1631:0BB5` (Chebyshev-ish `max(|dx|,|dy|)+min/2` on unpacked nibble coords, cursor→target
+  from stage-0 cell `[55DA]:0xC·slot+0x3800`); **distance > `0x19` (25) ⇒ slot killed**
+  (`406A=0`, coords `0xFFFF`), `[bp-0x40]=1` → `0x38BC`
+  `Some of the enemy humans have fled!` (`0E89`). Caveat: a `0xFF` stage-0 cell reads garbage
+  coords (almost surely >25 ⇒ routs) — as-coded, unconfirmed live.
+- **Remainder rout** (`0EB6–0EF6`, only if no `0xC–0xF` mech alive): `RNG&1 → [374C]`; still set ⇒
+  `[bp-0x12]=1` + `0x38E0` `The enemy humans have fled!` — 50% all-infantry field rout.
+- Sibling line `0x38FC` `After an invigorating scuffle, you defeated the Kuritans.` (`10CD`)
+  confirms the victory chain. Files: `0x38BC→0x3DA6C`, `0x38E0→0x3DA90`, `0x38FC→0x3DAAC`.
 
 ---
 
@@ -2448,36 +2476,188 @@ projection and the cursor `0xA44B/0xA44D` is restored, then `[BP-0x42]++` starts
 > (cue stream fully decoded, §28.1 — sound is WONT_DO, §6). `arg4` (`[BP-0x58]`) remains the only
 > unresolved detail.
 
-### 25.6 Post-combat salvage phase (P1 — presence confirmed 2026-10-13, mechanics open)
+### 25.6 Post-combat salvage phase (P1 — mechanics decoded 2026-10-13)
 
 > The old premise ("no salvage wording in BLD texts ⇒ maybe no salvage") was **wrong**: the
 > salvage system exists with 9 dedicated strings in the EXE string area (seg `3EDB`, file
-> `0x3B063…`, DS `0xEB3…0x1099` — byte-verified; genuinely absent from all 26 BLD files, and
+> `0x3B05E…`, DS `0xEAE…0x1113` — byte-verified; genuinely absent from all 26 BLD files, and
 > corroborated by the walkthrough: *"Salvages mech parts"*, *"you can also salvage weapons"*).
 
-| DS off | String (abridged) | Phase step |
-|--------|-------------------|------------|
-| `0xEB3` | `…and heat sinks` / `…, heat sinks and weapons` / `…, heat sinks, weapons and structure` | tiered part-recovery suffixes |
-| `0xEFF` | `%s uses his tech training to scavenge armor from the enemy 'Mechs.` | Tech-gated armor scavenge |
-| `0xF52` | `You are able to scrounge together %s C-bills worth of scrap metal…` | scrap award (%s = amount) |
-| `0xFD5` | `%s is a qualified pilot without a 'Mech. Do you want to salvage one of the wrecks?` | Y/N: mech grant |
-| `0x1003` | `%s is inspecting the wrecks…` | inspection step |
-| `0x101E` | `%s is salvaging a %s` | per-wreck attempt (`%s` = mech type) |
-| `0x1030` | `No chance to salvage this %s` | failed attempt |
-| `0x1056` | `There are no more salvageable 'Mechs on the battlefield.` | exhaustion end |
-| `0x1099` | `You dig through the soldiers' pockets and find %s C-bills in cash, and confiscate…` | pocket-looting |
+| DS off | String (abridged) | Phase step | Print site |
+|--------|-------------------|------------|------------|
+| `0xEAE` | ` and heat sinks` | tier-0 part-recovery suffix | table `DS:0xFA2[0]` (`0000:725D`) |
+| `0xEBE` | `, heat sinks and weapons` | tier-1 suffix | table `DS:0xFA2[1]` |
+| `0xED7` | `, heat sinks, weapons and structure` | tier-2 suffix | table `DS:0xFA2[2]` |
+| `0xEFB` / `0xEFE` | `\r\r` + `%s uses his tech training to scavenge armor` / ` from the enemy 'Mechs.` | Tech armor-scavenge line (name printed between the two pieces) | `0000:7200` / `0000:723B` |
+| `0xF40` / `0xF65` | `\r\rYou are able to scrounge together ` / ` C-bills worth of scrap metal from the destroyed 'Mech` | scrap award (`%s` = amount via `1000:8B23`) | `0000:761A` / `0000:7637` |
+| `0xF9E` / `0xFA0` | `s` / `.` | scrap-line plural + period (via `1000:DA12`) | `0000:7652` (if >1 wreck) / `0000:7667` |
+| `0xFAE` | ` %s is a qualified pilot without a 'Mech. Do you want to salvage one of the wrecks?` | Y/N: mech grant (`0000:3113(1)`) | `0000:7A65` |
+| `0xFFF` | ` is inspecting the wrecks…` | inspection step (YES path) | `0000:7ABB` |
+| `0x101D` | ` is salvaging a %s` | per-wreck attempt (`%s` = mech type via `1000:DA58`) | `0000:77C8` |
+| `0x102F` | `\rNo chance to salvage this %s` | failed attempt | `0000:7965` |
+| `0x104C` | `There are no more salvageable 'Mechs on the battlefield.` | exhaustion end | `0000:79E6` |
+| `0x1085` / `0x10B5` / `0x10C6` | `You dig through the soldiers' pockets and find ` / ` C-bills in cash` / `, and confiscate their weapons` | pocket-looting | `0000:7B8F` / `7BDC` / `7C01` |
+| `0x10E5` | `Do you want to drop your %s in exchange for a %s?` | mech swap Y/N | `0000:7C54` |
 
-Skills (file `0x3A95C…`, NUL-separated run): **Bow & Blade, Pistol, Rifle, Gunnery, Piloting,
-Tech, Medical** — `Tech` is the salvage skill ("tech training").
+> Offsets above are the **code-verified print sites** (corrected 2026-10-13 — the old
+> `0xEB3/0xEFF/0xF52/0xFD5/0x1003/0x101E/0x1030/0x1056/0x1099` pointed 1–13 bytes into the
+> same strings; the tier-0 suffix truly starts at `0xEAE`, not `0xEB3`). All rendering goes
+> through the text routine `1000:8055`; formatted lines are built in the `0x2A02:0x12` buffer
+> by `1000:DA58`/`1000:DA12` (string insert) and `1000:8B23` (number→string after `0000:3FA2`).
 
-> **OPEN (code unisolated):** the Tech skill-check formula/roll; tier selection among the three
-> suffixes; scrap-amount computation; pocket-cash computation; the wreck→mech grant path
-> (unit-slot + story-slot writes on YES); loop/exhaustion control. Hunt notes: **no**
-> `MOV reg,imm` / `PUSH imm` / LEA refs to any of the nine offsets exist in the binary, and
-> Ghidra reports no code xrefs (REA `xrefs` at linear `0x47CAF` = `[]`) — pointers are computed
-> at runtime; no `CMP AL,'Y'/'N'` in the combat-loop gencode. Start from the combat-victory
-> branch (all-enemies-dead → world-map restore), not from the strings. Tracked as **P1** in
-> [`WIP.md`](WIP.md).
+Skills (file `0x3A953…`, NUL-separated run): **Bow & Blade, Pistol, Rifle, Gunnery, Piloting,
+Tech, Medical** — display labels for the stats screen. Per-unit stored skills are the 3 bar
+bytes `[C799]/[C79A]/[C79B]` of the `0x11`-stride unit record (rendered widths 3/2/2 —
+see [`engine/viewport.md`](engine/viewport.md)) plus story-struct bytes `0x24/0x25`
+(popcount → to-hit). **Which bar is "Tech" is still open** (see §25.6.4).
+
+#### 25.6.1 Code sites (all in the Spice86 trace — `reko/gencode/GC5.cs`, `GC10.cs`)
+
+| Routine | Role | Caller |
+|---------|------|--------|
+| `0000:71B2` (`ghidra_guess_0000_71B2_071B2`, `GC5.cs:5`) | Per-unit **armor scavenge + scrap** (no args) | victory path `1000:1ABA` loop `1000:2BFA` (slots 0-8, skip `C614==0xFF`/`C61D==0`) |
+| `0000:76A9` (`ghidra_guess_0000_76A9_076A9`, `GC5.cs:1478`) | **Wreck→mech grant** (pilot loop + one wreck per YES) | `1000:1ABA` at `1000:2CFC`, guarded by bit-`0x80` flags + story occupancy |
+| `0000:7AFB` (`ghidra_guess_0000_7AFB_07AFB`, `GC5.cs:2684`) | **Pocket-looting + mech swap** | `1000:1ABA` at `1000:2D01`, right after `76A9` |
+| `1000:1ABA` tail (`GC10.cs:7180+`) | Victory resolution: wreck scans, outcome strings, `71B2`/`76A9`/`7AFB` calls, `D335=0`, position restore | `0170` main loop (walking-encounter trigger `RNG & bD330`, `bD310`/`bD346` guards, `GC0.cs:1541`) |
+
+Helpers: `0000:414F` = wait-for-key (after every message); `0000:3113(arg 1)` = Y/N
+prompter (non-zero = YES — the only Y/N reader; **no `CMP AL,'Y'/'N'` exists anywhere** —
+Y/N answers arrive as a menu/index result, consistent with the 3× `Yes\0No\0` 2-option
+menus at file `0x3AA30`); `19EF:0BC0` = RNG; `1000:41ED(slot,loc)` = prop test/replenish
+gate; `0000:AAA6` = swap execution (details open).
+
+#### 25.6.2 Actor selection — max-`C61D` unit (`0000:71CD`, `0000:76C1`)
+
+Both `71B2` and `76A9` open with the same scan (slots 0-8, `0x11` stride, skip
+`C614==0xFF`): `[BP-4]` = slot with the largest `C61D`, `[BP-6]`/`[BP-0x14]` = that value.
+The actor's name prints from the far-pointer table `[0x5414]:C614·4+0x1CA/0x1CC`.
+
+`C61D` is the **equip-slot-5 purchase count**: case `0x0F` (`1CD3:0C08`, 500 cr debited at
+`D370/D372`) does `INC [0x11·slot+C61D]` + `OR [0x11·slot+C624],1` (`UNBTECH_1CD3.asm:1270`).
+So the actor is the **most armour-upgraded unit**, and the tier gates below count upgrades,
+not kills. (Consistent with `story-system.md` "C61D = equip slot 5" — it counts purchases.)
+
+#### 25.6.3 Skill check — `0000:776E` (quirk: skill bars are outcome-redundant)
+
+`76A9` tests story slot `[BP-2]` (`SI = 0x7D·[BP-2]`):
+
+```
+CMP [SI+C799],3; JZ pass     # bar 1 == 3?
+CMP [SI+C79A],2; JZ pass     # bar 2 == 2?
+CMP [SI+C743],0; JNZ pass    # C743 != 0?
+pass: CMP maxC61D,4; JGE qualified
+      [BP-8] = 0             # disqualified → fail path 7965
+```
+
+Net effect: qualified iff **`C743 ≠ 0` OR `maxC61D ≥ 4`** — every path through the
+`C799`/`C79A` compares converges on the same `maxC61D ≥ 4` test, so **the two skill-bar
+compares never change the outcome** (verified by branch analysis; likely a leftover).
+There is **no Tech-value roll** — "tech training" is gated by upgrade count + `C743`,
+not by a skill check vs RNG. Which bar (if any) is Tech, and what `C743`/`C744` mean
+(`C743` set to 1 and `C744` set to 1 on grant, `0000:7932-795D`), remain open.
+
+#### 25.6.4 Tier selection — far-pointer table at `DS:0xFA2` (`0000:724E`)
+
+If `maxC61D > 1`, `71B2` prints the far pointer at `DS:[maxC61D·4 + 0xF9A]` (off) /
+`+0xF9C` (seg) — an inline 3-entry table at file `0x3B152` (segment word `0x36DB`,
+the relocated string segment):
+
+| maxC61D | BX | Pointer | Suffix (verified target) |
+|---------|----|---------|--------------------------|
+| 2 | 8 | `36DB:0EAE` | ` and heat sinks` |
+| 3 | 12 | `36DB:0EBE` | `, heat sinks and weapons` |
+| 4 | 16 | `36DB:0ED7` | `, heat sinks, weapons and structure` |
+
+The suffix completes the armor line: "`%s` uses his tech training to scavenge armor
+[`<suffix>`] from the enemy 'Mechs." (`0xEFE` + suffix + `0xF28`). `maxC61D ≤ 1` prints
+no suffix; `maxC61D > 4` reads past the table (open edge — economy-capped in practice).
+
+#### 25.6.5 Armor top-up distribution (`0000:7281`, `7346`, `739B`)
+
+- Wreck armor pool: slots `0xC-0x10` with `0x393C ≠ 0`: sum story bytes
+  `0x7D·slot+0xC33C+0x11..0x1B` (armour) into `[BP-2]`, count into `[BP-8]` (`0000:7281`).
+- If `maxC61D ≥ 4`, second sum over `+0x1C..0x23` (structure) (`0000:7346`).
+- Per player slot (0-4, occupied): recoverable `[BP-0xA] = ([0x11·slot+C769] −
+  [0x11·slot+C724])` capped at the wreck pool (`min(damage, pool)`, `0000:739B`), then
+  location-cursor `[BP-0x26]` roams `0x23→0x1C` topping up armor bytes.
+- Ammo replenish (`0000:7463`): per occupied slot, scan story props `0x33..0x55` for
+  `0xA2` (expended); `1000:41ED(slot,loc) ≠ 0` → rewrite to `0x22`, decrement pool.
+  A prior pass (`0000:7412`) counts `0x22`-valued props the same way.
+
+#### 25.6.6 Scrap computation + credit award (`0000:75EC`, `0000:7691`)
+
+```
+total = 0
+repeat [BP-8] (wreck count) times: total += (RNG() & 0x7F) + 0x5A   # 90..217 per roll
+total *= [BP-4]                    # × actor SLOT index (verbatim — slot 0 yields 0; see note)
+```
+
+Print `0xF40` + number (`0000:3FA2` → `1000:8B23`) + `0xF65` (+ `s`/`0xF9E` if >1 wreck +
+`.`/`0xFA0`), keywait, then dword `D370/D372 += total` (`CWD` + `ADD`/`ADC` —
+`D370`/`D372` is the 32-bit credit balance, cf. the equip `SUB D370,1F4 / SBB D372,0`).
+
+> ⚠️ The `× actor slot index` multiplier is verbatim from `0000:7614` (`IMUL [BP-4]`,
+> where `[BP-4]` holds the slot number, not the value). Whether this is intentional
+> (seniority weight) or a bug is open — a differential trace will settle it.
+
+#### 25.6.7 Wreck→mech grant path (`0000:76A9`, entry → pilot loop `0000:7A00`)
+
+`76A9` jumps straight to the pilot loop on entry: slots **1-7** (slot 0 skipped),
+selecting `C614≠0xFF`, `C61C≠0`, **`C620 ≥ 8`** (unlinked/pilot-class — cf. P3
+`C620 = 0x08` unlinked; exact band open). Per candidate: print name + `DS:0xFAE`, ask
+`0000:3113(1)`:
+
+- **YES**: print name + `DS:0xFFF` (inspecting), `1000:8AD6(0x78)`, random wreck cursor
+  `(RNG&3)+(RNG&1)·12` (`0000:7AD6`), round-robin scan `0000:770A` for the next
+  `0x393C≠0` slot (0-15, wrap; **clears the marker**, counts the rest into `[BP-0xC]`,
+  `[BP-2]` = slot, −8 if ≥12) → skill gate (§25.6.3) →
+  - pass: print actor name + `DS:0x101D` (via `1000:DA58` with wreck-type byte
+    `[0x5418]:[BP-2]+0x323E`), find first free player story slot (`C724==0xFF`,
+    `0000:786D`), **copy the wreck's full `0x7D` story bytes** into it, then write
+    `[SI+C724]` = wreck type, `[SI+C79D]` = `[BP-0xE]`, `[0x11·E+C620]` = new slot
+    (unit↔story link), `[D55E]` = 0 (`0x92` if type ≠ `0x4C`), `[C799]=[C79A]=1`,
+    `C744=1` (and `C743=1` if unset) → `0000:79BE` → `79DB` → wrecks remain? end : done.
+  - fail: format + print `DS:0x102F` ("No chance…", `0000:7965`).
+- **NO** (`0000:79DB`): wrecks remain (`[BP-0xC]≠0`) → end silently; none remain →
+  print `DS:0x104C` (exhaustion) + keywait → end (`0000:79FD` forces the pilot loop
+  cursor to 9, exiting to `RETF`).
+
+One `76A9` call processes **at most one wreck** (markers are per-call stack-local except
+the cleared `0x393C`); the `1ABA` victory path calls it once, then `7AFB`.
+
+#### 25.6.8 Pocket-looting + mech swap (`0000:7AFB`)
+
+- Gate (`0000:7B1A`): scan slots 4-11; `[BP-0xA]=1` if any slot has `0x393C==0` (or
+  `393C≠0` with `3954==0`); pockets run iff `[BP-0xA]≠0` (skipped only when all 8 bear
+  both markers — `0x3954` semantics open, likely mech-vs-infantry).
+- Count `[BP-4]` = slots 4-11 with `[0x11·slot+C6EB]==0` (`0000:7B45`).
+- Cash: `total=0; repeat [BP-4] times: total += (RNG() & 0xF) + 3` (`0000:7B9E`);
+  **floor 2** (`0000:7BBC`); format + print `0x1085`/`0x10B5`, dword `D370/D372 += total`,
+  print `0x10C6` (weapons confiscated), keywaits.
+- Swap (`0000:7C26`): loop slots, print `DS:0x10E5` ("drop yours…?"), Y/N `0000:3113`,
+  execute via `0000:AAA6` (exact slot writes open).
+
+#### 25.6.9 Loop control (end-to-end)
+
+`0170` main loop → `1000:1ABA` (on victory; `DS:0x38FC` "After an invigorating scuffle…",
+wreck scans over `0x393C` slots 12-23/12-15, outcome table `0x3936/3954/398B/39AA/39CA`,
+per-unit `0000:71B2` calls in the `1000:2BFA` loop, per-unit `0000:71B2`-style `C61D`
+loop at `1000:2BFA`→`71B2`, `C614/C61D/C620` pilot scan at `1000:2C66`, casualty sums at
+`1000:2D2B`) → `0000:76A9` (once, `1000:2CFC`) → `0000:7AFB` (once, `1000:2D01`) →
+`D335=0`, panel calls, `0x1A`-stride `D390→4024/4056` position restore + `397C/396C`
+clear + `40AA=0x10` (`1000:2ECA`), `RETF` (`1000:2F16` = file `0x14C2C`; the trace ends
+here — everything past it is static decode, unverified at runtime).
+
+#### 25.6.10 Remaining unknowns
+
+- `C743`/`C744`/`C61C`/`C620`-band/`C769`/`C6EB`/`C918`/`C91x` field semantics (only
+  usage-derived); `0x3954` marker meaning; `0x393C` vs `0x406A` (display vs alive) usage split.
+- 3 bars vs 7 skills: which bar (if any) is Tech; bar polarity (`C799==3` gate vs
+  `-(v-3)` display formula); story `0x24/0x25` vs unit bars split.
+- `maxC61D > 4` table overrun; scrap `× slot index` intent; pocket `[BP-4]` when zero
+  (loop skipped, total 0 → floored to 2 — free 2 C-bills?); `0000:AAA6` swap writes;
+  `0000:3113` key mapping; `1000:41ED`/`8AD6(0x78)`/`DA58`/`DA12`/`DA8E`/`8B23`/`3FA2` internals.
+- Runtime differential (Track 3) still missing for all of the above.
 >
 > Adjacent outcome strings (same region, file `0x3D699–0x3DB7A`, inventoried 2026-10-13):
 > Kurita double-agent variants, `Some/The enemy humans have fled!`, `You have eluded your
@@ -2626,13 +2806,18 @@ compute `spriteId = fn0170_1732(0x18) + base` — base **`0x68`** for the acting
 real bytes at file `0x4B32`, cross-checked vs lossy Ghidra `FUN_1000_1732` at REA `0x11732`):**
 a far-pointer table at `DS:[0x1F6 + id*4]` (offset word + segment word per stream). Loop head
 (`0170:1798`): `SI=[ptr]; [ptr]++; ES=[seg]; AL=[ES:SI]` (auto-advancing read), sign-extend
-to AX; if `AX ≥ 0` return AL (the sprite id). If negative, three control ops:
-`0xFD` (−3) → read next byte into `ES:[id+0x396C]` with `ES=[0x53BE]` (side-channel store —
-this is how the weapon→body-part map at `[slot]+0x396C` gets fed); `0xFE` (−2) → read next
-byte N, rewind stream by N (`[ptr] −= N`); `0xFF` (−1) → back the pointer up one and re-read.
-⚠️ The `0xFF` case as coded (`DEC [ptr]` then loop) re-reads the same `0xFF` — taken at face
-value it never terminates; the intended semantic (rewind-to-mark? hold-last?) is **OPEN**
-pending a live trace. Streams are **re-armed every presentation pass**: `1000:5707` copies the
+to AX; if `AX ≥ 0` return AL (the sprite id); bytes `0x80–0xFC` are silently skipped.
+Control ops: `0xFD` (−3) → read next byte into `ES:[id+0x396C]` with `ES=[0x53BE]` (side-channel
+store — this is how the weapon→body-part map at `[slot]+0x396C` gets fed); `0xFE` (−2) → read
+next byte N, rewind stream by N (`[ptr] −= N`); `0xFF` (−1) → back the pointer up one and re-read.
+**`0xFF` resolved 2026-10-13: termination is by caller peek, not by the reader** — both in-repo
+callers (`5847`'s name loop at `5A9B`, sprite loop at `6038`) PEEK `ES:[ptr]` for `0xFF` and stop
+calling before `1732` can consume the terminator (re-arm per pass at `5707` keeps streams fresh),
+so the `DEC`-and-reread branch is unreachable with well-formed streams — a latent fail-stop, not
+live logic (confirming no interior `0xFF` needs one live trace). Actual `1732` call sites: `5A2C`/
+`5A49` (5847 names), `5FFC` (sprite loop, id `0x18`), `5714` (panel update); `1000:5EDB`/`6022`
+are the `1000:1983` sprite-*blit* sites consuming the ids (not `1732` callers). Streams are
+**re-armed every presentation pass**: `1000:5707` copies the
 unit's source far-pointer from `[0x563E]:0x25A+unit*4` into `[0x5640]:id*4+0x1F6`, then calls
 `1732(id)` and stores the result to the display byte `[0x5642]:unit+0x409A` (`GC12.cs:6630`).
 
