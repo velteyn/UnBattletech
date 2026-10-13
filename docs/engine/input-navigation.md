@@ -64,7 +64,8 @@ the decompiled code):
 | Enter | `0x0D` | Confirms selection |
 
 The arrow-key handler (`fn0800_218F`) loops 3 times over world tile entries at offset `0x09F3`,
-rendering tiles beneath the cursor via `fn0800_2DA8()` and `fn207F_1DA8()`.
+refreshing units via `fn0800_2DA8()` (encounter-unit refresh/setup) and rendering tiles
+beneath the cursor via `fn207F_1DA8()`.
 
 ## Data notes
 - World/local map cursor: `0x1DE9:0xA44B` (X) / `0xA44D` (Y); tile = `(raw>>1)&0x7F`.

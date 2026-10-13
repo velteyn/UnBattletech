@@ -752,7 +752,7 @@ Unit sprites (24×24) come from `MECHSHAP.CMP`; the sprite sheet is tokenised in
 | `0800:240B` | fn0800_240B — Tile animation page swap |
 | `0800:24C2` | fn0800_24C2 — Next animation frame |
 | `0800:2A93` | fn0800_2A93 — World map tile renderer (64 tiles) |
-| `0800:2DA8` | fn0800_2DA8 — Tile render |
+| `0800:2DA8` | fn0800_2DA8 — Encounter-unit refresh/setup (unit-table text redraws + conditional 8-slot spawn; mode `param_2`: `0xB` one-shot gfx, `0xE` combat flag). NOT a tile renderer (corrected 2026-10-13) |
 | `0800:231D` | fn0800_231D — Key dispatch |
 | `0800:2A2B` | fn0800_2A2B — Wait-for-key loop |
 | `0800:48B7` | fn0800_48B7 — State machine init |
@@ -822,7 +822,7 @@ Unit sprites (24×24) come from `MECHSHAP.CMP`; the sprite sheet is tokenised in
 | `207F:2251` | fn207F_2251 — Font blitter (mode 2) |
 | `207F:22A5` | fn207F_22A5 — Font blitter (mode 3) |
 | `207F:1FBE` | fn207F_1FBE — Screen clear |
-| `207F:104E` | fn207F_104E — BTSTATS tile render |
+| `207F:104E` | fn207F_104E — Tile-attribute lookup (`DS=0x246C`; `bx=[bp+6]−0x11`, byte from table `DS:0xB0B` → `246C:0x2D3`; Reko `UNBTECH_207F.asm:2740`). General tile helper used e.g. by the `3FAE` map branch — not a BTSTATS renderer (corrected 2026-10-13; note `FUN_19b8_104e` at REA `0x1ABCE` is a *different* routine — a unit-init — sharing only the offset) |
 | `207F:0A9F` | fn207F_0A9F — Text-mode tile addressing |
 
 ### Combat Functions (by Ghidra name)

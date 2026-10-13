@@ -313,7 +313,15 @@ overlay**, exactly like the protection screen, *not* a `ViewportLayout`:
 4. **Unit cells**: `[bp-0x04]=0..2` (**3 columns**); rows walk unit bytes `53D0:[si+0x30]`
    (`si=[bp-0x0A]+[bp-0x3A]`, `si<0x100`); per unit, footprint/stride come from the
    `DS:0x0A38/0x0A46/0x0A54/0x0A62` tables indexed by (unit_id−1), cell drawn by the shared
-   `fn0800_2DA8(unit_id, 3*col+row)`.
+   `fn0800_2DA8(unit_id, 3*col+row)`. ⚠️ Role correction (2026-10-13, Ghidra `FUN_1000_2da8`
+   + Reko `fn0800_2DA8` agree): **2DA8 is encounter-unit refresh/setup, not a cell-pixel
+   routine** — it redraws the unit-table texts (`207F:3B68/3BB6/3B22`), applies the
+   `param_2` mode (`0xB` = one-shot gfx init via `w3988` + `w4FBC=1`; `0xE` = combat flag
+   `D346=1`), and — only when `[0x14C]==0` — (re)spawns all 8 unit slots (`0x1A` bytes each:
+   RNG type via `287F:0BC0&7`, coords from the `0x4564/0x4596` tables mirrored to combat
+   X/Y `0x4024/0x4056`, status `0xFF`, `0x10`). The 3-column dims above are read by `3FAE`
+   itself. Called from 4 sites (`0800:4185/4240/6347/7514`), incl. the arrow-key handler
+   `0800:218F` (unit refresh on cursor move) and `3FAE`.
 5. **24×40 fog-gated tile pass** (`[bp-0x04]<0x18 × [bp-0x3A]<0x28`): tile `< 0x90` and fog
    bit (`es:[0xCB0C]`, shifting mask `[bp-0x1A]`) required, blit via `207F:275C`.
 6. Restores cursor, waits for a key (`1F3D:0259` + `0800:2A2B`), returns the scancode in `AX`.
@@ -344,20 +352,21 @@ unit-title call; mech-range units (`4..0xF`) additionally get `ds:0x1189` (`Deta
 | Pilot (unit<4) | roster name via `[C79D]*0x11+0xC614` → far ptr `[1CA/1CC]` | `1CCD` |
 | Rider (unit<4) | roster name via `[C79E]`; `0xFF` → `ds:0x12AA` (`None`) | `1D2B`/`1D5D` |
 | Pilot/Rider (unit≥4) | `ds:0x12AF` (`Unknown`) | `1D71` |
-| 3 skill bars | `fn0DAB_1858` lengths negated from `[C799]/[C79A]/[C79B]` | `1D85`… |
+| 3 skill bars | `fn0DAB_1858(0x25,row,width,value)` — widths 3/2/2, values negated from `[C799]/[C79A]/[C79B]` (`-(v-3)`, `-(v-2)`, `-(v-2)`) | `1D85`… (Ghidra-confirmed 2026-10-13) |
 | Armament count | `[C74A]` + count of props `0x33..0x55` equal `0x22`, via `1858` at (0x0A,6,0x22) | `1E28`–`1E4B` |
 | Armament rows (from row 6) | props `0x33..0x55`, `val&0x7F` in `0x10..0x20` only (same encoding as AI targeting §3); bit 7 set → dim colour; weapon name from seg `0x3EDB:0x2EC7+val*0x11` | `1E6B`–`1F83` |
-| Loc column | `ds:0x12BF` base, +1 abbrev per prop band (`0x3A→0x12C2 LT`, `0x41→0x12C5 RA`, `0x48→0x12C8 RT`, `0x4F→0x12CB LL`, `0x51→0x12CE RL`, `0x53→0x12D1 CT`, `0x55→0x12D4 H`) — 8 locs = the 8 internal slots `0x1C..0x23` | `1ECA`–`1F5C`, strings file `0x3BC6F`… |
-| Actuator block | header `ds:0x12D6` (`Actuators`), labels `ds:0x12E0` (`Left Leg/Right Leg/Left Arm/Right Arm`, rows `0x14..0x17`); nibble tests on `[C748]/[C749]` (low then high) vs `0xF`/`0`/`[C78D]/[C78E]` select ` OK` (`ds:0x1265`) / `Hit` (`ds:0x1269`) / `Gone` (`ds:0x126D`) | `1F86`–`21AA` |
-| 11 location bars | `fn0DAB_174C(value, max, x, y)` ×11 (`[bp-0x24]=0..0x0A`): value = `story[0xC724+tbl[i]]`, offsets table `ds:0x1306` = `1C 1D 1E 1F 20 21 22 23 00 00 00…`; max = `story[0xC735+i]` (max-armour array `+0x11..+0x1B`); positions `ds:0x131C/0x1332` | `21BF`–`224B` |
-| Heat bar | `es:[unit+0x6E]` clamped `0..0x1E`, via `174C(0x100,0xB7,…)` | `2225`–`2260` |
+| Loc column | prop-index bands → `ds:0x12BF` LA (`0x33..0x39`), `0x12C2` LT (`0x3A..0x40`), `0x12C5` RA (`0x41..0x47`), `0x12C8` RT (`0x48..0x4E`), `0x12CB` LL (`0x4F..0x50`), `0x12CE` RL (`0x51..0x52`), `0x12D1` CT (`0x53..0x54`), `0x12D4` H (`0x55`) — chosen by `>0x39/>0x40/>0x47/>0x4E/>0x50/>0x52/>0x54` tests on the prop index, **not** read from slots `0x1C..0x23` (those are the location-bar value offsets, next row) | Ghidra `1AFE` + strings file `0x3BC6F`… (corrected 2026-10-13) |
+| Actuator block | header `ds:0x12D6` (`Actuators`), labels `ds:0x12E0` (`Left Leg/Right Leg/Left Arm/Right Arm`, rows `0x14..0x17`); per row: low nibble of `[C748]/[C749]` vs `0xF`/`0`, high nibble vs `[C78D]/[C78E]` (Ghidra-confirmed structure). Outcome arg-triples as coded, e.g. row `0x14`: `F→(10,10,0xF)`, `0→(0x14,hl,hl)`, else `(0x1269,?,0xF)` where `hl` = w4FBA colour (2/8). ⚠️ The first-arg small IDs (`10`, `0x14..0x17`) are an **unresolved enum** (not ds pointers) — OPEN micro-item | `1F86`–`21AA` (structure confirmed 2026-10-13) |
+| 11 location bars | `fn0DAB_174C(x, y, max, value)` ×11 (`local_26`=0..0x0A): max = `story[maxbase+i]`, value = `off==0 ? 0 : story[off]` with offsets table `ds:0x1306` = `1C 1D 1E 1F 20 21 22 23 00 00 00` (file `0x3ADB6`); positions `ds:0x131C`/`0x1332` (11 words each, file-verified) | Ghidra `1AFE` loop (resolved 2026-10-13) |
+| Heat bar | `es:[unit+0x6E]` signed-clamped `0..0x1E`, via `174C(0x100,0xB7,0x1E−heat,heat)` | Ghidra-confirmed 2026-10-13 |
 | Anim tick | `w4FBA==3 ? ds:0x1358 : ds:0x1348` via `1F3D:0525`, frames cycle `0x1378/0x137C` → `[0x134C]/[0x1360]` | `2281`–`22BD` |
 
-> **Note:** the 11-bar loop pairs internal-structure values (`0x1C..0x23`) with max-armour
-> entries (`0xC735+i`) and zero-fills bars 8–10 (`0x1306` tail is `00`) — observed as coded,
-> intent not fully resolved. Location abbrevs are `LA LT RA RT LL RL CT H` (8, `H` = Head,
-> single char — file `0x3B422` block). Condition words: `None/ OK/Hit/Gone` (+`Ruined` under
-> the `Weapon:/Armor:` infantry labels just before `BTSTATS.CMP` in the same string run).
+> **Note (resolved 2026-10-13):** the 11-bar loop pairs armour values at the `0x1306`
+> offsets (`0x1C..0x23`, `0` for bars 8–10 → zero-filled) with the max-armour array, and the
+> heat bar passes `(0x1E−heat, heat)` — all as coded above. Location abbrevs are
+> `LA LT RA RT LL RL CT H` (8, `H` = Head, single char — file `0x3B422` block). Condition
+> words `None/ OK/Hit/Gone` exist in the same string run (just before `BTSTATS.CMP` at
+> file `0x3B422` — byte-verified); which actuator outcome prints which word is **OPEN** (first-arg enum `10`/`0x14..0x17`, see row above).
 
 #### Combat Scan Unit path (closed)
 
@@ -368,8 +377,13 @@ Combat menu dispatch `fn183B_14C3` (`183B:14C3`, called from combat setup `fn183
 - Player unit (`<4`): menu `ds:0x3A6F` (10 items `Walk/Run/Jump/Use Weapons/Kick/Computer/Scan
   Unit/Next Unit/Flee/Begin Fight`), `es:[00C6]=0x0A`. Enemy/other (`≥4`): menu `ds:0x3ABC`
   (8 items `Move/Clear Moves/Use Weapon/Computer/Scan Unit/Next Unit/Flee/Begin Fight`),
-  `es:[00C6]=8`. Selection via `1E56:0B5E(3)` → `[bp-0x0C]` (0-based values as coded;
-  `0B5E` return convention still assumed — index↔label pairing below is by position).
+  `es:[00C6]=8`. Selection via `1E56:0B5E(3)` → `[bp-0x0C]`.
+  `0B5E` convention (verified 2026-10-13, Ghidra `FUN_2656_0b5e` at REA `0x270CA`, file
+  `0x1A4CA`): `u16 menu(id)` — `id*0x10` descriptor (fields `+0x92/+0x94/+0x96/+0x98/+0x9C`
+  via ES); ↑/↓ arrive as **−scan** (`−0x48`/`−0x50`), adjust highlight ±1 with 0-based
+  wraparound and redraw; **Enter (`0x0D`)/Space (`0x20`) confirm** (records selection at
+  `[menu+0x98]`, returns index); **ESC (`0x1B`) cancels** (no record). Handler-map pairing
+  below is by position = the returned 0-based index.
 - Handler map: player `{0,1,2}→fn183B_1C1F` (Walk/Run/Jump move), `3→fn1543_0004` (Use Weapons),
   `4→fn183B_2231` (Kick), `5→fn1631_03AB(1,unit)` if `es:[0090]==0` (Computer),
   **`6→fn183B_2591` (Scan Unit)**; enemy `{0}→1C1F` (Move), `1→clear 0x30 bytes at 0x32C6`

@@ -2,25 +2,41 @@
 
 > **Living document.** Update on every work session so nothing is lost across network/session
 > interruptions. Newest section first. Mark items `✅ done` when closed (with the commit/file).
-> Last updated: 2026-09-29.
+> Last updated: 2026-10-13.
 
 ---
 
 ## ▶ SESSION STATUS — pick up here next
 
-**This session (2026-09-29) — "C5 + C10 close-out".** Docs-first, decompilation only. **C5 ✅** and
-**C10 ✅** resolved. **C5** — the weapon-**definition** table reader and all seven trailing fields are
-decoded and verified in [`combat-system.md`](combat-system.md) **§21 §4** (and §13/§6/§7/§19
-corrected). Key results:
+**This session (2026-10-13) — "U1/C11 residual close-out + Spice86 update".**
+Spice86 fast-forward `cf595c3d` → **`28a877fc`** (upstream master; `BattleTechCHI` +
+`UNBATTLETECH` rebuild 0 errors, no API breaks; emulator booted, MCP/tools verified live).
+REA (Ghidra 12.1.4 provider) used for 9 static queries — Ghidra pseudocode beat gencode on
+the cue player, `0B5E`, `1AFE`, `2DA8`, `1732`. **Lesson: Reko seg labels carry a load bias
+(Ghidra `FUN_2656_0b5e` = Reko `1E56:0B5E`; `FUN_1000_2da8` = Reko `0800:2DA8`) — always
+resolve function addresses by byte signature, never by `seg*0x10+off` label arithmetic.**
+Closed:
 
-- The table is at **`DS:0x2ED8`** (file offset `0x3D088`); the old "instance table at
-  `DS:[0x5652]:0x2EE4`" is the **same table** (`[0x5652]` = the data segment itself).
-- **`+0x0A`** = unused (always 0); **`+0x0B`** = damage; **`+0x0C`** = bit7 personal-weapon flag +
-  cluster column (**not** "infinite ammo"); **`+0x0D`** = min-range (high nibble) / **heat** (low
-  nibble); **`+0x0E`** = packed short (bits7-5) / medium (bits4-0) range; **`+0x0F`** = long range;
-  **`+0x10`** = skill class.
-- Reader = the range-band classifier `ghidra_guess_1000_0934_10934` (`1000:0934`); it scales
-  short/medium by ×3 and compares to the cursor distance from `1000:05C5`.
+- **U1 residuals ✅**: `0B5E` = `u16 menu(id)`, 0-based, arrows as −scan, Enter/Space confirm +
+  record `[menu+0x98]`, ESC cancels; 11-bar pairing = value `story[off1306[i]]` (0 for i≥8)
+  + max-armour array, positions `0x131C/0x1332`, heat `(0x1E−heat,heat)`; loc column = prop-band
+  thresholds (NOT slots `0x1C..0x23` — those are the bar offsets); `2DA8` = unit refresh/setup
+  (dims `0x0A38…` are read by `3FAE`); `207F:104E` = tile-attr lookup (and `FUN_19b8_104e`
+  is a different unit-init routine). **OPEN micro-item:** actuator outcome first-arg enum
+  (`10`/`0x14..0x17` vs `ds:0x1269`).
+- **C11 cue structure ✅**: 5 workers `27C5:02A3/02EB/0345/03A8/040B` share
+  count×(inner+delay); roles: tone count=hdr/freq/delay, `0x3E9`–`0x3EC` count=p1/inner-args/delay;
+  `0x3EB` vs `0x3EC` differ only in leaf (`0747` vs `07DA`). **Stream reader `1732` mechanism ✅**:
+  far-ptr table `DS:[0x1F6+id*4]`, auto-advance, literal return, ops `FD` (store next byte to
+  `[0x53BE]:id+0x396C`) / `FE` (rewind by next byte) / `FF` (pushback+reread — puzzling,
+  see below); re-armed per presentation pass from `[0x563E]:0x25A+unit*4` (`1000:5707`).
+- **Boot wall 🧱**: 100+ Spaces + esc/y/n/enter/arrows/1/2 from a fresh boot never leave the
+  blank state (`credits=0`, tile `(34,12)`, CPU parked in BIOS `F000:0011`, keys consumed but
+  ineffectual). NEW_GAME_INIT is unreachable by space-mash — next playtest session must navigate
+  menus with per-screen observation (or memory-write init). Emulator shut down after session.
+
+**Still OPEN (need live combat trace):** per-mech-type `0x1F6` stream bytes; `0xFF`-op intent;
+leaf-inner (`047B/059A/0643/0747/07DA`) PIT details; actuator outcome enum.
 
 **C10 ✅** — **Kick** damage = **attacker tonnage ÷ 5** (mech struct `+0x10`, written into the Kick
 record at `1000:4F55`); **Inferno** = **0 damage + heat surge** (arms target counter `0xD576=3` →
@@ -42,18 +58,19 @@ byte-for-byte in `reko/segments/UNBTECH_{0800,0DAB,183B}.asm` (DS base file `0x3
 the old "`5 columns × 48 rows of 3×3 subtiles`" claim is corrected in AGENTS.md +
 `engine/viewport.md`); the **detail view** `fn0DAB_1467`→`fn0DAB_1AFE` loads `BTSTATS.CMP`
 (`1F3D:063B`→`3092:00A0`, sites `0DAB:1B58` with `ds:0x1272` and `1467:08A8` with `ds:0x27E6`)
-and renders Type/Tons/Pilot/Rider, the `0x33..0x55` Armament+Loc table (locs
-`LA LT RA RT LL RL CT H` = slots `0x1C..0x23`), actuator `OK/Hit/Gone` nibble rows, 11
-location bars (`ds:0x1306` offsets), and the `[0x6E]` heat bar. Combat **Scan Unit** =
+and renders Type/Tons/Pilot/Rider, the `0x33..0x55` Armament table + Loc column (prop-band
+thresholds → `LA LT RA RT LL RL CT H`; the `0x1C..0x23` are the location-bar value offsets,
+`ds:0x1306`), actuator nibble rows (outcome enum `10`/`0x14..0x17` OPEN), 11
+location bars (value/max pairing resolved 2026-10-13) and the `[0x6E]` heat bar. Combat **Scan Unit** =
 `fn183B_14C3` (player sel 6 / enemy sel 4) → `fn183B_2591` (Friends/Enemies/Cancel submenu
 `ds:0x3D73`, sensor guard `[C79B]==2` → `ds:0x3DCD`, no-enemy guard → `ds:0x3E19`) →
 `call far 0DAB:1467` (`183B:2704`, the browser's only Reko caller). Full tables in
-[`engine/viewport.md`](engine/viewport.md) "Stats / status screen". Residual unknowns:
-`0B5E` return convention (index↔label pairing by position), the 11-bar value/max pairing
-intent, `fn0800_2DA8` full cell format.
+[`engine/viewport.md`](engine/viewport.md) "Stats / status screen". Residual: actuator outcome
+enum; `0B5E`/bars/`2DA8` closed 2026-10-13 (see session status above).
 
-**▶ Next:** **C11**'s cue table (`DS:0x5008`) + the residual U1 items (`0B5E` index convention,
-11-bar pairing intent, `2DA8` cell format). Full living list: [`WIP.md`](WIP.md).
+**▶ Next:** live-combat trace items (`0x1F6` stream bytes, `0xFF`-op, leaf PIT details,
+actuator enum) — blocked on the boot wall (NEW_GAME_INIT unreachable by space-mash; needs
+menu-observed navigation or memory-write init) — then C6/C7/C8, P1/P2, keystone T3.
 
 ---
 
@@ -121,8 +138,8 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C7 | Infantry AI / weapon selection | ◐ partial: unit-class split at `1000:5028` (`[BP-0x28]` vs 4/0xC); target logic not isolated |
 | C9 | **Terrain movement-cost** — no per-terrain MP cost found; confirm the docs' "movement cost" label on `0x32C6` is wrong (only to-hit + passability exist) | ⬜ see [`combat-system.md`](combat-system.md) §26 |
 | C10 | **Kick damage + Inferno effect** | ✅ **resolved** (2026-09-29): Kick damage = **attacker tonnage ÷ 5**, read from the mech struct `+0x10` and written into the Kick record's damage byte (`1000:4F55`, `ES:[0x3103]`). Inferno forces **0 damage** and arms the target's heat-surge counter `0xD576=3` (**+6 heat penalty/round ×3**) — `1000:50E7`. See [`combat-system.md`](combat-system.md) §27.1/§27.2 |
-| U1 | **Stats/status page + combat "Scan Unit"** | ✅ **closed** (2026-10-13): two views — `fn0800_3D40`/`3FAE` overview (3-col `2DA8` cells, no BTSTATS) vs `fn0DAB_1467`/`1AFE` detail (BTSTATS load sites `0DAB:1B58` + `1467:08A8`; field table decoded). Combat Scan = `183B:14C3` (sel 6/4) → `183B:2591` (submenu `ds:0x3D73`, guards `ds:0x3DCD`/`0x3E19`) → `0DAB:1467`. Residual: `0B5E` index convention, 11-bar pairing intent, `2DA8` cell format. See [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
-| C11 | **Combat sprites + cue stream** | ✅ **resolved** (2026-09-29, follow-ups closed 2026-10-13): `MECHSHAP.CMP` unit sprites (Locust/Commando 2-frame walks, wrecks, Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`. Registered by `18AD:070A`, blitted by `1000:1983` (true off `1000:0283`) at map tiles into main-`DS:0x244B`. **No persistent 80 px portrait** — `MechPortrait.cs` is an invented panel UI. **Cue stream ✅**: `0000:30BF`→player decodes 18 `00 00`-terminated entries at `DS:0x5008` into the `187F` **PC-speaker** API (PIT `0x42/0x43` + gate `0x61` — sound, not display); cue ids `0x1/0x2/0x3/0x4/0x5/0x6/0x7/0x8/0x9/0xB/0xD/0x12` mapped to call sites (kill = `0x8`). **Sprite-id** = `fn1732(0x18)` stream byte + `0x68`/`0xFA`; **timing** = blit every 4th pass (`TEST [BP-0x4],3`). Open: exact per-mech-type stream bytes (needs live trace). See [`combat-system.md`](combat-system.md) §28.1 |
+| U1 | **Stats/status page + combat "Scan Unit"** | ✅ **closed** (2026-10-13): two views — `fn0800_3D40`/`3FAE` overview (dims `0x0A38…` read by `3FAE` itself; `2DA8` = unit refresh/setup, no BTSTATS) vs `fn0DAB_1467`/`1AFE` detail (BTSTATS load sites `0DAB:1B58` + `1467:08A8`; field table decoded). Combat Scan = `183B:14C3` (sel 6/4) → `183B:2591` (submenu `ds:0x3D73`, guards `ds:0x3DCD`/`0x3E19`) → `0DAB:1467`. Residuals closed: `0B5E` convention (0-based, −scan arrows, Enter/Space/ESC), 11-bar pairing, loc bands, heat args. OPEN micro-item: actuator outcome enum. See [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
+| C11 | **Combat sprites + cue stream** | ✅ **resolved** (2026-09-29, follow-ups closed 2026-10-13): `MECHSHAP.CMP` unit sprites (Locust/Commando 2-frame walks, wrecks, Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`. Registered by `18AD:070A`, blitted by `1000:1983` (true off `1000:0283`) at map tiles into main-`DS:0x244B`. **No persistent 80 px portrait** — `MechPortrait.cs` is an invented panel UI. **Cue stream ✅**: `0000:30BF`→player decodes 18 `00 00`-terminated entries at `DS:0x5008` into the `187F` **PC-speaker** API (PIT `0x42/0x43` + gate `0x61` — sound, not display); cue ids `0x1/0x2/0x3/0x4/0x5/0x6/0x7/0x8/0x9/0xB/0xD/0x12` mapped to call sites (kill = `0x8`). **Sprite-id** = `fn1732(0x18)` stream byte + `0x68`/`0xFA`; **timing** = blit every 4th pass (`TEST [BP-0x4],3`). **Cue workers ✅** (2026-10-13): `27C5:02A3/02EB/0345/03A8/040B` = count×(inner+delay); `0x3EB` vs `0x3EC` = leaf `0747` vs `07DA`. **Stream reader ✅**: far-ptr table `DS:[0x1F6+id*4]`, ops `FD/FE/FF`, re-armed per pass from `[0x563E]:0x25A+unit*4`. Open (need live combat trace): per-mech-type stream bytes, `0xFF`-op intent, leaf PIT details. Boot wall: NEW_GAME_INIT unreachable by space-mash. See [`combat-system.md`](combat-system.md) §28.1 |
 | C11b | **ANM usage / left-panel animations** | ◐ **decoder + player + combat triggers found** — `O*.ANM` = generic 88×88 resource (top-left panel), no "combat vs story" split. **Decoder ✅** (`1000:AC12`, big-endian, `0xF20` frames; `O0`=19 ✓). **Player ✅** = `0000:48B7 play_anm(index,mode)` builds `"O<index>.ANM"`. **Combat triggers:** `O16`(0x10, firing) + `O5`(0x5, pilot) in the post-fire path (`1000:52B9`/`52EE`), `O2` at `1000:1336`; rooms via `0FDC:1C9B/1A26`. Combat clips: post-fire `O16`(firing)+`O5`(pilot); attack-selector `O1`/`O3`/`O4`/`O7`; training `O2`; default `O0`. Still open: the cutscene byte-script (site 9) → e.g. **stomp `O9`**; and site 8's scene table. See §28.1a |
 | C8 | **Enemy AI beyond targeting** — weapon pick (`[BP-0x48]` from `[BP-0x2]`, specials `0x20`=Kick / `0x80`), movement/approach decision, **flee**, and the "computer fights for you" auto-pilot | ◐/⬜ see [`combat-system.md`](combat-system.md) §3 "AI — coverage & gaps" |
 

@@ -1,6 +1,6 @@
 # Agent Instructions — BattleTech CHI Rebuild
 
-> **Phase 6 — Spice86 sync** (updated 2026-09-28): The emulator stack builds against upstream Spice86 `master`, now at **`cf595c3d`** (was `18259ca8`). Upstream removed `ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` and bumped ModelContextProtocol to `2.2.0` — AIATTEMPT was ported accordingly. The MCP transport fix (`UseUrls()` bind + `StartAsync()` keep-alive + custom GET `/mcp/` SSE `endpoint`) was **merged upstream as PR #2246** (`cf595c3d`), so the local `spice86-mcp-fix` branch is now redundant. The A:/B: game-data mount lives in `BattleTechMcpTools/BattleTechOverrideSupplier.cs`. Port is 8086. AIATTEMPT rebuilds clean against the new master (exclude recovered `reko/**/*.cs` from compilation — it targets the old API).
+> **Phase 6 — Spice86 sync** (updated 2026-10-13): The emulator stack builds against upstream Spice86 `master`, now at **`28a877fc`** (was `cf595c3d`). No API breaks — `BattleTechCHI` + `UNBATTLETECH` rebuild clean with 0 errors. Upstream removed `ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` and bumped ModelContextProtocol to `2.2.0` — AIATTEMPT was ported accordingly. The MCP transport fix (`UseUrls()` bind + `StartAsync()` keep-alive + custom GET `/mcp/` SSE `endpoint`) was **merged upstream as PR #2246** (`cf595c3d`), so the local `spice86-mcp-fix` branch is now redundant. The A:/B: game-data mount lives in `BattleTechMcpTools/BattleTechOverrideSupplier.cs`. Port is 8086. AIATTEMPT rebuilds clean against the new master (exclude recovered `reko/**/*.cs` from compilation — it targets the old API).
 > Next priorities: end-to-end playtest from a proper NEW_GAME_INIT boot through to COMSTAR; add the Godot stock-market UI on top of the new `Fn1CD3Dispatcher` cases 0x2A/0x2B.
 
 ## ▶ Current status — pick up here (2026-09-29)
@@ -486,6 +486,14 @@ Concrete: `r2 0x13BB9` = Reko `1000:52B9` = the combat `play_anm(0x10)` call; `r
 one routine is emitted under many `ghidra_guess_*`/`unknown_*` names — **resolve by physical address
 and confirm the bytes with `pd`/`px`**, don't trust a symbol name.
 
+> **Load-bias warning (2026-10-13):** Reko *segment labels* are not uniformly physical —
+> `seg*0x10+off` label arithmetic fails per-module (e.g. Reko `1E56:0B5E` is really at file
+> `0x1A4CA` = Ghidra `2656:0B5E`; Reko `0800:2DA8` = Ghidra `1000:2DA8`; Reko `0170:1732` =
+> file `0x4B32` with no bias). The `+0x1700` rule above holds for the game-code modules it was
+> measured on, not universally. **Robust method: locate a function by byte signature**
+> (`python3 -c "d=open('UNBTECH.exe','rb').read(); print(hex(d.find(bytes.fromhex('...'))))"`)
+> from its known prologue, then `REA_linear = file − 0x3400 + 0x10000`.
+
 ### Finding a routine by signature (when strings/xrefs fail)
 
 ```bash
@@ -531,7 +539,7 @@ Spice86 is an open-source x86 emulator that emulates the original game and gener
 
 ### Current Integration (2026-09-27)
 
-AIATTEMPT (`UNBATTLETECH.csproj` / `BattleTechMcpTools.csproj`) builds **directly against the Spice86 source tree** at `../../Spice86` (= `/home/velteyn/projects/Spice86`; not a NuGet package). Keep that checkout on upstream `master` — currently **`cf595c3d`** (2026-09-28).
+AIATTEMPT (`UNBATTLETECH.csproj` / `BattleTechMcpTools.csproj`) builds **directly against the Spice86 source tree** at `../../Spice86` (= `/home/velteyn/projects/Spice86`; not a NuGet package). Keep that checkout on upstream `master` — currently **`28a877fc`** (2026-10-13).
 
 - **Logging**: upstream removed `Spice86.Shared.Interfaces.ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` (PR #2309). `IOverrideSupplier.GenerateFunctionInformations` now takes `ILogger`; `BattleTechMcpTools` was ported accordingly.
 - **MCP packages**: `ModelContextProtocol.Core` / `.AspNetCore` are pinned to `2.2.0` to match `Spice86.Core`.

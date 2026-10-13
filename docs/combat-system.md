@@ -2509,14 +2509,29 @@ reloc on `mov dx,0x1C6C` in the real bytes).
 
 **Sprite-id computation (verified in gencode + spot-checked vs real bytes):** both combat blits
 compute `spriteId = fn0170_1732(0x18) + base` — base **`0x68`** for the acting-unit blit
-(`1000:5EDB`) and **`0xFA`** for the target-unit blit (`1000:6022`). `fn0170_1732(0x18)`
-consumes successive bytes of an `FF`-terminated sprite-offset string through far-pointer
-stream `0x18` of the `[0x5640]:0x1F6` table (the same call also feeds the weapon→body-part map
-at `[slot]+0x396C`). Static string data found in `DS` (file `+0x3A1B0`, byte-verified):
+(`1000:5EDB`) and **`0xFA`** for the target-unit blit (`1000:6022`).
+
+**Stream-reader mechanism `fn0170_1732(id)` — fully decoded (gencode `GC1.cs:2511` +
+real bytes at file `0x4B32`, cross-checked vs lossy Ghidra `FUN_1000_1732` at REA `0x11732`):**
+a far-pointer table at `DS:[0x1F6 + id*4]` (offset word + segment word per stream). Loop head
+(`0170:1798`): `SI=[ptr]; [ptr]++; ES=[seg]; AL=[ES:SI]` (auto-advancing read), sign-extend
+to AX; if `AX ≥ 0` return AL (the sprite id). If negative, three control ops:
+`0xFD` (−3) → read next byte into `ES:[id+0x396C]` with `ES=[0x53BE]` (side-channel store —
+this is how the weapon→body-part map at `[slot]+0x396C` gets fed); `0xFE` (−2) → read next
+byte N, rewind stream by N (`[ptr] −= N`); `0xFF` (−1) → back the pointer up one and re-read.
+⚠️ The `0xFF` case as coded (`DEC [ptr]` then loop) re-reads the same `0xFF` — taken at face
+value it never terminates; the intended semantic (rewind-to-mark? hold-last?) is **OPEN**
+pending a live trace. Streams are **re-armed every presentation pass**: `1000:5707` copies the
+unit's source far-pointer from `[0x563E]:0x25A+unit*4` into `[0x5640]:id*4+0x1F6`, then calls
+`1732(id)` and stores the result to the display byte `[0x5642]:unit+0x409A` (`GC12.cs:6630`).
+
+Static string data found in `DS` (file `+0x3A1B0`, byte-verified):
 `DS:0x41D8` = `7C 7D 7C FF` (the fire-FX cycle: Fire_Large, Fire_Small, Fire_Large — consumed by
 the target-unit loop whose pointer is initialised to `DS:0x41D8` at `1000:5FBB`), and the table
 right after the `"Hit!\0"` string at `DS:0x3EE9` holds `FF`-terminated strings including
-`00 78 79 FF` (Locust Right walk pair) and `00 7A 7B FF` (Locust Left walk pair).
+`00 78 79 FF` (file `0x3E0A3`: Locust Right walk pair) and `00 7A 7B FF` (file `0x3E0AB`:
+Locust Left walk pair). Per-mech-type stream bytes beyond these (the `0x1F6` table is
+runtime-populated) still need a live combat trace — **OPEN**.
 
 **Walk-frame timing (verified vs real bytes at true `1000:47BE`):** the acting-unit blit block is
 gated by `TEST [BP-0x4],3 / JNZ skip` — the unit blit plus the `1000:1919`/`1000:9193` panel
@@ -2534,15 +2549,28 @@ length (header `w ≤ 0x3E8` → +3; `w−0x3E8 == 1` → +6; `== 2/3/4` → +7;
 `N` (1-based) selects the Nth `00 00`-terminated entry of the table at `DS:0x5008`
 (file `0x3F1B8`, 18 entries).
 
-Phase 2 — command player (cursor `idx`, opcode `op = w − 0x3E8`):
+Phase 2 — command player (cursor `idx`, opcode `op = w − 0x3E8`; Ghidra pseudocode
+`FUN_27c5_0002`, REA linear `0x27C52`, 673-byte contiguous body — far cleaner than the
+gencode version). Per-command register block, then one of five workers
+(`27C5:02A3/02EB/0345/03A8/040B`; REA linears `0x27EF3/0x27F3B/0x27F95/0x27FF8/0x2805B`,
+all five queried and mutually consistent). Every worker shares one skeleton —
+`2FDC` + `046E` init, `for (i = 0; i < [count]; i++) { i = [delay]; inner(...); }`,
+`04E4` teardown — so each command is **count × (inner + delay)**:
 
-| Header | Len | Words → driver registers | Worker → 187F sound service |
-|--------|-----|--------------------------|------------------------------|
-| `w ≤ 0x3E8` | 3 | `w`→`[0x56FE]:0x4612`; `w1`→`[0x5700]:0x3984` (**freq**); `w2`→`[0x5702]:0xE48C` (**dur**) | tone on (`187F:0x30`: `out 0x42` divisor + speaker gate), wait `50 × (dur×5)`, speaker off |
-| `0x3E9` (op 1) | 6 | →`[0x5704]:0x6C`, `[0x5706]:0x3776`, `[0x5708]:0x4312`, `[0x570A]:0x398A` | programmed seq: `187F:0xA9` delay + `187F:0x7D` toggle, loops bounded by `DS:0x5006` (= 5, byte-verified) |
-| `0x3EA` (op 2) | 7 | →`[0x570C]:0`, `[0x570E]:0x39F4`, `[0x5710]:0x4000`, `[0x5712]:0x4034`, `[0x5714]:0x62` | same shape (worker → deeper call + speaker off) |
-| `0x3EB/0x3EC` (op 3/4) | 7 | →`[0x5716]:0x398C`, `[0x5718]:0x39A2`, `[0x571A]:0x39F6`, `[0x571C]:0x3FF2`, `[0x571E]:0x9C` | op 3 → `96F8`-path, op 4 → `975B`-path (both → tone/delay calls + speaker off) |
+| Header | Len | Param roles (verified) | Worker (calls leaf inner) |
+|--------|-----|------------------------|---------------------------|
+| `w ≤ 0x3E8` | 3 | count=`w`→`[0x4612]`; freq→`[0x5700]:0x3984`; delay→`[0x5702]:0xE48C` | `02A3`: inner `047B(freq)` |
+| `0x3E9` (op 1) | 6 | count=p1→`[0x4612]`; inner args p2/p3/p4→`[0x6c]/[0x3776]/[0x4312]`; delay=p5→`[0x398A]` | `02EB`: inner `059A(p2,p3,p4)` |
+| `0x3EA` (op 2) | 7 | count=p1; inner args p2/p3/p4/p5→`[0]/[0x39F4]/[0x4000]/[0x4034]`; delay=p6→`[0x62]` | `0345`: inner `0643(p2..p5)` |
+| `0x3EB` (op 3) | 7 | count=p1; inner args p2/p3/p4/p5→`[0x398C]/[0x39A2]/[0x39F6]/[0x3FF2]`; delay=p6→`[0x9C]` | `03A8`: inner `0747(p2..p5)` |
+| `0x3EC` (op 4) | 7 | same layout as op 3 | `040B`: inner `07DA(p2..p5)` |
 | `op ≥ 5` | 1 | — (consumed, no-op) | — |
+
+So `0x3EB` vs `0x3EC` differ **only in the leaf inner** (`0747` vs `07DA`) — same 6-param
+layout. Leaf-level PIT programming (below) is unchanged; the previously noted
+`DS:0x5006 = 5` loop bound, if real, lives inside the leaf inners (the worker-level
+count is the command's own p1). Note the player keeps a dead
+read of `[0x56FE]` before the `−1000` (status poll or decompiler artifact).
 
 Every command ends with speaker-off (`0x18134` → `187F:0x51`: `and 0x61,0xFC`).
 `187F` sound API (all byte-verified): `0x1C` = PIT init (`out 0x43,0xB6`, ch.2 square wave);
