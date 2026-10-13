@@ -28,7 +28,11 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 [Aa][Rr][Mm]64[Ee][Cc]/
-bld/
+# BLD working outputs (tool scripts tools/bld/*.py stay tracked)
+original/bld/
+tools/bld/*.txt
+tools/bld/*.dec
+tools/bld/__pycache__/
 [Oo]bj/
 [Oo]ut/
 [Ll]og/

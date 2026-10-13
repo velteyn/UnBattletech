@@ -1921,7 +1921,11 @@ When `fn183B_000A` is called, it invokes `fn0DAB_0D3D` to populate the enemy enc
 | 0x09 | JENNER | 35t | 7 | 5 | Story-only, Kuritan |
 | 0xC8 | CHAMELEON | 50t | 6 | 6 | Player starting mech, story-only |
 
-**Melee-only enemies:** The Spectator (decoy/non-combatant, mech ID 0x00 same as Locust) exists in the codebase but was not found in the EXE binary data.
+**Melee-only enemies:** The Spectator (decoy/non-combatant, mech ID 0x00 same as Locust) has a full
+unit-type record in the binary (file `0x2B85E`: padded name + stats + bitmask, same shape as
+LOCUST/WASP/STINGER/…) and a kill-noun `a spectator.` (file `0x3E070`, DS `0x3EC0`, same formatter
+cluster as `Mech.`/`human.`). Spawner unisolated — OPEN (arena crowd? decoy?). Corrected 2026-10-13
+(the old "not found in the EXE" claim was false).
 
 **Known weapons** (17-byte stride, table at `DS:0x2ED8`): 33 weapons total, range includes: Cludgel, Knife, Sword, Vibroblade, Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SRMissile, Inferno, LaserPistol, LaserRifle, Flamer, Small/Medium/Large Laser, PPC, AC/2/5/10/20, LRM5/10/15/20, SRM2/4/6, Kick.
 
@@ -2474,6 +2478,11 @@ Tech, Medical** — `Tech` is the salvage skill ("tech training").
 > at runtime; no `CMP AL,'Y'/'N'` in the combat-loop gencode. Start from the combat-victory
 > branch (all-enemies-dead → world-map restore), not from the strings. Tracked as **P1** in
 > [`WIP.md`](WIP.md).
+>
+> Adjacent outcome strings (same region, file `0x3D699–0x3DB7A`, inventoried 2026-10-13):
+> Kurita double-agent variants, `Some/The enemy humans have fled!`, `You have eluded your
+> enemies!` (×2 — overlaps the Flee handler, H3 scope), `Congratulations! You have won!` /
+> `The crowd boos… You have lost.` (arena win/lose). Reachability per string still open.
 
 ---
 
@@ -2809,14 +2818,21 @@ does `ax = op-0xFFE4; jmp word cs:[bx+0x5B1]` — a **0x1C-entry near-jump table
 those handlers is site 9: *play ANM `(next script byte, mode byte)`*. This is the **opening/cutscene
 sequencer**, and it is where the non-combat clips (`O7`/`O9`/`O12`/`O13`/…) are chosen.
 
-**Site 8** is a different handler: `fcn.00007dc8(sceneId)` (arg compared to `0x12`/`0x13`/`0x14`) plays
-`play_anm(byte[sceneId + 0x141A], 1)` — i.e. a **scene→ANM byte table at `DS:0x141A`**.
+**Site 8** is a different handler: `fcn.00007dc8(sceneId)` plays
+`play_anm(byte[sceneId + 0x141A], 1)` — a **scene→ANM byte table at `DS:0x141A`** (file `0x3B5CA`,
+byte-verified 2026-10-13): 26 entries `00 11 00 15 15 12 00 00 12 00 14 13 00 00 00 15 00×10`
+(scenes 0–25; nonzero = 17–21: scene 1→O17, 3→O21, 4→O21, 5→O18, 8→O18, 10→O20, 11→O19, 15→O21).
+Actual guard sequence in the body: `cmp byte[sceneId+0x141A],0` → none; `cmp ax,0x12 / je skip;
+cmp ax,0x16 / jge skip` — i.e. scene ids `0x13–0x15` are first **remapped through the
+`[0x5460]:0x4602` building/slot table** (same table the map→BLD chain uses; runtime-loaded,
+not statically dumpable). `0` = no ANM; after the lookup it calls the byte-script at `0x7F80`.
 
 So **combat does play ANMs** (`O16` firing + `O5` pilot in the post-fire path; `O2` in the training
 path), rooms use `O0`, and the cutscene sequencer + scene table drive the rest.
 
 **Still open (C11b):** (a) locate the actual `cs:[0x5B1]` jump table (the interpreter's code-segment alias
 makes the static address ambiguous — the code is reached via a computed call, no direct xref) and decode
-its 0x1C opcode handlers; (b) dump the `DS:0x141A` scene table (needs the main-DS base confirmed — see
-[`formats/memory-map.md`](formats/memory-map.md) anchor); (c) resolve site 4's `[bp-0x24]` and the guards
-`0x2E3A`/`0x4586`.
+its 0x1C opcode handlers; (b) ~~dump the `DS:0x141A` scene table~~ ✅ dumped 2026-10-13 (see Site 8
+above) — remaining: live-read the `[0x5460]:0x4602` remap contents; (c) resolve site 4's `[bp-0x24]` and the guards
+`0x2E3A`/`0x4586`; (d) O15's only trigger is script-data site 9 (`0x0F` data byte unconfirmed statically) —
+breakpoint `play_anm` index `0x0F` on a full playthrough.

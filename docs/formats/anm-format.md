@@ -3,8 +3,10 @@
 ## Overview
 
 22 files: O0.ANM through O21.ANM in `original/anm/`. 88×88 pixel EGA animations
-using XOR-delta RLE compression. Only O0.ANM-O15.ANM (16 files) are referenced
-by the game binary — O16-O21 are beyond the expected range (cut content / unused).
+using XOR-delta RLE compression. O0–O15 are the table-driven clips, O16 is the combat
+firing clip, and O17–O21 are scene-table cutscene clips (all referenced — only O15 has no
+static call site; see File Status). All counts below re-verified 2026-10-13 against the
+genuine files (O21 restored, md5 `ec8f73f3`).
 
 ## Header Structure (0x00-0x32 = 51 bytes)
 
@@ -13,7 +15,7 @@ by the game binary — O16-O21 are beyond the expected range (cut content / unus
 | 0x00   | 1    | Type  | ASCII identifier byte (0x41='A' most common, also 0x42-0x47) |
 | 0x01-0x1F | 31 | Padding | Zeros for O17-O20, ASCII alphabet sequence for active files |
 | 0x20-0x31 | 18 | Filler | 0x01 bytes |
-| 0x32   | 1    | Flag  | **0x01** = active animation, **0x00** = unused/placeholder |
+| 0x32   | 1    | Flag  | **nonzero** = real clip (observed `0x07` O0, `0x0A` O5/O9, `0x08` O15/O16), **0x00** = placeholder (O17–O21 — still real 2-frame clips, see below). (Byte `0x20` is `0x01` in all files — possibly the real "active" flag, unconfirmed.) |
 
 Data always starts at offset 0x33 regardless of type.
 
@@ -39,10 +41,16 @@ frames until exhausted. (Earlier counts in `AGENTS.md` were unverified guesses.)
 | 12 | O12.ANM | 12 | Active (blonde-woman portrait) |
 | 13 | O13.ANM | 4 | Active (blue-haired pilot portrait) |
 | 14 | O14.ANM | 10 | Active (spacecraft / starfield) |
-| 15 | O15.ANM | 7 | Active (banner/emblem) |
-| 16 | O16.ANM | 8 | Structurally valid; **outside the game's `0…0x0F` table** |
-| 17-20 | O17-O20.ANM | 2 each | Placeholder (decode to ~1 frame) |
-| 21 | O21.ANM | 1 | Corrupted (hex-dump text) |
+| 15 | O15.ANM | 7 | Banner/emblem — **sole static orphan** (no fixed call site, no scene-table entry; only trigger = script-data variable site) |
+| 16 | O16.ANM | 8 | **Combat firing clip** (mech firing twin beams; post-fire `play_anm(0x10)`) |
+| 17-20 | O17-O20.ANM | 2 each | **Scene cutscene clips** (O17→scene 1, O18→scenes 5/8, O19→scene 11, O20→scene 10; via `DS:0x141A` table, file `0x3B5CA`) |
+| 21 | O21.ANM | 2 | **Scene cutscene clip** (scenes 3/4/15). Genuine 3328-byte 1988 file (md5 `ec8f73f3…`, restored 2026-10-13 — the old "corrupted" note described a bad 259-byte copy) |
+
+> **Rebuild bug (recorded 2026-10-13, not fixed):** `RleDecompressor.DecompressAnimation` uses a
+> **little-endian** extended count and refuses flag-`0x00` files — the original is **big-endian**
+> (byte-swapped word; Ghidra `FUN_287f_23ec` confirms) and plays flag-`0x00` clips (O17–O21 pass
+> the `>0x10` viewport-probe gate instead). Little-endian decodes O0 as 82 garbage frames vs the
+> correct 19. Fix the decoder + drop the flag gate before any ANM parity work.
 
 ## Compression: XOR-Delta RLE
 

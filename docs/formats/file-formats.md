@@ -43,6 +43,14 @@ Files: BTTITLE, INFOCOM, ENDMECH, BTSTATS, MECHSHAP, BTBORDER.
 - Same header structure as .CMP but 16-pixel-wide strips
 - Contains 16x16 pixel tiles for maps
 - Tilesets: MAP.ICN (~94 tiles), BTTLTECH.ICN, ANIMATE.ICN, STARLEAG.ICN, DESTRUCT.ICN
+- Load sites (verified 2026-10-13 via `MOV AX,imm` + r2 alignment): DEMOFILE (DS `0x0C98`,
+  opened via `173D:0814` — demo-record/playback or title-demo loader, caller ~vaddr `0x51E0`);
+  TINYLAND.CMP (DS `0x0CBB`, full-screen show via `173D:063B` + `173D:049D` blit, w4FBA==2 branch,
+  caller ~vaddr `0x5500` — endgame/WINSCENE path?); WWOODBT.SIF (DS `0x0AB3`, opened+read via
+  `187F:33D0/3356`, boot/title cluster with BTTITLE.CMP — Westwood title-sequence asset,
+  caller ~vaddr `0x4770`); ENDMECH.CMP (DS `0x4DBF`, `1000:6354` show-pattern — endgame image,
+  already in story-system); INFOCOM.CMP ×3 (title-protection display, save, demo). Callers of
+  DESTRUCT.ICN/ANIMATE.ICN/BTTLTECH.ICN + MAP15.MTP entry still to pin (see WIP H1).
 
 ---
 

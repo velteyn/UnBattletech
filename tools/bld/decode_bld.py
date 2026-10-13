@@ -284,6 +284,7 @@ known_multibyte = {
 def main():
     bld_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "original", "bld")
 
+    out_lines = []
     for fname in sorted(os.listdir(bld_dir)):
         if not fname.upper().endswith('.BLD'):
             continue

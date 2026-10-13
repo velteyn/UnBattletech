@@ -281,8 +281,8 @@ terrain/passability; the trigger uses the building-position tables above.)*
   - Server room access, jailbreak readiness, cache location clues
 
 #### Phase 7: Endgame
-- Cache entry requires: holodisk repaired (HUT.BLD) + password learned (FROB.BLD) + cache location known (FINDIT.BLD)
-- INSTRUCT.BLD at cave entrance: color-coded lock puzzle (Jeremiah's note)
+- Cache entry requires: holodisk repaired (HUT.BLD) + password learned (HUT sets `D30C[0x36]`, tested once at ENTRANCE.BLD stream `0x239`: `F7 36 → 0x02BA` success render) + three code flags `D30C[0x30/0x31/0x32]` (FROB quiz + VIEWDISK `F4 32 01`) + cache location known (FINDIT.BLD). Verified at the decrypted-byte level 2026-10-13 (the old wording credited the password to FROB — the door-tested flag is HUT's `0x36`; FROB owns the `0x30/0x31` quiz flags). `D30C[0x35]` (set alongside `0x36` in HUT) has **no `F7 35` consumer in any BLD** — orphan flag, purpose open.
+- INSTRUCT.BLD at cave entrance: color-coded lock puzzle (Jeremiah's note) — pure dialogue (`F2/FB/FD/FF` only), no checks; the R/B/Y/no-reuse rules are narrative, the mechanism is the flags above.
 - Inside cache: VIEWDISK.BLD shows Jeremiah's holodisk message
 - WINSCENE.BLD (type `c0 da`): activates Hyperpulse Generator → signals Katrina Steiner
 - DropShip arrives, Katrina offers commission as Lyran Lieutenant
