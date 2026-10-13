@@ -30,10 +30,14 @@ Closed:
   far-ptr table `DS:[0x1F6+id*4]`, auto-advance, literal return, ops `FD` (store next byte to
   `[0x53BE]:id+0x396C`) / `FE` (rewind by next byte) / `FF` (pushback+reread — puzzling,
   see below); re-armed per presentation pass from `[0x563E]:0x25A+unit*4` (`1000:5707`).
-- **Boot wall 🧱**: 100+ Spaces + esc/y/n/enter/arrows/1/2 from a fresh boot never leave the
-  blank state (`credits=0`, tile `(34,12)`, CPU parked in BIOS `F000:0011`, keys consumed but
-  ineffectual). NEW_GAME_INIT is unreachable by space-mash — next playtest session must navigate
-  menus with per-screen observation (or memory-write init). Emulator shut down after session.
+- **Boot wall 🧱 (precise, 2026-10-13)**: from a fresh boot, the `bt.py boot()` space-mash
+  path (adapter `4`, drive `3`, then 100+ Spaces + arrows/enter/esc/y/n/1/2) parks on a static
+  screen in the blank state (`credits=0`, tile `(34,12)`, CPU in BIOS `F000:0011`, keys consumed
+  but ineffectual) — NEW_GAME_INIT never runs that way. **Untried this session:** the §8
+  Load-Game route — `GAME1`/`GAME2` are present *and enabled* in `BATTLETECH_CHI/`,
+  `GAME3..6` are `.disabled` (rename `GAME5.disabled`→`GAME5` to enable slot 5); reaching the
+  main menu with per-screen observation (text-mode screenshots work well) then
+  SPACE → Load Game should restore the combat-capable path. Emulator shut down after session.
 
 **Still OPEN (need live combat trace):** per-mech-type `0x1F6` stream bytes; `0xFF`-op intent;
 leaf-inner (`047B/059A/0643/0747/07DA`) PIT details; actuator outcome enum.
