@@ -36,13 +36,24 @@ building/story/combat contexts; no "combat vs story" split. **Decoder ✅** (`10
 rooms via `0FDC:1C9B/1A26`. Clips: cockpit `O0`, portraits `O2`/`O5`/`O12`/`O13`, infantry `O7`,
 **stomp `O9`**, firing `O16`. Open: variable-index sites + guards. See §28.1a.
 
-**U1 ◐ (partial)** — `fn0800_3D40` control flow decoded (suspend flag, cursor save, arrow-key unit
-cycling, SPACE exit, `0800:3FAE` draws `BTSTATS.CMP`); its only Reko caller is the world-map SPACE
-menu, so combat **"Scan Unit"** reaches the status view by another — still unisolated — path. Open:
-the `3FAE` column/field layout + the Scan Unit handler.
+**U1 ✅ (closed 2026-10-13, docs-first, no game code touched).** Two separate views, verified
+byte-for-byte in `reko/segments/UNBTECH_{0800,0DAB,183B}.asm` (DS base file `0x3A1B0`):
+`fn0800_3D40`→`0800:3FAE` is a map-strip + 3-column `2DA8` unit-cell overview (**no BTSTATS** —
+the old "`5 columns × 48 rows of 3×3 subtiles`" claim is corrected in AGENTS.md +
+`engine/viewport.md`); the **detail view** `fn0DAB_1467`→`fn0DAB_1AFE` loads `BTSTATS.CMP`
+(`1F3D:063B`→`3092:00A0`, sites `0DAB:1B58` with `ds:0x1272` and `1467:08A8` with `ds:0x27E6`)
+and renders Type/Tons/Pilot/Rider, the `0x33..0x55` Armament+Loc table (locs
+`LA LT RA RT LL RL CT H` = slots `0x1C..0x23`), actuator `OK/Hit/Gone` nibble rows, 11
+location bars (`ds:0x1306` offsets), and the `[0x6E]` heat bar. Combat **Scan Unit** =
+`fn183B_14C3` (player sel 6 / enemy sel 4) → `fn183B_2591` (Friends/Enemies/Cancel submenu
+`ds:0x3D73`, sensor guard `[C79B]==2` → `ds:0x3DCD`, no-enemy guard → `ds:0x3E19`) →
+`call far 0DAB:1467` (`183B:2704`, the browser's only Reko caller). Full tables in
+[`engine/viewport.md`](engine/viewport.md) "Stats / status screen". Residual unknowns:
+`0B5E` return convention (index↔label pairing by position), the 11-bar value/max pairing
+intent, `fn0800_2DA8` full cell format.
 
-**▶ Next:** finish **U1** (`0800:3FAE` layout + combat "Scan Unit") and **C11**'s cue table
-(`DS:0x5008`). Full living list: [`WIP.md`](WIP.md).
+**▶ Next:** **C11**'s cue table (`DS:0x5008`) + the residual U1 items (`0B5E` index convention,
+11-bar pairing intent, `2DA8` cell format). Full living list: [`WIP.md`](WIP.md).
 
 ---
 
@@ -110,8 +121,8 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C7 | Infantry AI / weapon selection | ◐ partial: unit-class split at `1000:5028` (`[BP-0x28]` vs 4/0xC); target logic not isolated |
 | C9 | **Terrain movement-cost** — no per-terrain MP cost found; confirm the docs' "movement cost" label on `0x32C6` is wrong (only to-hit + passability exist) | ⬜ see [`combat-system.md`](combat-system.md) §26 |
 | C10 | **Kick damage + Inferno effect** | ✅ **resolved** (2026-09-29): Kick damage = **attacker tonnage ÷ 5**, read from the mech struct `+0x10` and written into the Kick record's damage byte (`1000:4F55`, `ES:[0x3103]`). Inferno forces **0 damage** and arms the target's heat-surge counter `0xD576=3` (**+6 heat penalty/round ×3**) — `1000:50E7`. See [`combat-system.md`](combat-system.md) §27.1/§27.2 |
-| U1 | **Stats/status page + combat "Scan Unit"** | ◐ partial (2026-09-29): `fn0800_3D40` control flow decoded (`w014A=1`, cursor save, arrow-key unit cycling, SPACE exit, `0800:3FAE` draws BTSTATS.CMP); **only caller = world-map SPACE menu**, so combat "Scan Unit" uses another (unisolated) path. Still open: the `3FAE` column/field layout + the Scan Unit handler. See [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
-| C11 | **Combat sprites** | ✅ **resolved** (2026-09-29): `MECHSHAP.CMP` unit sprites (Locust/Commando 2-frame walks, wrecks, Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`. Registered by `18AD:070A`, blitted by `1000:1983` at map tile positions. **No persistent 80 px portrait** — `MechPortrait.cs` is an invented panel UI. See [`combat-system.md`](combat-system.md) §28.1 |
+| U1 | **Stats/status page + combat "Scan Unit"** | ✅ **closed** (2026-10-13): two views — `fn0800_3D40`/`3FAE` overview (3-col `2DA8` cells, no BTSTATS) vs `fn0DAB_1467`/`1AFE` detail (BTSTATS load sites `0DAB:1B58` + `1467:08A8`; field table decoded). Combat Scan = `183B:14C3` (sel 6/4) → `183B:2591` (submenu `ds:0x3D73`, guards `ds:0x3DCD`/`0x3E19`) → `0DAB:1467`. Residual: `0B5E` index convention, 11-bar pairing intent, `2DA8` cell format. See [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
+| C11 | **Combat sprites + cue stream** | ✅ **resolved** (2026-09-29, follow-ups closed 2026-10-13): `MECHSHAP.CMP` unit sprites (Locust/Commando 2-frame walks, wrecks, Fire/Impact `0x7C-0x7F`), documented in `InceptionTools/{Enums/SpriteEnum,AssetExtractor}.cs`. Registered by `18AD:070A`, blitted by `1000:1983` (true off `1000:0283`) at map tiles into main-`DS:0x244B`. **No persistent 80 px portrait** — `MechPortrait.cs` is an invented panel UI. **Cue stream ✅**: `0000:30BF`→player decodes 18 `00 00`-terminated entries at `DS:0x5008` into the `187F` **PC-speaker** API (PIT `0x42/0x43` + gate `0x61` — sound, not display); cue ids `0x1/0x2/0x3/0x4/0x5/0x6/0x7/0x8/0x9/0xB/0xD/0x12` mapped to call sites (kill = `0x8`). **Sprite-id** = `fn1732(0x18)` stream byte + `0x68`/`0xFA`; **timing** = blit every 4th pass (`TEST [BP-0x4],3`). Open: exact per-mech-type stream bytes (needs live trace). See [`combat-system.md`](combat-system.md) §28.1 |
 | C11b | **ANM usage / left-panel animations** | ◐ **decoder + player + combat triggers found** — `O*.ANM` = generic 88×88 resource (top-left panel), no "combat vs story" split. **Decoder ✅** (`1000:AC12`, big-endian, `0xF20` frames; `O0`=19 ✓). **Player ✅** = `0000:48B7 play_anm(index,mode)` builds `"O<index>.ANM"`. **Combat triggers:** `O16`(0x10, firing) + `O5`(0x5, pilot) in the post-fire path (`1000:52B9`/`52EE`), `O2` at `1000:1336`; rooms via `0FDC:1C9B/1A26`. Combat clips: post-fire `O16`(firing)+`O5`(pilot); attack-selector `O1`/`O3`/`O4`/`O7`; training `O2`; default `O0`. Still open: the cutscene byte-script (site 9) → e.g. **stomp `O9`**; and site 8's scene table. See §28.1a |
 | C8 | **Enemy AI beyond targeting** — weapon pick (`[BP-0x48]` from `[BP-0x2]`, specials `0x20`=Kick / `0x80`), movement/approach decision, **flee**, and the "computer fights for you" auto-pilot | ◐/⬜ see [`combat-system.md`](combat-system.md) §3 "AI — coverage & gaps" |
 

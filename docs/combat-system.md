@@ -2353,7 +2353,8 @@ damage slot (`[BP-0x60]=AX`, `1000:5220`); the training-dummy check `[0x564A]:0x
    `[BP-0x18]` (cue `0x1`).
 5. **Kill (arg6 ≠ 0):** emit `DS:0x41FC`; mark target dead — `[0x5632]:slot·2+0x406A=0` (alive
    flag), `[0x5698]:slot·2+0x393C=1`, `[0x5648]:0x11·unit+0xC614=0xFF`, display byte
-   `[0x5642]:slot+0x409A=0x7E`, `[0x567A]:slot+0xD55E=0`; draw `1000:4279(0x7E,X,Y)`.
+   `[0x5642]:slot+0x409A=0x7E`, `[0x567A]:slot+0xD55E=0`; draw `1000:4279(0x7E,X,Y)`, then
+   play kill cue `30BF(0x8)` (entry w88: 3× `03EC`, see §28.1).
 6. **Training dummy (arg7 ≠ 0, arg2 == 0xD, `[0x5660]:0xE48E ≠ 0`):** dummy/destruction FX chain
    `1000:7BF6`, `30BF(0x7)`, `1000:7C1A`, `1000:8D29`, `0000:2EBB`, `1000:B204`, `1000:BDBE`,
    `0000:3B0B`, `19EF:18EF` (impact VFX), `0000:254B`, `1000:9193`.
@@ -2367,10 +2368,10 @@ damage slot (`[BP-0x60]=AX`, `1000:5220`); the training-dummy check `[0x564A]:0x
 projection and the cursor `0xA44B/0xA44D` is restored, then `[BP-0x42]++` starts the next sub-phase.
 
 > **Result:** the "post-fire path" is now fully enumerated: 3 fixed message strings (miss/hit/kill),
-> the 11-arg call into `1000:5847`, its weapon-class cue dispatch / name / panel / kill / dummy-FX
-> branches, and the stage-advance bookkeeping. `arg4` (`[BP-0x58]`) and the exact semantics of the
-> cue ids (sound vs. animation) remain the only unresolved details (the cue player `1000:9352` is
-> still unnamed; sound is WONT_DO, §6).
+> the 11-arg call into `1000:5847`, its weapon-class cue dispatch / name / panel / kill (cue `0x8`)
+> / dummy-FX branches, and the stage-advance bookkeeping. The cue ids are **PC-speaker sound cues**
+> (cue stream fully decoded, §28.1 — sound is WONT_DO, §6). `arg4` (`[BP-0x58]`) remains the only
+> unresolved detail.
 
 ---
 
@@ -2497,26 +2498,109 @@ sprite from `MECHSHAP.CMP` into the runtime sprite table `[0x56FC]:0x39FA + id*4
 Called in loops during game setup (`0697:040B`…, duplicated verbatim in segment `0D27:040B`), which
 loads `MECHSHAP.CMP` into `3092:0x4614` first.
 
-**Blit (combat):** `1000:1983(spriteId, x, y)` looks up `[0x55C0]:0x39FA + id*4` and blits it
-(via `19EF:28EB`, or the text-mode path `1000:A267`). The combat-view redraw `1000:5847` (§25.5) calls
-it to draw the units at their **map tile positions** (`1000:5EDB` x∈[0x68,0x140), `1000:6022`), the
-fire sprite, and the panel text.
+**Blit (combat):** `1000:1983(spriteId, x, y)` [true file offset `1000:0283`; `1000:1983`
+is the Reko-linear label — old-gencode offsets carry a `+0x1700` shift, see note below] looks up
+`[0x55C0]:0x39FA + id*4` and blits it (via `19EF:28EB`, or the text-mode path `187F:0x377`
+when `w4FBA==2`). Combat-view redraw `1000:5847` (§25.5) calls it to draw the units at their
+**map tile positions** (`1000:5EDB` x∈[0x68,0x140), `1000:6022`), the fire sprite, and the panel
+text. Destination is the map buffer at **main-DS:0x244B** (the gencode's `0x1DDC` is the
+*unrelocated* placeholder for the runtime data segment `0x1C6C` — verified via the segment
+reloc on `mov dx,0x1C6C` in the real bytes).
 
-**Cue stream:** `0000:30BF(cue)` → `1000:9352` runs a **stored command stream** from the table at
-`DS:0x5008`, writing display parameters via segments `0x56FE`/`0x5700` (`[0x4612]`, `[0x3984]`…). The
-attack/weapon class in `1000:5847` picks the cue id (e.g. `0x30BF(0x3/0x5/0x6/0xB/0xD)`), so this is
-the real "per-state cue" mechanism.
+**Sprite-id computation (verified in gencode + spot-checked vs real bytes):** both combat blits
+compute `spriteId = fn0170_1732(0x18) + base` — base **`0x68`** for the acting-unit blit
+(`1000:5EDB`) and **`0xFA`** for the target-unit blit (`1000:6022`). `fn0170_1732(0x18)`
+consumes successive bytes of an `FF`-terminated sprite-offset string through far-pointer
+stream `0x18` of the `[0x5640]:0x1F6` table (the same call also feeds the weapon→body-part map
+at `[slot]+0x396C`). Static string data found in `DS` (file `+0x3A1B0`, byte-verified):
+`DS:0x41D8` = `7C 7D 7C FF` (the fire-FX cycle: Fire_Large, Fire_Small, Fire_Large — consumed by
+the target-unit loop whose pointer is initialised to `DS:0x41D8` at `1000:5FBB`), and the table
+right after the `"Hit!\0"` string at `DS:0x3EE9` holds `FF`-terminated strings including
+`00 78 79 FF` (Locust Right walk pair) and `00 7A 7B FF` (Locust Left walk pair).
 
-**Still open (follow-up):** the mech-type → base-sprite-id map and the walk-frame timing. The
-`19EF:18EF` "impact" is a **direct-pixel** sparkle into the map buffer `0x244B:0x1DDC` (not a MECHSHAP
-sprite).
+**Walk-frame timing (verified vs real bytes at true `1000:47BE`):** the acting-unit blit block is
+gated by `TEST [BP-0x4],3 / JNZ skip` — the unit blit plus the `1000:1919`/`1000:9193` panel
+refresh run **every 4th combat-loop pass** (`[BP-0x4]` is incremented per pass). Successive
+passes consume successive string bytes, producing the 2-frame walk alternation.
 
-**Cue path — `0000:30BF`/`1000:9352` is (probably) the SOUND sequencer, not the panel art.** `1000:9352`
-decodes the command stream at `DS:0x5008` into sound-driver registers across several segments
-(`0x56FE`→`0x4612`, `0x5704`→`0x6C`, `0x5706`→`0x3776`, `0x5708`→`0x4312`, `0x570A`→`0x398A`) and calls
-the sound subroutines `1000:95F3`/`1000:963B`; the raw table at `3EDB:5008` holds timing values
-(`0x3E8`=1000 ms, `0x1F4`, `0x64`, `0xA`, `0x1770`, `0x1B58`). The attack/weapon type in `1000:5847`
-selects the cue id (`0x3/0x5/0x6/0xB/0xD`).
+**Cue stream — the SOUND sequencer (fully decoded, verified vs real bytes).**
+`0000:30BF(cue)` [true offset `0000:19BF`] guards on `DS:[0x15C] ≠ 0`, then far-calls the cue
+player [true offset `1000:7C52`; Reko-linear label `1000:9352`]. Both functions verified
+instruction-for-instruction against r2 (`s 0x19BF`, `s 0x17C52` = linear−0x1700).
+
+Phase 1 — cue→entry resolve: `idx = 0, n = cue−1`; loop while `stream[idx] ≠ 0`: if `n == 0`
+stop; if `stream[idx+1] == 0 && stream[idx+2] == 0` → `n−−`; advance `idx` by the command
+length (header `w ≤ 0x3E8` → +3; `w−0x3E8 == 1` → +6; `== 2/3/4` → +7; else +1). So cue id
+`N` (1-based) selects the Nth `00 00`-terminated entry of the table at `DS:0x5008`
+(file `0x3F1B8`, 18 entries).
+
+Phase 2 — command player (cursor `idx`, opcode `op = w − 0x3E8`):
+
+| Header | Len | Words → driver registers | Worker → 187F sound service |
+|--------|-----|--------------------------|------------------------------|
+| `w ≤ 0x3E8` | 3 | `w`→`[0x56FE]:0x4612`; `w1`→`[0x5700]:0x3984` (**freq**); `w2`→`[0x5702]:0xE48C` (**dur**) | tone on (`187F:0x30`: `out 0x42` divisor + speaker gate), wait `50 × (dur×5)`, speaker off |
+| `0x3E9` (op 1) | 6 | →`[0x5704]:0x6C`, `[0x5706]:0x3776`, `[0x5708]:0x4312`, `[0x570A]:0x398A` | programmed seq: `187F:0xA9` delay + `187F:0x7D` toggle, loops bounded by `DS:0x5006` (= 5, byte-verified) |
+| `0x3EA` (op 2) | 7 | →`[0x570C]:0`, `[0x570E]:0x39F4`, `[0x5710]:0x4000`, `[0x5712]:0x4034`, `[0x5714]:0x62` | same shape (worker → deeper call + speaker off) |
+| `0x3EB/0x3EC` (op 3/4) | 7 | →`[0x5716]:0x398C`, `[0x5718]:0x39A2`, `[0x571A]:0x39F6`, `[0x571C]:0x3FF2`, `[0x571E]:0x9C` | op 3 → `96F8`-path, op 4 → `975B`-path (both → tone/delay calls + speaker off) |
+| `op ≥ 5` | 1 | — (consumed, no-op) | — |
+
+Every command ends with speaker-off (`0x18134` → `187F:0x51`: `and 0x61,0xFC`).
+`187F` sound API (all byte-verified): `0x1C` = PIT init (`out 0x43,0xB6`, ch.2 square wave);
+`0x30` = tone on (`out 0x42` divisor lo/hi, `or 0x61,3`); `0x51`/`0x67` = speaker off;
+`0x7D` = speaker-bit toggle + rotate counter; `0xA9` = calibrated `loop` delay. **No video
+ports and no `INT 10h` anywhere in this path — the cue stream is sound-only.** Freq words are
+PIT divisors (`f = 1193182/N`, e.g. cue 6's `07D0/0BB8/0FA0/1388/1B58/2710` = 596→119 Hz
+descending arpeggio); the `w0 ≤ 0x3E8` word lands in `[0x4612]` but its post-play comparison
+result is discarded (vestigial).
+
+Cue→entry map (entry = word-index from `DS:0x5008`):
+
+| Cue | Entry (DS off) | Commands |
+|-----|----------------|----------|
+| 1 | w0 (`0x5008`) | `03EA(0001 03E8 01F4 0064 0001 000A)` + trailer |
+| 2 | w10 (`0x501C`) | `03EA(0001 1770 1B58 000A 0001 000A)` + trailer |
+| 3 | w20 (`0x5030`) | `03EA(0005 000A 0320 0014 0003 0032)` + trailer |
+| 4 | w30 (`0x5044`) | `03EC(0001 0032 03E8 0005 0005 00AF)` + trailer |
+| 5 | w40 (`0x5058`) | `03EC(0001 000A 0032 0005 0005 0001)` + trailer |
+| 6 | w50 (`0x506C`) | six 3-word tones (`07D0/0BB8/0FA0/1388/1B58/2710` × dur 2) + trailer |
+| 7 | w71 (`0x5096`) | 2× `03EC` + trailer |
+| 8 | w88 (`0x50B8`) | 3× `03EC` + trailer |
+| 9 | w112 (`0x50E8`) | `03EB(0004 01F4 0190 012C 0001 0001)` + trailer |
+| 10 | w122 (`0x50FC`) | `03EA(0014 0064 0032 0001 0064 0028)` + trailer |
+| 11 | w132 (`0x5110`) | 3× `03EA` + trailer |
+| 12 | w156 (`0x5140`) | `03EC` + `03EB` + trailer |
+| 13 | w173 (`0x5162`) | 4× `03E9` (rising param `00C8/012C/0190/01F4`) + trailer |
+| 14 | w200 (`0x5198`) | 7× `03EB`/`03EC` + trailer |
+| 15 | w252 (`0x5200`) | six 3-word tones (`033E/02A8/0258` ×2, w0=`14`) + trailer |
+| 16 | w273 (`0x522A`) | six 3-word tones (w0=`1E`) + trailer |
+| 17 | w294 (`0x5254`) | `03EB(0028 0096 0014 000A 0002 000A)` + trailer |
+| 18 | w304 (`0x5268`) | `03E9(0005 0FA0 07D0 0001 0001)` + trailer |
+
+(Each entry ends with the trailer `0001 0000 0000`; the `00 00` pair is the entry terminator
+the walker counts. Cue 19+ does not exist — the walker runs into the zero fill and exits
+without playing.)
+
+Cue-id call sites (all in/near `1000:5847` unless noted; gencode-verified, representative sites
+spot-checked vs real bytes, e.g. `lcall 0:0x19BF` at true `1000:43AB`):
+
+| Cue | Context |
+|-----|---------|
+| `0xD` | weapon slot < 3 (personal weapons) |
+| `0x3` | weapon ∈ {0x9, 0x13–0x17} |
+| `0x5` | weapon == 3 |
+| `0x6` | weapon ∈ {7, 8} (= the descending arpeggio, cue 6 ✓) |
+| `0xB` | weapon ∈ {4, 5, 6} |
+| `0x1` | unit class == 1 (panel branch) |
+| `0x2`/`0x9` | unit class ≠ 1, selected by `[BP-0x8]` |
+| `0x4` | hit (`[BP+0x16] ≠ 0`, weapon ≥ 7) |
+| `0x8` | kill — played right after the `1000:4279` wreck-sprite draw |
+| `0x7` | training-dummy chain (`1000:7BF6` → `30BF(0x7)` → `1000:7C1A`…) |
+| `0x12` (18) | outside combat: module `0FA1` (`play` after two `1000:17BB` calls) |
+
+> Address-note (applies to this whole section): old-Spice86 gencode labels (`1000:9352`,
+> `0000:30BF`, `1000:1983`, `1000:5847`…) are **Reko-linear** (`phys + 0x1700`) and its segment
+> constants are **unrelocated** (`0x1DDC` = runtime DS `0x1C6C`). True r2 physical addresses are
+> given in brackets where verified. The control-flow logic itself matches the real bytes exactly.
 
 **C11b — the left-panel event animations are `O*.ANM` clips (not MECHSHAP, not the `19EF:18EF`
 sparkle).** The top-left panel is a **generic 88×88 ANM surface**: it shows pilot/cockpit portraits,

@@ -47,7 +47,7 @@ recovered files for its label (`label_1000_<OFF>_<LIN>` / `label_19EF_...`).
 | `1000:17BB` `ghidra_guess_1000_17BB_117BB` | **combat message emitter** — emits a string far pointer via `1000:8055` when `DS:[0x2E38]≠0` (§25.5) |
 | `1000:159F` `ghidra_guess_1000_159F_1159F` | per-hit-location damage/crit hook, called on a hit (§25.5) |
 | `1000:17DC` `ghidra_guess_1000_17DC_117DC` | combat panel refresh at end of a shot (§25.5) |
-| `1000:9352` `ghidra_guess_1000_9352_19352` | cue player reached from `0000:30BF` (weapon-class FX/sound id; §25.5) |
+| `1000:9352` `ghidra_guess_1000_9352_19352` | cue player reached from `0000:30BF` (weapon-class PC-speaker sound id; true off `1000:7C52`, §28.1) |
 | `19EF:0971` `unknown_19EF_0971_1A861` | **movement direction calc** (§2) |
 | `19EF:0BC0` `unknown_19EF_0BC0_1AAB0` | **RNG** (24-bit LFSR) (§16) |
 | `19EF:0BFB` `unknown_19EF_0BFB_1AAEB` | fired per body-part pair (§7.9) |

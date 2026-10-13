@@ -380,11 +380,19 @@ Narrow layout (BuildingName): LeftPanel=16×200, Viewport=16,0 304×192, BottomB
 
 ### Stats Screen — Full-Screen Overlay (NOT a viewport layout)
 
-The stats/inventory screen (`fn0800_3D40`) is a **full-screen modal overlay**, like the protection screen:
+The stats/inventory screen is a **full-screen modal overlay**, like the protection screen:
 - Sets `w014A = 1` to suspend normal game rendering
-- Renders BTSTATS.CMP as 320×200 background (left 80px black, right 240px has pre-rendered borders/text areas)
-- Draws unit data dynamically (5 columns × 48 rows of 3×3 subtiles from game state)
-- Plays ANM in left 80px (mech portrait)
+- The **world-map overview** (`fn0800_3D40` → `0800:3FAE`) draws map-tile strips + per-unit
+  cells via `fn0800_2DA8` in a **3-column** layout (dims from `DS:0x0A38/0x0A46/0x0A54/0x0A62`),
+  plus a 24×40 fog-gated tile pass — it does **not** load `BTSTATS.CMP`
+  (no `5 columns × 48 rows of 3×3 subtiles` grid exists; the 3×3 is the exit-path refresh in
+  `fn0800_3D40`, the 5-wide/`0x30`-step loops are map-tile strips)
+- The **detail view** (`fn0DAB_1467` → `fn0DAB_1AFE`) loads `BTSTATS.CMP` as 320×200 background
+  (`1F3D:063B` → `3092:00A0`, once-flag `es:[4594]`, blit via `1F3D:049D` to `246C:244B`)
+  and renders Type / Tons / Pilot / Rider / Armament+Loc table / actuator conditions /
+  11 location bars / heat bar (see `docs/engine/viewport.md` "Stats / status screen")
+- Combat **Scan Unit** reaches the detail view via `fn183B_2591` → `fn0DAB_1467`
+  (not via `fn0800_3D40`, whose only caller is the world-map SPACE menu)
 - Runs its own input loop (arrow keys for unit selection, SPACE to exit)
 - On exit: `w014A = 0`, redraws viewport + borders + cursor
 

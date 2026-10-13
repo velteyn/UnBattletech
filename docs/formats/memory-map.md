@@ -647,8 +647,17 @@ Unit sprites (24×24) come from `MECHSHAP.CMP`; the sprite sheet is tokenised in
 | `3092:0x4614` | `MECHSHAP.CMP` load buffer |
 | — | ids: `0x78`-`0x7B` Locust walks, `0xA2`-`0xA5` Commando, `0x7C`/`0x7D` Fire, `0x7E`/`0x7F` Impact, `0x80`/`0x81` wrecks |
 
-> Sound-cue registers (written by `1000:9352` from the cue stream at `DS:0x5008`): `0x56FE→0x4612`,
-> `0x5704→0x6C`, `0x5706→0x3776`, `0x5708→0x4312`, `0x570A→0x398A`.
+> Sound-cue sequencer (verified vs real bytes; WIP C11 follow-up, see
+> [`combat-system.md`](../combat-system.md) §28.1): the player (`1000:7C52`; Reko label `1000:9352`)
+> resolves cue id N (1-based) to the Nth `00 00`-terminated entry of the word table at `DS:0x5008`
+> (file `0x3F1B8`, 18 entries) and plays it through the `187F` PC-speaker API (`0x1C` PIT init,
+> `0x30` tone on, `0x51`/`0x67` speaker off, `0x7D` toggle, `0xA9` delay). Command header `w ≤ 0x3E8`
+> = 3-word tone (`freq`→`0x5700:0x3984`, `dur`→`0x5702:0xE48C`); `0x3E9/0x3EA/0x3EB/0x3EC` = 6/7/7/7-word
+> programmed sequences → `0x5704:0x6C`, `0x5706:0x3776`, `0x5708:0x4312`, `0x570A:0x398A`
+> (+ `0x570C:0`, `0x570E:0x39F4`, `0x5710:0x4000`, `0x5712:0x4034`, `0x5714:0x62`;
+> `0x5716:0x398C`, `0x5718:0x39A2`, `0x571A:0x39F6`, `0x571C:0x3FF2`, `0x571E:0x9C`).
+> Loop bound `DS:0x5006` = 5. Guarded by `DS:[0x15C] ≠ 0` in the `0000:30BF` wrapper
+> (true offset `0000:19BF`).
 
 ## Known Data Tables
 

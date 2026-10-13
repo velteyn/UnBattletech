@@ -255,18 +255,29 @@ Core EGA framebuffer blitter, 4 cases by `tB764` (seg 246C rendering-config stru
 - `w37FE` text-mode flag semantics.
 - Exact stats/combat screen layout (confirmed w4FBA 0+2+3 combos, not modes 4–6).
 
-### Stats / status screen (`fn0800_3D40`)
+### Stats / status screen — two views, not one (`fn0800_3D40` + `fn0DAB_1467`/`1AFE`)
+
+> **Correction (2026-10-13, U1):** earlier docs described a single `fn0800_3D40` screen drawing
+> "`BTSTATS.CMP` + 5 columns × 48 rows of 3×3 subtiles". Byte-verified, that conflates **two
+> separate views**: `0800:3FAE` never references `BTSTATS.CMP` — it draws map-tile strips, unit
+> cells via `fn0800_2DA8` in a **3-column** layout, and a 24×40 fog-gated tile pass. The `3×3`
+> is the exit-path refresh in `fn0800_3D40` (`[bp-0x10]<3 × [bp-0x0C]<3` calls to `2DA8`); the
+> 5-wide / `0x30`-step loops are map-tile strips (`[bp-0x2A]<5`, `[bp-0x2E]=0,0x10,0x20` via
+> `207F:1F04`/`17C5`). `BTSTATS.CMP` is loaded and drawn only by the **detail view**
+> `fn0DAB_1AFE` (load sites below). Combat **Scan Unit** reaches the detail view via
+> `fn183B_2591` → `fn0DAB_1467` — never via `fn0800_3D40`.
 
 The **unit status page** (your mechs/party, and — see below — other units) is a **full-screen modal
 overlay**, exactly like the protection screen, *not* a `ViewportLayout`:
 
 | Aspect | Detail | Source |
 |--------|--------|--------|
-| Entry | SPACE menu option 6 ("stats/inventory") → `fn0800_3D40`; event-driven from `Fn1CD3Dispatcher` case `0x0D` | `formats/memory-map.md` (`0800:3D40`), AGENTS |
+| Entry (world map) | SPACE menu option 6 ("stats/inventory") → `fn0800_3D40` (sole Reko caller: `0800:2C50` table entry `0800:2D8B`) | `formats/memory-map.md` (`0800:3D40`), `reko/segments/UNBTECH_0800.asm` |
+| Entry (combat) | Combat menu Scan Unit → `fn183B_2591` → `fn0DAB_1467` (its only Reko caller, `183B:2704`) → `fn0DAB_1AFE` detail | `reko/segments/UNBTECH_183B.asm:4118`, `:4286`, `UNBTECH_0DAB.asm:2345,3067` |
 | Mode | sets `w014A = 1` to **suspend normal refresh**; renders directly | (cf. `w014A` semantics) |
-| Background | `BTSTATS.CMP` 320×200 (left 80 px black, right 240 px pre-rendered borders/text areas) | `formats/file-formats.md` (BTSTATS listed) |
-| Data | unit data drawn dynamically as **5 columns × 48 rows of 3×3 subtiles** from game state | AGENTS |
-| Portrait | plays an **ANM in the left 80 px** | AGENTS |
+| Background | `BTSTATS.CMP` 320×200, loaded + drawn by the **detail view only** (load sites below) | `formats/file-formats.md` (BTSTATS listed) |
+| Data | world-map overview: 3-column unit cells via `fn0800_2DA8`; detail view: field table below | this section |
+| Portrait | anim tick in detail view tail (`w4FBA`→`ds:0x1348/0x1358`, frames `0x1378/0x137C`) | `fn0DAB_1AFE` tail |
 | Input | its own loop: **arrow keys** cycle the selected unit, **SPACE** exits; on exit `w014A = 0` and viewport+cursor redraw | AGENTS |
 | Rebuild | `BattleTechCHI/Scripts/UI/StatsScreen.cs` (full-screen `Control`) | `rebuild/progress.md` |
 
@@ -275,18 +286,102 @@ overlay**, exactly like the protection screen, *not* a `ViewportLayout`:
 >
 > **`fn0800_3D40` control flow** (`reko/segments/UNBTECH_0800.asm:7300`): sets `w014A=1` (suspend
 > rendering), saves the cursor (`0x538C:0xA44B` / `0x538E:0xA44D`), optionally calls the location
-> graphics `135D:0327`, then runs an input loop via `1E56:0D1D` — **arrows** cycle the selected
-> unit / scroll (`0xB8/0xB0/0xAF/0xB1/0xB5/0xB9/0xB3/0xB7` + a `0x2000`/`0x200`/`0x2000` coordinate
-> delta), **SPACE (0x20)** exits. Drawing is done by `0800:3FAE` (BTSTATS.CMP + the data columns).
-> Its **only caller** is the world-map SPACE menu (`0800:2C50` jump table entry `0800:2D8B`).
+> graphics `135D:0327`, then runs an input loop via `1E56:0D1D` — **arrows** adjust the saved
+> cursor, **SPACE (0x20)** exits. Drawing is done by `0800:3FAE` (map strips + `2DA8` unit cells
+> + 24×40 fog pass — **no BTSTATS load**; View A below). Its **only caller** is the world-map
+> SPACE menu (`0800:2C50` jump table entry `0800:2D8B`).
 >
-> **Still open (U1):** the `0800:3FAE` draw (5 columns × 48 rows of 3×3 subtiles layout/fields), the
-> BTSTATS.CMP load site, and the **combat "Scan Unit"** handler. Note "Scan Unit" is *not* a call to
-> `fn0800_3D40` — that function's sole caller is the world-map SPACE menu — so combat must reach the
-> status view by another path (the combat menu dispatch is still unisolated). The combat menu is
+> **Closed (U1, 2026-10-13):** the `0800:3FAE` structure (View A), both BTSTATS.CMP load sites,
+> the `fn0DAB_1AFE` field layout (View B), and the **combat "Scan Unit"** path
+> (`fn183B_14C3` dispatch → `fn183B_2591` submenu/guards → `call far 0DAB:1467` at `183B:2704`,
+> the browser's only Reko caller). The combat menu is
 > `Walk / Run / Jump / Use Weapons / Kick / Computer / Scan Unit / Next Unit / Flee / Begin Fight`
-> (`combat-system.md` §22). Tracked as **U1** in [`../WIP.md`](../WIP.md).
+> (`combat-system.md` §22); the 8-item variant is
+> `Move / Clear Moves / Use Weapon / Computer / Scan Unit / Next Unit / Flee / Begin Fight`.
+> Tracked as **U1** in [`../WIP.md`](../WIP.md).
 >
+#### View A — world-map overview (`fn0800_3D40` → `0800:3FAE`)
+
+`0800:3FAE` draws (no CMP load anywhere in it):
+
+1. **Cursor-derived tile window**: X nibble clamped `0..0x0B` (12), Y clamped `0..0xD0`;
+   fog index `[bp-0x32] = Y*8+X`.
+2. **Combat branch** (`D346!=0`, at `3FAE+0x129`): copies `0x1080` bytes `53FA:0x101D` →
+   `53C6:0x644B`, fills `0x3C0` bytes at `53C6:0x244B` with (`D34E-0x30`), blits `0x150`.
+3. **Map branch**: 3 bands (`[bp-0x2E]=0,0x10,0x20`) × 5 tiles (`[bp-0x2A]<5`) via
+   `207F:104E` lookup + `207F:1F04`/`17C5` blits.
+4. **Unit cells**: `[bp-0x04]=0..2` (**3 columns**); rows walk unit bytes `53D0:[si+0x30]`
+   (`si=[bp-0x0A]+[bp-0x3A]`, `si<0x100`); per unit, footprint/stride come from the
+   `DS:0x0A38/0x0A46/0x0A54/0x0A62` tables indexed by (unit_id−1), cell drawn by the shared
+   `fn0800_2DA8(unit_id, 3*col+row)`.
+5. **24×40 fog-gated tile pass** (`[bp-0x04]<0x18 × [bp-0x3A]<0x28`): tile `< 0x90` and fog
+   bit (`es:[0xCB0C]`, shifting mask `[bp-0x1A]`) required, blit via `207F:275C`.
+6. Restores cursor, waits for a key (`1F3D:0259` + `0800:2A2B`), returns the scancode in `AX`.
+
+#### `BTSTATS.CMP` load sites (both: `1F3D:063B` file→`3092:00A0`, then `w4FBC=0`, `207F:00D1(3056:0)`, `1F3D:049D` blit to `246C:244B`)
+
+| Site | Filename ptr | Caller | Guard |
+|------|--------------|--------|-------|
+| `fn0DAB_1AFE` (`0DAB:1B58`) | `ds:0x1272` (in the status string table, file `0x3B422`) | detail view itself | `es:[4594]` load-once flag |
+| `fn1467_08A8` | `ds:0x27E6` (file `0x3C996`; sits inside training narrative text but is NUL-terminated, so valid as a filename) | `fn0FDC_0008` (BLD building-entry loader, `0FDC:0077`) | same `es:[4594]` flag |
+
+(`1F3D:063B` = asset file loader: also used e.g. in `fn0800_4621` with `ds:0x0A9A` → `246C:244B`.)
+
+#### View B — detail browser (`fn0DAB_1467` → `fn0DAB_1AFE`): field layout
+
+`fn0DAB_1467` (`0DAB:1467`): header `ds:0x1174` (`Scan.../Next Unit`) via the `183B:1774`
+unit-title call; mech-range units (`4..0xF`) additionally get `ds:0x1189` (`Detail Scan/Done` +
+`0x1C..0x23` jump table); menu `1E56:0B5E(3)` on `ds:0x1195`; selection 1 on a mech →
+`fn0DAB_1AFE(unit)` + `1631:032F(1)`, unit−− (Next Unit cycling).
+
+`fn0DAB_1AFE` (`0DAB:1AFE`, unit mod 8 → `[bp-0x2E]`, story slot `0x7D`-stride base `0xC724`):
+
+| Screen row/area | Content | Code |
+|-----------------|---------|------|
+| Header block | `ds:0x127E` = `Type :/Tons :/Pilot:/Rider:` + `Armament   Loc` | `1F3D:00D5(0,0x0F,0,0,ds:0x127E)` at `1C0D` |
+| Unit name | formatted from story slot `3092:(0xC724+unit*0x7D)` | `207F:3B68` at `1C34`, drawn from `3092:0x12` |
+| Tons | byte `[C734]` (= slot `+0x10`, tonnage — cf. Kick `tonnage÷5` from `+0x10`) | `207F:3BB6` value arg at `1C4D` |
+| Pilot (unit<4) | roster name via `[C79D]*0x11+0xC614` → far ptr `[1CA/1CC]` | `1CCD` |
+| Rider (unit<4) | roster name via `[C79E]`; `0xFF` → `ds:0x12AA` (`None`) | `1D2B`/`1D5D` |
+| Pilot/Rider (unit≥4) | `ds:0x12AF` (`Unknown`) | `1D71` |
+| 3 skill bars | `fn0DAB_1858` lengths negated from `[C799]/[C79A]/[C79B]` | `1D85`… |
+| Armament count | `[C74A]` + count of props `0x33..0x55` equal `0x22`, via `1858` at (0x0A,6,0x22) | `1E28`–`1E4B` |
+| Armament rows (from row 6) | props `0x33..0x55`, `val&0x7F` in `0x10..0x20` only (same encoding as AI targeting §3); bit 7 set → dim colour; weapon name from seg `0x3EDB:0x2EC7+val*0x11` | `1E6B`–`1F83` |
+| Loc column | `ds:0x12BF` base, +1 abbrev per prop band (`0x3A→0x12C2 LT`, `0x41→0x12C5 RA`, `0x48→0x12C8 RT`, `0x4F→0x12CB LL`, `0x51→0x12CE RL`, `0x53→0x12D1 CT`, `0x55→0x12D4 H`) — 8 locs = the 8 internal slots `0x1C..0x23` | `1ECA`–`1F5C`, strings file `0x3BC6F`… |
+| Actuator block | header `ds:0x12D6` (`Actuators`), labels `ds:0x12E0` (`Left Leg/Right Leg/Left Arm/Right Arm`, rows `0x14..0x17`); nibble tests on `[C748]/[C749]` (low then high) vs `0xF`/`0`/`[C78D]/[C78E]` select ` OK` (`ds:0x1265`) / `Hit` (`ds:0x1269`) / `Gone` (`ds:0x126D`) | `1F86`–`21AA` |
+| 11 location bars | `fn0DAB_174C(value, max, x, y)` ×11 (`[bp-0x24]=0..0x0A`): value = `story[0xC724+tbl[i]]`, offsets table `ds:0x1306` = `1C 1D 1E 1F 20 21 22 23 00 00 00…`; max = `story[0xC735+i]` (max-armour array `+0x11..+0x1B`); positions `ds:0x131C/0x1332` | `21BF`–`224B` |
+| Heat bar | `es:[unit+0x6E]` clamped `0..0x1E`, via `174C(0x100,0xB7,…)` | `2225`–`2260` |
+| Anim tick | `w4FBA==3 ? ds:0x1358 : ds:0x1348` via `1F3D:0525`, frames cycle `0x1378/0x137C` → `[0x134C]/[0x1360]` | `2281`–`22BD` |
+
+> **Note:** the 11-bar loop pairs internal-structure values (`0x1C..0x23`) with max-armour
+> entries (`0xC735+i`) and zero-fills bars 8–10 (`0x1306` tail is `00`) — observed as coded,
+> intent not fully resolved. Location abbrevs are `LA LT RA RT LL RL CT H` (8, `H` = Head,
+> single char — file `0x3B422` block). Condition words: `None/ OK/Hit/Gone` (+`Ruined` under
+> the `Weapon:/Armor:` infantry labels just before `BTSTATS.CMP` in the same string run).
+
+#### Combat Scan Unit path (closed)
+
+Combat menu dispatch `fn183B_14C3` (`183B:14C3`, called from combat setup `fn183B_000A`):
+
+- Header `ds:0x3A42` (`The computer is currently moving this unit.`, enemy/auto units) + unit
+  panel via `183B:1774` / `1631:03AB`.
+- Player unit (`<4`): menu `ds:0x3A6F` (10 items `Walk/Run/Jump/Use Weapons/Kick/Computer/Scan
+  Unit/Next Unit/Flee/Begin Fight`), `es:[00C6]=0x0A`. Enemy/other (`≥4`): menu `ds:0x3ABC`
+  (8 items `Move/Clear Moves/Use Weapon/Computer/Scan Unit/Next Unit/Flee/Begin Fight`),
+  `es:[00C6]=8`. Selection via `1E56:0B5E(3)` → `[bp-0x0C]` (0-based values as coded;
+  `0B5E` return convention still assumed — index↔label pairing below is by position).
+- Handler map: player `{0,1,2}→fn183B_1C1F` (Walk/Run/Jump move), `3→fn1543_0004` (Use Weapons),
+  `4→fn183B_2231` (Kick), `5→fn1631_03AB(1,unit)` if `es:[0090]==0` (Computer),
+  **`6→fn183B_2591` (Scan Unit)**; enemy `{0}→1C1F` (Move), `1→clear 0x30 bytes at 0x32C6`
+  (Clear Moves), `2→1543_0004`, `3→1631:03AB`, **`4→2591` (Scan Unit)**; Next/Flee/Begin Fight
+  via the `[bp-6]/[bp-2]` end-of-menu counters against `es:[00C6]−2`.
+- `fn183B_2591` (`183B:2591`): submenu `ds:0x3D73` (`\x06\x0f Scan.../Friends/Enemies/Cancel`)
+  via `0B5E(3)`; mech-detail branch validates: story `[C79B]==2` → `ds:0x3DCD` (`Because your
+  sensors are destroyed you can't scan enemy mechs.`), no enemy slots `0x10..0x18` alive
+  (`0x406A`/`0x4004`) → `ds:0x3E19` (`There are no enemy humans in this battle.`; the
+  humans-only note is `ds:0x3D94`); then **`call far 0DAB:1467`** (`183B:2704`) — the same
+  detail browser as the world-map view. So combat has no separate status renderer.
+
 > **Art (documented in the toolkit):** `BTSTATS.CMP` is a **FullScreen** 320×200 image; its
 > extraction/purpose is in [`../../InceptionTools/AssetExtractor.cs`](../../InceptionTools/AssetExtractor.cs)
 > and [`../../InceptionTools/Enums/ImagePurpose.cs`](../../InceptionTools/Enums/ImagePurpose.cs).
