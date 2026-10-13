@@ -235,19 +235,90 @@ Called for enemy units (ID 4-11) during the combat loop. The caller at `Generate
 - Compared against 0xB (enemy slot count) and 0xC thresholds
 - Used as the `stage_counter` parameter to select which target preference to use
 
-#### AI — coverage & gaps (2026-09-28)
+#### AI — coverage & gaps (2026-09-28; C8 closed 2026-10-13, see §3.x)
 
 | Aspect | Status |
 |--------|--------|
 | **Target selection** (`1000:0AB2`, pref table `0x33..0x55`) | ✅ documented here + **code-verified** (§"B2 verification") + implemented (`AiController.SelectTarget`) |
 | **Action / range band** (`1000:0934`, returns 0=none/1=short/2=med/3=long) | ✅ §4; used as the unit's act code |
-| **Weapon pick** | ◐ partial: the per-stage weapon slot is `[BP-0x48]`, derived from an inner index `[BP-0x2]` (`1000:45DF`–`45ED`), with specials **`0x20` = Kick** (`1000:460C`) and **`0x80`** (`1000:4613`); the full "which weapon this stage" rule is **not cleanly decoded** |
-| **Movement / approach** | ◐ partial: direction calc `19EF:0971` + step `1000:17BB`; "approach if out of range" is inferred, not proven |
-| **Flee / disengage decision** | ❌ not traced |
-| **Auto-pilot ("computer fights for you")** | ❌ not traced (same loop? player units auto-resolved?) |
+| **Weapon pick** | ✅ §3.1: stage `0xB` = direct idx (leg-actuator bit3×2 → Kick `0x20`, else `0x80`+flag); other stages = `0AB2` head = subphase-th weapon prop −1, bit7 preserved, `0xFF` on ammo/empty; `0x80`-bit routes to `5344` |
+| **Movement / approach** | ✅ §3.2: `0971` direction-8 (+`0x240` table) + `2EBB` cursor stepper + dest snapshot/commit + gates; exact fork semantics OPEN (micro-item) |
+| **Flee / disengage decision** | ✅ player-only (`eluded` string `3EDB:3A00`; handler unisolated); **no enemy-flee logic found** |
+| **Auto-pilot ("computer fights for you")** | ✅ §3.3: `[0x55F2]:0x90` → `1763` → `1631:03AB` does target/weapon/LoS/step/facing + fills `0x3800`/`0x32C6` |
 
-> So enemy AI is **tracked**: targeting is solid and verified; **weapon pick, movement decision and flee
-> are open** — see [`WIP.md`](WIP.md) item C8.
+> Enemy AI is now **decided**: the loop consumes precomputed tables (`0x3800` targets,
+> `0x32C6` orders) filled by `1631:03AB` (auto) or `1543:0004` (manual); per-stage weapon =
+> §3.1 rule; movement = §3.2 mechanism. Remaining: one fork-semantics micro-item + the
+> manual-fill site corroboration — see [`WIP.md`](WIP.md) item C8.
+
+##### §3.1 Weapon pick — the per-stage slot `[BP-0x48]` (`GC12.cs`, `1000:45D9`–`4669`)
+
+Two rules, gated on the attack sub-phase `[BP-0x42]`:
+
+- **Sub-phase `0xB` (stage 11):** `[BP-0x48] = idx = [BP-0x2]`, wrapped `−8` if `≥ 0xC`.
+  Then `SI = 0x7D·idx` into the acting-unit story record (`[0x5648]:0xC748`): if **bit 3 is
+  set in both actuator bytes** `[C748]` and `[C749]` → `[BP-0x48] = 0x20` (**Kick**); else
+  `[BP-0x48] = 0x80` and the per-weapon flag `[0x564E]:0xC·idx+0x380B = 0xFF`.
+- **Other sub-phases:** `[BP-0x48] = 0AB2(idx′ , subphase)` where `idx′ = idx<4 ? idx : idx−8`
+  (`1000:4644`). The `0AB2` **head** (isolated by Ghidra as `FUN_1e31_10a2`, REA `0x1F3B2`,
+  file `0x127B2` — the rest of Reko's giant `0AB2` is target-coordinate logic, §4/§5):
+  scan record props `0x33..0x55`, count those with `(val&0x7F) ∈ 0x10..0x20`; when the count
+  reaches the stage ordinal, return `val − 1` (**bit 7 preserved**, so personal weapons keep
+  flowing into the special path); return `0xFF` if stages outnumber weapons or the guard byte
+  `story+0x27+stage` (ammo area — cf. `story-system.md` ammo at `+0x27`) is zero. On `0xFF` the
+  caller marks `[0x564E]:0xC·idx+subphase+0x3800 = 0xFF`.
+- **Routing** (`1000:4669`): `TEST [BP-0x48],0x80` → set jumps to `5344` (special-weapon path:
+  Kick `0x20` / `0x80` / `0xFF`); clear continues to the target-alive check
+  (`[0x5632]:unit*2+0x406A`) and the `0934(slot,unit)` range call.
+- First-pass shortcut (`1000:542B`): `[BP-0x48]` comes precomputed from the unit record
+  (`[0x5648]:idx*0x11+0xC5DB`, or `+0xC597` for `idx ≥ 0x10`); idx in `[0xC,0x10)`/`[0,4)` take
+  the per-stage recompute instead.
+
+##### §3.2 Movement — direction, step, commit, gates (`GC12.cs` + `GC17.cs`)
+
+- **Direction** `19EF:0971(x1,y1,x2,y2)` (unit→cursor delta, high nibbles masked `&0xF0`,
+  dominant-axis `2·|minor|<|major|` tests): builds a bitmask (`8/4/2/1`) and returns
+  `AL = [0x1DDC:0x240+mask]` — Direction8 via 16-entry table. Same routine feeds the **facing
+  byte** `[unit+0x3920]` when a mech closes to melee (`3c6c` gates, §3.3 tail).
+- **Cursor stepper** `0000:2EBB(y,x)`: walks the cursor one step toward `(y,x)` via single-axis
+  steppers `1000:B47C/B52B` (Y) and `1000:B5D3/B6B5` (X).
+- **Destination/commit**: stage entry snapshots cursor → `[BP-0x2A]/[BP-0x36]` (`1000:53E1`),
+  snaps cursor to the acting unit (`53F8`); the validated step commits cursor→unit
+  (`1000:5680/5691`), sets moved flag `[BP-0x44]=1`, bumps move counter `[0x562E]:idx+0x78`.
+- **Gates**: heat-cap skip (`1000:5390`: `[0x5650]:idx+0x6E` player / `+0x66` enemy vs `0x1E`=30
+  → slot `0xFFFF` = sit out); LoS (`1000:160E` → `531F` on blocked); range fork (`1000:469A`:
+  `0934<3` → `469F` direction/step/LoS/fire chain, else → `5344` restore-cursor/no-fire);
+  infantry skill-match counter (`1000:4778`: def skill `+0x10` == unit `[0x5648]:idx+0xD360` →
+  `INC [idx+0xD358]`); stage advance `535A` (sub-phase→`0xC` = next unit via the `5455` scan;
+  order-table scan at `5483` skips `0xFF` rows of `0x32C6`).
+- ⚠️ OPEN micro-item: the exact approach-vs-adjust semantics of the `469F`/`5344` fork
+  (which stages physically close distance vs reposition-restore) needs live cursor values.
+
+##### §3.3 Auto-pilot — `1631:03AB` fills the order tables (`UNBTECH_1631.asm:430`, Ghidra `FUN_1e31_03ab`)
+
+- Entry `183B:14C3`: if `[0x55F2]:0x90 ≠ 0` ("computer fights for you") → `1763` loop (menu
+  skipped once `[bp-6]≠0`) → `151F` unit panel + `1631:03AB(1,unit)` (the same call the enemy
+  path uses after the `3A42` "computer is currently moving" line).
+- `03AB(unit)` does everything, in order: save cursor → nearest-enemy search (skip self/`e48e`/
+  `d333` cases) → **best weapon = owned prop minimising `(def[0x2EE6]&0xE0)`** (shortest short
+  band; infantry: skill-class weapon `>>5`) → LoS via `1BFE` → facing/closure adjust
+  (`±6` with `0x80`-wrap/`0xF7F`/`0xF07F` masks) → step-toward-target loop → write the
+  **order row** `unit*0x30+0x32C6` (flag + nibble-packed target coords) → melee-adjacency facing
+  (`0x3920`, `0x396C`/`0x32C6 = 0xFF` marks) → fill the **target table**
+  `[0x564E]:unit*0xC+stage+0x3800` (ten `0AB2` calls; `0x380B` = stage-11 cell; heat-capped units
+  get `0xFF` + `0x80`-OR'd rows instead) → render tail (`203b_193b`, `203b_1774`,
+  `1000:17BB` cursor restore). Manual player units get equivalent rows from `1543:0004`
+  (Use-Weapons handler — corroboration pending, plausible by call-site).
+- Note: the `0x3800` table is written via `[0x564E]` and read via `[0x5650]` (aliased segments —
+  same physical table); the `0x32C6` order rows use stride `0x30`.
+
+##### §3.4 Flee
+
+Player menu option → `You have eluded your enemies! Press a key.` (string at `3EDB:3A00`,
+file `0x3DAEF`) → world map. No code xref to the string in gencode/Reko — handler unisolated.
+**No enemy-flee decision logic was found** in the combat loop: enemies skip via heat-cap
+(`0xFFFF`), dead-target, or blocked-LoS paths, but nothing evaluates morale/retreat — they
+fight to the death as far as traced.
 
 ---
 
