@@ -2444,6 +2444,37 @@ projection and the cursor `0xA44B/0xA44D` is restored, then `[BP-0x42]++` starts
 > (cue stream fully decoded, §28.1 — sound is WONT_DO, §6). `arg4` (`[BP-0x58]`) remains the only
 > unresolved detail.
 
+### 25.6 Post-combat salvage phase (P1 — presence confirmed 2026-10-13, mechanics open)
+
+> The old premise ("no salvage wording in BLD texts ⇒ maybe no salvage") was **wrong**: the
+> salvage system exists with 9 dedicated strings in the EXE string area (seg `3EDB`, file
+> `0x3B063…`, DS `0xEB3…0x1099` — byte-verified; genuinely absent from all 26 BLD files, and
+> corroborated by the walkthrough: *"Salvages mech parts"*, *"you can also salvage weapons"*).
+
+| DS off | String (abridged) | Phase step |
+|--------|-------------------|------------|
+| `0xEB3` | `…and heat sinks` / `…, heat sinks and weapons` / `…, heat sinks, weapons and structure` | tiered part-recovery suffixes |
+| `0xEFF` | `%s uses his tech training to scavenge armor from the enemy 'Mechs.` | Tech-gated armor scavenge |
+| `0xF52` | `You are able to scrounge together %s C-bills worth of scrap metal…` | scrap award (%s = amount) |
+| `0xFD5` | `%s is a qualified pilot without a 'Mech. Do you want to salvage one of the wrecks?` | Y/N: mech grant |
+| `0x1003` | `%s is inspecting the wrecks…` | inspection step |
+| `0x101E` | `%s is salvaging a %s` | per-wreck attempt (`%s` = mech type) |
+| `0x1030` | `No chance to salvage this %s` | failed attempt |
+| `0x1056` | `There are no more salvageable 'Mechs on the battlefield.` | exhaustion end |
+| `0x1099` | `You dig through the soldiers' pockets and find %s C-bills in cash, and confiscate…` | pocket-looting |
+
+Skills (file `0x3A95C…`, NUL-separated run): **Bow & Blade, Pistol, Rifle, Gunnery, Piloting,
+Tech, Medical** — `Tech` is the salvage skill ("tech training").
+
+> **OPEN (code unisolated):** the Tech skill-check formula/roll; tier selection among the three
+> suffixes; scrap-amount computation; pocket-cash computation; the wreck→mech grant path
+> (unit-slot + story-slot writes on YES); loop/exhaustion control. Hunt notes: **no**
+> `MOV reg,imm` / `PUSH imm` / LEA refs to any of the nine offsets exist in the binary, and
+> Ghidra reports no code xrefs (REA `xrefs` at linear `0x47CAF` = `[]`) — pointers are computed
+> at runtime; no `CMP AL,'Y'/'N'` in the combat-loop gencode. Start from the combat-victory
+> branch (all-enemies-dead → world-map restore), not from the strings. Tracked as **P1** in
+> [`WIP.md`](WIP.md).
+
 ---
 
 ## 26. TERRAIN EFFECTS IN COMBAT (summary)
