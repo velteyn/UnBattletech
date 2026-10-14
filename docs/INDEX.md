@@ -33,6 +33,7 @@ should summarise and link here rather than restate.
 | Combat system | [`combat-system.md`](combat-system.md) |
 | World map & navigation | [`world-map.md`](world-map.md) |
 | Story system (state, BLD arc, NPC movement) | [`story/story-system.md`](story/story-system.md) |
+| Economy & stock market (ComStar, live-verified) | [`economy.md`](economy.md) |
 | Story arc (narrative summary) | [`story/story-arc.md`](story/story-arc.md) |
 | Full extracted narrative text | [`story/STORY_TEXT.txt`](story/STORY_TEXT.txt) |
 | Rebuild roadmap (phases, estimates, checklist) | [`rebuild/roadmap.md`](rebuild/roadmap.md) |

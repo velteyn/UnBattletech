@@ -1,7 +1,7 @@
 # Agent Instructions — BattleTech CHI Rebuild
 
 > **Phase 6 — Spice86 sync** (updated 2026-10-13): The emulator stack builds against upstream Spice86 `master`, now at **`28a877fc`** (was `cf595c3d`). No API breaks — `BattleTechCHI` + `UNBATTLETECH` rebuild clean with 0 errors. Upstream removed `ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` and bumped ModelContextProtocol to `2.2.0` — AIATTEMPT was ported accordingly. The MCP transport fix (`UseUrls()` bind + `StartAsync()` keep-alive + custom GET `/mcp/` SSE `endpoint`) was **merged upstream as PR #2246** (`cf595c3d`), so the local `spice86-mcp-fix` branch is now redundant. The A:/B: game-data mount lives in `BattleTechMcpTools/BattleTechOverrideSupplier.cs`. Port is 8086. AIATTEMPT rebuilds clean against the new master (exclude recovered `reko/**/*.cs` from compilation — it targets the old API).
-> Next priorities: end-to-end playtest from a proper NEW_GAME_INIT boot through to COMSTAR; add the Godot stock-market UI on top of the new `Fn1CD3Dispatcher` cases 0x2A/0x2B.
+> Next priorities: random-encounter hunt for the combat live-trace (micros + T3 seed data); Godot stock-market UI on top of the live-verified holdings/table model (`docs/economy.md`) — NOT the old 0x2A/0x2B attribution (wrong, see below).
 
 ## ▶ Current status — pick up here (2026-09-29)
 
@@ -153,8 +153,8 @@ Combat lives in `BattleTechCHI/Scripts/Combat/` — 5 files, fully reworked from
 | 0x27 | TRIGGER_ACTION | Emits `ActionTriggered` event (mode trigger 0x01) |
 | 0x28 | DISPATCH_11B8_152F | Emits `RenderingRequested("11B8_152F")`, sets bD334=1 |
 | 0x29 | COMBAT_HEAL | Heal 4 party members |
-| 0x2A | SAVE_POSITIONS | Stock init (first visit): loop 8×, seed StockEntry from cursor coords, bD398=0x77, bD399=i |
-| 0x2B | RESTORE_POSITIONS | Stock refresh (subsequent): load StockEntry[0] from source tables at DS:0x53CA→seg, bD398=0x70, bD399=0xFF |
+| 0x2A | SAVE_POSITIONS | 8× position save (`0x4024/0x4056`) + scratch seed (cursor→Price/PC, `bD398=0x77`, `bD399=i`, single cursorY++ after loop). ⚠️ Fires ONLY in THEATER.BLD — not ComStar; rebuild misattributes it (and drifts cursorY +7 by incrementing per-iteration). See `docs/economy.md` |
+| 0x2B | RESTORE_POSITIONS | Entry0-only refresh from source tables (`[4572]/[45A4]/[4564]/[4596]`, `bD398=0x70`, `bD399=0xFF`). ⚠️ Fires ONLY in TRAINING.BLD — not ComStar; rebuild invents a PRNG fluctuation instead. See `docs/economy.md` |
 | 0x2C | DISPATCH_11B8_1762 | Emits `RenderingRequested("11B8_1762")` for position/state |
 | 0x2D | COMBAT_ENCOUNTER | → Combat |
 | 0x2E | RESTORE_SLOTS | Restore story slots, bD55E = 0 |

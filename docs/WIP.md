@@ -170,7 +170,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | B7 | Save round-trip verification | ⬜ open |
 | B8 | BLD opcode coverage | ✅ done (`formats/bld-opcode-coverage.md`) |
 | B9 | Sound/music format | ⬜ open (maybe out of scope) |
-| B10 | Cadet economy / day-cycle code | ⬜ open |
+| B10 | Cadet economy / day-cycle code | ◐ live-validated 2026-10-14 (`docs/economy.md`): holdings `D374/D378/D37C`, 26 B table stride, buy/sell exact, allowance ticks observed; open: fee/tick isolation, finance block, price source tables, refresh conditions |
 | B11 | Design intent (archaeology: manual/clue book) | ⬜ open |
 | T3 | **Differential-validation harness (emulator vs rebuild)** | ⬜ open — the keystone |
 
