@@ -63,9 +63,16 @@ assets/liabilities ratio (DefHes 2.19) — no price shown.
 
 ## Open / next
 
-- ~~One-time −6 credits charge (terminal/prospectus fee?) + irregular +6 allowance tick~~ → see
-  story-system §17.11: +15 rule decoded (wealth < 50, 256-pass countdown); −6 fee source still
-  unisolated; +6/+1 micro-ticks under observation.
+- ~~One-time −6 credits charge (terminal/prospectus fee?) + irregular +6 allowance tick~~ →
+  story-system §17.11 has the +15 rule (wealth < 50, 256-pass countdown). Micro-adjustments
+  resolved 2026-10-14: both **+1s were the operator's own misnavigated sells** (reproduced:
+  unintended Sell-confirm = credits +1 with DefHes −1; isolated sells exact). **−6 and +6 stay
+  unexplained**, one occurrence each inside heavy menu-wandering windows — never under isolation,
+  never while idle-flat (6–10 min). Ruled out: timers, invest-cancel, prospectus, esc, torn reads
+  (doubled reads stable), allowance. No SUB-6/ADD-6 credit path exists in any segment (known fees:
+  4/9/320/12C/C8). Candidates: (a) unseen menu side effect, (b) Spice86 glitch (cannot rule out —
+  but with both +1s explained, no confirmed glitch instance remains). Decisive next test:
+  fresh-boot session with a credit read after EVERY keystroke.
 - Finance block `D55D` bytes (+5 `150`, +14 `146`) meaning; price/DF source-table identities.
 - Rows 3–7 roles; `0x380A`-style gaps n/a here; economy tick location/timing (B10).
 - Re-entry produced **zero** table diffs — under what condition does `0x2B` (or any refresh) run?
