@@ -83,6 +83,17 @@ assets/liabilities ratio (DefHes 2.19) — no price shown.
   note, but with a loaded game state). No blind key-guessing beyond this: further
   probes need the screen identified first (text-mode decode or BLD/room state),
   since Enter/Space/Y on a sell-confirm is exactly the +1 misnavigation path.
+- **Parked screen identified 2026-10-14 (framebuffer PNG via `bt.py png`):**
+  world-map SPACE menu with **Load Game highlighted** + failure dialog
+  *"Load game failed! File Game6 not found. Press a key."* (top-left log showed
+  4× "South" — the party walked south before opening the menu). So the previous
+  session tried the §8 Load-Game route on **slot 6, which has no file**
+  (only GAME1/GAME2 enabled; GAME3..6 `.disabled`). Dismissing the dialog with
+  Space (bt.py BDA-ring path) returned to the world map (Jason panel,
+  C-Bills 22) costing nothing: credits 22, holdings 23/5/0 intact.
+  Tooling note: the 3 earlier MCP key probes (`bt_press_escape`/`bt_inject_key`)
+  showed no screen change while the bt.py pause→BDA-ring→unpause Space worked
+  first try — prefer `bt.py keys` for dialog dismissal.
 - Finance block `D55D` bytes (+5 `150`, +14 `146`) meaning; price/DF source-table identities.
 - Rows 3–7 roles; `0x380A`-style gaps n/a here; economy tick location/timing (B10).
 - Re-entry produced **zero** table diffs — under what condition does `0x2B` (or any refresh) run?
