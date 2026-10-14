@@ -425,6 +425,15 @@ The check is: **`RNG_byte & bD330 == 0`**. Since RNG returns 0-255 uniformly, th
 
 **There is NO terrain/tile modifier**: the probability is flat regardless of which tile the player is on. No encounter rate table per tile type exists.
 
+#### Live trigger confirmation (2026-10-14)
+- **City suppression verified:** ~80 arrow-steps inside the Pacifica Training Center
+  first city produced zero encounters with `bD310 = 0` (local map) — the roll is gated
+  off, not just unlucky.
+- **Slot-5 route works:** original `GAME5` file (restored from `GAME5.disabled`) loads onto
+  the training field (`bD310 = 1`, party Jason/Rex/Russ, 57 C-Bills, TrainingComplete set);
+  ~10 steps south → `Attacking force: 2 Mechs and 6 humans.` (units 2→10).
+  (Our live economy state was preserved to `/tmp/opencode/GAME5.city-rescue` before restoring.)
+
 #### 17.3 Encounter population & enemy generation → `combat-system.md`
 
 What happens **after** the trigger — enemy slot population, mech templates, weapon tables, unit

@@ -345,6 +345,10 @@ boundary/arena exit (`[bp-0x38]==2`, needs `3772≠0`) → `13E2` displays the *
   coords (almost surely >25 ⇒ routs) — as-coded, unconfirmed live.
 - **Remainder rout** (`0EB6–0EF6`, only if no `0xC–0xF` mech alive): `RNG&1 → [374C]`; still set ⇒
   `[bp-0x12]=1` + `0x38E0` `The enemy humans have fled!` — 50% all-infantry field rout.
+- **Live 2026-10-14** (auto-pilot vs 2 Mechs + 6 humans): `Some…` fired **twice** on separate
+  beats, then `The…` once after the mech kill — piecemeal flight across rounds, each overlay
+  parking the loop until a Space ack. End state: all 6 infantry gone, 1 mech destroyed,
+  other mech presumably fled/offscreen (victory declared).
 - Sibling line `0x38FC` `After an invigorating scuffle, you defeated the Kuritans.` (`10CD`)
   confirms the victory chain. Files: `0x38BC→0x3DA6C`, `0x38E0→0x3DA90`, `0x38FC→0x3DAAC`.
 
@@ -2189,10 +2193,15 @@ until `Attacking force: …` appears).
 1. `Attacking force: <N>.` / `Engage in combat?  Yes No`  (Yes highlighted)
    - **No** = avoid → back to the map.
 2. `Do you want the computer to fight for you?  Yes No`  (No highlighted = manual)
+   - **Yes = auto-pilot** (live 2026-10-14): no command menu; rounds advance on a timer
+     (~10–15 s per beat, `C8 §3.3` path). Verbose overlays that park the loop
+     (rout/victory/salvage boxes) need one **Space** ack each; everything else runs hands-off.
 3. `Combat messages:  None  Brief  Verbose`
 4. `See combat graphics:  Yes No`
 
-Observed attacking forces: `4 humans.`, `1 Mech and 6 humans.`
+Observed attacking forces: `4 humans.`, `1 Mech and 6 humans.`, `2 Mechs and 6 humans.`
+(live 2026-10-14: slot-5 training-field save, walked ~5 tiles south of load point —
+units 2→10: party slots 0–1 + enemies 12,13 (mechs) + 16,17,19,21,22,23 (infantry)).
 
 ### Tactical combat
 - **Left panel**: unit title `<Pilot>'s <MECH>` (e.g. `Jason's CHAMELEON`) over a command menu:
@@ -2205,6 +2214,27 @@ Observed attacking forces: `4 humans.`, `1 Mech and 6 humans.`
 - **Kick target selection** (physical attack): header `Choose the enemy to kick:`, `Target: <MECH>`,
   `Range: IN/OUT`; options `Target here / Next enemy / Cancel`.
 - **Flee** (menu option): → `You have eluded your enemies! Press a key.` → returns to the world map.
+
+### Auto-pilot battle transcript (live 2026-10-14, Verbose + graphics Yes, vs `2 Mechs and 6 humans.`)
+- `An enemy human uses a Rifle on Jason's Mech.` (infantry shoot at mechs — C7)
+- `Jason's Mech uses a SmallLaser on an enemy Mech. Hit Left Torso.` (+ red beam VFX;
+  hit/damage lines magenta, `Hit <Location>` naming incl. `Left Leg`/`Right Torso`/`Center Torso`)
+- `Jason's Mech uses a MachineGun on an enemy Mech. Hit Center Torso.`
+  → overlay `Some of the enemy humans have fled!` (rout wave 1)
+- Firing ANM plays in the **left panel** (blue/white mech firing frame — O16 post-fire clip, C11b)
+  with impact starburst on the target tile
+- `An enemy Mech uses a Med Laser on Jason's Mech. Hit Right Torso.`
+  → overlay `Some of the enemy humans have fled!` (rout wave 2)
+- `Jason's Mech uses a Med Laser on an enemy Mech. Hit Left Leg. Critical!`
+- `Jason's Mech kicks an enemy Mech. Hit Right Leg. Critical! Critical! Critical!`
+  `Mech is destroyed!` (green — C10 kick kill; wreck debris sprite persists on the map tile)
+  → overlay `The enemy humans have fled!` (final wave — all remaining infantry)
+- Victory: `After an invigorating scuffle, you defeated the Kuritans. Press a key.`
+- Salvage: `Jason uses his tech training to scavenge armor from the enemy Mechs.`
+  (actor named = Jason ⇒ the max-C61D/tech unit; **+0 credits** this battle — no pockets gain,
+  no wreck-grant Y/N fired)
+- `You return to where you were before combat took place.` → world map, party intact
+  (Jason/Rex/Russ bars full green), 57 C-Bills unchanged.
 
 ### Combat data (verified live)
 This file records the **observation**; the address spec is canonical in
@@ -2636,6 +2666,10 @@ the cleared `0x393C`); the `1ABA` victory path calls it once, then `7AFB`.
   print `0x10C6` (weapons confiscated), keywaits.
 - Swap (`0000:7C26`): loop slots, print `DS:0x10E5` ("drop yours…?"), Y/N `0000:3113`,
   execute via `0000:AAA6` (exact slot writes open).
+- **Live 2026-10-14** (victory, 1 mech destroyed + 6 humans fled, no grant Y/N):
+  credits **57→57** — no pockets cash landed. Either the `7B1A` gate skipped
+  (all-8-markers?) or the count came out empty; no `0x1085` cash line was shown on screen
+  (only the scavenge line + return line). Pockets is conditional, not automatic.
 
 #### 25.6.9 Loop control (end-to-end)
 
