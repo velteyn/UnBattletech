@@ -686,9 +686,24 @@ Source tables at `0x4564`, `0x4572`, `0x4596`, `0x45A4` are NOT in the COMSTAR B
 #### Cadet economy & the day cycle (Pacifica Training Center)
 
 While Jason is a **cadet at the Pacifica Training Center**, time passing earns a **minimal salary /
-allowance**: the account ticks up by **+15 cr** ("your parents send you more allowance"). This
-**stops after a while** — the allowance is finite, so a cadet cannot fund themselves indefinitely by
-idling.
+allowance**: the account ticks up by **+15 cr**. **Mechanism decoded 2026-10-14**
+(`UNBTECH_0800.asm:296`–`044A`, byte-verified):
+
+- **Countdown**: `D323` free-runs `256→0` (DEC each main-loop pass, never reloaded); the economy
+  block fires when it hits 0. (`D329/D320/D321/D322` decrement alongside — same free-counter
+  family; cf. the 3-day-cycle note in `engine/viewport.md`.)
+- **Wealth-cap gate** (this is the "finite" mechanism — not a day count): wealth =
+  `D370+D374+D378+D37C` dword sum (credits + 3 stock holdings); `fn0800_29F5` builds threshold
+  `DX:AX = ([0xD340]<<8)|[0xD33F]`; **+15 fires iff wealth < threshold** (`ADD [0xD370],15`
+  with carry at `0800:0343`). Live threshold: `D33F/D340 = 32 00` → **cap = 50**
+  (observed: 35→50 fires once, then stops; 55-wealth never fires).
+- **Arena latch**: `D310≠0` (set once in `0FDC:0CFA` when `[3772]≠0`, never cleared in static
+  code) suppresses the allowance and forces the growth path below.
+- **Stock growth** (same block, `0800:037A` loop over 3 stocks): `RNG & mask[0x2A2+i*2]`; zero →
+  base path, else `holdings×100 ÷ divisor[0x2A8+i*2]` via the `3D1C/3D44` math wrappers, plus a
+  BakPhar clamp (`÷4` if `>18000` or `D37E≠0`). Mask/divisor segment TBD (not `0x2A0F`).
+- Walkthrough corroboration: *"every five minutes or so… fifteen credits"* (≈256 loop passes),
+  *"you may not even be earning any more allowance"* (cap reached).
 
 To earn more money you must advance the day by **sleeping at the barracks**. Sleeping is **gated**:
 you must first **go to the training center and complete that day's mission** (one mission per day).
@@ -696,11 +711,15 @@ So the core early-game loop is:
 
 > training-center mission (1/day) → **sleep at the barracks** → new day → allowance/salary accrues again → repeat
 
-- Allowance tick: **+15 cr**, finite (stops after a while).
+- Allowance tick: **+15 cr** iff wealth < 50 (threshold bytes `D33F/D340`), every 256 loop passes.
 - Day advance: **sleep at the barracks**.
 - Sleep gate: **one training-center mission per day** must be completed first.
+- Live anomalies under isolation (2026-10-14, 10-min no-input sampler running): one-time **−6**
+  charge and **+6/+1** micro-ticks — fee source unisolated (no SUB 6 on `D370` in any segment;
+  11B8 fees are 4/9/320/12C/C8).
 
-*(Mechanic reported from playtesting 2026-09-28; exact tick period / stop threshold / mission counter still to be located in code.)*
+*(Prior note "exact tick period / stop threshold / mission counter still to be located" is now
+resolved except the mission counter + fee source.)*
 
 ### 17.12 Player Interface System
 

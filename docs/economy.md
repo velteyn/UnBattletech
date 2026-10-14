@@ -63,7 +63,9 @@ assets/liabilities ratio (DefHes 2.19) — no price shown.
 
 ## Open / next
 
-- One-time −6 credits charge (terminal/prospectus fee?) + irregular +6 allowance tick — isolate.
+- ~~One-time −6 credits charge (terminal/prospectus fee?) + irregular +6 allowance tick~~ → see
+  story-system §17.11: +15 rule decoded (wealth < 50, 256-pass countdown); −6 fee source still
+  unisolated; +6/+1 micro-ticks under observation.
 - Finance block `D55D` bytes (+5 `150`, +14 `146`) meaning; price/DF source-table identities.
 - Rows 3–7 roles; `0x380A`-style gaps n/a here; economy tick location/timing (B10).
 - Re-entry produced **zero** table diffs — under what condition does `0x2B` (or any refresh) run?
