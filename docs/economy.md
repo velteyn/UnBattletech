@@ -73,6 +73,16 @@ assets/liabilities ratio (DefHes 2.19) — no price shown.
   4/9/320/12C/C8). Candidates: (a) unseen menu side effect, (b) Spice86 glitch (cannot rule out —
   but with both +1s explained, no confirmed glitch instance remains). Decisive next test:
   fresh-boot session with a credit read after EVERY keystroke.
+- **Per-keystroke watch resumed 2026-10-14 (3 clean samples):** from the live ComStar
+  session (credits=22, DefHes=23/NasDiv=5/BakPhar=0, wealth=50 = allowance cap,
+  stock table + finance block byte-identical to the earlier session) sent
+  ESC, Up-arrow (`0x4800`), Space (`0x3920`) — one key per ~4 s window with a
+  credits+holdings+table snapshot after each. **All three: 22→22, holdings
+  23/5/0 unchanged, table + cursor (23,7) + mode-13h screen unchanged.**
+  Keys consumed but ineffectual — parked-screen signature (same as the boot-wall
+  note, but with a loaded game state). No blind key-guessing beyond this: further
+  probes need the screen identified first (text-mode decode or BLD/room state),
+  since Enter/Space/Y on a sell-confirm is exactly the +1 misnavigation path.
 - Finance block `D55D` bytes (+5 `150`, +14 `146`) meaning; price/DF source-table identities.
 - Rows 3–7 roles; `0x380A`-style gaps n/a here; economy tick location/timing (B10).
 - Re-entry produced **zero** table diffs — under what condition does `0x2B` (or any refresh) run?
