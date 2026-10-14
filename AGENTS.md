@@ -666,6 +666,23 @@ tools aren't in the current session, start opencode after the emulator, or use t
 bases (2026-09-29): load segment `L=0x017D`, main `DS=0x3858`, `physical = L*0x10 + (file − 0x3400)`.**
 
 
+## RetDec (Retargetable Decompiler)
+
+RetDec **v5.0** (`53e55b4`) installed at `/home/velteyn/projects/retdec` (`bin/retdec-decompiler`,
+`bin/retdec-fileinfo`, …). Feature set: static analysis with file detail, compiler/packer
+detection, instruction decoding, statically-linked-library signature removal, DWARF/PDB use,
+instruction-idiom reconstruction, C++ RTTI/vtable + symbol demangling (GCC/MSVC/Borland),
+function/type reconstruction, C **and** Python-like output, call-graph / CFG `.dot` emission.
+
+**Tested against this project (2026-10-14, do not re-try blindly):**
+- `retdec-fileinfo UNBTECH.exe` → `File format of the input file is not supported`
+  (supported: PE, ELF, COFF, Mach-O, Intel HEX, Raw Data). **DOS MZ is unsupported.**
+- Raw-mode fallback (`-m raw -a x86 -e little -b 16`, load module after `0x3400` header strip)
+  → `Input file is in unknown format!` + `[capstone2llvmir] unhandled reg`, exit 2, no output.
+- Verdict: **not usable on `UNBTECH.exe`** — Ghidra (via REA) / Reko / r2 remain the 16-bit
+  stack. RetDec's value here is limited to 32-bit/modern artifacts (e.g. `fileinfo` packer
+  detection, CG/CFG dumps of PE/ELF helpers).
+
 ## Tool Complement Summary
 
 | Tool | Purpose | When to Use |
@@ -677,6 +694,7 @@ bases (2026-09-29): load segment `L=0x017D`, main `DS=0x3858`, `physical = L*0x1
 | **GDB** | Debugging C# rebuild (Godot) or test binaries | Runtime debugging of the Godot rewrite |
 | **Dosbox-X** | Run original game, verify behavior | Playtest original for reference |
 | **Python tools** | Batch analysis, format conversion, story extraction | Bulk processing, text export, format conversion |
+| **RetDec** | Fileinfo/packer detection, 32-bit decompilation (C + Python-like), CG/CFG | Modern PE/ELF artifacts only — **not** for `UNBTECH.exe` (DOS MZ unsupported, raw-16 fails) |
 
 ## Local Ollama Instance
 
