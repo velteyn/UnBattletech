@@ -2,7 +2,17 @@
 
 > **Living document.** Update on every work session so nothing is lost across network/session
 > interruptions. Newest section first. Mark items `✅ done` when closed (with the commit/file).
-> Last updated: 2026-10-13.
+> Last updated: 2026-10-14.
+
+**Mini-session 2026-10-14 (economy → combat):** resumed after a poisoned session
+(bt_read_ds arg confusion); recovered live state, banked it to GAME5, ran the
+per-keystroke watch (ESC/Up/Space clean). Parked screen was a Game6 load-fail
+dialog (slot 6 has no file). Per user steer: restored original GAME5, loaded it
+(training field, bD310=1), walked ~10 tiles south → full auto-pilot battle
+(2 Mechs + 6 humans, Kuritans) → victory → salvage. Filed in combat-system
+(setup/auto-pilot/transcript/rout×3/kick-kill/ANM/+0-pockets) + world-map
+(city suppression, slot-5 route). City economy state preserved at
+`/tmp/opencode/GAME5.city-rescue`. Emulator left running, post-victory on map.
 
 ---
 
