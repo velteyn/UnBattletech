@@ -31,6 +31,8 @@ mislabels in `memory-map.md`/AGENTS + 3 docs. **E1 partial**: Spectator noun-gat
 shut (slot 13 + `E48E`), record + save evidence filed; spawner copy-path needs a
 live trace (recipe in §25.5e).
 
+**Mini-session 2026-11-04 (walkthrough × BLD sweep):** read all 3 walkthroughs cover-to-cover + all 26 BLD texts; filed **S1–S13 + SX1** story gaps above (traitor, uniform/wanted, training grading, skill-training economy, speed-shop mods, repair pricing/unrepairable, garage parking + theft, video-store items, lockpick, quiz grading, hut-map gating, map-room activation, arena mechanics). Verified covered: economy, missions/invasion, Rex/holocard, shops, P2 heal, jail rescue, quiz flags, sleep gate, ComStar, arena flow, keycard/doors, LAM/endgame, NPC movement, P1 salvage, party cap. THEATER.BLD is pure flavor (no mechanic). FROB.BLD block holds the video-store thread (check BLD→building mapping).
+
 **Mini-session 2026-11-04 (C6 close-out):** docs-first, static only (no emulator).
 Closed **C6** — infantry armour `+0x0D` type↔item map + max table, verified against
 raw `UNBTECH.exe` bytes (`DS:0x4DDB` = file `0x3EF8B` = `[0,25,40,30,50,50]`, names file
@@ -212,6 +214,33 @@ sound `[0x15C]`, outtakes `D35B` — cases + effects mapped, `input-navigation.m
 > These are **currently undocumented** (no canonical section yet). Once traced, fold them into
 > [`combat-system.md`](combat-system.md) (post-combat resolution) and/or
 > [`story/story-system.md`](story/story-system.md) (party/roster).
+
+## Story gaps (walkthrough × BLD sweep 2026-11-04)
+
+Every claim in `docs/walkthrough/bt-walkthrough-{1,2,3}.md` and every thread in the
+26 BLD texts (`docs/story/STORY_TEXT.txt`) checked against the docs. Covered already:
+allowance/stocks/save-gambit (B10), 8 missions + invasion + escape routes, Rex/box/
+damaged-holocard, weapon/armor shops, hospital heal (P2), jail rescue + Stinger,
+Tellhim + quiz flags (`D30C` 0x30/0x31/0x36), mayor viewer, barracks sleep gate,
+ComStar, arena *flow*, keycard/doors (INSTRUCT), LAM + endgame, NPC movement (§18),
+salvage incl. weapon confiscation (P1), MedKit sold, party cap. **Missing:**
+
+| # | Gap (walkthrough + BLD source) | Status |
+|---|--------------------------------|--------|
+| S1 | **Traitor system** — tells ("something's not right"/"nervous"), discovery by repeated inspect, turning in first battle, counterspy locations (hospital NW / jail NE of Starport), single-copy character versions, expose-via-combat, kill-the-traitor; Rex exempt? (WT1/2/3) | ⬜ open, no RE coverage |
+| S2 | **Uniform + wanted tracking** — Kurita attacks if uniformed; NPC talk refusal ("making him nervous"; "shootout if Draconians see you"); jailkeeper recognition paths (uniform / films / jailbreak); swap-behind-building; CLOTHES purchase flow (WT2/3 + JAIL/CLOTHES.BLD) | ⬜ open |
+| S3 | **Training grading** — optimal-choice stat gains; hands requirement (`"should have chosen a Mech with hands"`); fail-shame sleep block; fail-on-purpose cycle interaction (WT2 + TRAINING/BARRACKS.BLD) | ⬜ open (missions listed, grading not) |
+| S4 | **Skill-training economy** — apprenticeship cost/effect + cap ("trained you as high as we can"); hospital seminar fee/effect; "no medical schools" (WT1/2/3 + REPAIR/HOSPITAL.BLD) | ⬜ open (fees display-only) |
+| S5 | **Speed-shop mods** — per-mech offers (Locust→MLs, Wasp→drop SRM+armor, Stinger stacks, Commando→drop pack+MLs+armor, engine swap, Blazing Inferno), costs, loadout effects, **cap=2**, jump-jet/missile tradeoffs (WT1/2/3 + REPAIR.BLD) | ⬜ open, no coverage |
+| S6 | **Repair pricing + ammo purchase + unrepairable class** — "repairs eat up winnings"; ammo too-heavy-to-carry gating; "certain repairs cannot be fixed by anybody" (WT1/2/3 + REPAIR.BLD; case `0x09` known from P2) | ⬜ open (formula + unrepairable unknown) |
+| S7 | **Garage parking + jail theft** — Starport impound (entry requirement, exit fees, receipts/claim, Kurita-mech refusal); theft event (which mech, requirements); theft-flag exclusion ("rampage… not wise to reenter") (WT3 + GARAGE/JAIL.BLD; AGENTS mislabels GARAGE.BLD as "Mechit-Lube garage") | ⬜ open |
+| S8 | **Video-store items** — Mapper effect ("larger map area" → `w4FBA`-mode hypothesis, verify); holodisc-player gating for viewer use (WT1/2/3 + store text in FROB.BLD block) | ⬜ open |
+| S9 | **Mayor lockpick entry** — pick-the-lock skill check (WT3 + MAYOR.BLD) | ⬜ micro-item |
+| S10 | **Hut quiz grading** — per-question skill checks, pass/fail routing, "stumped"→training loop (WT2/3; flags `D30C` covered, grading not) | ⬜ micro-item |
+| S11 | **Hut-appears-on-map gating** — holocard view → hut tile unlock flag (WT3) | ⬜ micro-item (world-map) |
+| S12 | **Map Room planet activation** — 7 touch-panels → password → white-code check (copy-protection external); E4 closed the load only (WT1/2/3) | ⬜ micro-item |
+| S13 | **Arena mechanics** — rental implementation + deposit/fee code + forfeiture ("scraps become Arena property"); 500cr award site (WT3 says 250 — discrepancy); western-stands exploit + Starport-ban flag (no "ban" strings in EXE); UrbanMech chance; crowd-boos reachability (WT1/2/3 + ARENA.BLD; flow covered 2026-11-04) | ⬜ open |
+| SX1 | **BLD operand domains** — `F5` operands 150–214 (all BLDs) vs 47-case model; `E9` operands 191–245 (signed −65…−11?) vs handler-index model — decoder verification, Track 2 (extends C6-session F5 note) | ⬜ tooling |
 
 ## Track 1 blockers (from [`rebuild/roadmap.md`](rebuild/roadmap.md))
 
