@@ -749,6 +749,27 @@ segment (`DS:0x2046` read lands in text bytes under the DS-base assumption —
 verify at runtime); cap=2 source (no code counter found; BLD-side offer gating
 or walkthrough-imprecise); garage parking fees (S7).
 
+#### §17.11f Skill training economy — apprenticeship + seminar (S4 — closed 2026-11-04, game-domain BLD bytes)
+
+- **Apprenticeship** (REPAIR.BLD): *"to the tune of 500 C-bills"* (BLD text markers
+  decode to `500`, matching code) → Yes/No (`F6`) → case **`0x0F`**: check
+  `tD372/tD370 ≥ 500`, deduct, `C61D[D31A]++` (**+1 Tech**), set `C624` bit 0
+  (`1CD3:0C11`–`0C23`; checked by `0x10`).
+- **Hospital seminar** (HOSPITAL.BLD): *"astronomical [fee]"* (flavor — code
+  charges the same flat **500cr** via case **`0x15`**: `C61E[D31A]++` (**+1 Medical**),
+  `C624` bit 1; checks `0x16`). "Trained in first aid" gating is flavor text —
+  no skill prerequisite in code.
+- **Cap text exists in both flows** (*"already trained you as high as we can…
+  tech school"* / *"already know all… medical college"*), but the gate is a BLD
+  branch (F7/F6 + `0x10`/`0x16` flag checks around unit-select `0x0D`), not a
+  code-side value check — **`0x0F`/`0x15` have no max** (credit check only), so
+  repeats are mechanically allowed where the BLD offers them.
+- **No schools exist** (verified absence: no BLD/case implements training beyond
+  these two purchases; matches the walkthrough's "medical schools don't exist").
+- OPEN micro-items (all need the BLD jump-target base resolved — same interpreter
+  `_ip` question as SX1-caveat): exact cap-gate branch mapping; which menu options
+  re-offer vs one-shot; the `F8 [00 00]` restart targets; `F9` table base.
+
 #### Stock Market (COMSTAR)
 
 The stock market simulation handles 3 tickers (DefHes, NasDiv, BakPhar) via a struct array at `DS:0xD390` (stride 0x1A = 26 bytes per stock), accessed via selector at `DS:0x538A`:
