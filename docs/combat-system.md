@@ -2174,6 +2174,26 @@ skill (`1000:4CA7`) reads `+0x10`. The two sentinels are runtime-substituted (bo
 - Weapon combat data / templates: §13, §20.
 - Cluster/hit-location tables: `[0x566C]:0x2E5E` (cluster), `[0x566A]:0x2E43` (hit location).
 
+### 6. Used vs unused — the table is complete, the game uses a subset ✅ (2026-11-04)
+
+The 33-record table covers the **full 3025 tabletop mech arsenal** (Small/Med/Large Laser, PPC,
+AC/2/5/10/20, LRM5/10/15/20, SRM2/4/6, MG, Flamer — stats verified tabletop-accurate above) plus
+15 personal weapons and Kick. **Mech armament entries are weapon-index+1** (`0x10–0x20` = weapons
+15–31, filtered `&0x7F` in the picker `1000:0AB2`; `0x22` = inert filler, bit7 = skip at the
+`TEST [BP-0x48],0x80` gate). Armament bytes (`+0x33..0x55`) swept across **all** saves
+(`game/GAME1-6`, `original/saves/GAME1-6` + `GAME1_ghidramcp`):
+
+- **Mounted somewhere:** SmallLaser (15), Med Laser (16), LargeLaser (17, Chameleon only),
+  mech MachineGun (23), SRM2 (29, Wasp only), SRM4 (30), SRM6 (31, Commando only).
+- **Never mounted in any save:** PPC (18), AutoCann/2 (19), AutoCann/5 (20), AutoCann/10 (21),
+  AutoCann/20 (22), mech Flamer (24), LRM5/10/15/20 (25–28) — **10 of 17 mech weapons are dead
+  data in practice**. No shop path sells mech weapons (`WEAPON.BLD` sells personal 0–11;
+  LaserRifle (13) is a `WEAPON2.BLD` robbery reward; enemies roll 2–12 via `19DD`), and loadouts
+  only change via story events (e.g. Stinger refit in `STORY_TEXT.txt:1093`), so these records
+  can never enter play. The one partial exception is unconfirmed: the walkthrough notes an
+  obtainable UrbanMech (`walkthrough/bt-walkthrough-1.md:221`) — no save contains one, so even
+  AC/10 use is unverified.
+
 ---
 
 ## 22. ENCOUNTER FLOW (runtime-observed)
