@@ -21,6 +21,27 @@
 
 ## Core Architecture
 
+> **Byte domains — read this first (pinned 2026-11-04).** BLD files on disk are
+> **encrypted** past offset `0xA0`. At load, `fn0FDC_1D30` decrypts `0x2328` bytes
+> in place with `b = ((b + 0x29) & 0xFF) ^ 0xE9`
+> (`UNBTECH_all.asm:18051-18066`; the rebuild's `BldLoader` does the same). The
+> interpreter (`fn0FDC_01C0`, jump table at `0FDC:0x5B1` = file `0xB771`) and every
+> table below operate on **decrypted (game-domain)** bytes. Our JSON tools
+> (`bld_json_converter.py`, `extract_bld_text.py`) show **raw file bytes**: their
+> **text layer is correct** (composite cipher mapping), but their **opcode layer
+> is systematically mislabeled** — raw `F3`→game `F5` (SHOP_DISPATCH),
+> raw `E7`→game `F9` (JUMP_INDEXED), raw `E9`→game `FB` (wait-key),
+> raw `F5`→game `F7` (STATE_COND_CHECK), raw `F7..FF`→game markers `C9..C1`.
+> Never cite JSON opcode names, operands, or jump targets; decrypt first
+> (`dec(b) = ((b+0x29)&0xFF)^0xE9`). Game-domain `F5` cases re-derived by
+> decrypt-scan (all ≤ 47): ARMOR 9,10,12-14,31,32; HOSPITAL 10,12-26 (incl. heal
+> `0x17`+`0x18`); REPAIR 10,12-20,29,44 (incl. mod buys `0x0F`); ARENA
+> 12,14,17,27,29,33-35; COMSTAR 6,7,8,12; TRAINING 1,2,3,12,43; THEATER 42
+> (`0x2A` stock init — theater-only ✓); ENDMECH 45; WEAPON2 14,41; WEAPON 10-12;
+> CITADEL 4,5,12; JAIL 36-40; MAYOR 14,47; PARTY 30; LOUNGE 12; BARRACKS 12;
+> BARRACK2/FROB 14; CLOTHES 10; GARAGE 10,17,28,46. Game-domain `E9`
+> (recruit) sites: ARENA(9), CLOTHES(2), HOSPITAL(6), JAIL(4), REPAIR(5).
+
 The .BLD file is processed by a **three-layer interpreter system**:
 
 ```

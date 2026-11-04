@@ -596,14 +596,14 @@ The story state properties at offsets 0x24/0x25 encode a unit's piloting and gun
 
 **Terrain modifier** (lines 2540-2551):
 ```
-tile_property = ES:[BX + 0x32C6]  // tile movement cost/terrain type
+tile_property = ES:[BX + 0x32C6]  // tile terrain property (cover class; NOT a movement cost — C9)
 TN += sign_extend(tile_property) + 1
 ```
 The tile at `unit_id * 0x30` from segment at DS:0x5654 — terrain affects to-hit.
 
 Tile property table at `DS:[0x55DC]→0x32C6` (also accessible via `DS:[0x5654]→0x32C6`):
 - **4-byte record per tile** within 0x30 (48-byte) stride per unit slot:
-  - `+0` (`b32C6`): Tile property / movement cost — 0xFF=impassable, 0x00=clear terrain, higher=more cover
+  - `+0` (`b32C6`): Tile property (cover class) — 0xFF=impassable, 0x00=clear terrain, higher=more cover. **Not a movement cost** (C9: no reader uses it as MP — see §26).
   - `+1` (`b32C7`): Packed X-coordinate high (from `((X & 0x0F00 | Y & 0xF000) >> 8)`)
   - `+2` (`b32C8`): Packed X-coordinate low (from `(X & 0x7F)`)
   - `+3` (`b32C9`): Sub-type / flag field (compared to determine blocking writes)
@@ -2881,7 +2881,7 @@ BattleTech tabletop is terrain-heavy; this game implements only **part** of it. 
 |---------------------------|---------------|----------|
 | **Terrain → to-hit modifier** (cover/woods) | ✅ **yes** | `TN += 0x32C6[stride 0x30] + 1` (+ the `0x2D1A` table) — §6.2, `1000:4863` ✅ |
 | **Terrain → movement blocking** | ✅ **yes** | passability `prop < t0150` (per-scene gate); `fn1631_0006` — [§world-map §7a, B6] |
-| **Terrain → movement cost (MP per terrain)** | ⚠️ **not found** | no per-tile MP/step-cost decrement located; movement is threshold-blocked + fixed stepping. (The docs' "movement cost" label on `0x32C6` is **unverified**.) |
+| **Terrain → movement cost (MP per terrain)** | ✅ **none — label was wrong** (C9 closed 2026-11-04: all `0x32C6` readers enumerated — TN modifier `+1` at `1631:0D01`/`1AE8:02E0`, `0xFF` passability gates at `183B:0708/1E04`/`1AE8:0F08`, pathfinding tile/coordinate scan at `183B:19B6`; MP decrements are fixed step costs (`183B_1BDD`), heat (`183B_23F2`), armour-halving — never terrain-derived) |
 | **Terrain → heat** (water cooling, fire) | ❌ **no** | the heat-dissipation code (`1000:07D2`–`0883`) reads **no tile/terrain** — heat is weapon-heat + penalty only (§24) |
 | **Elevation / partial cover / water depth** | ❌ no model found | |
 

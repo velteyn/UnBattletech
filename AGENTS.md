@@ -252,7 +252,7 @@ Located at `original/bld/` relative to repository root. Loaded via
 | BARRACKS.BLD | Barracks | (28,11) map 2 |
 | BARRACK2.BLD | Barracks 2 | (29,11) map 2 |
 | COMSTAR.BLD | ComStar station (present in multiple cities) | (51,10) start map — road east (y=12) then north |
-| GARAGE.BLD | Mechit-Lube garage | (29,12) map 2 |
+| GARAGE.BLD | Starport parking garage (impound; mechs not allowed in Starport; fees + theft-flag exclusion — NOT the Mechit-Lube, that's REPAIR.BLD) | (29,12) map 2 |
 | HOSPITAL.BLD | Hospital | (28,12) map 2 |
 | WEAPON.BLD | Weapon shop | (29,10) map 2 |
 | WEAPON2.BLD | Weapon shop 2 (robbery) | (30,10) map 2 |

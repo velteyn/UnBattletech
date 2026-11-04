@@ -972,7 +972,7 @@ Unit sprites (24×24) come from `MECHSHAP.CMP`; the sprite sheet is tokenised in
 | Address | Type | Stride | Purpose |
 |---------|------|--------|---------|
 | `DS:[0x55DC]→0x32C6` | byte | 0x30 (48) per unit slot | Terrain TN modifier table. `0xFF`=impassable, `0x00`=clear, higher=more cover |
-| `+0x00` (`b32C6`) | byte | — | Tile property / movement cost |
+| `+0x00` (`b32C6`) | byte | — | Tile property (cover class; NOT a movement cost — C9) |
 | `+0x01` (`b32C7`) | byte | — | Packed X-coordinate high |
 | `+0x02` (`b32C8`) | byte | — | Packed X-coordinate low |
 | `+0x03` (`b32C9`) | byte | — | Sub-type / flag field |
@@ -1285,7 +1285,7 @@ Array `aC744[]` at segment pointed by `DS:0x558E`. Base `0xC724` for slot 0.
 
 | Address | Segment | Description |
 |---------|---------|-------------|
-| `3000:32C6` | — | Tile properties (movement cost, blocking) |
+| `3000:32C6` | — | Tile properties (cover class, blocking; NOT movement cost — C9) |
 | `3000:CC30` | — | .BLD filename list |
 | `DS:0x4602` | `0x5460`→0x4602 | BLD index translation table (22 entries in CTX, 16-byte in doc) |
 | `DS:[0x55D8]→0x40B4` | — | Combat Fog Grid A |

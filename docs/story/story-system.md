@@ -659,8 +659,35 @@ table `DS:0x2601` at `caliber + 4·tier`, caps, entry paths, flags
 `D325/D326/D335/D450/D451`): [`combat-system.md` §23.7/§23.8](../combat-system.md).
 Rebuild note (Track 2): `Fn1CD3Dispatcher` maps `0x09`→HOSPITAL_HEAL /
 `0x17`→EQUIP_CONSISTENCY / `0x18`→GARAGE_SERVICE — all three need review against the
-binary cases above (F5-operand question also open: BLD `F5` operands are 150–214,
-outside 1–47).
+binary cases above (the `F5`-operand question is solved — raw-byte artifact, see
+`formats/bld-bytecode.md` domain note; game-domain cases re-derived by decrypt-scan).
+
+#### §17.11c Mechit-Lube speed-shop mods — REPAIR.BLD (S5, purchase path closed 2026-11-04)
+
+Offer catalog (flavor, per current mech): Locust→rip MGs+ammo, weld 2× Martell medium
+lasers; Wasp→drop SRM launcher +1 ML +1 ton armor; Stinger→stack small lasers (up to
+"that" total); Commando→drop SRM pack +2 MLs +1 ton armor; engine swap (slower +2
+small lasers); Wasp jump-jet→MLs kit; Stinger jump-jet→armor+2 MLs kit; "Blazing
+Inferno" (6 tubes→small lasers, ammo bay→ML, crush a  ton Jenner); plus
+apprenticeship ("taught by experience", fee + ComStar check), repairs ("What Mech do
+you want repaired first"), ammo sales (too-heavy-to-carry gating), tech recruit
+(Rex handshake → joins).
+
+**Purchase path (game-domain, via decrypted-`F5` scan):** REPAIR.BLD dispatches
+`10,12-20,29,44` — the paid mods are cases **`0x0F`** (500cr, `C61D[D31A]++`,
+`C624|=1`) and, from HOSPITAL.BLD, **`0x15`** (500cr, `C61E[D31A]++`, `C624|=2`);
+checks `0x10/0x16` read the flag bits back. **No loadout-structure writes exist**
+anywhere in `1CD3`/`0FDC` (byte-verified search of all 125-byte-stride writes);
+**no cap check** in `0x0F/0x15` (credit check only).
+**Reading:** `C61D/C61E`++ = personnel record +9/+10 (Tech/Medical) on the `D31A`
+slot — hospital (best-Medical doctor) and salvage (max-Tech actor, P1) consumers
+read them as skills, and the apprenticeship/seminar flavor is skill training; the
+per-mech offer texts are flavor for an abstract +1 whose payoff is salvage tiers
+(P1), heal dice (P2), and the TN skill deduction (`1000:4C9B`). **Alternative**
+(dedicated equip counters) requires segment-`0x569E` ≢ record segment or a live
+buy-and-dump to decide. **OPEN:** cap=2 source (BLD-side gating? walkthrough
+imprecise?); loadout-effect proof — T3 recipe: buy a mod, dump mech bytes +
+record bytes before/after; "stack small lasers" vs flavor (walkthrough insists).
 
 #### Stock Market (COMSTAR)
 
