@@ -18,6 +18,14 @@ encounters); jail recognition branches on uniform flag/`D336`/`D334`, PARTY unif
 gate; no central talk-refusal gate (per-BLD scripted); F9 branch targets need `_ip`
 base (tooling, cf. SX1 caveat); initial `D330` default OPEN. §17.11d.
 
+**Mini-session 2026-11-04 (S6 close-out):** docs-first, static (+r2 spot-checks).
+Closed **S6** — full repair price list byte-verified in `fn11B8_0002` (armor 4cr/pt,
+structure 9cr/pt, destroyed weapons 300cr/item via bit-7 scan + `0x2FD7` names,
+actuators 200cr backup-restore, heat sinks 800cr each `0xA2`→`0x22`, ammo per-bin
+variable refill); **unrepairable = engine/gyro/sensors** (`+0x75..0x77` nonzero →
+`DS:0x17F7` refusal). §17.11e. OPEN: ammo-price segment anomaly, cap=2 source,
+garage fees (S7).
+
 **Mini-session 2026-11-04 (C9 + BLD-domain fix + S5 purchase path):** docs-first, static
 only. Closed **C9** (all `0x32C6` readers enumerated — TN modifier, `0xFF` passability
 gates, pathfinding tile scan; MP decrements are fixed step costs/heat/armour-halving,
@@ -262,7 +270,7 @@ salvage incl. weapon confiscation (P1), MedKit sold, party cap. **Missing:**
 | S3 | **Training grading** — optimal-choice stat gains; hands requirement (`"should have chosen a Mech with hands"`); fail-shame sleep block; fail-on-purpose cycle interaction (WT2 + TRAINING/BARRACKS.BLD) | ⬜ open (missions listed, grading not) |
 | S4 | **Skill-training economy** — apprenticeship cost/effect + cap ("trained you as high as we can"); hospital seminar fee/effect; "no medical schools" (WT1/2/3 + REPAIR/HOSPITAL.BLD) | ⬜ open (fees display-only) |
 | S5 | **Speed-shop mods** — offers cataloged (REPAIR.BLD: Locust→MLs, Wasp→drop SRM+armor, Stinger stacks, Commando→drop pack+MLs+armor, engine swap, Wasp-kit, Stinger-kit, Blazing Inferno; +apprenticeship/repairs/ammo/tech recruit). **Purchase path confirmed** 2026-11-04 via decrypted-`F5` scan: REPAIR.BLD → game-cases incl `0x0F` (500cr, `C61D++`) + HOSPITAL.BLD → `0x15` (500cr, `C61E++`); checks `0x10/0x16`; **no loadout-structure writes exist** in `1CD3`/`0FDC` (byte-verified) and no cap check in `0x0F/0x15`. Reading: `C61D/C61E`++ = personnel +9/+10 (Tech/Medical — hospital/P1 consumers read them as skills); per-mech texts are flavor for an abstract upgrade paying off via salvage tiers (P1) + heal table (P2) + TN deduction. Alternative (dedicated counters) needs segment-`0x569E` identity or live buy-and-dump. OPEN: cap=2 source, loadout-effect proof (T3 recipe), "stack small lasers" vs flavor (WT1/2/3) | ◐ purchase path closed, effect open |
-| S6 | **Repair pricing + ammo purchase + unrepairable class** — "repairs eat up winnings"; ammo too-heavy-to-carry gating; "certain repairs cannot be fixed by anybody" (WT1/2/3 + REPAIR.BLD; case `0x09` known from P2) | ⬜ open (formula + unrepairable unknown) |
+| S6 | **Repair pricing + ammo purchase + unrepairable class** — ✅ **closed** (2026-11-04, static): armor 4cr/pt (`11B8:0282`, quote points×4 via SHL 2), structure 9cr/pt (`0x1C` loop), destroyed weapons 300cr/item (bit-7 scan `0x33..0x55`, names via `0x2FD7` table, `AND 0x7F` restore), actuators 200cr (backup restore), heat sinks 800cr each (`0xA2`→`0x22`), ammo per-bin refill (variable `[BP-0x0E]`, `INC C74B`, qty via `1543:0CDE`; "too heavy" is flavor). **Unrepairable = engine/gyro/sensors** (nonzero `+0x75/+0x76/+0x77` → `DS:0x17F7` refusal). Personal armor separate (case `0x09`); skills separate (`0x0F/0x15`). OPEN: ammo-price segment anomaly, cap=2 source, garage fees (S7). See §17.11e |
 | S7 | **Garage parking + jail theft** — Starport impound (entry requirement, exit fees, receipts/claim, Kurita-mech refusal); theft event (which mech, requirements); theft-flag exclusion ("rampage… not wise to reenter") (WT3 + GARAGE/JAIL.BLD; AGENTS mislabels GARAGE.BLD as "Mechit-Lube garage") | ⬜ open |
 | S8 | **Video-store items** — Mapper effect ("larger map area" → `w4FBA`-mode hypothesis, verify); holodisc-player gating for viewer use (WT1/2/3 + store text in FROB.BLD block) | ⬜ open |
 | S9 | **Mayor lockpick entry** — pick-the-lock skill check (WT3 + MAYOR.BLD) | ⬜ micro-item |

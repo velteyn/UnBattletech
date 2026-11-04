@@ -716,6 +716,39 @@ is aboard" (see S1 — `D332` never read); the exact `F9`-menu branch targets
 (interpreter `_ip` base question — same tooling class as SX1). BARRACKS'
 Marik-uniform swap is a scripted story beat (covered as text).
 
+#### §17.11e Mech repair economy — REPAIR.BLD + `fn11B8_0002` (S6 — closed 2026-11-04)
+
+Entry: `fn1CD3` case `0x12` → `fn11B8_0002` (damage assessment → menu). Byte-verified
+price list (all deduct from `D370/D372`, quote via `fn1631_1FDF`):
+- **Armor points: 4cr each** (`11B8:0282`–`02D5`; quote `0x1899/0x18BF/0x1902` =
+  points + points×4 via SHL 2; Yes/No `0800:1A13`; loop `INC C724+0x11..0x1B`
+  per paid point; `D325`-style gate at `0D09` for the flow entry).
+- **Structure points: 9cr each** (`[BP-0x3A]=0x1C` loop at `03AC`, `SUB 9` at
+  `03B3`–`03C7`).
+- **Destroyed weapons: 300cr each** — scan story armament bytes `0x33..0x55` for
+  bit-7-set entries (`11B8:00CA`–`0116`; `0x80|0x22` = destroyed heat sink counted
+  separately into `[BP-0x30]`; `0x80|0x10..0x20` = destroyed mech weapons counted
+  per-id); menu lists them by name (`DS:0x2FD7+id·0x11` = weapon table names);
+  on pay, `AND 0x7F` the matching story byte (`11B8:068D`–`06E6`).
+- **Actuators: 200cr** — restore `C748/C749` from backups `C78D/C78E`
+  (`11B8_07xx`→`18900` region; *"don't have the 200 C-bills"* `DS:0x1CCE`).
+- **Heat sinks: 800cr each** (`"special... only 800 C-bills each!"`) — the scan
+  counts `0xA2` bytes (`0x80|0x22`, destroyed heat sink); pay writes back `0x22`
+  (`11B8:04DD`–`0522`).
+- **Ammo bins: per-bin refill at per-type price** (`fn11B8_1762`: `INC C74B+bin`,
+  deduct `[BP-0x0E]`; price table read `DS:[type+0x2046]`, default 2cr if type
+  `==0x18`; quantity via `1543:0CDE` numeric input; *"too heavy to carry"* is BLD
+  flavor — the code gates on credits/quantity and requires owning a mech).
+- **Unrepairable (walkthrough's "certain repairs"):** story bytes `+0x75/+0x76/+0x77`
+  nonzero → *"Our facility doesn't have the equipment to fix your damaged
+  [engine|gyro|sensors]"* (`DS:0x17F7` + far-ptr name table `DS:0x1B3E+idx·4`,
+  `11B8:017F`–`01CA`) — no code path restores those three components.
+- Personal armor is separate (case `0x09`, 4DDB restore — P2); skill buys are
+separate (`0x0F/0x15`, 500cr — S5). OPEN micro-items: exact ammo-price table
+segment (`DS:0x2046` read lands in text bytes under the DS-base assumption —
+verify at runtime); cap=2 source (no code counter found; BLD-side offer gating
+or walkthrough-imprecise); garage parking fees (S7).
+
 #### Stock Market (COMSTAR)
 
 The stock market simulation handles 3 tickers (DefHes, NasDiv, BakPhar) via a struct array at `DS:0xD390` (stride 0x1A = 26 bytes per stock), accessed via selector at `DS:0x538A`:
