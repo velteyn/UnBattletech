@@ -100,7 +100,7 @@ Called from BLD opcode `0xF5` and various game functions. All 47 cases present.
 | `0x06` | SHOW_PLAYER_ITEMS | Display player's owned items (`aD374[n] != 0`) for potential sale |
 | `0x07` | BUY_ITEM_BULK | Bulk buy at 1 cr/unit: `fn1543_0CDE`→qty, `aD374[sel] += qty`, `tD370 -= qty` |
 | `0x08` | SELL_ITEM_BULK | Bulk sell at 1 cr/unit: `fn1543_0CDE`→qty, `aD374[sel] -= qty`, `tD370 += qty` |
-| `0x09` | HOSPITAL_HEAL | Deduct healing cost from table 0x4F26/0x4F28, call `fn1631_1FDF` + `fn0FDC_13DE` |
+| `0x09` | REPAIR_ARMOR (was mislabeled HOSPITAL_HEAL) | Binary `1CD3:09C7`: price check → deduct, `fn1631_1FDF` cost display, restore `C622` to `4DDB` max via `fn0FDC_13DE`. People-healing is case `0x17` → `fn1431:000A` (see §17.11b) |
 | `0x0A` | SHOW_CREDITS | Display `tD370/tD372` formatted via `fn207F_3BD2` |
 | `0x0B` | BUY_WITH_UNIT_SEL | Purchase + unit selection. Cost from table 0x4F44/0x4F46. Calls `fn1631_1FDF` + `fn0FDC_15E6` |
 | `0x0C` | CLOSE_ACTION | Close current shop/action via `fn0FDC_17B9` |
@@ -641,6 +641,26 @@ At segment `0FDC:15E6`. Called from case 0x0B for mech component purchase and fr
 3. Allows player to select source and destination slots
 4. Swaps unit type IDs between slots (effectively reassigning which mech is in which slot)
 5. Acts as the mech bay interface — no separate "garage" screen exists
+
+#### §17.11b Hospital people-heal — binary cases `0x17` + `0x18` (closed 2026-11-04, P2)
+
+> Corrects the case table: `0x09` (`1CD3:09C7`) is **armour repair** (restores `C622`
+> to the `4DDB` max, price from `w0178`/`w0168` → `fn1631_1FDF` display → `fn0FDC_13DE`
+> swap) — not people-healing. People-healing is two dispatches: `0x17` = wounded scan
+> (`1CD3:0CF8`, was mislabeled EQUIP_CONSISTENCY), `0x18` = price + heal (`1CD3:0D44`,
+> was mislabeled GARAGE_SERVICE).
+
+Flow: `0x17` clears `bD325`, scans 8 slots, sets `bD325=1` if any occupied slot has
+`C623 ≠ 10×C615` (the wounded test). `0x18`: if `bD326==0`, free `fn1431:000A(0)`
+(self-heal); else price `DS:0x4F6E[D326]` = 0/50/100/150/200/400/600/750 (Trainee…
+Neurosurgeon), dword-check vs `D370/D372`, deduct, `fn1431:000A(D326)`; insufficient
+funds → message + `D370 += 0x19` (purpose OPEN). Full mechanic (wound source, dice
+table `DS:0x2601` at `caliber + 4·tier`, caps, entry paths, flags
+`D325/D326/D335/D450/D451`): [`combat-system.md` §23.7/§23.8](../combat-system.md).
+Rebuild note (Track 2): `Fn1CD3Dispatcher` maps `0x09`→HOSPITAL_HEAL /
+`0x17`→EQUIP_CONSISTENCY / `0x18`→GARAGE_SERVICE — all three need review against the
+binary cases above (F5-operand question also open: BLD `F5` operands are 150–214,
+outside 1–47).
 
 #### Stock Market (COMSTAR)
 

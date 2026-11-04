@@ -2366,6 +2366,72 @@ The personal weapons (weapon-table entries 0-14, skill classes 0-2) — Cudgel, 
 Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SR Missile, Inferno, LaserPistol, LaserRifle,
 Flamer — carry the weapon's `+0x0B` damage; the record's `+0x0B` picks which one is equipped.
 
+### 23.7 Wounds — set in combat, tested by scans (closed 2026-11-04, P2)
+
+**Set:** the post-fire/narrative damage path (`1AE8_08BC`–`08F1`) subtracts incoming damage
+first from armour (`C622`), then health (`C623`); if `C623` reaches 0 the unit is dead
+(`[BP-0x2C]=1`, slot later cleared to `C614=0xFF`); any surviving reduction leaves the
+unit **wounded**. There is no separate wounded flag — wounded is a *derived* state.
+
+**Test (two sites, same predicate):** occupied (`C614≠0xFF`) **and** `C623 ≠ 10×C615`
+(current hp vs max = attr×10):
+- `fn1431_000A` report branch (`D335≠0`): sets found-flag → prints `DS:0x25A4`
+  *"Your characters need more time to recover."* if any wounded, else `DS:0x25CF` /
+  `DS:0x2591` *"Nobody is wounded."*
+- `fn1CD3` case `0x17` hospital head (`1CD3:0CF8`–`0D3C`): sets `bD325=1` if any wounded
+  (gate for the heal UI; `D325==0` → exit path at `02DC`).
+
+### 23.8 Hospital healing — cost, dice, caps (closed 2026-11-04, P2)
+
+**Cases:** binary `fn1CD3` cases `0x17` (scan, `1CD3:0CF8`, exits at `0D12`) +
+`0x18` (price+heal, `1CD3:0D44`) — two dispatches, not one (NOT `0x09`: `0x09` at
+`1CD3:09C7` is *armour repair*, restoring `C622` to the `4DDB` max via `fn0FDC_13DE`;
+the old `HOSPITAL_HEAL` label on `0x09` and the `EQUIP_CONSISTENCY`/`GARAGE_SERVICE`
+labels on `0x17`/`0x18` in the rebuild docs are stale — see flags below).
+
+**Cost:** doctor-hire price table `DS:0x4F6E` (file `0x3F11E`), dword-compared against
+`D370/D372` and deducted (`1CD3:0D50`–`0D76`): index `D326` = `0` free (self-heal),
+`1` Trainee 50, `2` Intern 100, `3` Physician 150, `4` Hack surgeon 200, `5` Full
+surgeon 400, `6` Specialist 600, `7` Neurosurgeon 750. On insufficient funds the
+failure path (`1CD3:0D92`) messages and adds 25cr (`D370 += 0x19` — purpose OPEN).
+The BLD "flat fee" line ("Get healed", 2-digit marker) is display text; the charged
+amounts are the code table above (marker→digit decode still OPEN, BLD-tooling).
+
+**Effect** (`fn1431_000A` per-unit loop, `1431:01B4`–`01F5`, asm-verified — Reko's
+`do-while` rendering drops the entry jump; the loop rolls **exactly N** dice):
+per wounded slot: `heal = (N × d6 via 0800:19F3) × M`, `C623 = min(hp+heal, 10×C615)`,
+where `(N,M)` come from table `DS:0x2601` (file `0x3C7B1`, 32 bytes) at
+**index `= caliber + 4·tier`** (asm: `DI=tier·4`, `BX=caliber`, byte `[BX+DI+0x2601]`;
+Reko's flat-sum rendering is wrong):
+- `tier` = hired `D326` (1–7), or best party Medical skill (self-heal, `wArg04==0`).
+- `caliber` = 1, +1 if `D450` (training complete), →3 if best-Medical≥3 & `D451`;
+  hired override: 2 (`D326`≤2) or 4 (`D326`>2).
+- `N` = low nibble (full byte when high nibble is 0 — same value), `M` = high nibble
+  else 1. Rows (tier×caliber): t0: 1d6×1; t1: 2d6; t2: 2–4d6; t3: 3d6/4d6/6d6/1d6×10;
+  t4+: mult rows (e.g. t6c4 `c2` = 2d6×12 ≈ 84, still capped at max).
+- Worked: hired Trainee (50cr) = t1c2 → `0x02` → **2d6** ≈ 7 hp; self-heal post-training
+  (cal 2, Medical 3) → t3c2 → `0x04` → **4d6** ≈ 14 hp; max realistic (t7c3) → `c2` =
+  2d6×12.
+- Curio (bounded, harmless): max-max (t7c4, index 32) over-reads the 32-byte table by
+  one into text (`0xa3` → 3d6×10) — still capped at max hp, no gameplay effect.
+
+**Entry paths:** hospital visit (`1CD3` case `0x17`: wounded scan → `D325`; `D326==0`
+→ free `1431:000A(0)`, else price → `1431:000A(D326)`); SPACE-menu field heal
+(`0800:2D72` → `1431:000A(0)`, free); encounter flow (`183B:124C` sets `D335=0`,
+sums missing HP, heals if >0 — pre/post-combat phase OPEN). End: `D335=0x3F`
+(healed), panel refresh. Attending physician named is the best-Medical party member
+(`50708` name table); strings `0x252D/0x2538/0x2543/0x2553/0x256F/0x2587`.
+
+**Not linked (OPEN, bridges to B10 day-cycle):** MedKit / Field Surgery Kit items are
+sold (BLD prices display-only) and the walkthrough says kits speed recovery, but the
+`1431` loop reads no kit state — the kit mechanic (passive tick healing?) lives in
+the undecoded day-cycle code. The medical **seminar** (astronomical fee) presumably
+raises Medical, feeding the self-heal tier above.
+
+The personal weapons (weapon-table entries 0-14, skill classes 0-2) — Cudgel, Knife, Sword, VibroBlade,
+Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SR Missile, Inferno, LaserPistol, LaserRifle,
+Flamer — carry the weapon's `+0x0B` damage; the record's `+0x0B` picks which one is equipped.
+
 ### 23.4 Infantry weapon selection + target logic — closed 2026-11-04 (C7)
 
 **Weapon selection: infantry always fire the equipped weapon — there is no combat-time

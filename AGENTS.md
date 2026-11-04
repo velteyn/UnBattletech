@@ -120,7 +120,7 @@ Combat lives in `BattleTechCHI/Scripts/Combat/` — 5 files, fully reworked from
 | 0x06 | SHOW_PLAYER_ITEMS | Find owned items, populate C618[0..2] for sale UI |
 | 0x07 | BUY_ITEM_BULK | Buy via strategy (GetBuyPrice) |
 | 0x08 | SELL_ITEM_BULK | Sell via strategy (GetSellPrice) |
-| 0x09 | HOSPITAL_HEAL | Heal 4 units, cost 50cr |
+| 0x09 | REPAIR_ARMOR | ⚠️ label was HOSPITAL_HEAL — binary `1CD3:09C7` restores `C622` to the `4DDB` max via `fn0FDC_13DE` (armour repair, price from `w0178`/`w0168` → `fn1631:1FDF` display). Heal-4-units claim unverified; people-healing is case `0x17`. Rebuild mapping needs review (Track 2) |
 | 0x0A | SHOW_CREDITS | Emits `CreditsDisplayed` event with credit balance |
 | 0x0B | BUY_WITH_UNIT_SEL | Buy + select unit slot (bD31A) |
 | 0x0C | CLOSE_ACTION | Returns null (no mode change) — BLD script continues |
@@ -134,8 +134,8 @@ Combat lives in `BattleTechCHI/Scripts/Combat/` — 5 files, fully reworked from
 | 0x14 | DISPATCH_11B8_0925 | Emits `RenderingRequested("11B8_0925")` for text overlay |
 | 0x15 | EQUIP_SLOT6 | 500cr → equip slot 6 |
 | 0x16 | CHECK_EQUIP_SLOT6 | Reads UnitSlots[bD31A].DerivedAttr & 0x02 → bD31B |
-| 0x17 | EQUIP_CONSISTENCY | Verifies Attr1*10 == DerivedAttr for all slots; sets bD325=1 on mismatch |
-| 0x18 | GARAGE_SERVICE | 100cr service |
+| 0x17 | HOSPITAL_SCAN | ⚠️ label was EQUIP_CONSISTENCY — binary `1CD3:0CF8` scans 8 slots, `bD325=1` if any occupied slot has `C623≠10×C615` (wounded test). Entry half of hospital heal (see `0x18`). Rebuild mapping needs review (Track 2) |
+| 0x18 | HOSPITAL_HEAL | ⚠️ label was GARAGE_SERVICE — binary `1CD3:0D44`: `D326==0` → free `fn1431:000A(0)`; else price `DS:0x4F6E[D326]` (50–750), deduct, `fn1431:000A(D326)`. Exit half of hospital heal (scan is `0x17`). Real garage service is elsewhere — rebuild mapping needs review (Track 2). See `docs/combat-system.md` §23.8 |
 | 0x19 | FLAG_D450 | TrainingComplete = true, StateArray[0x50] = 1 |
 | 0x1A | FLAG_D451 | Milestone = true, StateArray[0x51] = 1 |
 | 0x1B | GOTO_2E_SHARED | Shared path with 0x2E (RestoreSlots): bD55E = 0 |

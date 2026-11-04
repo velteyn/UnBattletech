@@ -179,7 +179,7 @@ The argument `wArg04` selects the interaction type.
 | `0x06` | SHOW_PLAYER_ITEMS | Check `w4FBA` flag. Display credits. Loop 3 item slots showing player-owned name/qty. `wE482` tracks count. If empty show "nothing to sell". |
 | `0x07` | BUY_ITEM_BULK | Bulk buy at 1 cr/unit. Get selection via `fn1E56_0B5E(0x07)`. Get quantity via `fn1543_0CDE` (capped by `tD370` credits). `aD374[sel] += qty`, `tD370 -= qty`. |
 | `0x08` | SELL_ITEM_BULK | Bulk sell at 1 cr/unit. Get selection. Get quantity via `fn1543_0CDE` (capped by `aD374[sel]` owned qty). `aD374[sel] -= qty`, `tD370 += qty`. |
-| `0x09` | HOSPITAL_HEAL | Read healing price from `w0178` or `w0168`. If affordable (check `tD372`/`tD370`): deduct cost, call `fn1631_1FDF` and `fn0FDC_13DE` to heal. |
+| `0x09` | REPAIR_ARMOR (was mislabeled HOSPITAL_HEAL) | Binary `1CD3:09C7`: read price from `w0178` or `w0168`. If affordable (check `tD372`/`tD370`): deduct cost, call `fn1631_1FDF` (cost display) and `fn0FDC_13DE` with `(type, 4DDB[type])` to restore armour `C622` to max. People-healing is case `0x17` → `fn1431:000A` (see `story-system.md` §17.11b, `combat-system.md` §23.7/§23.8). |
 | `0x0A` | SHOW_CREDITS | Format and display `tD370`/`tD372` (32-bit credit value). Set `t37FE` flag. |
 | `0x0B` | BUY_QUANTITY | Purchase with quantity tracking. Read base price. Apply modifiers for bulk (0x06 or 0x09). If affordable: deduct, call `fn0FDC_15E6` (increment count). |
 | `0x0C` | CLOSE_ACTION | Single call to `fn0FDC_17B9`. Return to prior menu. |
@@ -193,8 +193,8 @@ The argument `wArg04` selects the interaction type.
 | `0x14` | DRAW_INTERIOR3 | Call `fn11B8_0925` (alternate render path). |
 | `0x15` | EQUIP_SLOT6 | Check `tD370 >= 500`. Deduct 500. Increment `aC618[6][bD31A]`. Set bit 0x02 in `bC623[1][bD31A]`. |
 | `0x16` | CHECK_EQUIP_SLOT6 | Test bit 0x02 of `bC623[1][bD31A]`. |
-| `0x17` | CHECK_UNEQUIPPED | Loop 8 slots. If `item_quality*10 != status_byte`, set `bD325=1`. Detect unequipped items. |
-| `0x18` | REPAIR_SERVICE | If `bD326==0`: show repair screen via `fn1431_000A(0)`. Else: read cost from array, deduct, call `fn1431_000A(bD326)` to repair. |
+| `0x17` | HOSPITAL_SCAN (was CHECK_UNEQUIPPED) | Binary `1CD3:0CF8`: loop 8 slots; if occupied (`C614≠0xFF`) and `C623 ≠ 10×C615` (wounded test — max hp = attr×10), set `bD325=1`. Not unequipped-item detection. Entry half of the hospital heal (see `0x18`). |
+| `0x18` | HOSPITAL_HEAL (listed as REPAIR_SERVICE — it heals people) | Binary `1CD3:0D44`: if `bD326==0`: free `fn1431_000A(0)` (self-heal). Else: price `DS:0x4F6E[D326]` (0/50/…/750), dword-check vs `tD370/tD372`, deduct, `fn1431_000A(D326)`. Insufficient funds → message + `tD370 += 0x19` (purpose OPEN). Full dice mechanic: `combat-system.md` §23.8. |
 | `0x19` | FLAG_D450 | Set `bD450 = 1`. Story progression: training complete marker. |
 | `0x1A` | FLAG_D451 | Set `bD451 = 1`. Story progression: milestone marker. |
 | `0x1B` | RESET_BUILDING | Jump to shared cleanup (reset building data, call `fn1467_0002`). |
