@@ -467,7 +467,7 @@ The save file binary (no extension) has this layout:
 | +0x0A | 1 | Medical | Skill: Medical |
 | +0x0B | 1 | Weapon | Equipped weapon type |
 | +0x0C | 1 | Unknown | Unused/padding |
-| +0x0D | 1 | ArmourType | Equipped armour type |
+| +0x0D | 1 | ArmourType | Equipped armour type: 0=None, 1=Flak Vest (max 25), 2=Flak Suit (max 40), 3=Lt Env Suit (max 30), 4=Hv Env Suit (max 50), 5=Ablative (max 50). Max table `DS:0x4DDB` (file `0x3EF8B`); names file `0x3E852`. Type >1 halves infantry move (`1000:3F24`). Enemy gen rolls 0–3 only |
 | +0x0E | 1 | ArmourValue | Current armour value |
 | +0x0F | 1 | Health | Current health |
 | +0x10 | 1 | Unknown2 | Unused/padding |

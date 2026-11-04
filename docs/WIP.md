@@ -2,7 +2,18 @@
 
 > **Living document.** Update on every work session so nothing is lost across network/session
 > interruptions. Newest section first. Mark items `✅ done` when closed (with the commit/file).
-> Last updated: 2026-10-14.
+> Last updated: 2026-11-04.
+
+**Mini-session 2026-11-04 (C6 close-out):** docs-first, static only (no emulator).
+Closed **C6** — infantry armour `+0x0D` type↔item map + max table, verified against
+raw `UNBTECH.exe` bytes (`DS:0x4DDB` = file `0x3EF8B` = `[0,25,40,30,50,50]`, names file
+`0x3E852`) and `GAME1`/`GAME5` save bytes; corrected the old `(0000:501B, 0170:4F07)`
+write attribution (read vs init-zeroing; real writes are `fn0DAB_0C8F` enemy gen,
+`fn1CD3:0x09→fn0FDC_13DE` shop buy, `fn11B8_0D58` recruit). Details in
+[`combat-system.md`](combat-system.md) §23. Opened micro-item (not C6-blocking): `F5`
+operands in `ARMOR.BLD` (`0xBA`=186) exceed `fn1CD3_0004`'s 1–47 range — the rebuild's
+`BldInterpreter.DispatchCase` pass-through vs the 47-case table needs reconciliation
+(BLD-tooling question).
 
 **Mini-session 2026-10-14 (economy → combat):** resumed after a poisoned session
 (bt_read_ds arg confusion); recovered live state, banked it to GAME5, ran the
@@ -145,7 +156,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C3 | Post-fire / message path (`1000:5847…`) | ✅ **resolved**: 3 fixed messages (miss/hit/kill) + the 11-arg `5847` presentation routine + post-call stage advance — **§25.5** |
 | C4 | Heat `[0x5624]:0x4592` (`penalty/5`) | ✅ **resolved**: read as a non-zero **flag** (`1000:399C`/`39C6`) — §24.5 |
 | C5 | Weapon-definition field offsets `+0x0A/+0x0D/+0x0E` | ✅ **resolved** (2026-09-29): table base `DS:0x2ED8` (file `0x3D088`); `+0x0A` unused; `+0x0D` = min-range (hi) / heat (lo); `+0x0E` = short(bits7-5)/medium(bits4-0); `+0x0F` = long; `+0x0C` bit7 = personal-weapon (not "infinite ammo"). Reader = range classifier `1000:0934`; full decode in §21 §4 |
-| C6 | Infantry armour types (`+0x0D`↔FlakVest…) | ◐ partial: type written by equip code (`0000:501B`, `0170:4F07`); value↔item map still unknown |
+| C6 | Infantry armour types (`+0x0D`↔FlakVest…) | ✅ **resolved** (2026-11-04, static + saves, no game code touched): `0=None,1=Flak Vest,2=Flak Suit,3=Lt Env Suit,4=Hv Env Suit,5=Ablative`; max table `DS:0x4DDB` (file `0x3EF8B`) = `[0,25,40,30,50,50]`; names file `0x3E852` (`DS:0x46A2`+). Writes: enemy gen `fn0DAB_0C8F` (`C621=RNG&3`, `C622=2×19DD`), shop buy `fn1CD3:0x09→fn0FDC_13DE` (`value=4DDB[type]`), recruit/init zero. Reads: damage halve `1000:4DF0`, move halve-if->1 `1000:3F24/183B:2474`, display `0000:501B`. Saves confirm (GAME1/5 P1 type 2/val 40). Corrects old attribution (`0000:501B` is a read, `0170:4F07` is init-zeroing). See §23 |
 | C7 | Infantry AI / weapon selection | ◐ partial: unit-class split at `1000:5028` (`[BP-0x28]` vs 4/0xC); target logic not isolated |
 | C9 | **Terrain movement-cost** — no per-terrain MP cost found; confirm the docs' "movement cost" label on `0x32C6` is wrong (only to-hit + passability exist) | ⬜ see [`combat-system.md`](combat-system.md) §26 |
 | C10 | **Kick damage + Inferno effect** | ✅ **resolved** (2026-09-29): Kick damage = **attacker tonnage ÷ 5**, read from the mech struct `+0x10` and written into the Kick record's damage byte (`1000:4F55`, `ES:[0x3103]`). Inferno forces **0 damage** and arms the target's heat-surge counter `0xD576=3` (**+6 heat penalty/round ×3**) — `1000:50E7`. See [`combat-system.md`](combat-system.md) §27.1/§27.2 |

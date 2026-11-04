@@ -2305,8 +2305,23 @@ if (hp > dmg): hp -= dmg  else: hp = 0                      # overflow/spill kil
 
 - The whole block is inside a per-shot loop (`[BP-0x34]`), so a 4-round burst can strip armour and then
   health across shots; **health `== 0` → the soldier is dead** (`1000:4E8A`).
-- `+0x0D` (`0xC621`) is the **armour type** (compared to `1` at `1000:3F7A`; the shop's personal-armour
-  items — FlakVest/FlakSuit/Env Suit/Ablative — map to these types).
+- `+0x0D` (`0xC621`) is the **armour type** — **closed 2026-11-04 (C6)**:
+  `0=None, 1=Flak Vest, 2=Flak Suit, 3=Lt Env Suit, 4=Hv Env Suit, 5=Ablative`.
+  Name strings at file `0x3E852` (`None\0Flak Vest\0Flak Suit\0Lt Env Suit\0Hv Env Suit\0Ablative\0`,
+  `DS:0x46A2`+); max-value table at file `0x3EF8B` = `DS:0x4DDB` = `[0,25,40,30,50,50]`
+  (exact byte match — also confirms the `DS` base file `0x3A1B0`). Menu order in `ARMOR.BLD`
+  (vest, suit, light env, heavy env, ablative) follows type order 1–5.
+  Armour type `>1` halves the infantry movement allowance (`1000:3F24`, dup `183B:2474`:
+  `JLE` at `1000:3F7A` skips the `SAR` for types 0–1). Display/repair path `0000:501B`
+  resolves the name via far-ptrs (`seg 53F2:0x4E8A/0x4E8C`) and the max via `53F8:4DDB[type]`
+  vs current `+0x0E` (`0000:513D/51C1`). Shop buy (`fn1CD3` case `0x09`, `1CD3:09C7→0A1E`)
+  passes `(type=menu sel, value=4DDB[type])` to the equip-swap `fn0FDC_13DE`; enemy
+  generation (`fn0DAB_0C8F`, `0DAB:0EC2`) rolls `C621=RNG&3` (types 0–3 only) and
+  `C622=fn0800_19DD+fn0800_19DD` (`19DD`=2D6, so 4–24); recruit/new-game zero the
+  fields (`fn11B8_0D58`, `0170:4F07`). Saves confirm: `GAME1` P1 type 2/val 40 (full
+  Flak Suit), `GAME5` P1/P2 type 2/val 40, enemies types 0–3 with partial values.
+  Prior note corrected: `0000:501B` is a *read* (display), `0170:4F07` is new-game
+  zeroing — neither is the equip write.
 - So infantry survive roughly as `armour + health` HP, with a halving rule when armour is thick.
 
 ### 23.3a Infantry weapons used
@@ -2318,8 +2333,9 @@ Flamer — carry the weapon's `+0x0B` damage; the record's `+0x0B` picks which o
 ### 23.3 Setup
 
 - Encounter population creates up to **8 enemy infantry** (slots 8-15; 50% chance per slot) with a
-  random personal weapon and `RNG & 0x04`-style item fill; HP/weapon state initialised via
-  `fn0800_19DD` (2D6-based). See §20.1.
+  random personal weapon (`fn0DAB_0C8F`: weapon via `0xC61F` roll, 7× `0xC618` item bytes `RNG&3`,
+  armour `0xC621=RNG&3` (types 0–3: None/Vest/Suit/LtEnv), `0xC622=19DD+19DD` = 4–24 where each
+  `19DD`=2D6 via `0800:19F3` 1D6×2); HP/weapon state initialised via `fn0800_19DD` (2D6-based). See §20.1.
 - Personal armour items (FlakVest, FlakSuit, Light/Hvy Environment Suit, Ablative) are inventory
   items purchased at the Armor shop (see `story/story-system.md` §17.11).
 
