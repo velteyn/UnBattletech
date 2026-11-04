@@ -2911,6 +2911,17 @@ the agent is aboard (`D332` is write-once, never read elsewhere — the
 walkthrough's correlation is unverified, possibly generic refusal RNG);
 single-copy character versions (EXE-build archaeology, out of scope).
 
+**E9 operand = specialty preset (S1 follow-up, 2026-11-04).** `fn11B8_0D58` takes
+the game-`E9` operand at `[BP+6]` and writes `C618[slot·0x11 + handler] = 3`
+(`11B8:0D58` body) — with handler ∈ {2 ARENA, 4 JAIL, 5 REPAIR, 6 HOSPITAL,
+9 CLOTHES} per BLD, i.e. record bytes +6 (Rifle), +8 (Piloting), +9 (Tech),
++10 (Medical), +13 (armour type!) set to 3; handler `== 4` additionally halves
+hp (`C623 −= attr×2` — the beaten-up jail recruit). Recruits are otherwise fully
+random (ID counter `D456`, 3× `19DD` stats, `RNG&1` items). So the operand picks
+the recruit's *specialty*, not identity. Caveats: segment aliasing for the
+`C618` write array unconfirmed; per-handler skill semantics (esp. 9→armour-type)
+need a live recruit-and-dump to verify.
+
 ---
 
 ## 26. TERRAIN EFFECTS IN COMBAT (summary)
