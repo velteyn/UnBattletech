@@ -1407,7 +1407,7 @@ The game implements a simplified version of the tabletop BattleTech rules:
 
 | Tabletop Phase | Game Implementation | Status |
 |----------------|-------------------|--------|
-| **Initiative** | Slot-based turn order (sequential 0..23) rather than dice-off. Player units in slots 0-3, enemy in 4-11 | Confirmed |
+| **Initiative** | Slot-based turn order (sequential 0..23) rather than dice-off. Player mechs 0-3 + player infantry 4-11; enemy mechs 12-15 + enemy infantry 16-23 (fork boundaries + live slot-5 trace; §23.4) | Confirmed |
 | **Movement** | Direction calculation via `unknown_19EF_0971_1A861`. Walk/Jump MP from mech data at offset 0x30/0x31 | Confirmed |
 | **Weapon Attack** | Per-body-part weapon mounts checked via 9-location loop (0x564 stride 0x40) | Confirmed |
 | **To-Hit Roll** | 2D6 roll via `ghidra_guess_0000_30DD_030DD` (rejection-sampled D6 1-6). TN = base (action_code*2+4) + skill (popcount of story state bits) + terrain (tile property at 0x32C6 + 1) + heat (thresholds at 8/13/17/24 → +1 each) + story state (+2 if citadel attacked). Roll < TN = miss | CONFIRMED |
@@ -1750,7 +1750,7 @@ Weapon definition records have stride 0x11 (17 bytes per weapon). The targeting 
 ### 15. KNOWN GAPS (STILL UNVERIFIED)
 
 1. ~~**Damage grouping:** How cluster weapons (LRM/SRM) distribute their multiple shots~~ **RESOLVED**: LRM/SRM fire as single aggregated salvo. 2D6 + cluster hits table at `DS:[0x566C]→0x2E5E` determines number of hits. Total damage = per_missile_damage (at 0x2EE3) × cluster_result, applied to ONE hit location. No per-missile distribution. See §6.6.
-2. ~~**Ammo decrement instruction:** Where the ammo count is decremented~~ **RESOLVED**: The weapon definition table (`0x2ED8`, incl. `0x5652:0x2EE4`) is read-only (it holds class/cluster, not shots). Ammo decrement on the story slot mech struct (segment `0x3092`, stride 125, ammo at offset `+0x27`): players (combat units 0-3, story slots 0-3) at `0x2A02:C74B + unit_id*125 + stage_counter`, enemy mechs (combat units 12-15, story slots 4-7) at `0x2A02:C363 + unit_id*125 + stage_counter`. Enemies (units 4-11) use a burst counter at `0x2A02:C5D4 + unit_id*0x11` capped at 4. See §6.5 Ammo Check.
+2. ~~**Ammo decrement instruction:** Where the ammo count is decremented~~ **RESOLVED**: The weapon definition table (`0x2ED8`, incl. `0x5652:0x2EE4`) is read-only (it holds class/cluster, not shots). Ammo decrement on the story slot mech struct (segment `0x3092`, stride 125, ammo at offset `+0x27`): players (combat units 0-3, story slots 0-3) at `0x2A02:C74B + unit_id*125 + stage_counter`, enemy mechs (combat units 12-15, story slots 4-7) at `0x2A02:C363 + unit_id*125 + stage_counter`. Enemies (units 4-11) use a per-(slot,**skill-class**) burst counter at `0x2A02:C5D4 + slot*0x11 + skill` (`D360` = last-fired skill class, `D358` = consecutive count; the 4-check at `1000:479A` joins the same path either way — consumer unlocated) and decrement **no** ammo (`1000:47B9`–`4817` skip; §23.2/§23.4). See §6.5 Ammo Check.
 3. ~~**Heat dissipation:** The heat sink logic between combat turns — how unit heat pool at `0x92`/`0x8A` decreases between rounds or after combat~~ **RESOLVED**: `ghidra_guess_1000_0673_10673` copies heat pool to penalty accumulator (0x6E) and clears pool to zero at end of each round. No gradual dissipation
 4. ~~**Facing / firing arcs:** Whether torso twist restricts which weapons can fire~~ **RESOLVED**: **Not implemented.** The 9 body-part loop `unknown_19EF_1886_1B776` is a critical hit grid-adjacency propagator (cellular automaton on 6×6 grid with stride 8), NOT a weapon fire loop. No facing-direction variable exists for combat units. The targeting function `ghidra_guess_1000_0934_10934` checks only range, LoS, and ammo — no arc check. AI target selection is purely data-driven from story state preference table. Movement direction is only used for pathfinding tile-stepping. See §7.15.
 5. ~~**Complete damage pipeline:** How to-hit, cluster hits, armor subtraction, damage overflow, and VGA effects chain together~~ **RESOLVED**: Full pipeline documented in §7. The to-hit check (2D6 vs TN at 0x4FC2), cluster table lookup (0x4F9F-0x4FC2), armor read (0x50F5-0x510E), damage subtraction (0x5133-0x5147), overkill/overflow (0x51C4-0x5250), slot advance via jump table (0x0B32), and VGA impact effect (0x18EF) are all mapped. Key discovery: damage overflow loops back to apply excess to the next body part via `ghidra_guess_1000_0B32_10B32`.
@@ -2272,7 +2272,8 @@ fog grids `0x40B4` / `0x41D4` (12×24), fully fogged (`0x02`) at start.
 
 ## 23. INFANTRY / SOLDIER COMBAT (personal weapons & armour)
 
-Infantry ("soldiers") are full combat units — see §1 (slots 4-11) and §20.1 (encounter population).
+Infantry ("soldiers") are full combat units — player infantry in slots 4-11, enemy infantry in
+slots 16-23 (see §23.4 slot map; §20.1 "slots 8-15" are population *record* indices).
 They use the **personal weapons** (weapon table entries 0-14: Cudgel, Knife, Sword, VibroBlade,
 Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SR Missile, Inferno, LaserPistol, LaserRifle,
 Flamer) and **personal armour**, and are stored as **17-byte character records** (not 125-byte mechs).
@@ -2293,16 +2294,31 @@ Flamer) and **personal armour**, and are stored as **17-byte character records**
 
 ### 23.2 Burst fire — verified in the decompilation (`1000:476D`–`47B9`)
 
-Each infantry **burst is capped at 4 shots** via a per-(unit, weapon) counter:
+Infantry actors are forked at `1000:4744` (`4 ≤ actor < 0xC` → burst path; all other
+actors → `47B9`). Each infantry **burst is capped at 4 shots** via a per-(slot,
+**skill-class**) counter — correcting the earlier "per-(unit, weapon)" description:
 
 ```
-# DS:[0x5648] = combat-state segment
-cur = ES:[unit + 0xD360]                 # weapon currently fired
-if (cur == fired_weapon):
-    ES:[unit + 0xD358]++                 # shot/burst counter
-    counter = ES:[ (0xC5D4 + slot*0x11 + weapon) ]   # per-(slot,weapon) burst byte
-    if (counter < 4) ...                 # CAP = 4
+# DS:[0x5648] = combat-state segment; actor = [BP-0x2], weapon = [BP-0x48]
+[BP-0x22] = weapon_table[weapon].byte[+0x10]   # skill class of the picked weapon (1000:4750)
+cur = ES:[actor + 0xD360]                       # skill class last fired (NOT the weapon)
+if (cur == [BP-0x22]):
+    ES:[actor + 0xD358]++                       # consecutive-shot count
+    counter = ES:[0xC5D4 + actor*0x11 + skill]   # per-(slot,skill) byte, NOT +weapon
+    if (counter < 4) ...                        # CAP = 4 (1000:479A)
+else:
+    ES:[actor + 0xD360] = skill; ES:[actor + 0xD358] = 0   # new weapon: re-arm
 ```
+
+- `D360` holds the **skill class**, `D358` the consecutive count; the `C5D4` counter is
+  indexed by **skill class** (`+0x0B` record → `+0x10` table byte), so switching weapon
+  *within* a skill class keeps bursting while switching *across* classes re-arms.
+- Quirk (OPEN micro-item): the `counter >= 4` branch (`1000:479A`) joins `47B9` exactly
+  like the increment path — the cap's consumer is unlocated (no other `C5D4` reader in
+  the gencode). The "cap at 4" is the site's intent, not yet its proven effect.
+- Asymmetry (needs live-trace confirm): the burst block runs only for actors 4–11
+  (player infantry). Enemy infantry (slots 16–23, `JGE 47B9`) skip it — single shots
+  per activation, unless a second burst site exists.
 
 So infantry fire a **burst of up to 4** with the equipped weapon. Weapon damage/heat come from the
 same weapon table (`+0x0B` damage, `+0x0C` cluster column); the personal armour/health are the record's
@@ -2349,6 +2365,45 @@ if (hp > dmg): hp -= dmg  else: hp = 0                      # overflow/spill kil
 The personal weapons (weapon-table entries 0-14, skill classes 0-2) — Cudgel, Knife, Sword, VibroBlade,
 Shortbow, Longbow, Crossbow, Pistol, Rifle, MachineGun, SR Missile, Inferno, LaserPistol, LaserRifle,
 Flamer — carry the weapon's `+0x0B` damage; the record's `+0x0B` picks which one is equipped.
+
+### 23.4 Infantry weapon selection + target logic — closed 2026-11-04 (C7)
+
+**Weapon selection: infantry always fire the equipped weapon — there is no combat-time
+choice.** The weapon-pick fork (`1000:5416/5422`) routes infantry actors (4–11, and by the
+same shortcut actors ≥0x10) to the `542B` precomputed path; only mech actors (0–3, 12–15)
+take the `45D9` per-stage `0AB2` recompute (§3.1). The shortcut reads
+`C5DB[slot]` (slot <0x10) / `C597[slot]` (slot ≥0x10), which coincide **exactly** with the
+equipped-weapon byte `+0x0B` (byte-verified address arithmetic, no live state needed):
+
+- `C5DB + s·0x11` for s=4–11 → `C61F…C696` = records 0–7 `+0x0B` (player infantry weapons);
+- `C597 + s·0x11` for s=16–23 → `C6A7…C71E` = records 8–15 `+0x0B` (enemy infantry weapons).
+
+(The old WIP note blamed the `1000:5028` split — that fork is the *miss-path target*
+branch below, not weapon selection.) Infantry "selection" therefore happens at equip
+time (shop/story/spawn, §23.3), never in the combat loop. No ammo is decremented for
+infantry (`47B9`–`4817`: actors <4 → `C74B` story ammo, `0xC`–`0x10` → `C363` enemy-mech
+ammo, everything else → skip to `4817`).
+
+**Target logic: infantry share the mech pipeline — no separate infantry targeting
+exists.** Targets come from the shared per-(slot,stage) `0x3800` table (loaded at
+`1000:5396`; filled by `1631:03AB` auto / `1543:0004`+player manual, §3.3); `0AB2`
+is the *mech weapon-picker* (§3.1), not a target-picker. Infantry-specific deltas:
+movement/LoS shared (`0971`/`2EBB`/`160E` at `469A`–`4744`, before the actor fork);
+to-hit built in the shared `TN=[BP-0x30]` path with roster normalisation
+`[BP-0x26]` (actor−4 for 4–11 = own record, actor−8 for ≥0x10, story `C79D`/`+2`-if-`C79B`
+for <4, record `C3B5`/`+2`-if-`C3B3` for `0xC`–`0x10`) feeding the own-skill deduction
+`TN −= C618[roster·0x11+skillclass]` (`1000:4C9B`); on a miss, targets in 4–11/≥0x10
+skip the mech-aim tracer block (`1000:5028` → `524A`, bypassing the `5040`
+`45CE`-vs-`[0x150]` check + `4279` projectile queue), with return-fire setup in
+`4FE4`–`5028` (visibility `[0x32AE]` + weapon class `0x10`–`0x12` + `[0x3750]` range
+→ `1000:63C6`).
+
+**Combat slot map (reconciled):** 0–3 player mechs, **4–11 player infantry** (records
+0–7), 12–15 enemy mechs, **16–23 enemy infantry** (records 8–15) — from the fork
+boundaries (`4744`, `47E5`, `5028`, `5416`, `5422`, roster `actor−4`/`actor−8`) plus the
+live slot-5 trace (enemies at 12,13 + 16,17,19,21,22,23). Population "slots 8-15"
+(§20.1) are *record* indices; combat placement remaps them (in `183B_000A` —
+remap proof OPEN).
 
 ### 23.3 Setup
 

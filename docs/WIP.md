@@ -4,6 +4,15 @@
 > interruptions. Newest section first. Mark items `✅ done` when closed (with the commit/file).
 > Last updated: 2026-11-04.
 
+**Mini-session 2026-11-04 (C7 close-out):** docs-first, static only (no emulator).
+Closed **C7** — infantry weapon selection (equipped-weapon alias windows `C5DB`/`C597`,
+`0AB2`-bypass at `5416/5422`, skill-keyed burst accounting) + target logic (shared
+`0x3800` table, no infantry-specific path; roster `[BP-0x26]` → own-skill TN deduction;
+miss-path fork `5028`); reconciled combat slot map (0-3/4-11/12-15/16-23). Corrected
+§23.2 (weapon→skill keying), the Initiative slot row, and the ammo-burst line.
+Five live-trace micro-items filed (cap consumer, burst asymmetry, `1554` reads,
+`63C6`, placement remap).
+
 **Mini-session 2026-11-04 (C6 close-out):** docs-first, static only (no emulator).
 Closed **C6** — infantry armour `+0x0D` type↔item map + max table, verified against
 raw `UNBTECH.exe` bytes (`DS:0x4DDB` = file `0x3EF8B` = `[0,25,40,30,50,50]`, names file
@@ -157,7 +166,7 @@ Combat is now consolidated into one document (§1–§20 mech, §21 weapon syste
 | C4 | Heat `[0x5624]:0x4592` (`penalty/5`) | ✅ **resolved**: read as a non-zero **flag** (`1000:399C`/`39C6`) — §24.5 |
 | C5 | Weapon-definition field offsets `+0x0A/+0x0D/+0x0E` | ✅ **resolved** (2026-09-29): table base `DS:0x2ED8` (file `0x3D088`); `+0x0A` unused; `+0x0D` = min-range (hi) / heat (lo); `+0x0E` = short(bits7-5)/medium(bits4-0); `+0x0F` = long; `+0x0C` bit7 = personal-weapon (not "infinite ammo"). Reader = range classifier `1000:0934`; full decode in §21 §4 |
 | C6 | Infantry armour types (`+0x0D`↔FlakVest…) | ✅ **resolved** (2026-11-04, static + saves, no game code touched): `0=None,1=Flak Vest,2=Flak Suit,3=Lt Env Suit,4=Hv Env Suit,5=Ablative`; max table `DS:0x4DDB` (file `0x3EF8B`) = `[0,25,40,30,50,50]`; names file `0x3E852` (`DS:0x46A2`+). Writes: enemy gen `fn0DAB_0C8F` (`C621=RNG&3`, `C622=2×19DD`), shop buy `fn1CD3:0x09→fn0FDC_13DE` (`value=4DDB[type]`), recruit/init zero. Reads: damage halve `1000:4DF0`, move halve-if->1 `1000:3F24/183B:2474`, display `0000:501B`. Saves confirm (GAME1/5 P1 type 2/val 40). Corrects old attribution (`0000:501B` is a read, `0170:4F07` is init-zeroing). See §23 |
-| C7 | Infantry AI / weapon selection | ◐ partial: unit-class split at `1000:5028` (`[BP-0x28]` vs 4/0xC); target logic not isolated |
+| C7 | Infantry AI / weapon selection | ✅ **resolved** (2026-11-04, static, no game code touched): infantry **always fire the equipped weapon** — never enter the `0AB2` recompute (`5416/5422` route actors 4-11/≥0x10 to the `542B` shortcut; only mechs 0-3/12-15 recompute). Shortcut reads `C5DB`/`C597` windows = arithmetically identical to equipped-weapon `+0x0B` (player recs 0-7, enemy recs 8-15). Burst block `4744-47B9` is actors-4-11-only, **skill-class**-keyed (`D360/D358`, `C5D4+slot·0x11+skill`; corrects §23.2's weapon-keyed text); no ammo decrement for infantry. **No separate infantry target logic exists** — shared `0x3800` table + TN path with roster `[BP-0x26]` (actor−4/−8, story `C79D`, record `C3B5`) feeding own-skill deduction `4C9B`; miss-path fork `5028` (old WIP attribution corrected — it is NOT weapon selection). Slot map reconciled: 0-3 P-mech, 4-11 P-infantry, 12-15 E-mech, 16-23 E-infantry. OPEN micro-items: `C5D4`-cap consumer, enemy-infantry single-shot asymmetry, `1554` story reads for infantry actors, `63C6` return-fire semantics, `183B` placement remap proof. See §23.2/§23.4 |
 | C9 | **Terrain movement-cost** — no per-terrain MP cost found; confirm the docs' "movement cost" label on `0x32C6` is wrong (only to-hit + passability exist) | ⬜ see [`combat-system.md`](combat-system.md) §26 |
 | C10 | **Kick damage + Inferno effect** | ✅ **resolved** (2026-09-29): Kick damage = **attacker tonnage ÷ 5**, read from the mech struct `+0x10` and written into the Kick record's damage byte (`1000:4F55`, `ES:[0x3103]`). Inferno forces **0 damage** and arms the target's heat-surge counter `0xD576=3` (**+6 heat penalty/round ×3**) — `1000:50E7`. See [`combat-system.md`](combat-system.md) §27.1/§27.2 |
 | U1 | **Stats/status page + combat "Scan Unit"** | ✅ **closed** (2026-10-13): two views — `fn0800_3D40`/`3FAE` overview (dims `0x0A38…` read by `3FAE` itself; `2DA8` = unit refresh/setup, no BTSTATS) vs `fn0DAB_1467`/`1AFE` detail (BTSTATS load sites `0DAB:1B58` + `1467:08A8`; field table decoded). Combat Scan = `183B:14C3` (sel 6/4) → `183B:2591` (submenu `ds:0x3D73`, guards `ds:0x3DCD`/`0x3E19`) → `0DAB:1467`. Residuals closed: `0B5E` convention (0-based, −scan arrows, Enter/Space/ESC), 11-bar pairing, loc bands, heat args, actuator mapping (`ds:0x1265/0x1269/0x126D`). See [`engine/viewport.md`](engine/viewport.md) "Stats / status screen" |
