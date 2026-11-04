@@ -689,6 +689,33 @@ buy-and-dump to decide. **OPEN:** cap=2 source (BLD-side gating? walkthrough
 imprecise?); loadout-effect proof — T3 recipe: buy a mod, dump mech bytes +
 record bytes before/after; "stack small lasers" vs flavor (walkthrough insists).
 
+#### §17.11d Civilian clothes, uniform & wanted tracking (S2 — closed 2026-11-04)
+
+All game-domain (decrypted) bytes.
+
+**Purchase** (CLOTHES.BLD): menu `F9 29` (Buy/Leave) → `SPEND 35cr` (`EE 2300`)
+→ `F4 SET D30C[0x1E]=1` (uniform flag: civilian clothes owned) + dressing-room
+text → `F4 SET D30C[0x24]=0x7F`, i.e. **`D330 = 0x7F`** (encounter mask 1/128 =
+fewest random Kuritan attacks — the "don't stand out in the crowd" mechanic).
+Default/initial `D330` value unconfirmed in statics (traitor assign forces
+`0x1F`, resolve restores `0x7F`).
+
+**Recognition branches** (JAIL.BLD, in order): apprehended → `F7 D30C[0x1E]`
+(uniform? → *"Because he recognized [your Lyran Special Forces uniform], he knew
+you were an enemy agent"*) → `F7 D30C[0x2A]` (=`D336`, *"films of the raid"* →
+*"important"*) → *"jailbreak"* → *"wanted"* + `F5` calls + `F4 SET D30C[0x2A]=1`
+(jailbreak marker; no code writers — BLD-local) → impound-yard Stinger theft +
+escape. `D336` has no code readers/writers (report-only marker). `D30C[0x28]`
+(=`D334`, post-dispatch flag) gates the arena/improvised branch (`F7` at `0x701`).
+PARTY.BLD also tests `D30C[0x1E]` at `0x169` (Rex-rescue uniform gate).
+
+**Not found in code:** a central NPC talk-refusal gate (uniform is only tested in
+JAIL/PARTY; lounge/shop refusals are per-BLD scripted text — the bark directory
+exists per H1 but no engine willingness flag); "services closed while an agent
+is aboard" (see S1 — `D332` never read); the exact `F9`-menu branch targets
+(interpreter `_ip` base question — same tooling class as SX1). BARRACKS'
+Marik-uniform swap is a scripted story beat (covered as text).
+
 #### Stock Market (COMSTAR)
 
 The stock market simulation handles 3 tickers (DefHes, NasDiv, BakPhar) via a struct array at `DS:0xD390` (stride 0x1A = 26 bytes per stock), accessed via selector at `DS:0x538A`:

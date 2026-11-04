@@ -12,6 +12,12 @@ turn/sabotage paths + cleanup, all byte-verified with DS offsets; corrected P3's
 raw-domain path list as a bonus. Filed micro-items (`374A` aliasing, sabotage
 sub-branches, handler→names, single-copy builds, shop-refusal link unsupported).
 
+**Mini-session 2026-11-04 (S2 close-out):** docs-first, static only. Closed **S2** —
+clothes purchase = 35cr SPEND + `D30C[0x1E]=1` + `D30C[0x24]=D330=0x7F` (fewest
+encounters); jail recognition branches on uniform flag/`D336`/`D334`, PARTY uniform
+gate; no central talk-refusal gate (per-BLD scripted); F9 branch targets need `_ip`
+base (tooling, cf. SX1 caveat); initial `D330` default OPEN. §17.11d.
+
 **Mini-session 2026-11-04 (C9 + BLD-domain fix + S5 purchase path):** docs-first, static
 only. Closed **C9** (all `0x32C6` readers enumerated — TN modifier, `0xFF` passability
 gates, pathfinding tile scan; MP decrements are fixed step costs/heat/armour-halving,
@@ -252,7 +258,7 @@ salvage incl. weapon confiscation (P1), MedKit sold, party cap. **Missing:**
 | # | Gap (walkthrough + BLD source) | Status |
 |---|--------------------------------|--------|
 | S1 | **Traitor system** — ✅ **closed** (2026-11-04, static): 50%-per-join assignment in `11B8_0D58` (`D331`=slot, `D332`/`D333` latch, `D330=0x1F` encounter side-effect; joined NPCs only — never Rex); game-`E9` sites ARENA/HOSPITAL/JAIL/REPAIR/CLOTHES (hospital/jail match WT); binary tell in pilot-assign UI (`0x279D` unease line — WT "nervous"/"not right" are paraphrases, not game strings); two resolution paths (interrogation if `C620==8` vs in-battle turn/sabotage); cleanup clears slot + disarms. OPEN: `[0x55FE]:0x374A` gate aliasing, sabotage sub-branch conditions, E9-handler→specialty semantics (byte-verified write, live-verify values), single-copy builds, shop-refusal link (D332 never read — WT claim unsupported in code). See §25.6.11 |
-| S2 | **Uniform + wanted tracking** — Kurita attacks if uniformed; NPC talk refusal ("making him nervous"; "shootout if Draconians see you"); jailkeeper recognition paths (uniform / films / jailbreak); swap-behind-building; CLOTHES purchase flow (WT2/3 + JAIL/CLOTHES.BLD) | ⬜ open |
+| S2 | **Uniform + wanted tracking** — ✅ **closed** (2026-11-04, game-domain bytes): clothes purchase = 35cr SPEND + `D30C[0x1E]=1` (uniform flag) + `D30C[0x24]=D330=0x7F` (min encounters — the "don't stand out" mechanic). JAIL recognition branches on `D30C[0x1E]` (uniform) / `[0x2A]` (=`D336`, BLD-local jailbreak marker) / `[0x28]` (=`D334`); PARTY also tests `0x1E`. No central talk-refusal gate (BLD-scripted per building); services-closed-while-agent unsupported; F9 branch targets need `_ip` base (tooling, cf. SX1). BARRACKS swap is scripted story. Initial `D330` default OPEN. See `story-system.md` §17.11d |
 | S3 | **Training grading** — optimal-choice stat gains; hands requirement (`"should have chosen a Mech with hands"`); fail-shame sleep block; fail-on-purpose cycle interaction (WT2 + TRAINING/BARRACKS.BLD) | ⬜ open (missions listed, grading not) |
 | S4 | **Skill-training economy** — apprenticeship cost/effect + cap ("trained you as high as we can"); hospital seminar fee/effect; "no medical schools" (WT1/2/3 + REPAIR/HOSPITAL.BLD) | ⬜ open (fees display-only) |
 | S5 | **Speed-shop mods** — offers cataloged (REPAIR.BLD: Locust→MLs, Wasp→drop SRM+armor, Stinger stacks, Commando→drop pack+MLs+armor, engine swap, Wasp-kit, Stinger-kit, Blazing Inferno; +apprenticeship/repairs/ammo/tech recruit). **Purchase path confirmed** 2026-11-04 via decrypted-`F5` scan: REPAIR.BLD → game-cases incl `0x0F` (500cr, `C61D++`) + HOSPITAL.BLD → `0x15` (500cr, `C61E++`); checks `0x10/0x16`; **no loadout-structure writes exist** in `1CD3`/`0FDC` (byte-verified) and no cap check in `0x0F/0x15`. Reading: `C61D/C61E`++ = personnel +9/+10 (Tech/Medical — hospital/P1 consumers read them as skills); per-mech texts are flavor for an abstract upgrade paying off via salvage tiers (P1) + heal table (P2) + TN deduction. Alternative (dedicated counters) needs segment-`0x569E` identity or live buy-and-dump. OPEN: cap=2 source, loadout-effect proof (T3 recipe), "stack small lasers" vs flavor (WT1/2/3) | ◐ purchase path closed, effect open |
