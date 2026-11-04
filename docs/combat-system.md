@@ -2663,6 +2663,22 @@ projection and the cursor `0xA44B/0xA44D` is restored, then `[BP-0x42]++` starts
 > (cue stream fully decoded, §28.1 — sound is WONT_DO, §6). `arg4` (`[BP-0x58]`) remains the only
 > unresolved detail.
 
+**e. Kill-noun selection incl. the Spectator gate (E1 — closed 2026-11-04).** The
+`1AE8` narrative path (`1AE8:06C5`–`071B`, `UNBTECH_all.asm:35184`) picks the kill
+noun printed via `1631:1DAB` (`=1000:17BB`): if `[0x2E38]==2` print `DS:0x3EA9`, then
+unit `<0x10` → `0x3EB3` else `0x3EB9`; if `E48E≠0` **and** killed unit `== 0x0D` (13)
+print `DS:0x3EC0` = *"a spectator."* (file `0x3E070`). So the Spectator is combat
+slot 13 (second enemy-mech slot; story slot 5) **in room/dummy mode** (`E48E=1`, set
+on room entry by `fn0FDC_1C9B`, `0FDC:1D20`; cleared on exit). Its static record is
+index 6 of 8 in the `1A00` mech-definition table (file `0x2B85E`, 20t, mech ID `0x00`
+= Locust alias, between JENNER and URBANMECH) with the standard 125-byte layout.
+Save evidence that it spawns as a live random enemy: `GAME1` story slot 5 holds a
+dead one (`\xFFpectator`, 20t, MG + MedLaser — kill-cleared `C614` byte with the
+name retained). OPEN micro-item (needs live trace): the copy path — the `RNG%3`
+table at `[0x5436]:0x2DF8` and the `C530` validity bytes are runtime-allocated
+(no static writer found), so which pointer yields index 6 is unconfirmed from
+statics; recipe: break on `0DAB:0F42`, dump the 3 far pointers + `C530`.
+
 ### 25.6 Post-combat salvage phase (P1 — mechanics decoded 2026-10-13)
 
 > The old premise ("no salvage wording in BLD texts ⇒ maybe no salvage") was **wrong**: the

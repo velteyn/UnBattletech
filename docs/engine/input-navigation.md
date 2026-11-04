@@ -70,3 +70,26 @@ beneath the cursor via `fn207F_1DA8()`.
 ## Data notes
 - World/local map cursor: `0x1DE9:0xA44B` (X) / `0xA44D` (Y); tile = `(raw>>1)&0x7F`.
 - `fn0800_218F` = arrow-key movement; building entry is tile-triggered (not key-triggered).
+
+## SPACE menu (`fn0800_2C50`) + settings (`fn0800_3BD0`) — closed 2026-11-04 (E2)
+
+SPACE opens `fn0800_2C50`, dispatching `1E56:0B5E` menu results: 1→`3BD0` (settings),
+2→`378D` (tech/repair), 3→`1431:000A(0)` (field heal, free), 4→`32B3` (enter building),
+5→`35D3` (stock market), 6→stats (`3D40`), 7→`4D57` (special).
+
+`fn0800_3BD0` prints `DS:0x896` (settings list) with a dynamic sound line (`"Turn Sound
+O"` + `"ff"` if `[0x15C]≠0` else `"n"` → Off/On), plus `DS:0x8CE` (outtakes/quit/cancel),
+then menu `0x21`:
+- 0 → movement-rate submenu (`0x8F9`: One/Two/Four steps) → `[0x15A]` = 1/2/4 (skips 3;
+  the main-loop repeat count at `0800:009A`; reset to 1 on init).
+- 1 → combat-speed submenu (`0x92F`: Fastest…Slowest/Keypress) → `[0x15E]` = 0–5,
+  then `0800:4CAC(1)`. Effect: gated delays — `1543:0C50`, `1631:1A27`, `1631:1DCC`
+  (`0xC·[0x15E]` ticks via `1F3D:0006`, instant `1F3D:0259` when `==5`/Keypress).
+  Tick-unit semantics OPEN.
+- 2 → `XOR [0x15C],1` (sound on/off — gates the `0000:30BF` PC-speaker cue player,
+  §28.1). Verified display + toggle; audible effect is WONT_DO with sound.
+- 3 → outtake submenu (`0x95D`) → `D35B` = result, then `4CAC(1)`. Effect:
+  `0800:33FE` copies `D35B→[53E6]:0x2F8`; `0800:491A` tests bit `D35B·2` of table
+  `DS:0xAC4` against an RNG roll — outtake occurrence gate. Row probabilities OPEN.
+- 4 → quit confirm (`0x993`, `0x9CF`, `1A13(0)` → `[0x152]`).
+- Else → exit (`3D3F`).

@@ -764,7 +764,7 @@ Unit sprites (24×24) come from `MECHSHAP.CMP`; the sprite sheet is tokenised in
 | `0800:19DD` | fn0800_19DD — RNG-based attribute/2D6 generation |
 | `0800:3D40` | fn0800_3D40 — Stat/inventory screen (SPACE menu option 6) |
 | `0800:3FAE` | fn0800_3FAE — Stat screen rendering (8-phase) |
-| `0800:3BD0` | fn0800_3BD0 — Party/equip (SPACE menu option 1) |
+| `0800:3BD0` | fn0800_3BD0 — Settings menu (SPACE menu option 1; was mislabeled Party/equip). Options: movement rate→`[0x15A]`, combat speed→`[0x15E]`, sound toggle `[0x15C]`, outtakes→`D35B`, quit. See `engine/input-navigation.md` §SPACE menu |
 | `0800:378D` | fn0800_378D — Tech/repair (SPACE menu option 2) |
 | `0800:32B3` | fn0800_32B3 — Enter building (SPACE menu option 4) |
 | `0800:35D3` | fn0800_35D3 — Stock market (SPACE menu option 5) |
