@@ -2871,6 +2871,46 @@ here — everything past it is static decode, unverified at runtime).
 > enemies!` (×2 — overlaps the Flee handler, H3 scope), `Congratulations! You have won!` /
 > `The crowd boos… You have lost.` (arena win/lose). Reachability per string still open.
 
+#### 25.6.11 Post-combat traitor check (S1 — closed 2026-11-04, static)
+
+**Assignment** (`fn11B8_0D58` tail, `11B8:0E04`–`0E2A` — i.e. inside every E9 recruit):
+while `D332==0`, each new join rolls `RNG&1`; on hit: `D331` = recruit slot,
+`D332`/`D333` = 1 (armed, latched — at most one traitor ever), `D330 = 0x1F`
+(encounter mask tightens 0x7F→0x1F while the traitor is aboard: 4× encounter
+rate — mechanical side effect). So the traitor is always a *joined* NPC (never
+Jason/Rex — matches "Rex never betrays"), with ~50% per recruit until one hits.
+Game-`E9` recruit sites (decrypted): ARENA(9), CLOTHES(2), HOSPITAL(6), JAIL(4),
+REPAIR(5) — matching the walkthrough's hospital/jail counterspy locations (the
+old "barracks/party" path list was raw-byte domain, corrected).
+
+**Tell** (`fn1467_0002` pilot-assign UI, `1467:07D6`): if `D333≠0` and the selected
+pilot slot == `D331`, print `DS:0x279D` *"Something about [NAME] makes you uneasy
+about putting him in a 'Mech cockpit."* Binary tell (no counter — re-shows on
+every selection while armed). Note: the walkthrough's *"something's not right"*
+/ *"he's nervous"* are **paraphrases, not game strings** (no such bytes in the
+EXE; the nervous-flavor lines in STORY_TEXT are uniform-related, S2).
+
+**Resolution** (post-combat wrap-up in `fn183B_000A`, `183B:08A0`–`0CDB`), gated on
+`[0x14A]≠0` (combat) **and** `D333≠0` **and** `[0x55FE]:0x374A≠0` (segment aliasing
+of the `374A` writers unconfirmed — OPEN micro-item):
+- `C620[traitor]==8` (unlinked) → **observed/interrogation path** (`08FF`):
+  `0x34E9` *"You watched …"* + name + `0x34F6/0x3510/0x3555` (*"the Dracos didn't
+  shoot at him… Rex's interrogation, which involved fists…"*) + `0x358E`
+  (*"double agent! You put an end to that situation…"*); unit positions cleared
+  (`0xFFFF`).
+- Else → **in-battle turn path** (`09AD`, per story slot with `C79D==D331`):
+  name + `0x35D1` (*"tried to turn and fire on you!…"*) + `0x3610`
+  (*"…involved destroying the Mech he was piloting"*); sabotage sub-variant
+  strings nearby (`0x3D994`: *"tried to sabotage the Mech… threw the
+  doublecrosser out… stepped on him"* — exact sub-branch conditions OPEN).
+- Cleanup (`183B:0Cxx`): `C614[traitor]=0xFF`, positions `0xFFFF`, `D333=0`,
+  `D330=0x7F` (encounter rate restored).
+This matches the walkthrough beat-for-beat (turn in first battle, "resolve
+itself", Rex's fists). **Unsupported in code:** shop/NPC-service refusal while
+the agent is aboard (`D332` is write-once, never read elsewhere — the
+walkthrough's correlation is unverified, possibly generic refusal RNG);
+single-copy character versions (EXE-build archaeology, out of scope).
+
 ---
 
 ## 26. TERRAIN EFFECTS IN COMBAT (summary)

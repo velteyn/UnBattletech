@@ -4,6 +4,14 @@
 > interruptions. Newest section first. Mark items `✅ done` when closed (with the commit/file).
 > Last updated: 2026-11-04.
 
+**Mini-session 2026-11-04 (S1 close-out):** docs-first, static only. Closed **S1** —
+50%-per-join traitor assignment (`11B8_0D58`: `D331` slot, `D332`/`D333` latch,
+`D330=0x1F` encounter side-effect; joined NPCs only); binary tell in pilot-assign
+UI (`0x279D` — WT phrasings are paraphrases); interrogation vs in-battle
+turn/sabotage paths + cleanup, all byte-verified with DS offsets; corrected P3's
+raw-domain path list as a bonus. Filed micro-items (`374A` aliasing, sabotage
+sub-branches, handler→names, single-copy builds, shop-refusal link unsupported).
+
 **Mini-session 2026-11-04 (C9 + BLD-domain fix + S5 purchase path):** docs-first, static
 only. Closed **C9** (all `0x32C6` readers enumerated — TN modifier, `0xFF` passability
 gates, pathfinding tile scan; MP decrements are fixed step costs/heat/armour-halving,
@@ -243,7 +251,7 @@ salvage incl. weapon confiscation (P1), MedKit sold, party cap. **Missing:**
 
 | # | Gap (walkthrough + BLD source) | Status |
 |---|--------------------------------|--------|
-| S1 | **Traitor system** — tells ("something's not right"/"nervous"), discovery by repeated inspect, turning in first battle, counterspy locations (hospital NW / jail NE of Starport), single-copy character versions, expose-via-combat, kill-the-traitor; Rex exempt? (WT1/2/3) | ⬜ open, no RE coverage |
+| S1 | **Traitor system** — ✅ **closed** (2026-11-04, static): 50%-per-join assignment in `11B8_0D58` (`D331`=slot, `D332`/`D333` latch, `D330=0x1F` encounter side-effect; joined NPCs only — never Rex); game-`E9` sites ARENA/HOSPITAL/JAIL/REPAIR/CLOTHES (hospital/jail match WT); binary tell in pilot-assign UI (`0x279D` unease line — WT "nervous"/"not right" are paraphrases, not game strings); two resolution paths (interrogation if `C620==8` vs in-battle turn/sabotage); cleanup clears slot + disarms. OPEN: `[0x55FE]:0x374A` gate aliasing, sabotage sub-branch conditions, handler→name mapping, single-copy builds, shop-refusal link (D332 never read — WT claim unsupported in code). See §25.6.11 |
 | S2 | **Uniform + wanted tracking** — Kurita attacks if uniformed; NPC talk refusal ("making him nervous"; "shootout if Draconians see you"); jailkeeper recognition paths (uniform / films / jailbreak); swap-behind-building; CLOTHES purchase flow (WT2/3 + JAIL/CLOTHES.BLD) | ⬜ open |
 | S3 | **Training grading** — optimal-choice stat gains; hands requirement (`"should have chosen a Mech with hands"`); fail-shame sleep block; fail-on-purpose cycle interaction (WT2 + TRAINING/BARRACKS.BLD) | ⬜ open (missions listed, grading not) |
 | S4 | **Skill-training economy** — apprenticeship cost/effect + cap ("trained you as high as we can"); hospital seminar fee/effect; "no medical schools" (WT1/2/3 + REPAIR/HOSPITAL.BLD) | ⬜ open (fees display-only) |
