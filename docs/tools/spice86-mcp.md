@@ -148,8 +148,9 @@ walk onto the entrance tile. The old WASD "hex-grid" notes that used to live her
 (verified 2026-09-28). Canonical model: [`../engine/input-navigation.md`](../engine/input-navigation.md);
 map/POI data: [`../world-map.md`](../world-map.md).
 
-Tool-side recipe: `tools/playtest/bt.py` (`boot`, `keys`, `state`, `png`) drives the game and renders
-true-colour screenshots. Remember the entrance trigger stays "armed": walk **down** to step off it.
+Tool-side recipe: `tools/playtest/bt.py` (`boot`, `keys`, `state`, `shot`) drives the game; `tools/playtest/shot_png.py [out.png]` renders **true-colour PNGs** (dumps `A000:0000`, applies the live DAC palette from `bt_read_palette` — required, as ASCII `bt_screenshot` cannot resolve menus). Remember the entrance trigger stays "armed": walk **down** to step off it.
+
+**Load-Game route (verified end-to-end 2026-11-05, GAME5):** SPACE → Down×4 (`Load Game`) → Enter → Down×4 (`Five`) → Enter. The SPACE menu reads Return/settings/Inspect/Heal/**Load**/Save/Overhead (selection starts at 0; arrows move, Enter confirms); the slot menu reads One..Six/Cancel the same way. Result: 57 cr, `D310=1`, Jason/Rex/Russ on the training field. One Down-press south from the load tile fires the encounter roll.
 
 **Drive mount (A:/B:):** the game boots with DOS default drive `A:`, so `INFOCOM.CMP` resolved to
 `A:\INFOCOM.CMP`; both `A:` and `B:` are mounted to the game-data folder via the public
