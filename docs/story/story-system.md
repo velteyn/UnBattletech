@@ -869,6 +869,35 @@ Terrain Mappers"*):
 - FROB.BLD continues past the store (`0xE00+`, face-puzzle content) —
   unexamined here; likely S12-adjacent, out of S8 scope.
 
+#### §17.11i Mayor lockpick entry (S9 — closed 2026-11-05, game-domain BLD; "skill check" refuted)
+
+- **No skill check exists.** MAYOR.BLD entry (`0xD4`): `F5 14` then a
+  degenerate `F7 0E→0x00DB` / `F8→0x0106` pair — **both land on `0x0106`**
+  (*"Rex agrees that you should go in alone… You slip inside"*), so entry is
+  unconditional: no RNG, no skill read, no gate. The walkthrough's "pick the
+  lock and enter" is flavor for walking in; the S12 cache maze uses key-card
+  color numbers, not lockpick skill (WT3 computer terminals — different
+  system, no skill involved either).
+- The *"fancy new security system that your meager lockpicking skill can't
+  defeat"* text is **linearly dead**: it sits post-`F9m 32`-table with no
+  entry targeting it (menu maps `0x0302` newspaper / `0x0797` viewer /
+  `0x0A11` chow→sandwich→`0x0CED`; `F9` never falls through). Flavor for a
+  gate that isn't implemented (same dead-text family as S7's scorn/rampage).
+- Menu-32 mapping resolved: newspaper has **pre/post-raid editions** (`F7 0E`:
+  clear → *"Tonight at the Chara…"*, set → `0x0550` *"new Kuritan governor…"*
+  via mid-`F8` residue); viewer has **documentary vs father's disk** (`F7 0E`:
+  clear → *"Steiner offensive actions…"*, set → `0x094A` *"You open the box
+  your father gave you, and take out the holodisk"*); chow → sandwich gag.
+  `F5 47` (case `0x2F` DECREMENT) at `0x1384`.
+- **All three `F7 0E` key on `D30C[0x0E]` = post-raid phase flag** (0 pre /
+  2 post — same values the case-`0x01` variant select at `1CD3:0145`
+  branches on; BARRACK2 wreckage-viewing keys on it too: pre-raid the
+  wreckage doesn't exist). **OPEN (live): the flag has no writer anywhere**
+  (no BLD `SET`/`ADD`, no code `mov` — only `cmp` readers), so all three
+  consumers are stuck on their pre-raid branches statically; recipe: raid
+  the citadel live, dump `D30C[0x0E]` (suspect aliased-segment writer or
+  missed site). S11 (hut-appears gating) depends on the viewer flow.
+
 #### Stock Market (COMSTAR)
 
 The stock market simulation handles 3 tickers (DefHes, NasDiv, BakPhar) via a struct array at `DS:0xD390` (stride 0x1A = 26 bytes per stock), accessed via selector at `DS:0x538A`:
