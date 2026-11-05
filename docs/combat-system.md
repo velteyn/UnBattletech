@@ -3110,7 +3110,7 @@ the **Inferno** weapon's heat surge.
 | **Mech unit sprites (map)** | The mechs you see on the combat grid | ✅ **decoded 2026-09-29 (C11, below)**: `MECHSHAP.CMP` unit sprites, 2-frame walk cycles + wrecks; blitted by `1000:1983` at tile positions. |
 | **Fire / impact FX** | Muzzle/fire and hit-effect art | ✅ `MECHSHAP` sprites: **Fire_Large `0x7C`**, Fire_Small `0x7D`, Impact_Small `0x7E`, Impact_Large `0x7F`. `1000:63C6` spawns Fire_Large at the target (energy/PPC/Inferno). |
 | **Destruction / wreck** | On unit kill (status `0x406A → 0`) | ✅ the wreck is a **MECHSHAP sprite** (`Locust_Wreck 0x80`, `Commando_Wreck 0x81`); handler mapped §7.9 |
-| **Left-panel animation (`O*.ANM`)** | The top-left panel is **mixed-use**: normally the command menu, but it also displays **`O*.ANM` animations**, which are a **generic 88×88 animation facility** the game reuses for many purposes — building/room interiors, story dramatisation, and **combat dramatisation** (a mech firing, a mech **stomping** a downed pilot, a pilot taking a hit). | ◐ **system understood, clip→trigger map open (C11b).** There is **no persistent portrait** (the rebuild's `MechPortrait.cs` is an invented always-on panel UI). The clips are `O0–O15.ANM`; which clip plays for which trigger is driven by the calling context (BLD/location dispatch `fn135D` and other callers) and is largely unmapped. See §28.1. |
+| **Left-panel animation (`O*.ANM`)** | The top-left panel is **mixed-use**: normally the command menu, but it also displays **`O*.ANM` animations**, a **generic 88×88 animation facility** reused across building/room interiors, story dramatisation, and combat dramatisation (firing, stomping, pilot reactions). | ✅ **trigger map closed** (C11b, 2026-11-05 — 16 static sites: boot O15, entries O0, EA-scripted clips incl. O9 stomp, combat O16/O5/O2 + variable sites). No persistent portrait (rebuild's `MechPortrait.cs` is invented). Clips `O0–O16`; per-site mode semantics + some clip identities still live-only. See §28.1a. |
 | **Facing/turret animation** | — | n/a (no facing model — §7.15) |
 
 **Note:** combat does **not** use the building ANM system (`fn135D` location-graphics dispatch has **no
@@ -3369,9 +3369,46 @@ not statically dumpable). `0` = no ANM; after the lookup it calls the byte-scrip
 So **combat does play ANMs** (`O16` firing + `O5` pilot in the post-fire path; `O2` in the training
 path), rooms use `O0`, and the cutscene sequencer + scene table drive the rest.
 
-**Still open (C11b):** (a) locate the actual `cs:[0x5B1]` jump table (the interpreter's code-segment alias
-makes the static address ambiguous — the code is reached via a computed call, no direct xref) and decode
-its 0x1C opcode handlers; (b) ~~dump the `DS:0x141A` scene table~~ ✅ dumped 2026-10-13 (see Site 8
-above) — remaining: live-read the `[0x5460]:0x4602` remap contents; (c) resolve site 4's `[bp-0x24]` and the guards
-`0x2E3A`/`0x4586`; (d) O15's only trigger is script-data site 9 (`0x0F` data byte unconfirmed statically) —
-breakpoint `play_anm` index `0x0F` on a full playthrough.
+**Reconciliation (2026-11-05): r2's 9 sites → Reko's 11 static call sites.**
+r2 searched only `lcall 0:0x48B7` (far, segment 0); Reko also finds the near
+call in `fn0800_0000` and `0800`-segment far calls (same physical target —
+segment aliasing). Ghidra (`FUN_1000_48b7`) confirms 6/10 direct callers
+(`0x10000`, `0x17dc8` = loader, `0x183e9` = 0629, +3 combat/dispatcher bodies);
+the rest are interpreter-indirect (EA) or near-calls Ghidra doesn't list.
+Full static table (last-push = index; `play_anm(index, mode)`):
+
+| # | Site (Reko) | Context | Guard | Index → clip |
+|---|-------------|---------|-------|--------------|
+| 1 | `fn1AE8:post-fire` (r2 `0x13BB9`) | combat post-fire | `[2E3A]≠0` | `0x10` → `O16` (firing) |
+| 2 | `fn1AE8:post-fire` (r2 `0x13BEE`) | combat post-fire, class match | `[4586]≠0` | `0x5` → `O5` (pilot) |
+| 3 | `1000:2A3E` (r2 `0x1133E`) | combat/training per-scene | `[bp-8]==1` | `2` → `O2` |
+| 4 | `1000:6056` (r2 `0x14956`) | attack presentation | — (selector §above) | `[bp-0x24]` ∈ {1,3,4,7} |
+| 5 | per-unit loop (r2 `0x14DE0`) | `3938==0` | — | `0` → `O0` |
+| 6 | rooms (r2 `0x15DC6`) | after `0FDC:1C9B/1A26` | — | `0` → `O0` |
+| 7 | `fn0800_0000` (near call — r2-missed) | **game start** (new + loaded) | none | **`0x0F` → `O15`, mode 0** |
+| 8 | `fn0FDC_0008` loader | building entry, post-decrypt | table byte ≠0 | `byte[bld+0x141A]`, mode 1 |
+| 9 | `fn0FDC_01C0` handler `EA/0494` | BLD script | `w3938==0` | `cond` → `O<cond>`, mode `action` |
+| 10 | `fn0FDC_0629` loop (`0B0D`) | mission debrief, 3rd pass | counter==2 | `0` → `O0`, mode 0 |
+| 11 | `fn183B_000A` (`0F80`) | post-combat unit report | unit==1 | `2` → `O2`, mode 1 |
+| 12 | `fn1AE8_000C` (r2-missed) | combat, room-active | `[bp-28]==0x0D`, `E48E≠0` | `0x10` → `O16`, variable mode |
+| 13 | `fn1AE8_000C` (r2-missed) | combat | `[2E3A]≠0` | `5` → `O5`, variable mode |
+| 14 | `fn1AE8_12C7` (`1AD0`) | combat positional | indirect `≠0xFF`, `[bp-24]≠0` | `[bp-24]` (variable), mode 0 |
+| 15 | `fn1CD3_0004` case `0x01` (`00AC`) | **every building entry** | `w3938==0` | `0` → `O0`, mode 0 |
+| 16 | `fn1CD3_0004` case `0x23` (`1082`) | arena setup | — | `0` → `O0`, mode 0 |
+
+**Guards closed:** `0x2E3A` = post-combat outcome word (set by `fn183B:2556`
+next to the `0x2E38` message flag; exact enum OPEN — read `2556`);
+`0x4586` = story-pending flag (set by `fn1631_11AB` story-property update,
+cleared in `fn1AE8_000C`/`fn1543_0A35`; exact lifecycle OPEN).
+**Site 9 = BLD `EA` opcode** (`0494`: `EA cond action` plays `O<cond>` mode
+`<action>` iff `w3938==0`); the `cs:[0x5B1]` table is the `fn0FDC_01C0`
+dispatch itself (file `0xB771`, 28 entries — enumerated in S3). Scripted-ANM
+map (game-domain `EA` scan): THEATER ×9 ambience (`O0/O1/O2/O3/O4/O7/O8/O9`
+modes 1–2), TRAINING invasion `EA 9,1` (**`O9` stomp** — the Jenner-crush
+clip), WINSCENE `O11–O14`, HOSPITAL/JAIL/PARTY/REPAIR `O6`/`O10`,
+BARRACKS `O8`, CITADEL `O0`.
+
+**Still open (C11b residuals, all live):** `O15` content (plays at every boot —
+trivially observable); per-site mode semantics; `O6/O8/O10/O12–O14` clip
+identities; `1AE8_12C7 [bp-24]` source; `2556` outcome enum; `0x4586` exact
+lifecycle; `[0x5460]:0x4602` remap contents (site-8 path).
