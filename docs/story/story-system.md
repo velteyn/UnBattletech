@@ -820,6 +820,55 @@ or walkthrough-imprecise); garage parking fees (S7).
   or reached via loader re-entry (`fn0FDC_0008` recursion from `1CD3` cases)
   needs a live trace — no behavior claimed beyond the bytes above.
 
+#### §17.11h Video store — Mapper + holodisc player (S8 — closed 2026-11-05, game-domain BLD + code)
+
+FROB.BLD is the electronics/video store (*"rows of electronic items… cheap
+monaural radios"*), menu `0x25`-style `F9m 36` (*"Ask about: Holodisk players /
+Terrain Mappers"*):
+
+- **Holodisk player = 7000cr** (*"harmonic inversion ratio… signal to vector
+  impulse tangent"*, *"nicer than the holoviewer you had back at the
+  barracks"*): `F6→0x0695` Yes; No → miffed + `F8→0000` restart;
+  `CHKCR 0x1B58` (7000) → laughs-you-out + exit; else sale (*"gladly rings up
+  the sale… portable holoviewer… AS-IS. ALL SALES FINAL"*) + `SPEND 7000` +
+  **`SET 0x30=01`** (`D33C` = player owned; sole writer in any BLD).
+- **Terrain Mapper = 6000cr** (*"tie into orbiting satellites and give you a
+  snapshot view of the area you are standing on"* — the walkthrough's
+  "larger map area" is a loose paraphrase; the game text says snapshot):
+  `F6→0x0ABD` Yes (*"NEW and IMPROVED models that claim to completely obsolete
+  your mapper. You don't agree, since your mapper functions perfectly well"*);
+  `CHKCR 0x1770` (6000); sale + `SPEND 6000` + **`SET 0x31=01`** (`D33D`).
+  Post-purchase funnel: holoviewers *"sold out… six months"* +
+  `F7 32→0x0DD4` → *"need to view your father's holodisk… unless your
+  holodisk player back at the barracks is still functional."*
+- **Mapper effect = fog reveal, NOT `w4FBA`** (hypothesis refuted):
+  `fn0800_0000` `0800:0107–01B1` — without mapper, single-bit ORs of the
+  cursor tile into seen-arrays `0xCB0C`/`0xCAFC`/`0xCB1C` (per `A44D`
+  conditions); with mapper (`D33D≠0`, gated on `D346==0`) it mass-marks
+  **`0xCB0C` with 8× `0xFF` row writes** — an area snapshot. `w4FBA` is
+  untouched (E2: UI render mode 0–3, separate system). Ownership also shows as
+  a **Mapper Yes/No status line** in the `fn0800_378D` roster
+  (`2867(0x888…)` vs `2867(0x88C…)` at `(0x14,0x15)`, after the `D450`
+  training line). OPEN: `D346` identity (set in `fn0800_2DA8` refresh,
+  `=1` iff refresh arg `==0x0E`; why the reveal is gated off during it).
+- **Player gating for viewer use**: `fn0FDC_0008` post-dispatch
+  (`0FDC:00DB`): building index `==8` **and** `D33C≠0` **and** `D31A≠0` →
+  plays `DS:0x1384` *"When you get outside, you decide to use your new
+  holoviewer to watch your father's holodisk."* then reloads `0008(0x12)`.
+  Free alternative = **BARRACK2** wreckage: `F5 14` + `F7 0E→0x012B` —
+  flag clear → *"all your holodisks were destroyed in the raid… turn to
+  leave"*; flag set → *"Rex waits outside so you can view the disk in
+  privacy."* **OPEN (live): `D30C[0x0E]` has NO writer anywhere** (no BLD
+  `SET`/`ADD`, no code `mov` — only `cmp` readers in case-`0x01` variant
+  select) — the disk-acquisition write is unmapped (segment alias or
+  missed site); recipe: play to the Inaugural-Hall handoff, dump `D30C[0x0E]`.
+  VIEWDISK confirms the damaged-disk fiction (*"tries repeatedly to recover…
+  damage too extensive. Without the password"* — the S12 password).
+  MAYOR `0x22C`/`JAIL 0x448` player/video lines are flavor (mayor viewer,
+  *"message and video to his superiors"*).
+- FROB.BLD continues past the store (`0xE00+`, face-puzzle content) —
+  unexamined here; likely S12-adjacent, out of S8 scope.
+
 #### Stock Market (COMSTAR)
 
 The stock market simulation handles 3 tickers (DefHes, NasDiv, BakPhar) via a struct array at `DS:0xD390` (stride 0x1A = 26 bytes per stock), accessed via selector at `DS:0x538A`:
