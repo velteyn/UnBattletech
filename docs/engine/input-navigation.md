@@ -73,16 +73,7 @@ beneath the cursor via `fn207F_1DA8()`.
 
 ## SPACE menu (`fn0800_2C50`) + settings (`fn0800_3BD0`) — closed 2026-11-04 (E2)
 
-SPACE opens `fn0800_2C50`, dispatching `1E56:0B5E` menu results: 1→`3BD0` (settings),
-2→`378D` (tech/repair), 3→`1431:000A(0)` (field heal, free), 4→`32B3` (enter building),
-5→`35D3` (stock market), 6→stats (`3D40`), 7→`4D57` (special).
-> **Visual mismatch filed 2026-11-05 (live):** the on-screen SPACE menu reads
-> Return/settings/**Inspect Character**/Heal/Load/Save/Overhead — no tech/repair,
-> enter-building, stock, stats, or special entries. Either the dispatch maps a
-> different menuId, or the result↔item correspondence is off; the `0B5E`-return
-> convention (E2) stands, the item identities need re-verification against the
-> screenshot (`/tmp/menu_space.png` pattern).
-
+SPACE opens `fn0800_2C50`, dispatching `1E56:0B5E` menu results. The on-screen menu (verified visually 2026-11-05, 8 rows with party) is: 0 Return to game (exit), 1 Change game settings → `3BD0`, 2 Allocate men in 'Mechs → `4D57` (body unread, slot-inferred), 3 Inspect Character → `378D` (roster/status incl. Mapper Yes/No line and traitor tell), 4 Heal Characters → `1431:000A(0)` (field heal, free), 5 Load Game → `32B3` (shows "Load Game:\rOne..." at `DS:0x5C7`), 6 Save Game → `35D3` (shows "Save Game:\rOne..." at `DS:0x673`; save-fail + map-room-refusal), 7 Show Overhead Map → `3D40` (map strips + unit overview). **Corrects the old E2 mapping** (2 as tech, 4 as enter-building, 5 as stock, 6 as stats, 7 as special): the true stock handler is `fn1CD3` case `0x07` (COMSTAR `F5 07`). Without party members the menu shrinks to 7 rows (Allocate row dropped).
 `fn0800_3BD0` prints `DS:0x896` (settings list) with a dynamic sound line (`"Turn Sound
 O"` + `"ff"` if `[0x15C]≠0` else `"n"` → Off/On), plus `DS:0x8CE` (outtakes/quit/cancel),
 then menu `0x21`:

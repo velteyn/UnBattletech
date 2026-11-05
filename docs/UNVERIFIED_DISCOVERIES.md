@@ -164,7 +164,7 @@ Per `docs/walkthrough/bt-walkthrough-1.md`: at the start you are in the **Pacifi
 *"opposite the Citadel"*, with **Comstar next door** (the stock market) and the **barracks to your far
 left**; southeast of the barracks is the Mech training center. Other buildings: Weapons, Armor, Lounge,
 Mechit-Lube. The stock market is also active in the other cities.
-`fn1CD3` case 0x05 is the SPACE-menu stock-market handler (`fn0800_35D3`).
+`fn1CD3` case **0x07** is the COMSTAR stock-market handler (INVEST strings at `DS:0x4B3B`, shown via `1CD3:0734+`); `fn0800_35D3` is the **Save Game** handler (shows `"Save Game:\rOne..."` at `DS:0x673`), and `fn0800_32B3` is **Load Game** (shows `"Load Game:\rOne..."` at `DS:0x5C7`). Corrected 2026-11-05 (was: case 0x05 = stock via 35D3).
 
 **Reaching it live (VERIFIED 2026-09-28)**: COMSTAR is entered on the **start map** (a city/local map,
 not the world map). The buildings are joined by a road: walk **east along y=12** to the road's east end

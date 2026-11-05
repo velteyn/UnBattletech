@@ -272,7 +272,7 @@ overlay**, exactly like the protection screen, *not* a `ViewportLayout`:
 
 | Aspect | Detail | Source |
 |--------|--------|--------|
-| Entry (world map) | SPACE menu option 6 ("stats/inventory") → `fn0800_3D40` (sole Reko caller: `0800:2C50` table entry `0800:2D8B`) | `formats/memory-map.md` (`0800:3D40`), `reko/segments/UNBTECH_0800.asm` |
+| Entry (world map) | SPACE menu option 7 ("Show Overhead Map") → `fn0800_3D40` (sole Reko caller: `0800:2C50` table entry `0800:2D8B`; was mislabeled "stats/inventory") | `formats/memory-map.md` (`0800:3D40`), `reko/segments/UNBTECH_0800.asm` |
 | Entry (combat) | Combat menu Scan Unit → `fn183B_2591` → `fn0DAB_1467` (its only Reko caller, `183B:2704`) → `fn0DAB_1AFE` detail | `reko/segments/UNBTECH_183B.asm:4118`, `:4286`, `UNBTECH_0DAB.asm:2345,3067` |
 | Mode | sets `w014A = 1` to **suspend normal refresh**; renders directly | (cf. `w014A` semantics) |
 | Background | `BTSTATS.CMP` 320×200, loaded + drawn by the **detail view only** (load sites below) | `formats/file-formats.md` (BTSTATS listed) |
