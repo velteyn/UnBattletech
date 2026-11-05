@@ -76,6 +76,12 @@ beneath the cursor via `fn207F_1DA8()`.
 SPACE opens `fn0800_2C50`, dispatching `1E56:0B5E` menu results: 1→`3BD0` (settings),
 2→`378D` (tech/repair), 3→`1431:000A(0)` (field heal, free), 4→`32B3` (enter building),
 5→`35D3` (stock market), 6→stats (`3D40`), 7→`4D57` (special).
+> **Visual mismatch filed 2026-11-05 (live):** the on-screen SPACE menu reads
+> Return/settings/**Inspect Character**/Heal/Load/Save/Overhead — no tech/repair,
+> enter-building, stock, stats, or special entries. Either the dispatch maps a
+> different menuId, or the result↔item correspondence is off; the `0B5E`-return
+> convention (E2) stands, the item identities need re-verification against the
+> screenshot (`/tmp/menu_space.png` pattern).
 
 `fn0800_3BD0` prints `DS:0x896` (settings list) with a dynamic sound line (`"Turn Sound
 O"` + `"ff"` if `[0x15C]≠0` else `"n"` → Off/On), plus `DS:0x8CE` (outtakes/quit/cancel),

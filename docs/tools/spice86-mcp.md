@@ -80,10 +80,11 @@ Spice86 loads `BTECH.EXE` (compressed — decompression stub runs first in emula
 
 **Observed**: Injecting (4, 3) + Space×8 gets you to the world map at tile (34,12) reliably. The game auto-selects an option after enough Space presses.
 
-**⚠️ "Continue Game" with no save → blank state**: When `Space` at the main menu selects "Continue Game" but no save data exists, the game boots to a world map with `Credits=0`, `StateArray[0..31]=0`, and movement partially broken (W/X/Numpad keys may work, Q/A/D/E/Z/C may not). NEW_GAME_INIT (case 0x23) never runs. To get a proper initialized game, either:
+**⚠️ "Continue Game" with no save → blank state**: When `Space` at the main menu selects "Continue Game" but no save data exists, the game boots to a world map with `StateArray[0..31]=0`, fresh-boot C-Bills **50** (`0x2A0F:0xD370`, display-verified 2026-11-05 — not 0/20/1500), and movement partially broken (arrows work; Q/A/E/D/Z/C may not). `bt_get_state` wrongly reports credits 0 here (tool bug — use direct `GET /api/memory/226688/range/4`). No F5 case performs new-game init (old "case `0x23`" attribution was wrong — it is arena setup; init is `fn0800_4DC7`, direct calls only). To get a proper initialized game, either:
   - Use ~18+ Spaces total to navigate through "Continue Game" → auto-detect no save → start new game → advance intro dialogs, OR
-  - Walk onto the training-centre entrance tile to trigger TRAINING.BLD (runs NEW_GAME_INIT), OR
-  - Manually write `Credits` via HTTP API PUT and set StateArray entries (note: `NEW_GAME_INIT` = 1500 cr is **wrong** — a new game starts at a small balance ~20 that ticks with the allowance; see `docs/UNVERIFIED_DISCOVERIES.md` §8)
+  - Walk onto the training-centre entrance tile to trigger TRAINING.BLD, OR
+  - Manually write `Credits` via HTTP API PUT and set StateArray entries, OR
+  - Use the verified Load-Game route (SPACE menu → Load Game → slot; validated end-to-end 2026-11-05: GAME5 → 57 cr, `D310=1`, Jason/Rex/Russ on the training field — see WIP)
 
 ### Keyboard Injection (RELIABLE)
 
