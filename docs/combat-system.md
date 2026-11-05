@@ -2906,10 +2906,14 @@ of the `374A` writers unconfirmed — OPEN micro-item):
 - Cleanup (`183B:0Cxx`): `C614[traitor]=0xFF`, positions `0xFFFF`, `D333=0`,
   `D330=0x7F` (encounter rate restored).
 This matches the walkthrough beat-for-beat (turn in first battle, "resolve
-itself", Rex's fists). **Unsupported in code:** shop/NPC-service refusal while
-the agent is aboard (`D332` is write-once, never read elsewhere — the
-walkthrough's correlation is unverified, possibly generic refusal RNG);
-single-copy character versions (EXE-build archaeology, out of scope).
+itself", Rex's fists). **Unsupported in code:** single-copy character versions
+(EXE-build archaeology, out of scope). Shop/NPC-service refusal while the agent
+is aboard is now **supported via `D333`** (S7 bridge, 2026-11-05): `D333` is
+read in GARAGE (`F7 27` silent entry block), HOSPITAL (`F7 27`, scorn text
+dead), the shop path `fn0800_378D`, the status path `fn0DAB_18E8`, and AI
+targeting `fn1631_03AB` (enemies spare the traitor's slot) — the walkthrough's
+correlation stands, keyed on `D333`, not `D332`. (`D332` itself remains
+write-only.)
 
 #### 25.6.12 Training-entry written quiz — cracked (S3 gate, closed 2026-11-05)
 

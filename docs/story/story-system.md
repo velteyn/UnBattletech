@@ -770,6 +770,56 @@ or walkthrough-imprecise); garage parking fees (S7).
   `_ip` question as SX1-caveat): exact cap-gate branch mapping; which menu options
   re-offer vs one-shot; the `F8 [00 00]` restart targets; `F9` table base.
 
+#### §17.11g Starport garage + jail theft (S7 — mechanics closed 2026-11-05, game-domain BLD)
+
+- **Impound rule** (GARAGE.BLD entry): *"'Mechs are not allowed in the Starport,
+  anyone with a 'Mech… must park his 'Mech here."* On-foot entry passes through
+  (`F5 17` count + `F7 10→0x03EB` → *"pass through to the rear exit"* +
+  `SET 18 01`); entry with mechs gets the park prompt (`F6→0x04B5`).
+  Parking: *"take the receipts… expected to pay when you leave"* +
+  `F5 28` (case `0x1C` CLEAR_ALL_SLOTS — parked = mech slots cleared, on foot)
+  + `SET 18 01`.
+- **Fee = 150 C-bills** (`CHKCR 150` + `F5 10` SHOW_CREDITS + `SPEND 150`):
+  *"hands you the bill… Will you pay the fee of 150"* → *"You pay the leech
+  in full"* + `SET 18 00` + `F5 46` (case `0x2E` restore). `SET 24`
+  (`D330` mask) writes: `0` on park-entry path, `1` on exit path.
+- **Kurita refusal text**: *"they don't park Kurita 'Mechs here"* (two thugs) —
+  present but linearly post-jump (reachability OPEN, see anomaly below).
+- **Exclusion = `F7 0x27→0x061A`** (silent `FB FF` block, no text, no entry).
+  `D30C[0x27]` is **`D333`, the S1 traitor latch** — no BLD `SET 0x27` exists
+  anywhere; the only code writer is the traitor roll (`fn11B8_0D58`, 50%/join);
+  cleared post-combat (`fn183B_000A`: `D333=0, D330=0x7F`). So the "theft-flag"
+  is the traitor flag: while the traitor is aboard, the garage silently refuses
+  entry, covered in-fiction by the *"rampage… stole a 'Mech… not wise to
+  reenter"* text (itself linearly post-`F8`, i.e. shown nowhere statically —
+  same anomaly). This **confirms the walkthrough's shop-refusal correlation**
+  (S1 §25.6.11's "unsupported" is superseded for `D333`; `D332` remains
+  write-only). HOSPITAL has the parallel branch `F7 27→0x0414` (`F8→0x04AB`),
+  but both paths converge — the *"doctors look at you scornfully… rely on
+  your own skills"* text is linearly dead (unreachable FC).
+- **Code readers of `D333`** (all `cmp byte …0D333h,0`): pilot-assign tell
+  `fn1467_0002` (the `0x279D` unease line, S1), status path `fn0DAB_18E8`
+  (display effect OPEN), shop path `fn0800_378D` (effect OPEN), AI targeting
+  `fn1631_03AB` ×2 (second site writes the combat `0x3800` table — enemies
+  spare the traitor's slot, matching *"the Dracos didn't shoot at him"*),
+  post-combat gate `fn183B_000A` (S1 resolution).
+- **Theft (JAIL impound yard → Stinger)**: jailbreak branch *"slip out back to
+  the impound yard"* → `E4`-bullets → `F5 40` (case `0x28` FINALIZE) →
+  `F7 28→0x10C4` → *"You use the newly-acquired **Stinger**… medium laser…
+  group escapes"* → `F5 39` (case `0x27` TRIGGER) → jailkeeper/brother thread
+  (`SET 2A=01` jailbreak marker, `E9 4` recruit). **Which mech: Stinger**
+  (medium laser). **Requirements OPEN (live)**: menu-31 (`F9m 31` @`0x273`,
+  *"Ask about Rex's friend / Leave the jail"*) table entries
+  (`0x07DC`/`0x10C4`) don't resolve to the theft block cleanly statically
+  (0x07DC lands mid-`F5`), and the execution→Stinger adjacency (`F8→0x01F6`
+  before the Stinger `FD`) needs a live trace to sequence; walkthrough gates
+  it on mechlessness (*"If you don't have your own Mech, steal one"* — WT3).
+- **Structural anomaly (filed, same family as S3/S4 notes)**: both GARAGE
+  `F6`-Yes branches land on silent `FB FF` with the effect blocks (pay
+  `SPEND`, park `F5 28`) sitting post-`FF`; whether fee/park effects are dead
+  or reached via loader re-entry (`fn0FDC_0008` recursion from `1CD3` cases)
+  needs a live trace — no behavior claimed beyond the bytes above.
+
 #### Stock Market (COMSTAR)
 
 The stock market simulation handles 3 tickers (DefHes, NasDiv, BakPhar) via a struct array at `DS:0xD390` (stride 0x1A = 26 bytes per stock), accessed via selector at `DS:0x538A`:
