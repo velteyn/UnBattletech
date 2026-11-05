@@ -226,7 +226,7 @@ The argument `wArg04` selects the interaction type.
 | `0x20` | RELOAD_AMMO | Compare current vs max ammo. If full: show message. Else: calculate needed qty and price. Show confirmation. Deduct credits. Update state. |
 | `0x21` | GAME_ACTION_1 | Call `fn0FDC_1C9B`. |
 | `0x22` | GAME_ACTION_2 | Call `fn0FDC_1A26`. |
-| `0x23` | NEW_GAME_INIT | Full game initialization. Clear state, load character templates from template table, set party, init graphics, render 3x3 character grid. |
+| 0x23 | ARENA/ROOM combat setup (was mislabeled NEW_GAME_INIT) | Binary `1CD3:1062`: clears `C620`/`C79D`, sets cursor + stream ptrs, `1732(0)`, `11B8_137F`, **`fn0FDC_0629(8)` (arena bout on the mission engine)**, `0x40`-entry clear loop, `D334=1` if not in combat; tail gated on `D32F` (stands-destroyed → escape-lance grant at `116E`, else normal resolution `114B`). No F5 case performs new-game init (that lives in `fn0800_4DC7`, direct code calls) — the 1500cr attribution is unhomed (micro-item). |
 | `0x24` | GET_ITEM_BY_INDEX | Read `bC614[bD331]` (item at character index). Fallthrough to case 0x26. |
 | `0x25` | CLEAR_INVENTORY | Set `w014A=0`, `bC614=-1`. |
 | `0x26` | SHOW_ITEM_NAME | Display item name/description from string table using `bD456` or `bD314` as index. |

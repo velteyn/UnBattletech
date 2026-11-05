@@ -146,7 +146,7 @@ Combat lives in `BattleTechCHI/Scripts/Combat/` — 5 files, fully reworked from
 | 0x20 | COMPLEX_EQUIP | Multi-step equip: 500cr, set bD31A = success/fail |
 | 0x21 | DISPATCH_0FDC_1C9B | Emits `RenderingRequested("0FDC_1C9B")` for room interaction |
 | 0x22 | DISPATCH_0FDC_1A26 | Emits `RenderingRequested("0FDC_1A26")` for room interaction |
-| 0x23 | NEW_GAME_INIT | Full game init: 1500cr, clear state, clear inventory |
+| 0x23 | ARENA/ROOM combat setup (was mislabeled NEW_GAME_INIT — table base file `0x19892` verified vs cases `0x01`→`0027`, `0x09`→`09C7`) | Binary `1CD3:1062`: cursor/stream config, `11B8_137F`, `fn0FDC_0629(8)`, clear loop, `D334`, `D32F`-gated tail (escape-lance vs normal). New-game init is `fn0800_4DC7` (direct calls, no F5 case). |
 | 0x24 | READ_UNIT_SLOT | Read UnitSlots[bD331].TypeId for display |
 | 0x25 | CLEAR_UNIT_SLOT | Clear first unit slot |
 | 0x26 | READ_D456 | Print UnitIdCounter value |

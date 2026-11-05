@@ -126,7 +126,7 @@ Called from BLD opcode `0xF5` and various game functions. All 47 cases present.
 | `0x20` | COMPLEX_EQUIP | Multi-step equip interaction: reads item type from `bC620[1][bD31A]`, validates vs table 0x4DDB, handles bulk buy loops with `fn0800_1A13`, calls `fn1631_1FDF` |
 | `0x21` | DISPATCH_0FDC_1C9B | Call `fn0FDC_1C9B` |
 | `0x22` | DISPATCH_0FDC_1A26 | Call `fn0FDC_1A26` |
-| `0x23` | NEW_GAME_INIT | **Full game init**: clear state, load char templates, set party, init graphics, init viewport |
+| `0x23` | ARENA/ROOM combat setup (was mislabeled NEW_GAME_INIT — verified via jump table file `0x19892`) | Binary `1CD3:1062`: cursor/stream config, `11B8_137F`, `fn0FDC_0629(8)` (arena bout), clear loop, `D334=1`, `D32F`-gated tail. New-game init is `fn0800_4DC7` (direct code path). |
 | `0x24` | READ_UNIT_SLOT | Read `bC614[bD331].b0000` → display via item name lookup |
 | `0x25` | CLEAR_UNIT_SLOT | Clear `w014A=0`, set `bC614[0]=0xFF` (empty first slot) |
 | `0x26` | READ_D456 | Read `bD456`, look up item name in `a01CC/a01CA` tables, render via `fn1E56_03F5` |
@@ -181,7 +181,9 @@ offsets `0x24`/`0x25`; the sub-base selects the item/skill sub-array):
 ### 17.6 Complete Story Arc: Phase by Phase
 
 #### Phase 1: New Game Init
-- **Call**: `fn1CD3_0004` case `0x23` (NEW_GAME_INIT)
+- **Call**: `fn0800_4DC7` (direct code path — **not** `fn1CD3_0004` case `0x23`;
+  the old attribution was wrong: case `0x23` is arena/room combat setup,
+  `1CD3:1062`. No F5 case performs new-game init.)
 - **Code**: `UNBTECH_1CD3.c:156-259`
 - Clears all game state, loads character templates from template table
 - Sets initial party (Jason Youngblood in slot 0, potentially 0-3 others)
@@ -984,6 +986,15 @@ HUT.BLD is almost code-free (one `F8`, two `ED`s, two `SET`s) — the quiz is tw
   Tech≥3 gate (same `idx=5`); HOSPITAL `ED 6,1/6,3` genuine (Medical≥1/3);
   high-threshold `ED`s (`thresh` 244–253, targets OOB) are effectively NOPs /
   disabled checks (HOSPITAL `ED 4,252`, MAYOR `ED 12,252/253`).
+
+#### §17.11k Arena mechanics (S13 — closed 2026-11-05, game-domain BLD + code)
+
+- **Entry/try**: *"winner gets 500"* → `F6→0x027B` (try); No → `SET 0D=0A` + `F5 12` close + exit.
+- **Rental (250 = 50 + 200)**: rent? → `F6→0x03A0` Yes → waiver texts (*"lose it forever. The scraps become Arena property"* — own-mech forfeit) → `CHKCR 250` / *"don't have enough cash… deposit"* + exit, else `SPEND 250` (*"50 for renting… 200 deposit… repairs"*); No → `F5 34` (pop `0FDC:1A26`) + `SET 22=00` (own mech). Then `F5 33` (push `0FDC:1C9B`, party shelved) + `SET 22=01` + **`F5 35` = case `0x23` = the arena bout** (`1CD3:1062` → `fn0FDC_0629(8)` on the training-mission engine — **not** new-game init; mislabel fixed in 4 docs).
+- **Win/loss**: post-combat `fn183B_000A` (`183B:13AD`) writes the verdict into `D30C[0x21]` (`D32D`): survivors → *"Congratulations! You have won!"* (`0x39AA`, flag stays 1); empty slot → *"The crowd boos resoundingly. You have lost."* (`0x39CA`, flag cleared) — **boos reachable, byte-verified**. BLD: `F7 21→0x08D2` → **`E5 +500`** (*"hands you five hundred"*) + `SET 01=FC`; loss → *"lost combat… lost your 'Mech"* + deposit-confiscated branch (`0x0E2F` — shown to renters; own-mech losers also fall into it: flavor bug, no state effect). **WT3's "250-credit payoff" is wrong: 250 is the rental cost, 500 the award** (net +250 for renters after deposit forfeit).
+- **Western-stands exploit (complete chain)**: destroying arena tiles in combat prints *"Your 'Mech has destroyed part of the Arena!"* (`0x4209`) + *"Some Kurita UrbanMechs have been dispatched to kill you!"* (`0x4235`, `1AE8_12C7` tail: E48E-gated tile loop) → sets **`D32F=1`**; post-fight `F7 23→0x09E9` plays the escape (*"waltz a 1.5M Locust out… outmaneuver pursuing UrbanMechs… own a Locust, free and clear!"* — **UrbanMech confirmed as pursuers**; the obtainable mech is the **Locust**, not an UrbanMech) → group regroups outside Starport → parking-garage fee dodge + *"price on your head"* + `SET 23/37/38/39` (`D32F/D343/D344/D345` = 0/0/1/20: main-loop timer cascade; exact effect OPEN, B10-adjacent) → `F5 27`. **No Starport ban exists** (no `ban` string in the EXE — the `ban` hit is *"bandages"*; exclusion = flavor + the pre-existing uniform/encounter systems).
+- Rental pool / UrbanMech chance: no RNG in ARENA.BLD — grant site unmapped (live: rent repeatedly, dump roster). Flee-arena outcome (D32D untouched on *"eluded"* path → possible free-500) needs a live test. Arena-salvage suppression (waiver vs P1 wrap-up) OPEN.
+- **Road-to-the-arena-city twists (user question — tracked)**: the walk itself = random encounters (Kuritan density near Starport is WT flavor; rate is flat/global `D330`, S1; suppression on local maps verified live, `world-map.md` §17.2); the *"assassination attempt at the training center"* = JAIL.BLD backstory for the jailkeeper (no mechanic); the citadel raid = visit-counted (S3), not travel-triggered. Same-city twists all covered: uniform (S2), stocks/ComStar, Rex/PARTY, jail theft (S7), hospital recruit, Mechit-Lube (S5), video store (S8), mayor (S9), lounge/Rick, theater (flavor), garage (S7), weapon/armor shops, arena (here).
 
 #### Stock Market (COMSTAR)
 
