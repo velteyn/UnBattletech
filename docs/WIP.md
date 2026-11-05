@@ -12,6 +12,8 @@ turn/sabotage paths + cleanup, all byte-verified with DS offsets; corrected P3's
 raw-domain path list as a bonus. Filed micro-items (`374A` aliasing, sabotage
 sub-branches, handler→names, single-copy builds, shop-refusal link unsupported).
 
+**Mini-session 2026-11-05 (press_key proven live):** rebuilt UNBATTLETECH against the branch, rebooted, full boot + Load-Game + GAME5 (57cr, training field) driven **exclusively via the new `press_key` tool** — BDA recipe fully retired. Native `bt_*` did NOT reattach after the emulator restart (same lesson: fresh session needed); raw JSON-RPC + PNG-file reads carried the session.
+
 **Mini-session 2026-11-05 (Spice86 branch + battle stall):** branch `bda-keyboard-inject` done (press_key tool + harness fix + 2/2 tests pass; committed 00938044 on the branch, master untouched). Auto-pilot battle STALLED on Jason AI turn (~10 min, units unmoved): CPU spins in BIOS thunks (`F000:003E CF iret` / `0x43`, `cmp ah` dispatch bytes), Space does nothing — not a key-wait; suspect retrace/PIT wait never firing headless (filed for live-debug with exact bytes). Emulator PAUSED mid-battle (state preserved, zero heat).
 
 **Mini-session 2026-11-05 (combat entry LIVE):** GAME5 → 1×South → "Attacking force: 2 Mechs and 5 humans" → Engage Yes → computer-fight prompt → messages Verbose → graphics Yes → tactical map (Jason's CHAMELEON, Walk..Begin Fight menu). Baseline: 9 combat units, fog grids all-`2` (fully fogged), 57cr, TrainingComplete=true. Screenshots true-colour throughout. T3 harness now has a reproducible entry path.
