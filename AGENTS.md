@@ -540,7 +540,7 @@ Spice86 is an open-source x86 emulator that emulates the original game and gener
 
 ### Current Integration (2026-09-27)
 
-AIATTEMPT (`UNBATTLETECH.csproj` / `BattleTechMcpTools.csproj`) builds **directly against the Spice86 source tree** at `../../Spice86` (= `/home/velteyn/projects/Spice86`; not a NuGet package). Keep that checkout on upstream `master` — currently **`28a877fc`** (2026-10-13).
+AIATTEMPT (`UNBATTLETECH.csproj` / `BattleTechMcpTools.csproj`) builds **directly against the Spice86 source tree** at `../../Spice86` (= `/home/velteyn/projects/Spice86`; not a NuGet package). Keep that checkout on upstream `master` — currently **`e1193c29`** (2026-11-05; 22 commits ahead of `28a877fc`, rebuilds clean with 0 errors).
 
 - **Logging**: upstream removed `Spice86.Shared.Interfaces.ILoggerService` in favour of `Microsoft.Extensions.Logging.ILogger` (PR #2309). `IOverrideSupplier.GenerateFunctionInformations` now takes `ILogger`; `BattleTechMcpTools` was ported accordingly.
 - **MCP packages**: `ModelContextProtocol.Core` / `.AspNetCore` are pinned to `2.2.0` to match `Spice86.Core`.
