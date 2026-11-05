@@ -12,6 +12,11 @@ turn/sabotage paths + cleanup, all byte-verified with DS offsets; corrected P3's
 raw-domain path list as a bonus. Filed micro-items (`374A` aliasing, sabotage
 sub-branches, handler→names, single-copy builds, shop-refusal link unsupported).
 
+**Mini-session 2026-11-05 (S12 map room):** docs-first, static (EXE strings +
+Reko `135D` handlers). Terminals/power/doors/descent/panels/7-check/WHITE/
+west-computer all mapped; planet names absent (structural protection); BLD
+0x18/0x19 + 7-polarity live. Phase 7.
+
 **Mini-session 2026-11-05 (S11 hut gating):** docs-first, static (game-domain
 BLD + Reko). No tile gate exists — knowledge-gating; `0x35` = heal cooldown
 (HUT collision noted). `world-map.md` §3. Live walk-to-hut recipe filed.
@@ -326,7 +331,7 @@ salvage incl. weapon confiscation (P1), MedKit sold, party cap. **Missing:**
 | S9 | **Mayor lockpick entry** — ✅ **"skill check" refuted** (2026-11-05, static): entry unconditional (degenerate `F7 0E`/`F8` pair both →`0x0106`); *"meager lockpicking skill"* text linearly dead (no `F9m 32` entry targets it); menu-32 resolved (newspaper pre/post editions, documentary vs father's-disk viewer, chow→sandwich; `F5 47` at end). All `F7 0E` = post-raid phase flag (0/2, shared with case-`0x01` variant + BARRACK2). OPEN: phase-flag writer (none anywhere — live recipe filed; blocks S11 viewer proof). See §17.11i |
 | S10 | **Hut quiz grading** — ✅ **closed** (2026-11-05, static): 2 `ED` gates (`idx=5` Tech≥4 → Q1 success; `idx=6` Medical≥4), ANY-unit-wins (WT "every member" overstated), player-driven stump→train loop; **`ED` doc fixed** (4 bytes: idx/thresh/LE-target; match→jump); high-threshold `ED`s = NOPs. **Load-bearing: Q2-match target `0x0DBE` = `FB FF` — gauntlet unpassable statically** (success/Q3/Q4/`SET 35/36` unreachable; off-by-two bug vs model error — T3 live recipe filed). See §17.11j |
 | S11 | **Hut-appears-on-map gating** — ✅ **"flag" refuted** (2026-11-05, static): no BLD tile gate (`F7 35` unused; `F7 36` = cache door only), no code read of `0x36`, `0x35` = heal cooldown (HUT `SET 35` collides + decays), building tables static/read-only → **knowledge-gating** (viewer tells you where; WT hands out coords). Live walk-to-hut recipe to confirm. See `world-map.md` §3 |
-| S12 | **Map Room planet activation** — 7 touch-panels → password → white-code check (copy-protection external); E4 closed the load only (WT1/2/3) | ⬜ micro-item |
+| S12 | **Map Room planet activation** — ✅ **closed** (2026-11-05, static): 33 terminals (fn135D_03AA, one-shot imprint → D347/8/9 triple), power switch D34C (02D2), 12-entry doors (0AB6, per-color Incorrect R/B/Y; WT-11 vs code-12 noted), descent/ladder (055A/079C, D34E), bump-toggle bit0 (0913), 7-check over [0x241E] → WHITE D34A (0980; polarity VERIFY-live), west computer gates (04AB → BLD 0x19). Planet names nowhere in binary (structural copy protection). OPEN: BLD 0x18/0x19 identity, 7-check polarity + table bytes (live). See Phase 7 |
 | S13 | **Arena mechanics** — rental implementation + deposit/fee code + forfeiture ("scraps become Arena property"); 500cr award site (WT3 says 250 — discrepancy); western-stands exploit + Starport-ban flag (no "ban" strings in EXE); UrbanMech chance; crowd-boos reachability (WT1/2/3 + ARENA.BLD; flow covered 2026-11-04) | ⬜ open |
 | SX1 | BLD byte domains — **clarified, not a bug** (2026-11-04): the `F5`-range "mystery" was a raw-byte artifact. The game decrypts BLDs at load (`((b+0x29)&0xFF)^0xE9` over `0xA0+`, `fn0FDC_1D30`); the JSON tools show **raw** bytes (text layer correct via composite cipher, opcode layer mislabeled: raw-`F3`→game-`F5`, raw-`E7`→game-`F9`, raw-`E9`→game-`FB`, raw-`F5`→game-`F7`, raw-`F7..FF`→markers). Game-domain `F5` cases re-derived by decrypt-scan (ARMOR 9,10,12-14,31,32; HOSPITAL 10,12-26; REPAIR 10,12-20,29,44 — all ≤47; rebuild correct). Caveat stands for JSON consumers: never cite JSON opcode names/operands/targets; decrypt first (see `formats/bld-bytecode.md` domain note). Game-`E9` recruit sites re-derived: ARENA(9), CLOTHES(2), HOSPITAL(6), JAIL(4), REPAIR(5). |
 

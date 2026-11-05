@@ -290,6 +290,62 @@ terrain/passability; the trigger uses the building-position tables above.)*
 - The Crescent Hawks are formed as an independent unit
 - ENDMECH.CMP renders the endgame image: *"Press any key to end the game"*
 
+- Inside cache: VIEWDISK.BLD shows Jeremiah's holodisk message
+#### Cache interior & Map Room (S12 — closed 2026-11-05, static; BLD + EXE strings + Reko)
+
+All cache-interior mechanics live in segment-`135D` position handlers (called
+from `fn0800_1C12`), driven by EXE strings at file `0x3C2FD–0x3C60A`
+(`DS:0x2068–0x2457`, base file `0x3A1B0`) — no BLD opcodes involved (INSTRUCT
+is pure text; the "7 touch-panels" are floor tiles, and the planet names
+appear **nowhere** in the binary — the check is tile indices, the manual's
+page 14 is the key, i.e. the copy protection is structural):
+
+- **Terminals (33 = 11 doors × 3 colors)** — `fn135D_03AA` (from `0800:1C12`):
+  scans 33 slot entries, position-matches cursor against tables `[0x21F0]`
+  (x) / `[0x21CE]+3` (y); per-terminal color+number prompt assembled as
+  `0x2187` (*"Security Terminal."*) + far-ptr color name (`[0x2234]` table:
+  RED/BLUE/YELLOW) + `0x21B2`/`number`/`0x21B9`
+  (*"Do you want to imprint [color] code [N] on your code key?"*); Yes
+  (`0800:1A13`) imprints into the key-card triple `D347/D348/D349`
+  (one per color — matches INSTRUCT's one-code-per-color rule); used
+  terminals refuse with `0x215D` (*"You've already used this terminal's
+  code."*, flag `[0x45DE]`).
+- **Power** — `fn135D_02D2`: the `(0x4E, 0x0C–0x11)` switch sets `D34C=1`
+  (*"You have turned on the power to the Hyperpulse Generator."* `0x2113`).
+- **Doors** — `fn135D_0AB6`: 12 position entries (WT says eleven — door index
+  `0x0B` is skipped in-code; discrepancy noted, not resolved), tables
+  `[0x2486]`(y)/`[0x247A]`(x)/`[0x2492/9E/AA]`(−1 triples); compares the
+  key-card `D347/D348/D349` per color, printing `Incorrect RED/BLUE/YELLOW`
+  (`0x242C/0x2441/0x2457`) for each wrong one, else the door opens.
+- **Map-room descent** — `fn135D_055A` at `(0x48,0x38)`: `0x22E8`
+  (*"You peer down the hole…"*) + `0x2328` (*"You climb down the ladder…"*)
+  (or `0x22C7` *"You already have the WHITE code."* if `D34A==1`), cursor
+  teleport, ICN/MTP swap (`1F3D:063B/049Dh`, `w4FBC=1` narrow), floor-tile
+  save (`0x101D→0x4614`, `0x300` entries), `D34E=1`, panel-state init
+  (`[0x664]`, 12 bytes `0x90–0x9B`); ladder-up restore in `fn135D_079C`
+  (`0x2367`, `D34E=0`). `(0x7C,0x04)` loads BLD `0x18` + `D34D=1`.
+- **Touch-panels** — `fn135D_0913` (from `0800:1CF1`): bumping a floor tile
+  flips its low bit (`inc; xor 1; dec`) + blip (`0800:19BF(0x0F)`).
+- **7-check** — `fn135D_0980` (from `0800:1D07`) over the 7-WORD table
+  `[0x241E]`: success → `0x23B2` (*"Password accepted. WHITE code
+  installed. You can trigger the HyperPulse Generator now."*) + **`D34A=1`
+  (the WHITE code)**; fail → `0x2409` (*"Incorrect password."*) + tile-reset
+  loop. **Polarity reading flagged VERIFY-live**: as-read, loop 1 fails on
+  any SET bit among the 7 (i.e. all-7-clear passes), which contradicts WT's
+  "turn on the seven" — table contents + floor init bits unknown statically;
+  recipe: set panels per manual, dump floor bits + outcome.
+- **West-wall computer** — `fn135D_04AB`: `D34C==0` → `0x2240` (*"power…
+  turned off"*); `D34A!=1` → `0x2275` (*"Incorrect WHITE code."*);
+  `D34D==0` → `0x228B` (*"want to radio Katrina, but you haven't found the
+  cache"*); else loads **BLD `0x19`** (transmitter chain → Katrina →
+  WINSCENE) + flags. BLD `0x18`/`0x19` file identities OPEN (live: watch
+  which BLD loads at the map-room/west-computer).
+- WINSCENE.BLD (type `c0 da`): activates Hyperpulse Generator → signals Katrina Steiner
+- DropShip arrives, Katrina offers commission as Lyran Lieutenant
+- Jason declines to search for his father
+- The Crescent Hawks are formed as an independent unit
+- ENDMECH.CMP renders the endgame image: *"Press any key to end the game"*
+
 ### 17.7 Story State Data Structure (Eq_107947)
 
 Per-story-slot structure at `aC744[]` (stride 0x7D = 125 bytes), segment pointed by `DS:0x558E`:
