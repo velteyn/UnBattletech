@@ -125,6 +125,27 @@ trigger tiles; live-verified ones:
 
 ComStar is also present in **other cities**; the older `(27,9) map 2` note may describe a different one.
 
+### Hut-tile gating (S11 — closed 2026-11-05, static; "flag" refuted)
+
+WT3 claims Tellhim's hut *"won't appear on the map unless you view the
+holocard."* No such gate exists in the code or data:
+
+- **No BLD flag gates any map tile.** `F7 0x35` has zero consumers in any BLD;
+  `F7 0x36` fires only at ENTRANCE.BLD `0x239` (the **cache door** password,
+  not the map). HUT's `SET 0x35/0x36` pair (gauntlet win, itself unreachable
+  per S10) is the only writer.
+- **No code reads `0x36` at all.** `0x35` (`0D335`) is the **heal cooldown**
+  (`fn1431_000A`: nonzero → skip; set `0x3F` post-heal; DEC'd per tick in the
+  main loop) — HUT's `SET 35=01` collides with it and decays in ~1 tick.
+- **Building tables are static.** The position tables (`0x4564`/`0x4596`)
+  are only ever *read* (blit sources in `fn0800_2DA8`); no writers found, and
+  no flag-conditional turned up in the sampled building-draw paths.
+- Therefore the parenthetical is **knowledge-gating, not a code gate**:
+  viewing the disk tells you *where* to go (and WT3/WT2 hand out the sector /
+  lat-long outright); the hut tile (MAP14) is always present and enterable.
+  **Live recipe to confirm:** walk to the hut sector pre-viewing — if the tile
+  + HUT.BLD entry work, closed for good.
+
 ---
 
 ## 4. Coordinate System
