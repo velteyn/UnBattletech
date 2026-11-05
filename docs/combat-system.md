@@ -2911,6 +2911,37 @@ the agent is aboard (`D332` is write-once, never read elsewhere — the
 walkthrough's correlation is unverified, possibly generic refusal RNG);
 single-copy character versions (EXE-build archaeology, out of scope).
 
+#### 25.6.12 Training-entry written quiz — cracked (S3 gate, closed 2026-11-05)
+
+The original game gates building entry on a written copy-protection quiz; our
+binary has it neutered with a **one-byte patch**.
+
+- **Gate:** `fn0FDC_0008` (the BLD loader itself, `0FDC:0077`) — when building
+  index ≠ 0, `D320==0`, and `[0x5462]:0x3938 | [0x5464]:0x458C ≠ 0`, it calls
+  `fn1467_08A8` *before* loading the BLD; nonzero return aborts the entry
+  (`[BP-8]=0 → jmp 01BC`, BLD never loads).
+- **Quiz** (`fn1467_08A8`, strings `DS:0x27F2/0x286C/0x2886`): *"Before you can go
+  on a training mission, you will have to pass the written quiz…"* → 3 questions
+  (loop `[BP-0xE]=0..2`), each a `RNG%10` pick from **10 mech parts** (deduped
+  against previous picks), part image blitted from coord tables `DS:0x28C4/0x28D8`
+  via `1F3D:031C`, answer via menu `0x25`, checked against the correct-answer
+  table `DS:0x28EC` = `[2,4,5,7,8,10,18,15,0,16]`.
+- **Fail path (dead in this binary):** *"That was miserable. Study up before
+  coming back here again."* (`0x2886`), `D320=0xFF` (entry cooldown — the main
+  loop DECs it back to 0, re-arming the quiz), return nonzero → entry denied.
+- **The crack** (file offset **`0x104DE`**): byte **`0xEB`** (`JMP +5`, always
+  skips the fail-mark `C7 46 EE 01 00` = `mov [BP-0x12],1`) where the original
+  was **`0x74`** (`JZ +5`, skip only on correct answer). Same length, same
+  displacement — minimal one-byte patch. Net effect: `[BP-0x12]` stays 0 forever,
+  the quiz always "passes", the fail branch is unreachable. (Verification path:
+  flip the byte back to `0x74` in a copy and watch wrong answers fail — needs
+  the emulator, filed under T3.)
+- OPEN S3 remainder (training proper): pass/fail→stat-gain link (no `C61x` writes
+  found in the training path — grading may be flavor-only + gatekeeping), timed
+  mission timer source, hands-check condition, fail→tired-flag writer,
+  invasion 6th/7th trigger + RNG, initial `D320` value, `3938`/`458C` arming
+  conditions, F9/F3 branch-target base (`_ip` model, same family as SX1).
+
 **E9 operand = specialty preset (S1 follow-up, 2026-11-04).** `fn11B8_0D58` takes
 the game-`E9` operand at `[BP+6]` and writes `C618[slot·0x11 + handler] = 3`
 (`11B8:0D58` body) — with handler ∈ {2 ARENA, 4 JAIL, 5 REPAIR, 6 HOSPITAL,
