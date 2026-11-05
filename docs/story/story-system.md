@@ -64,7 +64,7 @@ Opcodes 0xE4-0xFF are handled in a switch at `UNBTECH_0FDC.c:197-535`:
 | `0xEA` | `~0x15` | COND_STATE_ACTION | 2 bytes (cond+action) | If `w3938==0`, call `fn0800_48B7(cond, action)` |
 | `0xEB` | `65515` | CHECK_FLAG_EB | 0 bytes | Skip if `bD451 == 0` |
 | `0xEC` | `65516` | CHECK_FLAG_EC | 0 bytes | Skip if `bD450 == 0` |
-| `0xED` | `~0x12` | UNIT_CHECK_LOOP | 2 bytes | Loop 8 units checking `aC60F` state |
+| `0xED` | `~0x12` | UNIT_CHECK_LOOP | 4 bytes (idx, thresh, LE target) | Loop 8 unit slots (stride `0x11`); match if `C618[slot·0x11+idx] ≥ thresh` (record `+4+idx`: 5→Tech, 6→Medical). Match → jump target, else continue. Thresholds ≥244 = NOP. See `formats/bld-bytecode.md` + §17.11j |
 | `0xEE` | `~0x11` | SPEND_CREDITS | 2 bytes LE | Deduct from `tD370` (with zero-floor) |
 | `0xEF` | `~0x10` | CHECK_CREDITS | 2 bytes LE | Skip if insufficient funds |
 | `0xF0` | `~0x0F` | SET_TEXT_MARGINS | 2 bytes | Set left/right text margins |
@@ -897,6 +897,37 @@ Terrain Mappers"*):
   consumers are stuck on their pre-raid branches statically; recipe: raid
   the citadel live, dump `D30C[0x0E]` (suspect aliased-segment writer or
   missed site). S11 (hut-appears gating) depends on the viewer flow.
+
+#### §17.11j Hut quiz grading (S10 — closed 2026-11-05, game-domain BLD; gauntlet unpassable statically)
+
+HUT.BLD is almost code-free (one `F8`, two `ED`s, two `SET`s) — the quiz is two
+`ED` gates over party skills plus scripted beats:
+
+- **Q1 mechanics** @`0x940`: `ED idx=5 thresh=4 → 0x0946` — any unit with
+  record `+9` (**Tech**) `≥ 4` → jump `0x0946` (mid-`F8` residue `h<1E>` +
+  *"Your technician rises to the occasion…"* → falls through to Q2);
+  else `F8→0x1E68` = `FB FF` **silent eject** (wait + stop, no text).
+- **Q2 biochemistry** @`0xC90`: `ED idx=6 thresh=4 → 0x0DBE` — any unit with
+  record `+10` (**Medical**) `≥ 4` → jump `0x0DBE`, which is **`FB FF`**
+  (the Q2-fail page's end): **silent eject — the *"Your doctor stands
+  boldly…"* success text and everything after it is unreachable**;
+  else the *"desperation… none of you know the answer… you are outside"*
+  fail text (the walkthrough's "stumped" signal) + eject. **Load-bearing:
+  Q3 (Mallory's World, Rex auto-answers), Q4, and the `SET 0x35/0x36`
+  win flags @`0x1E61/64` are statically unreachable — the gauntlet cannot
+  be passed in this binary.** Either a shipped-data bug (target off by two:
+  `0x0DBE` should be `0x0DC0`, cf. Q1's working overlap) or the model is
+  wrong — **T3 live recipe: train Tech + Medical to 4+, attempt Q2, watch**.
+- **"Stumped"→training loop is player-driven** (no code loop): eject → train
+  (S4 apprenticeship/seminar) → re-enter from `0xA0`. Q1-fail is silent, so
+  the only visible stump signal is Q2-fail.
+- **WT discrepancy**: code passes on **ANY** unit meeting threshold (first
+  match wins); WT2 says *every* member must be fully trained — overstated.
+  Threshold 4 = "excellent skills" (train from 0/1 base, +1 per S4 session).
+- Cross-confirmation: REPAIR `ED 5,3 → 0x0ED9` (*"Who w…"*) is a genuine
+  Tech≥3 gate (same `idx=5`); HOSPITAL `ED 6,1/6,3` genuine (Medical≥1/3);
+  high-threshold `ED`s (`thresh` 244–253, targets OOB) are effectively NOPs /
+  disabled checks (HOSPITAL `ED 4,252`, MAYOR `ED 12,252/253`).
 
 #### Stock Market (COMSTAR)
 

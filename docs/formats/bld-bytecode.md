@@ -120,7 +120,7 @@ Works as:
 | `ea` | -22 | `~0x15` | COND_STATE_ACTION | 2 bytes (cond+action) | Read cond byte, if `w3938 == 0`, read action byte and call `fn0800_48B7(cond, action)`. |
 | `eb` | -21 | `65515` | CHECK_FLAG_EB | 2 bytes (LE target) | Check `bD451`. If set, jump to the 2-byte WORD target; if 0, skip the 2 bytes. |
 | `ec` | -20 | `65516` | CHECK_FLAG_EC | 2 bytes (LE target) | Check `bD450`. If set, jump to the 2-byte WORD target; if 0, skip the 2 bytes. |
-| `ed` | -19 | `~0x12` | UNIT_CHECK_LOOP | 2 bytes | Read 2 operand bytes (byte1=index, byte2=threshold). Loop through 8 units checking `aC60F` state. If any unit matches, pass (no skip). |
+| `ed` | -19 | `~0x12` | UNIT_CHECK_LOOP | 4 bytes (idx, thresh, LE target) | Loop 8 unit slots (`aC614`, stride `0x11`): skip empties (`C614==0xFF`); match if `C618[slot·0x11+idx] ≥ thresh` (i.e. unit-record byte `+4+idx` — `idx=5`→`+9` Tech, `idx=6`→`+10` Medical). **Match → jump to LE target; no-match → continue past target.** Verified across HUT/HOSPITAL/REPAIR (S10). Thresholds ≥244 are unmeetable (values are small) → effectively NOP/disabled checks (e.g. HOSPITAL `ED 4,252→OOB`, MAYOR `ED 12,252→OOB`). |
 | `ee` | -18 | `~0x11` | SPEND_CREDITS | 2 bytes (LE) | Read 2-byte signed value. Deduct from `tD370`. If `tD372` (credit high word) < 0 or (=0 and value > tD370), set all to 0. Calls `fn1631_1FDF`. |
 | `ef` | -17 | `~0x10` | CHECK_CREDITS | 2 bytes (LE) | Read 2-byte signed value. Compare with `tD370`. If `tD372 < 0` or (`tD372 == 0` and value > `tD370`), skip next opcode (insufficient funds). |
 | `f0` | -16 | `~0x0F` | SET_TEXT_MARGINS | 2 bytes | Read 2 operand bytes. Set `w3748` (left margin) from byte1, `w374E` (right margin) from byte2. |
