@@ -12,6 +12,10 @@ turn/sabotage paths + cleanup, all byte-verified with DS offsets; corrected P3's
 raw-domain path list as a bonus. Filed micro-items (`374A` aliasing, sabotage
 sub-branches, handler→names, single-copy builds, shop-refusal link unsupported).
 
+**Mini-session 2026-11-05 (public-docs audit):** revised README + all 7 wiki pages against S1–S13/C11b/0x23/ED findings. Fixed: stale B1/B3/C9/B8/E4 items, C7 slot map, C8 rout, "26 opcodes", ANM 9→16 sites, 0x23 mislabel (4 repo docs), initial-D330/1500-cr overclaims, ED-4-byte spec, O15/0x35/phase-flag updates; filed rebuild Track-2 landmines (0x23 arena→wipe, ED 2-byte desync). Wiki pushed (4ea590e).
+
+**Mini-session 2026-11-05 (C11b trigger map):** docs-first, static (Reko + Ghidra corroboration). r2 9 sites → 16: O15 = boot, BLD EA = scripted clips (O9 stomp), entries/arena O0, combat O16/O5/O2 + variable, guards 2E3A/4586 closed. §28.1a.
+
 **Mini-session 2026-11-05 (S13 arena):** docs-first, static (game-domain BLD
 + Reko + EXE strings). Rental/award/forfeit/win-loss/exploit chain closed;
 case-`0x23` mislabel fixed in 4 docs; road twists answered. §17.11k.
