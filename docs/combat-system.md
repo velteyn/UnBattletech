@@ -2936,11 +2936,72 @@ binary has it neutered with a **one-byte patch**.
   the quiz always "passes", the fail branch is unreachable. (Verification path:
   flip the byte back to `0x74` in a copy and watch wrong answers fail — needs
   the emulator, filed under T3.)
-- OPEN S3 remainder (training proper): pass/fail→stat-gain link (no `C61x` writes
-  found in the training path — grading may be flavor-only + gatekeeping), timed
-  mission timer source, hands-check condition, fail→tired-flag writer,
-  invasion 6th/7th trigger + RNG, initial `D320` value, `3938`/`458C` arming
-  conditions, F9/F3 branch-target base (`_ip` model, same family as SX1).
+- OPEN S3 remainder (training proper — **closed 2026-11-05**, static): grading
+  engine + mission advance + timer + invasion trigger all decoded below. Remnants:
+  `C724==0x4C` letter-identity (inference + T3 recipe), `C61B/C61C` consumer
+  mapping + strided-alias check, `458C` nonzero source, HOSPITAL `SET 05=FA`
+  collision, `0xD310` byte/word alias audit, dead text `0x1BEE` intent.
+- **Mission dispatcher = game-`F3 idx=0`** (`fn0FDC_01C0:0311`: `target =
+  WORD[D30C[idx]·2 + table]` via `05F7` — indirect, targets absolute file
+  offsets; tables deliberately **overlap** their own tails so entries land
+  mid-`F8` and render its operand bytes as text residue, e.g. state1→`0x0C17`
+  renders `69 1C` then the string). Entry table @`0x219` (states 0..5 →
+  briefings `0x229/0x40E/0x4F3(tired)/0x6F1/0x812/0x9AB`; 6+ reuse `0x9AB`),
+  fail table @`0xAA4`, pass table @`0xFE0`, mech sub-table game-`F3 idx=2`
+  @`0x117B` (`D30C[2]` mech: 0/1→`0x1181` "more firepower", 2 Chameleon→`0x121B`).
+- **`D30C` training roles** (all byte-verified): `[0]` mission index, `[1]` pass
+  flag (set only by grading code), `[2]` mech choice (`SET 02=0/1/2` from menu
+  `0x25` Locust/Wasp/Chameleon), `[3]` fail count (`ADD 03 01` on fail path),
+  `[4]` invasion flag (→ raid branch), `[5]` Jenner-crush skip (`D311`).
+- **Routing prelude** @`0xA89` (after mech select): `F5 01` launches the mission
+  (case `0x01` tail `1CD3:015F`: `1732(0)` stream read + `fn0FDC_0629(D30C[0])`);
+  `SET 14=FF`; **`F7 04→0x171F`** (invasion set → skip to raid); `FA 00`;
+  **`F7 01→0x0FDB`** (pass → skip fail-count + fail table, land mid-`F8` at
+  `0xFDA` → `SET 03=00` → pass table); else `ADD 03+=1` → fail table.
+- **Grading engine = `fn0FDC_0629`** (Reko; Ghidra `FUN_17dc_0629` corroborates
+  the 10-case switch; Ghidra-confirmed direct caller `0x1b0af`=`FUN_19b8_152f`
+  = `fn11B8_152F` passing 9; BLD-driven `0629(D30C[0])` at `1CD3:015F` and
+  `0629(8)` at `1CD3:1082` invisible to Ghidra — interpreted calls). Grading
+  switch @`0BF2` (`D30D=0` first): **arg0→`0C18` timed** — `C724==0x4C` gets
+  −50 ticks, pass iff corner-reached (`[BP-2]≠0`) **and** ticks (`[BP-0x14]`,
+  +1/iter +`32AE>>3`) < `0xD7` (215); **arg1→`0C45` rubble** — tile restored,
+  pass iff `C724≠0x4C`; **arg2..7→`0C80`** (`C724==0xFF` fail, `3992` gate,
+  and for arg>4: **`C61B/C61C += RNG&1`** each — coin-flip +0/1); arg8/9 no
+  grade. Timed/rubble/gunnery missions have **no stat writes** (gatekeeping +
+  flavor only); combat-mission wins feed `C61B/C61C` (identity OPEN — adjacent
+  to Tech/Medical `C61D/C61E`, but the same offsets also appear strided in
+  unit records, aliasing unconfirmed; consumers unmapped).
+- **Hands check** = arg-1 `C724≠0x4C` gate: fail text `0xC17` *"should have
+  chosen a 'Mech with hands"*, pass text `0x10B3` *"wisely chose … hands"*.
+  `C724==0x4C` reads as **INFERENCE**: `0x4C`='L'=Locust (fastest → timed bonus,
+  handless → rubble fail — exactly the briefing trade-off). Writer unmapped
+  statically (packed EXE); **T3 recipe**: pick each mech, break after `F5 01`,
+  dump `[545C]:0C724`.
+- **Invasion trigger**: setups for args 6/7 arm word `[3772]` (arg6: 50% RNG,
+  arg7: always); grading @`0CFA`: `3772≠0` → **`D310=1`** (`+D311=1` unless
+  `C724==0xFF`), clear `3772`. Next entry: `F7 04` → raid branch @`0x1727`
+  (*"lightning raid…"*, `F7 05→0x1836` crush-skip via `D311`, `EA 09 01`,
+  escapes) ending `SET 24=3F` (`D330=0x3F` encounter surge) + STOP. So the
+  "6th/7th visit" variability = the arg-6 coin flip after `D30C[0]` counts
+  past 5 (pass epilogues `F8→0x1C66` render residue then `ADD [0]+=1` +
+  `F5 03` exit; fail epilogues `F8→0x1C69` skip the ADD → retry same mission).
+- **Tired gate**: `D30C[0]=2` entry → tired text + `F7 13→0x05B6` (rested →
+  mission-3 briefing) else `F8→0x1C69` blocked, no advance. Flag set only by
+  BARRACKS sleep (`ADD 13 01`, no clearer found → one-time gate; verify live).
+- **Arming/initial**: `fn0800_4DC7` zeroes all 0x64 `D30C` bytes on new game
+  (`D320=0` → quiz armed); quiz gate needs `3938|458C≠0`: `3938=1` on new game
+  (`0800:51xx`), cleared in load flows; **`458C` has no nonzero writer
+  statically** (zeroed `0800:51E0`) → arming rests on `3938` in practice,
+  `458C` purpose OPEN.
+- **F9/F3 base closed** (SX1 family): `F8` absolute; `F9`/`F3` WORD-indirect
+  absolute via `05F7` — verified by all six `F3 idx=0` tables resolving to
+  coherent texts.
+- Filed: dead text @`0x1BEE` (*"We haven't prepared…"* sits post-STOP,
+  unreachable — cut/wait-state residue); HOSPITAL `SET 05=FA` collides with
+  TRAINING `F7 05` (same global array → a hospital visit would skip the
+  Jenner crush; intent OPEN); `0xD310` byte (`D30C[4]`) vs memory-map's word
+  "world map active flag" alias audit OPEN (8 byte-readers `es:[0D310]`
+  consistent with invasion flag; no word access located).
 
 **E9 operand = specialty preset (S1 follow-up, 2026-11-04).** `fn11B8_0D58` takes
 the game-`E9` operand at `[BP+6]` and writes `C618[slot·0x11 + handler] = 3`
