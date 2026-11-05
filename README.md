@@ -45,8 +45,8 @@ Legend: **✅** true / done · **⚠️** partial, approximate, or with silent g
 | System | Reads original files at runtime | Behaviour matches the original | Validation |
 |---|---|---|---|
 | BLD decrypt + cipher text | ✅ `BldLoader.cs` | ✅ (text) | ✅ round-trip BLD↔JSON byte-identical (`tools/bld`) |
-| BLD opcode interpreter (28 slots 0xE4–0xFF) | ✅ | ⚠️ partial | ❓ never played end-to-end; operand sizes fixed (EB/EC/F6/F7); all slots handled (no silent drop) |
-| `Fn1CD3` dispatch (47 cases) | ✅ | ⚠️ partial | ❓ implemented from decomp; several cases are approximations |
+| BLD opcode interpreter (28 slots 0xE4–0xFF) | ✅ | ⚠️ partial | ❓ never played end-to-end; operand sizes fixed (EB/EC/F6/F7 **and ED: 4 bytes idx/thresh/LE-target, match→jump**); all slots handled (no silent drop) |
+| `Fn1CD3` dispatch (47 cases) | ✅ | ⚠️ partial | ❓ implemented from decomp; several cases are approximations; **known-wrong: `0x23` is arena/room combat setup (`1CD3:1062` → `fn0FDC_0629(8)`), not new-game init — the rebuild's `NewGameInit` would wipe a run if an arena bout fires it; `ED` UnitCheckLoop consumes 2 bytes instead of 4 and skips the skill check + jump** |
 | MTP map header/tiles | ✅ `MapLoader.cs` / `LocalMapView.cs` | ✅ (structure) | ⚠️ layout decoded, not diffed frame-by-frame |
 | ANM animation (XOR-delta RLE) | ✅ runtime, PNG fallback | ⚠️ | ❓; **repo has no ANM spritesheets** (`Assets/Animations/` empty) |
 | ICN/CMP tiles | ❌ (pre-converted) | — | `TileManager` loads BMP; **`Assets/Tilesets/` empty** |
@@ -55,7 +55,7 @@ Legend: **✅** true / done · **⚠️** partial, approximate, or with silent g
 | Combat (to-hit, damage, AI, heat, ammo, fog) | — (own logic) | ❌ approximate | ❌ RNG/formulas **never diffed** against the original |
 | Viewport / screen layout | — | ⚠️ approximate | ❓ no canonical viewport struct located |
 | Sound / music | ❌ | ❌ | ❌ format undecoded |
-| Map→BLD trigger mapping | ⚠️ partial | ❓ | tile-property table + `[0x5460]:0x4602` translation **not decoded** |
+| Map→BLD trigger mapping | ✅ decoded | ✅ (`[0x5460]:0x4602` + building-position tables → MTP name list; `docs/formats/map-bld-triggers.md`) | ⚠️ entrances hand-verified only on MAP1 so far |
 
 ### What the rebuild can do today
 - Boot the title/startup sequence and the local-map + world-map views.
@@ -95,24 +95,18 @@ These are the *real* blockers; the roadmap in §6 is gated on them.
 1. **Byte-exact combat.** RNG, initiative/turn order, to-hit modifiers, hit-location table, cluster
    resolution, heat, ammo explosion, AI target selection — currently *inspired by* the disassembly,
    never diffed. (`docs/combat-system.md`)
-2. **Not-decompiled segments.** Combat/movement code in segments `19EF` / `1000` is missing from the
-   Reko output; those routines must be recovered. (`docs/UNVERIFIED_DISCOVERIES.md` §7)
-3. **Story-state semantics.** `b0057` (0/1/2) and neighbours `b0055/b0056/b0058` are *inferred*;
-   property IDs `0x1C–0x23` unmapped. (§5)
-4. **Map→BLD trigger mapping.** Tile property table (`0x32C6`) + translation table
-   (`[0x5460]:0x4602`) not decoded; entrances are currently found by hand-walking the map
-   (Citadel `(34,10)`, ComStar `(51,10)` on the start map). (`docs/context.md`)
+2. ~~Not-decompiled segments.~~ **Recovered.** Combat/movement segments `19EF` / `1000` live in `reko/gencode/` (23 files from the old Spice86 codegen, excluded from compilation) plus a fresh regeneration in `reko/gencode-current/`; function map in `docs/engine/segments-19ef-1000.md`. (`docs/UNVERIFIED_DISCOVERIES.md` §7)
+3. **Story-state semantics.** `b0057` (0/1/2) and neighbours `b0055/b0056/b0058` are *pinned to code* (`fn1631_11AB`); `D30C` array semantics substantially mapped (training/invasion, traitor, uniform, garage, video-store, hut, arena flags — `docs/story/story-system.md` §17.5/§17.11). Property IDs `0x1C–0x23` unmapped. (§5)
+4. **Map→BLD trigger mapping.** ~~Tile property table (`0x32C6`) + translation table (`[0x5460]:0x4602`) not decoded~~ **Decoded** (`docs/formats/map-bld-triggers.md`); entrances hand-verified on MAP1 so far (Citadel `(34,10)`, ComStar `(51,10)`). (`docs/context.md`)
 5. **Viewport model.** No canonical viewport struct found; the seg-`0x246C` config struct is only
    partly mapped; push/pop semantics unknown. (`docs/engine/viewport.md`)
-6. **Tile properties / collision.** Which bits mean water/wall; which routine reads `0x32C6` for
-   movement. (§2)
+6. **Tile properties / collision.** ~~Which bits mean water/wall; which routine reads `0x32C6` for movement~~ **Closed (C9):** one property byte, passability = `prop < per-scene gate t0150`; all `0x32C6` readers enumerated (to-hit +1, `0xFF` gates, pathfinding scan) — **no per-terrain movement cost exists** (MP decrements are fixed step costs). (§2)
 7. **Save format round-trip.** Parser exists; a real `GAME*` load→save→compare has not been done.
-8. **Cadet economy & day cycle.** Allowance tick, stop threshold, barracks sleep, daily-mission gate
-   — mechanic observed, **code not located**. (`docs/story/story-system.md`)
-9. **BLD opcode gaps.** Which opcodes actually occur across the 26 files, and which the interpreter
-   silently skips. (`BldInterpreter.cs` default branch)
+8. **Cadet economy & day cycle.** Allowance tick (+15 iff wealth < 50, `D323`-gated), wealth-cap stop, holdings growth — **mechanic decoded + live-validated 2026-10-14** (`docs/economy.md`); fee/tick isolation + finance-block source tables still open. (`docs/story/story-system.md`)
+9. **BLD opcode gaps.** ~~Which opcodes actually occur across the 26 files, and which the interpreter
+   silently skips~~ **Covered (B8):** 27/28 slots observed (`tools/bld/opcode_coverage.py`), only `0xE7` unemitted; operand sizes corrected (EB/EC/F6/F7 **and ED**). (`BldInterpreter.cs` default branch)
 10. **Sound/music format.** Entirely undecoded.
-11. **World-map data location.** Where tile/map data is loaded from (segment `2A02` vs elsewhere). (§1)
+11. **World-map data location.** Loaders mapped (E4: title `BTTLTECH←fn0800_4621`, combat/local `MAP15←fn135D_055A via 1F3D:0814` — `docs/formats/file-formats.md`); segment-`2A02`-vs-elsewhere wording retired.
 
 ---
 
@@ -154,10 +148,10 @@ Each gate is a *verification*, not a feature.
 - No new "✅" without a verification artifact (trace, diff, or byte-compare).
 
 ### Track 1 — Close the RE mysteries (§4, priority order)
-1. Decompile/annotate segments `19EF`/`1000` (combat/movement). ← *unblocks 2*
+1. ~~Decompile/annotate segments `19EF`/`1000` (combat/movement).~~ ✅ **Recovered** (`reko/gencode/` + `gencode-current/`, map in `docs/engine/segments-19ef-1000.md`).
 2. Diff combat formulas/RNG against emulator traces (byte-exact tables). ← *unblocks Track 3*
-3. Decode the map→BLD trigger table so entrances are data-driven, not hand-found.
-4. Locate the cadet economy / day-cycle code.
+3. ~~Decode the map→BLD trigger table so entrances are data-driven, not hand-found.~~ ✅ **Decoded** (`docs/formats/map-bld-triggers.md`).
+4. ~~Locate the cadet economy / day-cycle code.~~ 🟡 **Decoded + live-validated** (`docs/economy.md`); fee/tick isolation open.
 5. Resolve viewport struct + `w4FBC`/push-pop; finish tile-property bits.
 6. Verify save round-trip against real `GAME*` files.
 
