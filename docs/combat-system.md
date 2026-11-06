@@ -2891,8 +2891,7 @@ every selection while armed). Note: the walkthrough's *"something's not right"*
 EXE; the nervous-flavor lines in STORY_TEXT are uniform-related, S2).
 
 **Resolution** (post-combat wrap-up in `fn183B_000A`, `183B:08A0`–`0CDB`), gated on
-`[0x14A]≠0` (combat) **and** `D333≠0` **and** `[0x55FE]:0x374A≠0` (segment aliasing
-of the `374A` writers unconfirmed — OPEN micro-item):
+`[0x14A]≠0` (combat) **and** `D333≠0` **and** `[0x55FE]:0x374A≠0`:
 - `C620[traitor]==8` (unlinked) → **observed/interrogation path** (`08FF`):
   `0x34E9` *"You watched …"* + name + `0x34F6/0x3510/0x3555` (*"the Dracos didn't
   shoot at him… Rex's interrogation, which involved fists…"*) + `0x358E`
@@ -2900,11 +2899,28 @@ of the `374A` writers unconfirmed — OPEN micro-item):
   (`0xFFFF`).
 - Else → **in-battle turn path** (`09AD`, per story slot with `C79D==D331`):
   name + `0x35D1` (*"tried to turn and fire on you!…"*) + `0x3610`
-  (*"…involved destroying the Mech he was piloting"*); sabotage sub-variant
-  strings nearby (`0x3D994`: *"tried to sabotage the Mech… threw the
-  doublecrosser out… stepped on him"* — exact sub-branch conditions OPEN).
+  (*"…involved destroying the Mech he was piloting"*).
 - Cleanup (`183B:0Cxx`): `C614[traitor]=0xFF`, positions `0xFFFF`, `D333=0`,
   `D330=0x7F` (encounter rate restored).
+
+**Live-verified 2026-11-06 (mid-battle sabotage vs post-combat gate):**
+mid-battle sabotage needs **only `0x374A≠0`** — staged `D333=1, 0x374A=1` on clean
+GAME5 (`D330-333=7f 02 01 00`, buff 15s at slot+0x36) fired round 1 and again next
+battle (repeatable, flags NOT consumed: still `01 01` after). Template (DS=0x3858):
+`0x37B8` *"knew you were suspicious of him, and he tried to"* + `0x37FD` *"he was
+riding in. He was a Kurita double agent!"* + `0x37A9/0x37C7/0x3883/0x3891`
+(*doublecrosser / sabotage / accidentally / stepped on him*). Observed with
+Russ then Northwest as traitor, Jason as hero (*threw the doublecrosser out…
+stepped on him*); traitor removed from roster after. `reko/gencode-combat/`
+(328 fns) captures the branch at `11B8:08BE–0C48` (`0x37B8` @`0C36`, `0x37FD`
+@`0C43`). **Elude skips the wrap-up** (flags unconsumed). Arm path:
+`fn0DAB_18E8` sets `0x374A=1` when `D333≠0 && D331==wArg04-4 && wArg06≠0` after
+printing `DS:0x1222` (*looks very suspicious*); clear at load `017D:354D`;
+file writers `C7 06 4A 37` at `0x6DF6/0xA884/0x1029D` (1/1/1, plus clear at
+`0x694E`). `Allocate` gate is `fn0800_4D57`: 9 bytes `ES:0x7A4` `0x80`-test
+(live `9d 9e 9f 3e 3c 26 3f 39 27` — pause + clear to `0x80`-free to open).
+Cursor scale: 1 raw (`ES:0xA44B/D`, seg `[0x53C8]=0x1DE9`) = 1 tile.
+Reload verified via `0x42` canary (GAME5 `md5 471b7840` unchanged, RAM-only).
 This matches the walkthrough beat-for-beat (turn in first battle, "resolve
 itself", Rex's fists). **Unsupported in code:** single-copy character versions
 (EXE-build archaeology, out of scope). Shop/NPC-service refusal while the agent

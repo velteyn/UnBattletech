@@ -857,10 +857,12 @@ or walkthrough-imprecise); garage parking fees (S7).
   your own skills"* text is linearly dead (unreachable FC).
 - **Code readers of `D333`** (all `cmp byte …0D333h,0`): pilot-assign tell
   `fn1467_0002` (the `0x279D` unease line, S1), status path `fn0DAB_18E8`
-  (display effect OPEN), shop path `fn0800_378D` (effect OPEN), AI targeting
+  (arms `w374A=1` when `D331==wArg04-4 && wArg06≠0`, prints `0x1222` — live-verified
+  2026-11-06), shop path `fn0800_378D` (effect OPEN), AI targeting
   `fn1631_03AB` ×2 (second site writes the combat `0x3800` table — enemies
   spare the traitor's slot, matching *"the Dracos didn't shoot at him"*),
-  post-combat gate `fn183B_000A` (S1 resolution).
+  post-combat gate `fn183B_000A` (S1 resolution; mid-battle sabotage itself
+  needs only `w374A≠0`, repeatable, flags unconsumed).
 - **Theft (JAIL impound yard → Stinger)**: jailbreak branch *"slip out back to
   the impound yard"* → `E4`-bullets → `F5 40` (case `0x28` FINALIZE) →
   `F7 28→0x10C4` → *"You use the newly-acquired **Stinger**… medium laser…

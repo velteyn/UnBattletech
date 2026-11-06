@@ -130,8 +130,11 @@ All offsets are relative to the data segment base (`DS` register, typically segm
 | `0x0D325` | 1 | `bD325` | State byte |
 | `0x0D326` | 1 | `bD326` | State byte |
 | `0x0D32F` | 1 | `bD32F` | State byte |
-| `0x0D330` | 1 | `bD330` | **Encounter probability mask** — `0x1F`=1/32, `0x7F`=1/128 frames |
-| `0x0D331` | 1 | `bD331` | Encounter state byte |
+| `0x0D330` | 1 | `bD330` | **Encounter probability mask** — `0x1F`=1/32, `0x7F`=1/128 frames (0x1F while traitor aboard) |
+| `0x0D331` | 1 | `bD331` | **Traitor pilot slot** (recruit slot index; GAME5 `0x02`) |
+| `0x0D332` | 1 | `bD332` | **Traitor armed** (write-only, 1 = aboard) |
+| `0x0D333` | 1 | `bD333` | **Traitor latched** (1 = aboard; cleared post-combat `183B:0Cxx`) |
+| `0x0374A` | 2 | `w374A` | **Traitor event armed** (1 = sabotage/resolution eligible; cleared at load `017D:354D`, set `0DAB_18E8`/`0728:19xx`/`1467` assign paths) |
 | `0x0D334` | 1 | `bD334` | Encounter timer / state |
 | `0x0D335` | 1 | `bD335` | **Encounter cooldown timer** (0x3F=63 frames prevents re-encounter) |
 | `0x0D343` | 1 | `bD343` | Compound movement timer 1 |
