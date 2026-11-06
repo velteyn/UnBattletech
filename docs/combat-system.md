@@ -2920,6 +2920,30 @@ Rex's mech lost to a Med Laser CT crit through 15-armor (crits bypass armor,
 consistent with the 3-crit kill rule). OPEN R1b: exact `D333`-clearer round/site
 (re-arm `D333` watchpoint + single `(1,0)` round — round-3 survival vs round-4
 clear leaves mid-round-Event-A vs delayed-bookkeeping vs read-race open).
+**R2 OBSERVED 2026-11-06 (forced `09C8`-match — first-ever turn text):** fresh
+GAME5: `C620[D331]=C620[2]=0x00` → slot 0, but natural `C79D[0]=0x00≠2`, so PUT
+`C79D[0]=0x02` + `D333=1` + `374A=0x0001` at the encounter prompt (all verified
+pre-BF and intact at tactical map). Round 1 printed the never-before-seen turn
+text verbatim: *"Russ tried to turn and fire on you! He's a Kurita double
+agent! Russ was able to stop him, but in the process he destroyed the Mech's
+cockpit. He was able to eject in time, but the doublecrossing pilot didn't."*
+Both names render "Russ": traitor name = `C614[D331]`, hero name =
+`C614[[BP-0xE]]` with natural `C79E[0]=0x02` — same record (staging artifact;
+naturally the hero would be the victim-slot pilot). Pre-ack read: `D333=1`
+(text precedes the latch clear); post-ack: `D333=0` + `C724[0]=0xFF` —
+epilogue runs **after** display+wait-key (`18BA:086A/0259`), confirming the
+text-then-clear order and explaining all earlier "survival" reads. Round 2 with
+`D333=0`: **quiet** (no Event A, no Gate B) — both require `D333`. Note
+`C724[0]=0xFF` side effect (C4-block; `C724` is the S3 rubble/hands byte).
+Name-source correction: displayed saboteur varies per firing (Russ R3,
+Northwest R4) while `D331=2` is constant — Event A/09AD names do **not** simply
+equal the `D331` pilot; source mapping OPEN. Jason's unit vanished in round 2
+with **no death text** (menu continued with Rex; silent removal vs missed
+dialog OPEN). Post-session input jam: menu unresponsive (BDA 1 pending entry
+unconsumed 90s+, game executing `19FC:163B` cursor-blit + BIOS idle; only INT16
+site in EXE is file `0x1C787`); possible trigger Jason-death FX hang
+(retrace/PIT-wait family) — hypothesis only. Next session reboots from GAME5
+(untouched).
 **Background (two sabotage sites — Event A vs Gate B):**
 staged `D333=1, 0x374A=1` on clean GAME5 (`D330-333=7f 02 01 00`, buff 15s at
 slot+0x36) fired sabotage text round 1 with `D333` **surviving** (`01` after) —
