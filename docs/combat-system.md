@@ -2903,14 +2903,30 @@ EXE; the nervous-flavor lines in STORY_TEXT are uniform-related, S2).
 - Cleanup (`183B:0Cxx`): `C614[traitor]=0xFF`, positions `0xFFFF`, `D333=0`,
   `D330=0x7F` (encounter rate restored).
 
-**Live-verified 2026-11-06 (two sabotage sites — Event A vs Gate B):**
+**R1 CLOSED 2026-11-06 (Event A gates on `D333` only — isolation battles):**
+fresh GAME5 reload (traitor aboard: `D331=2, D332=1`, Russ present) + pre-battle
+armor buffs. Test 1 (`D333=0`, `374A=1` exact word): two full rounds, **silent** —
+`D333` necessary. Test 2 true (`D333=1`, `374A` word `0x0000` both bytes):
+Event A **fires** ("Russ knew you were suspicious…", round 4; "Northwest…"
+refired next observation — name varies per firing, source mapping OPEN) —
+`D333` sufficient, `374A` **irrelevant to Event A** (solely Gate B's
+co-condition). Old "374A-only" claim fully refuted. Notes: Gate B tests a
+**word** (`cmp word`, file `0x14063`) — natural `374A` drift leaves high byte
+set (`0x0605` observed during map walk) which also satisfies it; stage both
+bytes (low-byte-only staging leaves word nonzero — confounded the first Test 2
+attempt). `374A` drift writer uncaught (watchpoint armed after the fact; stable
+mid-battle; minor OPEN). Host-side PUTs do **not** trip emulator watchpoints.
+Rex's mech lost to a Med Laser CT crit through 15-armor (crits bypass armor,
+consistent with the 3-crit kill rule). OPEN R1b: exact `D333`-clearer round/site
+(re-arm `D333` watchpoint + single `(1,0)` round — round-3 survival vs round-4
+clear leaves mid-round-Event-A vs delayed-bookkeeping vs read-race open).
+**Background (two sabotage sites — Event A vs Gate B):**
 staged `D333=1, 0x374A=1` on clean GAME5 (`D330-333=7f 02 01 00`, buff 15s at
 slot+0x36) fired sabotage text round 1 with `D333` **surviving** (`01` after) —
 and a *second*, visually identical text at the next round wrap-up **consumed**
-the latch (`D333=0`, `D330=0x7F`). Correction to the earlier "374A-only" claim:
-Event A has only ever been observed with **both** flags set (natural GAME5 has
-`D333=0, 374A=0` and never fired in 6+ battles) — single-flag isolation is
-OPEN (recipe R1 below). Template (DS=0x3858): `0x37B8` *"knew you were
+the latch (`D333=0`, `D330=0x7F`). Superseded note: Event A was first observed
+only with both flags set (natural GAME5 has `D333=0, 374A=0` and never fired in
+6+ battles) — now closed by R1 above (D333-only). Template (DS=0x3858): `0x37B8` *"knew you were
 suspicious of him, and he tried to"* + `0x37FD` *"he was riding in. He was a
 Kurita double agent!"* + `0x37A9/0x37C7/0x3883/0x3891`
 (*doublecrosser / sabotage / accidentally / stepped on him*). Observed with
