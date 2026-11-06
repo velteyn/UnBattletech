@@ -2903,45 +2903,52 @@ EXE; the nervous-flavor lines in STORY_TEXT are uniform-related, S2).
 - Cleanup (`183B:0Cxx`): `C614[traitor]=0xFF`, positions `0xFFFF`, `D333=0`,
   `D330=0x7F` (encounter rate restored).
 
-**Live-verified 2026-11-06 (mid-battle sabotage vs post-combat gate):**
-mid-battle sabotage needs **only `0x374A≠0`** — staged `D333=1, 0x374A=1` on clean
-GAME5 (`D330-333=7f 02 01 00`, buff 15s at slot+0x36) fired round 1 and again next
-battle (repeatable, flags NOT consumed: still `01 01` after). Template (DS=0x3858):
-`0x37B8` *"knew you were suspicious of him, and he tried to"* + `0x37FD` *"he was
-riding in. He was a Kurita double agent!"* + `0x37A9/0x37C7/0x3883/0x3891`
+**Live-verified 2026-11-06 (two sabotage sites — Event A vs Gate B):**
+staged `D333=1, 0x374A=1` on clean GAME5 (`D330-333=7f 02 01 00`, buff 15s at
+slot+0x36) fired sabotage text round 1 with `D333` **surviving** (`01` after) —
+and a *second*, visually identical text at the next round wrap-up **consumed**
+the latch (`D333=0`, `D330=0x7F`). Correction to the earlier "374A-only" claim:
+Event A has only ever been observed with **both** flags set (natural GAME5 has
+`D333=0, 374A=0` and never fired in 6+ battles) — single-flag isolation is
+OPEN (recipe R1 below). Template (DS=0x3858): `0x37B8` *"knew you were
+suspicious of him, and he tried to"* + `0x37FD` *"he was riding in. He was a
+Kurita double agent!"* + `0x37A9/0x37C7/0x3883/0x3891`
 (*doublecrosser / sabotage / accidentally / stepped on him*). Observed with
 Russ then Northwest as traitor, Jason as hero (*threw the doublecrosser out…
-stepped on him*); traitor removed from roster after. `reko/gencode-combat/`
-(328 fns) captures the branch at `11B8:08BE–0C48` (`0x37B8` @`0C36`, `0x37FD`
-@`0C43`). **Elude skips the wrap-up** (flags unconsumed). Arm path:
-`fn0DAB_18E8` sets `0x374A=1` when `D333≠0 && D331==wArg04-4 && wArg06≠0` after
-printing `DS:0x1222` (*looks very suspicious*); clear at load `017D:354D`;
-file writers `C7 06 4A 37` at `0x6DF6/0xA884/0x1029D` (1/1/1, plus clear at
-`0x694E`). `Allocate` gate is `fn0800_4D57`: 9 bytes `ES:0x7A4` `0x80`-test
+stepped on him*); traitor removed from roster after Event A. **Elude skips the
+wrap-up** (flags unconsumed). Arm path: `fn0DAB_18E8` sets `0x374A=1` when
+`D333≠0 && D331==wArg04-4 && wArg06≠0` after printing `DS:0x1222` (*looks very
+suspicious*); clear at load `017D:354D`; file writers `C7 06 4A 37` at
+`0x6DF6/0xA884/0x1029D` (1/1/1, plus clear at `0x694E`). `Allocate` gate is
+`fn0800_4D57`: 9 bytes `ES:0x7A4` `0x80`-test
 (live `9d 9e 9f 3e 3c 26 3f 39 27` — pause + clear to `0x80`-free to open).
 Cursor scale: 1 raw (`ES:0xA44B/D`, seg `[0x53C8]=0x1DE9`) = 1 tile.
 Reload verified via `0x42` canary (GAME5 `md5 471b7840` unchanged, RAM-only).
 
-**Live win 2026-11-06 (wrap-up gate stays silent — latch-consumption model):**
-full manual win (Jason 2 heavies + Rex computer; Rex mech lost → fought on foot
-as unit 5; final STINGER kill by Jason LargeLaser, run-down chase 538→546) with
-`D333=1, 374A=1` staged pre-battle → **no `08FF/09AD` text** (scavenge + 0cr +
-return as usual). Cause: `D333` was already `00` at kill time (pre-battle
-readback was `01`) — something mid-battle clears it, and the only *static*
-`D333` writer is the resolution epilogue itself (`0CD1`). Model: the mid-battle
-sabotage event **consumes the latch** (`D333=0`, `374A` survives), so sabotage
-and post-combat resolution are **alternatives** — the gate can only fire when
-sabotage did *not* run (traitor aboard but no mid-battle event). OPEN live:
-catch the clearer with a `MEMORY_WRITE` watchpoint on story `D333` in a staged
-battle. Gate-window note: post-kill staging is too late (check runs at wrap-up
-start); flags must survive the whole battle. Correction to above: `D333` is
-consumed mid-battle (not "unconsumed" — only `374A` survives).
-**09AD loop decoded** (static, dump): `[BP-68]=D331`; `C620` stride `0x11`
-(`0x11*D331`, bases `0xC620`/`0xC614` via `0x10000-14816/14828`); `==8` → `08FF`,
-else `09AD` scans `C79D[slot]==D331` (`SI=0x7D*[BP-2]`, base `0xC79D` via
-`0x10000-14435`); epilogue `0CA1–0CD5`: `C614`-field `=0xFF`, unit pos `0`,
-`D333=0`, `D330=0x7F`. Segments verified live (`[0x55D4]=[0x55FE]=0x2A0F` —
-no aliasing issue; `w014A=1` at return).
+**Gate B mapped end-to-end 2026-11-06 (r2 + live watchpoint):** the
+post-combat check `fn183B_000A` `11B8:08A0` (file `0x14050`: `014A≠0` →
+`D333≠0` → `[0x55FE]:0x374A≠0`, else jmp `0CDB`/file `0x1448B`) runs at **every
+round wrap-up**, not just victory. `[BP-68]=D331`, `[BP-2]=C620[D331]`
+(stride `0x11`): `==8` → **08FF interrogation** (file `0x140AF`: `0x34E9` *"You
+watched…"* + name + `0x34F6/0x3510/0x3555` + `0x358E`, pos-clear `0xFFFF`);
+else **09AD**: `SI=0x7D*[BP-2]`, if `C79D[slot]==D331` → name + `0x35D1`
+(*"tried to turn and fire on you!"*) + `0x3610/0x3653` (or name2 +
+`0x3666/0x36A9`, `C620=8`, pos-copy) → `0xC4`-cleanup; else **0BD4 no-match**:
+`C79E=0xFF`, FX `27C9`, name + **`0x37B8/0x37FD`** + name2 + `0x3830/0x387A`
+— the sabotage template again, **visually identical to Event A** (this is why
+"repeatable sabotage" and the "silent gate" were the same text twice). All
+paths converge on the epilogue (`0CA1/0CA6`, `C614[D331]=0xFF`, unit pos `0`,
+`D333=0` @`0CD1`/file `0x14481`, `D330=0x7F`). Live proof: `MEMORY_WRITE`
+watchpoint on story `D333` (linear `226339`) tripped with `CS:IP=11B8:0CDB`
+— a few insns past the `0CD1` write (breakpoint latency note) — with no
+visible screen change; dialog auto-continued to the tactical map on resume.
+A full manual win earlier stayed "silent" for the same reason (0BD4 path, same
+strings). The `09C8`-match (`0x35D1` turn) path has **never been observed**
+(requires `C79D[slot]==D331` with the traitor still linked — OPEN, recipe R2).
+Segments verified live (`[0x55D4]=[0x55FE]=[0x5412]=0x2A0F`, `w014A=1`).
+Watchpoint recipe: `add_breakpoint(MEMORY_WRITE, 226339)` while paused,
+resume, walk into battle, poll `/api/status` for `paused:true` + `CS:IP`,
+then `read_disassembly`/`read_cpu_state` to identify the writer.
 This matches the walkthrough beat-for-beat (turn in first battle, "resolve
 itself", Rex's fists). **Unsupported in code:** single-copy character versions
 (EXE-build archaeology, out of scope). Shop/NPC-service refusal while the agent
