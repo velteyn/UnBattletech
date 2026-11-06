@@ -2920,6 +2920,12 @@ Rex's mech lost to a Med Laser CT crit through 15-armor (crits bypass armor,
 consistent with the 3-crit kill rule). OPEN R1b: exact `D333`-clearer round/site
 (re-arm `D333` watchpoint + single `(1,0)` round — round-3 survival vs round-4
 clear leaves mid-round-Event-A vs delayed-bookkeeping vs read-race open).
+**R1b ANSWERED (inference, consistent on all observations):** the round-3
+"survival" read raced pre-wrap-up — the ack that dismissed the
+visually-identical text *was* the Gate B display+wait, and the post-ack read
+(`D333=00`) is the epilogue having run. Every round wrap-up with both flags
+runs Gate B (no-match → same-looking text → ack → clear). No separate clearer
+needed; re-arm experiment only if a counterexample appears.
 **R2 OBSERVED 2026-11-06 (forced `09C8`-match — first-ever turn text):** fresh
 GAME5: `C620[D331]=C620[2]=0x00` → slot 0, but natural `C79D[0]=0x00≠2`, so PUT
 `C79D[0]=0x02` + `D333=1` + `374A=0x0001` at the encounter prompt (all verified
