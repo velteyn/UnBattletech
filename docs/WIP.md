@@ -4,6 +4,8 @@
 > interruptions. Newest section first. Mark items `✅ done` when closed (with the commit/file).
 > Last updated: 2026-11-06.
 
+**Mini-session 2026-11-06 (S1 traitor TURN LIVE + wrap-up silence → latch model):** won a full manual battle with `D333=1, w374A=1` staged (Jason heavies + Rex computer; Rex mech lost → foot unit 5; STINGER run down 538→546, LargeLaser kill) → **no `08FF/09AD` text** (scavenge + 0cr + return). `D333` was `00` at kill time (staged `01` pre-battle): mid-battle sabotage **consumes the latch** (only static writer is epilogue `0CD1`) — sabotage vs post-combat are alternatives. `09AD` loop decoded statically (C620 stride `0x11`, C79D scan, epilogue `0CA1–0CD5`). OPEN: watchpoint the clearer. Docs updated (`combat-system.md` §25.6.11).
+
 **Mini-session 2026-11-06 (S1 traitor turn LIVE + docs):** staged `D333=1, w374A=1` on clean GAME5 → mid-battle sabotage fired round 1 (*Northwest knew you were suspicious… Kurita double agent… Jason threw him out… stepped on him* — second traitor name after Russ) and again next battle (repeatable, flags `01 01` unconsumed). Distinction banked: sabotage needs only `w374A`; post-combat `08FF/09AD` needs `014A+D333+374A`; elude skips wrap-up. Arm = `0DAB_18E8` (`0x1222` + `374A=1`), writers at file `0x6DF6/0xA884/0x1029D`, clear `017D:354D`; strings `0x37B8/0x37FD` in 328-fn `reko/gencode-combat/` (`11B8:08BE–0C48`). Allocate gate = `0800_4D57` 9-byte `ES:0x7A4` `0x80` scan (pause + clear to open); cursor 1 raw = 1 tile. Reload canary `0x42` verified (GAME5 `471b7840` unchanged). Docs updated (`combat-system.md` §25.6.11, `story-system.md` §17.11g, `memory-map.md` D331–D333/w374A).
 
 **Mini-session 2026-11-04 (S1 close-out):** docs-first, static only. Closed **S1** —

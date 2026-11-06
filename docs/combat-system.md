@@ -2921,6 +2921,27 @@ file writers `C7 06 4A 37` at `0x6DF6/0xA884/0x1029D` (1/1/1, plus clear at
 (live `9d 9e 9f 3e 3c 26 3f 39 27` — pause + clear to `0x80`-free to open).
 Cursor scale: 1 raw (`ES:0xA44B/D`, seg `[0x53C8]=0x1DE9`) = 1 tile.
 Reload verified via `0x42` canary (GAME5 `md5 471b7840` unchanged, RAM-only).
+
+**Live win 2026-11-06 (wrap-up gate stays silent — latch-consumption model):**
+full manual win (Jason 2 heavies + Rex computer; Rex mech lost → fought on foot
+as unit 5; final STINGER kill by Jason LargeLaser, run-down chase 538→546) with
+`D333=1, 374A=1` staged pre-battle → **no `08FF/09AD` text** (scavenge + 0cr +
+return as usual). Cause: `D333` was already `00` at kill time (pre-battle
+readback was `01`) — something mid-battle clears it, and the only *static*
+`D333` writer is the resolution epilogue itself (`0CD1`). Model: the mid-battle
+sabotage event **consumes the latch** (`D333=0`, `374A` survives), so sabotage
+and post-combat resolution are **alternatives** — the gate can only fire when
+sabotage did *not* run (traitor aboard but no mid-battle event). OPEN live:
+catch the clearer with a `MEMORY_WRITE` watchpoint on story `D333` in a staged
+battle. Gate-window note: post-kill staging is too late (check runs at wrap-up
+start); flags must survive the whole battle. Correction to above: `D333` is
+consumed mid-battle (not "unconsumed" — only `374A` survives).
+**09AD loop decoded** (static, dump): `[BP-68]=D331`; `C620` stride `0x11`
+(`0x11*D331`, bases `0xC620`/`0xC614` via `0x10000-14816/14828`); `==8` → `08FF`,
+else `09AD` scans `C79D[slot]==D331` (`SI=0x7D*[BP-2]`, base `0xC79D` via
+`0x10000-14435`); epilogue `0CA1–0CD5`: `C614`-field `=0xFF`, unit pos `0`,
+`D333=0`, `D330=0x7F`. Segments verified live (`[0x55D4]=[0x55FE]=0x2A0F` —
+no aliasing issue; `w014A=1` at return).
 This matches the walkthrough beat-for-beat (turn in first battle, "resolve
 itself", Rex's fists). **Unsupported in code:** single-copy character versions
 (EXE-build archaeology, out of scope). Shop/NPC-service refusal while the agent
