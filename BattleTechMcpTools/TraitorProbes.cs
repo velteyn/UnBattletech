@@ -95,13 +95,12 @@ public static class TraitorProbes {
         // message. Temporarily unfiltered to discover kill-print AX values.
         // Name prints pass seg:off on the stack, so also log [SP+4]/[SP+6].
         add(0x17D3, 0x03F5, "probe_print", () => {
-            ushort strOff = cpu.AX;
-            ushort seg = cpu.DS;
-            if (strOff == 0) {
-                // Combat-message convention: AX=0, real string seg:off on stack.
-                strOff = stk(4);
-                seg = stk(6);
-            }
+            // String is ALWAYS at [SP+4]:[SP+6]; AX sometimes mirrors the
+            // offset (dialog calls), sometimes 0 (combat messages), and can
+            // even mismatch the segment (0FAE:20A1: AX=0012 but text at
+            // 2A0F:0012, 3858:0012 is CRT garbage). Always read the stack.
+            ushort strOff = stk(4);
+            ushort seg = stk(6);
             string tag = strOff >= 0x3400 && strOff < 0x3900 ? "TRAITOR"
                 : strOff == 0x3EE7 || strOff == 0x3EDE || strOff == 0x41FC ? "KILL?"
                 : "other";

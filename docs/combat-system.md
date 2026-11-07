@@ -3015,12 +3015,27 @@ words; static listing confirms `mov AX,0x4314 / mov DX,0x2A0F / push DX,AX +
 the other convention (`AX=off`, stack identical — `AX==[SP+4]`, e.g.
 `3D3A/3A42/3A6F`); traitor set unchanged (`35D1/3666/36A9` via `AX`).
 The earlier "combat bypasses 03F5" verdict was a probe artifact (AX-only
-filter). Probe fixed: `AX==0` → read ID from stack (committed, takes effect
-next boot); `17BB` transit+guard merged (the dict `add()` overwrote the
+filter). Probe fixed twice: first `AX==0` → read ID from stack, then (this
+session) ALWAYS read `[SP+4]:[SP+6]` — `0FAE:20A1` proved AX can mismatch the
+segment (`AX=0012` but text at `2A0F:0012`; `3858:0012` is CRT garbage).
+`17BB` transit+guard merged (the dict `add()` overwrote the
 transit logger — transit logging was silently dead since the guard landed).
 Round flow this battle: R1 Med-Laser kill → match text → ack → `D333=0` →
-`38E0` "humans have fled" → `38FC` scuffle victory, 0cr. Round-2 mass-wipe
-mechanism still open (this battle ended R1).
+`38E0` "humans have fled" → `38FC` scuffle victory, 0cr.
+**Round-2 wipe CLOSED 2026-11-07 (group-flee, text understates):** unstaged
+battle (1 Mech + 6 humans, `D333=0` so no match) ran R1 (quiet player side —
+3 enemy `12C7` postfires vs Rex, "MachineGun…Hit Left Leg .Critical!",
+armor copy untouched) → R2 menu → Rex Med-Laser+SRM4 vs STINGER ("…Hit
+Left Arm .Critical!", `12C7 BX=C9B9`) → enemy counterattack destroys Rex's
+mech (`.Critical!` → `0EC0`-region `2B6D` ".Mech is destroyed!" +
+`2B81` ".Men eject!", crits bypass 15-armor) → `27C9 marker=0x81` →
+**one** `38BC` "Some of the enemy humans have fled!" — yet all 6 humans
+vanish (end state: Rex-on-foot unit 5 + STINGER only). So no single
+unit-wipe path exists: kills resolve individually (`2B6D/2B81`), and the
+morale event removes the whole human group while saying "some". The old
+9→2 was kills + one group-flee, not a mass-kill routine. Exact group-removal
+site (`1650:17D1` flee handler) unmapped — filed. Elude ("You have eluded
+your enemies!") skips wrap-up, returns to pre-battle tile.
 **Patch experiment INVALIDATED 2026-11-07 (never ran patched code):** the
 rebooted emulator was still the original `UNBTECH.exe` (running process
 verified via `/proc` cmdline; `UNBTECH_P1.exe` had been deleted before boot,
