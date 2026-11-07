@@ -2903,29 +2903,21 @@ EXE; the nervous-flavor lines in STORY_TEXT are uniform-related, S2).
 - Cleanup (`183B:0Cxx`): `C614[traitor]=0xFF`, positions `0xFFFF`, `D333=0`,
   `D330=0x7F` (encounter rate restored).
 
-**R1 CLOSED 2026-11-06 (Event A gates on `D333` only — isolation battles):**
-fresh GAME5 reload (traitor aboard: `D331=2, D332=1`, Russ present) + pre-battle
-armor buffs. Test 1 (`D333=0`, `374A=1` exact word): two full rounds, **silent** —
-`D333` necessary. Test 2 true (`D333=1`, `374A` word `0x0000` both bytes):
-Event A **fires** ("Russ knew you were suspicious…", round 4; "Northwest…"
-refired next observation — name varies per firing, source mapping OPEN) —
-`D333` sufficient, `374A` **irrelevant to Event A** (solely Gate B's
-co-condition). Old "374A-only" claim fully refuted. Notes: Gate B tests a
-**word** (`cmp word`, file `0x14063`) — natural `374A` drift leaves high byte
-set (`0x0605` observed during map walk) which also satisfies it; stage both
-bytes (low-byte-only staging leaves word nonzero — confounded the first Test 2
-attempt). `374A` drift writer uncaught (watchpoint armed after the fact; stable
-mid-battle; minor OPEN). Host-side PUTs do **not** trip emulator watchpoints.
-Rex's mech lost to a Med Laser CT crit through 15-armor (crits bypass armor,
-consistent with the 3-crit kill rule). OPEN R1b: exact `D333`-clearer round/site
-(re-arm `D333` watchpoint + single `(1,0)` round — round-3 survival vs round-4
-clear leaves mid-round-Event-A vs delayed-bookkeeping vs read-race open).
-**R1b ANSWERED (inference, consistent on all observations):** the round-3
-"survival" read raced pre-wrap-up — the ack that dismissed the
-visually-identical text *was* the Gate B display+wait, and the post-ack read
-(`D333=00`) is the epilogue having run. Every round wrap-up with both flags
-runs Gate B (no-match → same-looking text → ack → clear). No separate clearer
-needed; re-arm experiment only if a counterexample appears.
+**R1 CORRECTED 2026-11-07 (single-site Gate B; no Event A):** the
+"D333-only" conclusion was wrong — confounded by a `374A` high byte both
+times (only the low byte was ever PUT; natural drift leaves the word nonzero).
+Clean re-test, word-exact (`D333=1`, `374A` word `0x0000`, natural linkage):
+full round, **silent**, `D333` survives. Combined with Test 1 (`D333=0` →
+silent) the requirement is **both flags** — exactly Gate B's gate. No separate
+mid-round event exists: a file-wide search finds **exactly one** loader per
+sabotage/turn string (`0x37B8/0x37FD` @`0C36/0C43`, `0x35D1` @`09C8`,
+`0x34E9` @`08FF`), all inside Gate B. Every "sabotage" sighting was the 0BD4
+no-match output at round wrap-ups (visually identical across firings — the
+"repeatable" illusion); every "turn" sighting was the 09C8 match output.
+Elude skips wrap-up → flags survive.
+**R1b CLOSED (timing, not a separate clearer):** the "round-3 survival" read
+was pre-ack — the epilogue runs on ack, so `D333=1` pre-ack / `0` post-ack is
+the normal text-then-clear order.
 **R2 OBSERVED 2026-11-06 (forced `09C8`-match — first-ever turn text):** fresh
 GAME5: `C620[D331]=C620[2]=0x00` → slot 0, but natural `C79D[0]=0x00≠2`, so PUT
 `C79D[0]=0x02` + `D333=1` + `374A=0x0001` at the encounter prompt (all verified
@@ -2941,24 +2933,26 @@ epilogue runs **after** display+wait-key (`18BA:086A/0259`), confirming the
 text-then-clear order and explaining all earlier "survival" reads. Round 2 with
 `D333=0`: **quiet** (no Event A, no Gate B) — both require `D333`. Note
 `C724[0]=0xFF` side effect (C4-block; `C724` is the S3 rubble/hands byte).
-Name-source correction: displayed saboteur varies per firing (Russ R3,
-Northwest R4) while `D331=2` is constant — Event A/09AD names do **not** simply
-equal the `D331` pilot; source mapping OPEN. **Bug smell adjudicated 2026-11-07 (user prompt — real bug, mechanism
-confirmed):** the match (09C8) path wipes the ridden mech's unit entry
-(positions `0xFFFF` + `C79E/C724=0xFF`) but nothing it writes intersects the
-wrap-up scan's skip-checks (`0x32C6==0xFF` / `0x406A==0` / `0x3994`, file
-`0x140F0–0x140C0` region) nor unlinks turn order — the next cursor transit to
-that slot (`017D:17BB`, arrival-wait on cursor coords, **no timeout/counter in
-mapped loops**) never converges → hard hang (menu drawn, BDA pileup). The
-no-match (0BD4) path writes **no** positions (only `C79E=0xFF`, texts, same
-epilogue) — which is why every observed no-match battle continued normally and
-only the match case hangs. Natural reachability: requires traitor properly
-deployed + linked (`C79D[slot]==D331`) + battle continuing after the turn;
-walkthrough never hit it (Event A path doesn't wipe; matches likely ended
-battles fast). "Half-implemented" alternative not excluded — but the straight-
-line code takes the staged triple without validation, so even odd states
-shouldn't hang; the missing guard is a defect either way. Decisive natural
-test filed: Allocate the real traitor into a mech and win slowly (hard:
+Name note: displayed saboteur varied across firings (Russ, then Northwest)
+while `D331=2` stayed constant — the name follows the traitor record's current
+occupant (Russ removed from the roster after the first resolution); exact
+record↔pilot mapping OPEN. **Bug smell re-adjudicated 2026-11-07 (scan
+tolerates FFFF by design):** the wrap-up scan loop (`11B8:059B`, verified in
+`spice86dumpListing.asm`) EXPLICITLY handles wiped units — per slot it checks
+`0x406A==0` (skip), then `X==-1` / `Y==-1`, and on `0xFFFF` writes
+`[0x55E0]:[slot*2+0x406A]=0` (`11B8:05D2`) so all later passes skip the slot.
+So the match epilogue's `0xFFFF` writes are *expected* input to the next
+wrap-up, not a hang trigger — every continued battle in this whole
+investigation confirms it. The `17BB` arrival-wait still has no observed
+timeout, but no `FFFF` transit has ever been logged (guard armed, never
+fired). The unpatched-session jam is therefore NOT the scan: call site and
+target unknown (stack framing was uncertain; a very-long-but-finite transit
+was never excluded — `RawY` was sampled only once). Leading hypothesis stays
+input-path desync (mixed BDA + hub-port injection right before input died;
+BDA pileup while the game polls the controller), with
+turn-advance-to-wiped-unit as the alternate. Decisive if it reproduces:
+`RawY` sampling during the freeze + the guard's caller log. Decisive natural
+test still filed: Allocate the real traitor into a mech and win slowly (hard:
 Allocate gate + wilderness).
 **No-ANM verdict 2026-11-07 (user hypothesis tested, refuted):** full call
 inventory of the Gate B tail shows no animation/video/disk call — only text
@@ -2968,10 +2962,10 @@ post-fire `1465:0B18/1B7F/1C6E`; 0x3F-entry coord table, same routine the
 call sites total: boot `017D:3BC1`, combat `1650:1802`, here) + display-sync
 `18BA:0259` (ubiquitous, dozens of `017D` callers), and the memory epilogue.
 C11b's 16 ANM sites don't include `11B8:08A0–0CDB`. The game also does not end:
-combat continued normally post-event (round 2 executed, both sides acted, Jason
-lost in normal combat). The "animation" is just the standard map marker + text;
-the later input jam is unexplained (leading: Jason-death state vs tooling input
-stall — decisive test is a fresh reboot, filed for next session).
+combat continued normally post-event (round 2 executed; Jason's unit absent via
+the staged-linkage deployment effect, not combat). The "animation" is just the
+standard map marker + text; the unpatched-session input jam is unexplained
+(leading: input-path desync; turn-advance-to-wiped-unit alternate).
 **Divide-and-conquer probes LANDED 2026-11-07 (hooked, not patched):**
 new `BattleTechMcpTools/TraitorProbes.cs` wired into
 `BattleTechOverrideSupplier` registers permissive entry-hooks
