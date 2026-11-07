@@ -2943,13 +2943,18 @@ text-then-clear order and explaining all earlier "survival" reads. Round 2 with
 `C724[0]=0xFF` side effect (C4-block; `C724` is the S3 rubble/hands byte).
 Name-source correction: displayed saboteur varies per firing (Russ R3,
 Northwest R4) while `D331=2` is constant — Event A/09AD names do **not** simply
-equal the `D331` pilot; source mapping OPEN. Jason's unit vanished in round 2
-with **no death text** (menu continued with Rex; silent removal vs missed
-dialog OPEN). Post-session input jam: menu unresponsive (BDA 1 pending entry
-unconsumed 90s+, game executing `19FC:163B` cursor-blit + BIOS idle; only INT16
-site in EXE is file `0x1C787`); possible trigger Jason-death FX hang
-(retrace/PIT-wait family) — hypothesis only. Next session reboots from GAME5
-(untouched).
+equal the `D331` pilot; source mapping OPEN. **R2 hang root-caused (stack proof):** `read_stack` shows return address
+`0x17E0` (the `19FC:163B` call site inside `17BB`'s arrival-wait) with adjacent
+`0xFFFF, 0xFFFF` target words — the cursor transit to unit 0's wiped coords that
+never converges (menu drawn, BDA pileup, game "running"). Correction: Jason did
+**not** die in combat — the match epilogue wiped **unit slot 0** (positions
+`0xFFFF`, `C79E=0xFF`, `C724=0xFF`) because my forced linkage (`C79D[0]=2`)
+made slot 0 "the traitor's mech". Natural semantics confirmed by construction:
+the path destroys the cockpit of the mech the traitor rides (per text) and
+unlinks exactly that slot; hero name = `C79E`-linked slot (`C614[[BP-0xE]]`).
+Any unit left at `0xFFFF` + a cursor transit to it hangs the same way
+(unguarded arrival-wait; the `0733` scan's `0x32C6/0x406A/0x3994` skip-checks did
+not filter slot 0). Next session reboots from untouched GAME5.
 **No-ANM verdict 2026-11-07 (user hypothesis tested, refuted):** full call
 inventory of the Gate B tail shows no animation/video/disk call — only text
 prints (`17D3:03F5`), map-FX marker writes via `11B8:27C9` (shared with combat
