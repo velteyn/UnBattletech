@@ -2943,18 +2943,23 @@ text-then-clear order and explaining all earlier "survival" reads. Round 2 with
 `C724[0]=0xFF` side effect (C4-block; `C724` is the S3 rubble/hands byte).
 Name-source correction: displayed saboteur varies per firing (Russ R3,
 Northwest R4) while `D331=2` is constant — Event A/09AD names do **not** simply
-equal the `D331` pilot; source mapping OPEN. **R2 hang root-caused (stack proof):** `read_stack` shows return address
-`0x17E0` (the `19FC:163B` call site inside `17BB`'s arrival-wait) with adjacent
-`0xFFFF, 0xFFFF` target words — the cursor transit to unit 0's wiped coords that
-never converges (menu drawn, BDA pileup, game "running"). Correction: Jason did
-**not** die in combat — the match epilogue wiped **unit slot 0** (positions
-`0xFFFF`, `C79E=0xFF`, `C724=0xFF`) because my forced linkage (`C79D[0]=2`)
-made slot 0 "the traitor's mech". Natural semantics confirmed by construction:
-the path destroys the cockpit of the mech the traitor rides (per text) and
-unlinks exactly that slot; hero name = `C79E`-linked slot (`C614[[BP-0xE]]`).
-Any unit left at `0xFFFF` + a cursor transit to it hangs the same way
-(unguarded arrival-wait; the `0733` scan's `0x32C6/0x406A/0x3994` skip-checks did
-not filter slot 0). Next session reboots from untouched GAME5.
+equal the `D331` pilot; source mapping OPEN. **Bug smell adjudicated 2026-11-07 (user prompt — real bug, mechanism
+confirmed):** the match (09C8) path wipes the ridden mech's unit entry
+(positions `0xFFFF` + `C79E/C724=0xFF`) but nothing it writes intersects the
+wrap-up scan's skip-checks (`0x32C6==0xFF` / `0x406A==0` / `0x3994`, file
+`0x140F0–0x140C0` region) nor unlinks turn order — the next cursor transit to
+that slot (`017D:17BB`, arrival-wait on cursor coords, **no timeout/counter in
+mapped loops**) never converges → hard hang (menu drawn, BDA pileup). The
+no-match (0BD4) path writes **no** positions (only `C79E=0xFF`, texts, same
+epilogue) — which is why every observed no-match battle continued normally and
+only the match case hangs. Natural reachability: requires traitor properly
+deployed + linked (`C79D[slot]==D331`) + battle continuing after the turn;
+walkthrough never hit it (Event A path doesn't wipe; matches likely ended
+battles fast). "Half-implemented" alternative not excluded — but the straight-
+line code takes the staged triple without validation, so even odd states
+shouldn't hang; the missing guard is a defect either way. Decisive natural
+test filed: Allocate the real traitor into a mech and win slowly (hard:
+Allocate gate + wilderness).
 **No-ANM verdict 2026-11-07 (user hypothesis tested, refuted):** full call
 inventory of the Gate B tail shows no animation/video/disk call — only text
 prints (`17D3:03F5`), map-FX marker writes via `11B8:27C9` (shared with combat
