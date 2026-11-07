@@ -2985,6 +2985,22 @@ gate skips, quiet as predicted). Guard never triggered (all `17BB` targets
 valid — consistent with the scan skipping wiped slots). No hang, input works
 throughout; battle continued to a Rex-vs-mech endgame. Committed in
 `BattleTechMcpTools/`.
+**03F5 mapped 2026-11-07 (catch-all probe — combat bypasses it):** widened
+the `17D3:03F5` probe to log every call. Result across a full boot + load +
+battle + victory: 03F5 carries encounters, menus (`0x3A6F` menu strings,
+`0x3A42` computer-moving line), scan UI (`0x121E` "'s", name slots), traitor
+set (`0x35D1/0x3666/0x36A9`), epilogue syncs, wrap-up (`0x3954` return,
+`0x32DA` C-Bills) — but **zero combat blow-by-blow**: two executed rounds with
+visible on-screen hits/kills produced no `0x3EE7/0x3EDE/0x41FC`, no
+Hit/Kill/Critical text through 03F5 at all. Conclusion: hit/kill
+presentation uses a different path (candidates: `1465:12C7` post-fire entry,
+`17D3:0281/0388` dialog setup/flush — both heavily called around prints).
+Corollaries: (a) the micro-AX calls (`0/1/3/0x12`, empty text) are 03F5
+subfunctions (cursor/mode control?), not strings; (b) name prints pass seg:off
+on the STACK (`[0x1CC]/[0x1CA]` pushes) — the probe's AX-only read shows them
+empty, fix = log `[SP+4]/[SP+6]` too; (c) the round-2 mass wipe mechanism is
+still open (no kill text logged *anywhere* in 03F5). Next hooks: `1465:12C7` +
+`0281/0388` with AX + stack args.
 **Patch experiment INVALIDATED 2026-11-07 (never ran patched code):** the
 rebooted emulator was still the original `UNBTECH.exe` (running process
 verified via `/proc` cmdline; `UNBTECH_P1.exe` had been deleted before boot,

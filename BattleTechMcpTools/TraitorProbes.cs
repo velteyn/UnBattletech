@@ -90,15 +90,14 @@ public static class TraitorProbes {
             }
         });
 
-        // 17D3:03F5 text print — traitor-string range (0x3400-0x38FF) plus the
-        // combat kill texts (0x3EE7 Hit, 0x41FC Killed him), with the first
-        // bytes of text so outputs are distinguishable.
+        // 17D3:03F5 text print — log everything (range tag marks traitor
+        // strings 0x3400-0x38FF and known kill IDs); first bytes identify the
+        // message. Temporarily unfiltered to discover kill-print AX values.
         add(0x17D3, 0x03F5, "probe_print", () => {
             ushort strOff = cpu.AX;
-            if (!(strOff >= 0x3400 && strOff < 0x3900)
-                && strOff != 0x3EE7 && strOff != 0x3EDE && strOff != 0x41FC) {
-                return;
-            }
+            string tag = strOff >= 0x3400 && strOff < 0x3900 ? "TRAITOR"
+                : strOff == 0x3EE7 || strOff == 0x3EDE || strOff == 0x41FC ? "KILL?"
+                : "other";
             ushort ds = cpu.DS;
             var chars = new char[48];
             int n = 0;
@@ -109,8 +108,8 @@ public static class TraitorProbes {
                 }
                 chars[n] = b is >= 32 and < 127 ? (char)b : '.';
             }
-            log.LogInformation("PROBE 03F5 print DS:{Ds:X4}:{Ax:X4} \"{T}\"",
-                ds, strOff, new string(chars, 0, n));
+            log.LogInformation("PROBE 03F5 [{K}] DS:{Ds:X4}:{Ax:X4} \"{T}\"",
+                tag, ds, strOff, new string(chars, 0, n));
         });
     }
 }
