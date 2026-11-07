@@ -2950,6 +2950,18 @@ unconsumed 90s+, game executing `19FC:163B` cursor-blit + BIOS idle; only INT16
 site in EXE is file `0x1C787`); possible trigger Jason-death FX hang
 (retrace/PIT-wait family) — hypothesis only. Next session reboots from GAME5
 (untouched).
+**No-ANM verdict 2026-11-07 (user hypothesis tested, refuted):** full call
+inventory of the Gate B tail shows no animation/video/disk call — only text
+prints (`17D3:03F5`), map-FX marker writes via `11B8:27C9` (shared with combat
+post-fire `1465:0B18/1B7F/1C6E`; 0x3F-entry coord table, same routine the
+"cockpit destroyed" visual comes from), countdown-delay `18BA:086A` (3 executed
+call sites total: boot `017D:3BC1`, combat `1650:1802`, here) + display-sync
+`18BA:0259` (ubiquitous, dozens of `017D` callers), and the memory epilogue.
+C11b's 16 ANM sites don't include `11B8:08A0–0CDB`. The game also does not end:
+combat continued normally post-event (round 2 executed, both sides acted, Jason
+lost in normal combat). The "animation" is just the standard map marker + text;
+the later input jam is unexplained (leading: Jason-death state vs tooling input
+stall — decisive test is a fresh reboot, filed for next session).
 **Background (two sabotage sites — Event A vs Gate B):**
 staged `D333=1, 0x374A=1` on clean GAME5 (`D330-333=7f 02 01 00`, buff 15s at
 slot+0x36) fired sabotage text round 1 with `D333` **surviving** (`01` after) —
