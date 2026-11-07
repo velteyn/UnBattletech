@@ -30,8 +30,9 @@ public static class TraitorProbes {
             });
         }
 
-        // 017D:17BB cursor transit — target + caller + live cursor.
-        add(0x017D, 0x17BB, "probe_cursor_transit", () => {
+        // 017D:17BB cursor transit — target + caller + live cursor, plus the
+        // FFFF guard (arrival wait has no timeout; rewrite FFFF to cursor).
+        add(0x017D, 0x17BB, "probe_17BB_transit_guard", () => {
             ushort retIp = stk(0), retCs = stk(2), a0 = stk(4), a1 = stk(6);
             ushort curSeg = u16(cpu.DS, 0x538C);
             string cur = curSeg == 0
@@ -40,6 +41,23 @@ public static class TraitorProbes {
             log.LogInformation(
                 "PROBE 17BB transit target=({A:X4},{B:X4}) cursor=({C}) caller={Cs:X4}:{Ip:X4}",
                 a0, a1, cur, retCs, retIp);
+            ushort sp = cpu.SP, ss = cpu.SS;
+            ushort cx = curSeg == 0 ? (ushort)0 : u16(curSeg, 0xA44B);
+            ushort cy = curSeg == 0 ? (ushort)0 : u16(curSeg, 0xA44D);
+            bool hit = false;
+            if (u16(ss, (ushort)(sp + 4)) == 0xFFFF) {
+                mem.UInt16[ss, (ushort)(sp + 4)] = cx;
+                hit = true;
+            }
+            if (u16(ss, (ushort)(sp + 6)) == 0xFFFF) {
+                mem.UInt16[ss, (ushort)(sp + 6)] = cy;
+                hit = true;
+            }
+            if (hit) {
+                log.LogWarning(
+                    "GUARD 17BB rewrote FFFF transit target to cursor=({X:X4},{Y:X4})",
+                    cx, cy);
+            }
         });
 
         // 11B8:000A round wrap-up entry — gate inputs each round.
@@ -69,36 +87,25 @@ public static class TraitorProbes {
         // has no timeout) and hangs the game with a live menu. Rewrite any FFFF
         // component to the live cursor position → instant no-op transit.
         // Zero behavior change for legitimate (bounded) targets.
-        add(0x017D, 0x17BB, "guard_17BB_ffff", () => {
-            ushort sp = cpu.SP, ss = cpu.SS;
-            ushort curSeg = u16(cpu.DS, 0x538C);
-            ushort curX = curSeg == 0 ? (ushort)0 : u16(curSeg, 0xA44B);
-            ushort curY = curSeg == 0 ? (ushort)0 : u16(curSeg, 0xA44D);
-            bool hit = false;
-            if (u16(ss, (ushort)(sp + 4)) == 0xFFFF) {
-                mem.UInt16[ss, (ushort)(sp + 4)] = curX;
-                hit = true;
-            }
-            if (u16(ss, (ushort)(sp + 6)) == 0xFFFF) {
-                mem.UInt16[ss, (ushort)(sp + 6)] = curY;
-                hit = true;
-            }
-            if (hit) {
-                log.LogWarning(
-                    "GUARD 17BB rewrote FFFF transit target to cursor=({X:X4},{Y:X4})",
-                    curX, curY);
-            }
-        });
+        // (Folded into probe_17BB_transit_guard above — second add() on the
+        // same address would overwrite the first in the dictionary.)
 
         // 17D3:03F5 text print — log everything (range tag marks traitor
         // strings 0x3400-0x38FF and known kill IDs); first bytes identify the
         // message. Temporarily unfiltered to discover kill-print AX values.
+        // Name prints pass seg:off on the stack, so also log [SP+4]/[SP+6].
         add(0x17D3, 0x03F5, "probe_print", () => {
             ushort strOff = cpu.AX;
+            ushort seg = cpu.DS;
+            if (strOff == 0) {
+                // Combat-message convention: AX=0, real string seg:off on stack.
+                strOff = stk(4);
+                seg = stk(6);
+            }
             string tag = strOff >= 0x3400 && strOff < 0x3900 ? "TRAITOR"
                 : strOff == 0x3EE7 || strOff == 0x3EDE || strOff == 0x41FC ? "KILL?"
                 : "other";
-            ushort ds = cpu.DS;
+            ushort ds = seg;
             var chars = new char[48];
             int n = 0;
             for (; n < chars.Length; n++) {
@@ -108,8 +115,28 @@ public static class TraitorProbes {
                 }
                 chars[n] = b is >= 32 and < 127 ? (char)b : '.';
             }
-            log.LogInformation("PROBE 03F5 [{K}] DS:{Ds:X4}:{Ax:X4} \"{T}\"",
-                tag, ds, strOff, new string(chars, 0, n));
+            log.LogInformation("PROBE 03F5 [{K}] {Ds:X4}:{Ax:X4} \"{T}\" ax={A:X4} stk=[{S4:X4},{S6:X4}]",
+                tag, ds, strOff, new string(chars, 0, n), cpu.AX, stk(4), stk(6));
+        });
+
+        // 1465:12C7 post-fire entry — where combat blow-by-blow text must live
+        // (03F5 catch-all proved combat bypasses 03F5). Log regs + stack args.
+        add(0x1465, 0x12C7, "probe_postfire", () => {
+            log.LogInformation(
+                "PROBE 12C7 postfire AX={Ax:X4} BX={Bx:X4} CX={Cx:X4} DX={Dx:X4} SI={Si:X4} DI={Di:X4} stk=[{S4:X4},{S6:X4},{S8:X4},{Sa:X4}]",
+                cpu.AX, cpu.BX, cpu.CX, cpu.DX, cpu.SI, cpu.DI,
+                stk(4), stk(6), stk(8), stk(10));
+        });
+
+        // 17D3:0281 dialog setup + 17D3:0388 dialog flush — heavily called
+        // around prints; log AX + stack args to correlate with post-fire.
+        add(0x17D3, 0x0281, "probe_dlg_setup", () => {
+            log.LogInformation("PROBE 0281 AX={Ax:X4} stk=[{S4:X4},{S6:X4},{S8:X4}]",
+                cpu.AX, stk(4), stk(6), stk(8));
+        });
+        add(0x17D3, 0x0388, "probe_dlg_flush", () => {
+            log.LogInformation("PROBE 0388 AX={Ax:X4} stk=[{S4:X4},{S6:X4},{S8:X4}]",
+                cpu.AX, stk(4), stk(6), stk(8));
         });
     }
 }

@@ -3001,6 +3001,26 @@ on the STACK (`[0x1CC]/[0x1CA]` pushes) — the probe's AX-only read shows them
 empty, fix = log `[SP+4]/[SP+6]` too; (c) the round-2 mass wipe mechanism is
 still open (no kill text logged *anywhere* in 03F5). Next hooks: `1465:12C7` +
 `0281/0388` with AX + stack args.
+**03F5 convention CRACKED 2026-11-07 (stack-ID calls — combat never bypassed
+it):** the `1465:12C7` + `0281/0388` hooks fired, and the catch-all habituated
+the correction: combat blow-by-blow DOES go through `03F5` — with **AX=0 and
+the string seg:off on the stack** (`[SP+4]=off, [SP+6]=seg`). Evidence, one
+round: `1465:0CF7` → `12C7` (`AX=0x4314, DX=0x2A0F` struct ptr + 10 stack
+words; static listing confirms `mov AX,0x4314 / mov DX,0x2A0F / push DX,AX +
+10 words / push CS / call 12C7`) → `0FAE:1DC2` burst of 8 `03F5` calls
+(`AX=0`, stack IDs `3E44/3E58` subject fragments, `2FE8` weapon table,
+`3E9A/3EA9/3EB9/3ED6` object+result fragments incl. `Missed!/Hit!`) →
+`03F5` with stack ID `41FC` (`Killed him!`, verbatim on screen as
+`Hit! Killed him!`) → `27C9` kill FX (`marker=0x7E`). Dialog/menu calls use
+the other convention (`AX=off`, stack identical — `AX==[SP+4]`, e.g.
+`3D3A/3A42/3A6F`); traitor set unchanged (`35D1/3666/36A9` via `AX`).
+The earlier "combat bypasses 03F5" verdict was a probe artifact (AX-only
+filter). Probe fixed: `AX==0` → read ID from stack (committed, takes effect
+next boot); `17BB` transit+guard merged (the dict `add()` overwrote the
+transit logger — transit logging was silently dead since the guard landed).
+Round flow this battle: R1 Med-Laser kill → match text → ack → `D333=0` →
+`38E0` "humans have fled" → `38FC` scuffle victory, 0cr. Round-2 mass-wipe
+mechanism still open (this battle ended R1).
 **Patch experiment INVALIDATED 2026-11-07 (never ran patched code):** the
 rebooted emulator was still the original `UNBTECH.exe` (running process
 verified via `/proc` cmdline; `UNBTECH_P1.exe` had been deleted before boot,
