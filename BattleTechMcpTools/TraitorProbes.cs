@@ -47,8 +47,8 @@ public static class TraitorProbes {
             log.LogInformation(
                 "PROBE 000A wrap-up 014A={F:X4} D333={D3} D332={D2} D331={D1} w374A={W:X4}",
                 u16(0x3858, 0x014A),
-                u16(0x2A0F, 0xD333), u16(0x2A0F, 0xD332), u16(0x2A0F, 0xD331),
-                u16(0x2A0F, 0x374A));
+                mem.UInt8[0x2A0F, 0xD333], mem.UInt8[0x2A0F, 0xD332],
+                mem.UInt8[0x2A0F, 0xD331], u16(0x2A0F, 0x374A));
         });
 
         // 18BA:086A epilogue display/sync — proves the Gate B tail ran.
@@ -59,15 +59,44 @@ public static class TraitorProbes {
 
         // 11B8:27C9 map-FX marker — args (0x7E, X, Y).
         add(0x11B8, 0x27C9, "probe_mapfx", () => {
+            ushort sp = cpu.SP, ss = cpu.SS;
             log.LogInformation("PROBE 27C9 mapfx marker={M:X4} X={X} Y={Y}",
-                stk(4), stk(6), stk(8));
+                u16(ss, (ushort)(sp + 4)), u16(ss, (ushort)(sp + 6)),
+                u16(ss, (ushort)(sp + 8)));
         });
 
-        // 17D3:03F5 text print — only traitor-string range (0x3400-0x38FF),
-        // with the first bytes of text so outputs are distinguishable.
+        // 17BB transit guard: an FFFF target never converges (the arrival wait
+        // has no timeout) and hangs the game with a live menu. Rewrite any FFFF
+        // component to the live cursor position → instant no-op transit.
+        // Zero behavior change for legitimate (bounded) targets.
+        add(0x017D, 0x17BB, "guard_17BB_ffff", () => {
+            ushort sp = cpu.SP, ss = cpu.SS;
+            ushort curSeg = u16(cpu.DS, 0x538C);
+            ushort curX = curSeg == 0 ? (ushort)0 : u16(curSeg, 0xA44B);
+            ushort curY = curSeg == 0 ? (ushort)0 : u16(curSeg, 0xA44D);
+            bool hit = false;
+            if (u16(ss, (ushort)(sp + 4)) == 0xFFFF) {
+                mem.UInt16[ss, (ushort)(sp + 4)] = curX;
+                hit = true;
+            }
+            if (u16(ss, (ushort)(sp + 6)) == 0xFFFF) {
+                mem.UInt16[ss, (ushort)(sp + 6)] = curY;
+                hit = true;
+            }
+            if (hit) {
+                log.LogWarning(
+                    "GUARD 17BB rewrote FFFF transit target to cursor=({X:X4},{Y:X4})",
+                    curX, curY);
+            }
+        });
+
+        // 17D3:03F5 text print — traitor-string range (0x3400-0x38FF) plus the
+        // combat kill texts (0x3EE7 Hit, 0x41FC Killed him), with the first
+        // bytes of text so outputs are distinguishable.
         add(0x17D3, 0x03F5, "probe_print", () => {
             ushort strOff = cpu.AX;
-            if (strOff < 0x3400 || strOff >= 0x3900) {
+            if (!(strOff >= 0x3400 && strOff < 0x3900)
+                && strOff != 0x3EE7 && strOff != 0x3EDE && strOff != 0x41FC) {
                 return;
             }
             ushort ds = cpu.DS;

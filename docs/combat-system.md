@@ -2977,14 +2977,19 @@ new `BattleTechMcpTools/TraitorProbes.cs` wired into
 `BattleTechOverrideSupplier` registers permissive entry-hooks
 (`ForbidsInterpreterFallback=false` default → C# runs, interpreter continues
 unchanged): `017D:17BB` (target + caller + live cursor), `11B8:000A`
-(wrap-up entry: `014A/D333/D332/D331/374A`), `18BA:086A` (epilogue reached),
-`11B8:27C9` (map-FX args), `17D3:03F5` text prints filtered to `0x3400–0x38FF`
-with string bytes. Enabled by default (`UseCodeOverrideOption=true` unless
-`-u false`); console output via injected `ILogger`. Live 84-line trace banked
-the full match flow on the pristine exe: combat `1465/0FAE` transits (valid
-coords) → `35D1/3666/36A9` prints → `27C9` FX → `086A` epilogue (`D333=1`
-pre-clear) → post-ack `D333=0`. No binary modification, no checksum games.
-`000A` fires once per battle (same invocation continues). Committed in
+(wrap-up entry: `014A/D333/D332/D331/374A`, byte reads), `18BA:086A` (epilogue
+reached), `11B8:27C9` (map-FX args), `17D3:03F5` text prints (`0x3400–0x38FF` +
+kill texts `0x3EE7/0x3EDE/0x41FC`, with string bytes) + a permissive `17BB`
+`0xFFFF`-target guard (rewrites to live cursor, logs a warning). Enabled by
+default (`UseCodeOverrideOption=true` unless `-u false`); console output via
+injected `ILogger`. Live trace banked the full match flow on the pristine exe:
+combat `1465/0FAE` transits (valid coords) → `35D1/3666/36A9` prints →
+`27C9` FX (`marker=0x81 X=533 Y=49203`) → `086A` epilogue (`D333=1` pre-clear)
+→ post-ack `D333=0`. No binary modification, no checksum games. `000A` fires
+per round-wrap-up (seen at battle start *and* round 2 with `D333=0/374A=1` —
+gate skips, quiet as predicted). Guard never triggered (all `17BB` targets
+valid — consistent with the scan skipping wiped slots). No hang, input works
+throughout; battle continued to a Rex-vs-mech endgame. Committed in
 `BattleTechMcpTools/`.
 **Patch experiment INVALIDATED 2026-11-07 (never ran patched code):** the
 rebooted emulator was still the original `UNBTECH.exe` (running process
