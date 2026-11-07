@@ -2972,6 +2972,41 @@ combat continued normally post-event (round 2 executed, both sides acted, Jason
 lost in normal combat). The "animation" is just the standard map marker + text;
 the later input jam is unexplained (leading: Jason-death state vs tooling input
 stall — decisive test is a fresh reboot, filed for next session).
+**Divide-and-conquer probes LANDED 2026-11-07 (hooked, not patched):**
+new `BattleTechMcpTools/TraitorProbes.cs` wired into
+`BattleTechOverrideSupplier` registers permissive entry-hooks
+(`ForbidsInterpreterFallback=false` default → C# runs, interpreter continues
+unchanged): `017D:17BB` (target + caller + live cursor), `11B8:000A`
+(wrap-up entry: `014A/D333/D332/D331/374A`), `18BA:086A` (epilogue reached),
+`11B8:27C9` (map-FX args), `17D3:03F5` text prints filtered to `0x3400–0x38FF`
+with string bytes. Enabled by default (`UseCodeOverrideOption=true` unless
+`-u false`); console output via injected `ILogger`. Live 84-line trace banked
+the full match flow on the pristine exe: combat `1465/0FAE` transits (valid
+coords) → `35D1/3666/36A9` prints → `27C9` FX → `086A` epilogue (`D333=1`
+pre-clear) → post-ack `D333=0`. No binary modification, no checksum games.
+`000A` fires once per battle (same invocation continues). Committed in
+`BattleTechMcpTools/`.
+**Patch experiment INVALIDATED 2026-11-07 (never ran patched code):** the
+rebooted emulator was still the original `UNBTECH.exe` (running process
+verified via `/proc` cmdline; `UNBTECH_P1.exe` had been deleted before boot,
+`Program.cs` already reverted) — the NOP'd pos-clear build never executed.
+All "patched" observations are pristine-binary behavior, which is independently
+valuable: match text → epilogue → `D333=0` → rounds execute → menus stay live
+(input works) → NO HANG despite `FFFF` in unit-0 story pos. This refutes
+FFFF-positions as the (sole) hang mechanism: the scan evidently skips wiped
+slots (`0x406A=0`, written by the un-NOP'd part of the epilogue). The earlier
+"root-caused" claim is withdrawn — stack-decode framing was uncertain, and the
+unpatched jam's call site is unresolved; leading hypothesis reverts to
+input-path desync (hub port-inject + BDA inject mixed just before input died;
+BDA pileup while game polls controller) with the unguarded `17BB` wait as a
+real-but-unproven-contributing risk. Lesson: verify the running binary (`/proc`
+cmdline/md5) before attributing behavior to a patch. Staged `C79D[0]=2`
+benched unit 0 from deployment (absent from every active roster both runs) —
+linkage drives deployment; exact init rule OPEN (fresh-GAME5 `C620[2]=0x00` was
+only verified pre-battle; the `0x08` read came from the earlier mangled
+session). Round-2
+mass wipe (9→2 units; kill texts outside the `03F5` probe filter — widen filter
+next time) and elude-RNG fails noted, mechanism open.
 **Background (two sabotage sites — Event A vs Gate B):**
 staged `D333=1, 0x374A=1` on clean GAME5 (`D330-333=7f 02 01 00`, buff 15s at
 slot+0x36) fired sabotage text round 1 with `D333` **surviving** (`01` after) —

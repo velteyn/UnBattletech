@@ -16,7 +16,9 @@ public class BattleTechOverrideSupplier : IOverrideSupplier, IMcpToolSupplier
         ushort programStartAddress, Machine machine)
     {
         MountGameDataOnFloppyDrives(loggerService, configuration, machine);
-        return new Dictionary<SegmentedAddress, FunctionInformation>();
+        var functions = new Dictionary<SegmentedAddress, FunctionInformation>();
+        TraitorProbes.Register(functions, machine, loggerService);
+        return functions;
     }
 
     // BattleTech resolves some overlay files (e.g. INFOCOM.CMP) against the DOS
