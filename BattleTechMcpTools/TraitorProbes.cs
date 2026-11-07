@@ -137,5 +137,12 @@ public static class TraitorProbes {
             log.LogInformation("PROBE 0388 AX={Ax:X4} stk=[{S4:X4},{S6:X4},{S8:X4}]",
                 cpu.AX, stk(4), stk(6), stk(8));
         });
+        // 0728:174C bar drawer — log (x, y, a, b) per bar + structure/heat.
+        // Caller pushes: v_a(SI value), v_b(storybyte i), y, x, CS; callee
+        // BP+6=x, BP+8=y, BP+10=v_b, BP+12=v_a. Definitive bar↔offset map.
+        add(0x0728, 0x174C, "probe_bar", () => {
+            log.LogInformation("PROBE 174C bar x={X:X4} y={Y:X4} vb={B:X4} va={A:X4}",
+                stk(4), stk(6), stk(8), stk(10));
+        });
     }
 }
