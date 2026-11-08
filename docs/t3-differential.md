@@ -150,3 +150,60 @@ No-copy verdict → comparison points are plain story reads (no snapshot
 reconstruction). 12C7 signature → probe columns are context; CX mirrors
 damage; draw sites identified. Full 11-location armor map → damage assertions
 are amount-exact.
+
+## Weapon table (live `0x3858:0x2EE3`, stride `0x11`, stats[6]+name[11], 2026-11-08)
+
+byte0=damage (verified 2/2/5 live), byte1=count/flags (`0x80`=skip mech-fire path),
+byte5 nibble→heat accumulator. **Text/stats skew ×7+**: text name = stats[idx−1]
+(MG 0x16↔0x17, SRM2 0x1C↔0x1D, ML 0x0F↔0x10, LL 0x10↔0x11 (dmg 8 ✓), PPC 0x11↔0x12 (10 ✓),
+AC/2 0x12↔0x13 (2 ✓), AC/5 0x13↔0x14 (5 ✓), AC/10 0x14↔0x15 (10 ✓)). Rebuild `WeaponData`
+damages match THROUGH the skew (all ✓); heats mostly 3 in binary vs varied rebuild (open);
+kick special-cased (`[BP-72]`==`0x20`→empty record + TN 3 + mod-5 path; `0x1F` row name-only?);
+melee byte0 (17–48) never fires (meaning open — price?); `0x0B` LaserPistl dmg `0xFF` = empty marker.
+
+```
+idx name         dmg flg b2 b3 b4 ht5
+00 Knife         17 81  00 21 02 00
+01 Sword         16 81  00 21 02 00
+02 VibroBlade    34 81  00 21 02 00
+03 Shortbow      48 81  00 21 02 00
+04 Longbow       17 81  00 66 09 00
+05 Crossbow      19 81  00 87 0D 00
+06 Pistol        35 81  00 88 0E 00
+07 Rifle         35 81  00 65 09 01
+08 MachineGun    48 81  00 F0 1F 02
+09 SR Missile    48 84  00 88 0B 02
+0A Inferno        2 01  00 FF 28 03
+0B LaserPistl   255 01  00 FF 28 03
+0C LaserRifle    64 81  00 87 0D 01
+0D Flamer        66 81  00 F6 2B 02
+0E SmallLaser    32 81  00 65 07 01
+0F Med Laser      3 01  01 43 0C 03
+10 LargeLaser     5 01  03 87 1E 03
+11 PPC            8 01  08 CB 30 03
+12 AutoCann/2    10 01  3A ED 39 03
+13 AutoCann/5     2 01  41 F0 4B 03
+14 AutoCann10      5 01  31 ED 39 03
+15 AutoCann20     10 01  03 CB 30 03
+16 MachineGun    20 01  07 87 1E 03
+17 Flamer         2 01  00 43 0C 03
+18 LRMissile5     2 01  03 43 0C 03
+19 LRMissil10     1 04  62 EF 42 03
+1A LRMissil15     1 06  64 EF 42 03
+1B LRMissil20     1 07  65 EF 42 03
+1C SRMissile2     1 08  66 EF 42 03
+1D SRMissile4     2 02  02 87 1E 03
+1E SRMissile6     2 03  03 87 1E 03
+1F Kick           2 05  04 87 1E 03
+20 (empty)        0 01  00 21 02 04
+```
+
+## Firing visuals (beam/missiles — mechanism closed 2026-11-08)
+
+`1000:5847`→`5528`→`542D`→`4739` chain (see combat-system §25.5); aim `19FC:1314` +
+shape-select `19FC:13D9` (attrs→`1DE9:[0x272]/[0x273]`, shape→`[0x2C9]/[0x2CA]`);
+rasterizer `19FC:0DF8` (display-list walk, fixed-point `shr DX,1`, `cmp DL,0x80` decision);
+blitter `19FC:18EF` (13-row); buffer `19FC:1ECE`; pacer `18BA:06C3`. Beam/missiles =
+shaped sprites stepped per frame (NOT line primitives); shape tables live-captured
+(`1DE9:0x424` 48B + `1DE9:0x564` masks). Open: per-frame advance loop, class→shape map
+(E5: log `[0x2C9]` per shot in a firing battle).
