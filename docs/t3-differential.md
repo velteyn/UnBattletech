@@ -16,9 +16,13 @@ Non-goals: AI-vs-AI (Phase 2), menus/shop/story draws, sound, graphics.
 
 - Single source: `19FC:0BC0` — the ONLY byte roller. No `0x1021`, no LFSR, no
   INT 1Ah per-roll in any dumped caller (26 call sites, all funnel here).
-- State: 3 bytes at `ES:0x4FC0` with `ES=0x3858` (main DS). No other writer to
-  `0x4FC0–0x4FC2` in either dump → state is a pure function of draw count
-  since boot (reseed TBD live — see §5).
+- State: 3 bytes at `ES:0x4FC0` with `ES=0x3858` (main DS). **Correction 2026-11-08
+  (was: "no other writer")**: a seed **writer exists in the shipped image** — the
+  attract-demo path writes `[0x4FC0]=0x1325` and `[0x4FC2]=0x0090` right after
+  `fread("DEMOFILE")` (see [`tools/staging-triggers.md`](tools/staging-triggers.md)).
+  Normal play never takes that path, so for a normal-play session the state is
+  still a pure function of draw count since boot; the old "no writer in either
+  dump" was a **dump-coverage artifact** (the demo path never executed).
 - Image default (file `0x3F170`): `04 03 02`. Live 2026-11-08: `91 b8 9b`.
 - Step (order matters; `rcl/rcr` single-bit through CF):
   ```
@@ -141,8 +145,8 @@ that IS the diagnostic.
 
 ## Experiment queue (all closed or moved live — updated 2026-11-08)
 
-- E1 (fresh-boot reseed): CLOSED. Image `04 03 02` at boot → #272 at title → #348 post-load. Never reseeded; pure draw-count. Harness: seed image default or snapshot-and-continue.
-- E2 (save coverage): open — does GAME5 store the 3 state bytes (reload-determinism)?
+- E1 (fresh-boot reseed): CLOSED for normal play. Image `04 03 02` at boot → #272 at title → #348 post-load. Never reseeded *on the normal path*; pure draw-count. Harness: seed image default or snapshot-and-continue. **Caveat 2026-11-08:** the demo/attract path *does* write the state (`0x1325/0x0090`), so "no writer exists" is false and RNG-injection is a legal, in-binary operation (we use exactly that to stage).
+- E2 (save coverage): CLOSED static — saves do not store the 3 state bytes; GAME5 load consumes exactly 76 draws. Reload determinism therefore requires the post-load draw count, not a stored seed.
 - E3 (per-round snapshots): tooling live-verified (`t3_trace.py`); needs scripted battle loop (v2).
 - E4 (rout-restore): open — damaged-then-rout battle: does wrap-up restore without victory?
 - Wrap-up loop (`0728:00C7–018D`): pool = Σ enemy slots (12–15→story 4–7, `[0x393C]`-gated) remaining armor; per-loc-descending min(need,pool) to party 0–3; net = armor:=template on victory.
