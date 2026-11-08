@@ -41,14 +41,14 @@ Non-goals: AI-vs-AI (Phase 2), menus/shop/story draws, sound, graphics.
 
 ## Draw-order table (combat path, `1465:000C` region)
 
-| Site | Call | Likely purpose | Rebuild counterpart |
+| Site | Call | Purpose (static, verified) | Rebuild counterpart |
 |---|---|---|---|
-| `1465:07DE` | 19DD (2D6) | to-hit (targeting) | ComputeTargetNumber + Roll2D6 |
-| `1465:0976` | 19DD | post-fire roll #1 | — open |
-| `1465:09D9` | raw 0BC0, `and BX,8`, table `[ES:BX+0x2E43]` → `[BP-96]` | binary pick (front/rear?) | — open; rebuild `RollHitLocation` (`& 0x0A` + 6-table) is SUSPECT, review |
-| `1465:09C0` | `idiv 5` | mod-5 (rear loc? cluster?) → `[ES:0x3103]` | — open |
-| `1465:0A1F/0A47` | 19DD ×2 | crit check (2D6≥8?) / cluster | CheckCritical / RollClusterHits |
-| `19FC:0971` | geometry (coords→octant, `DS:0x238–0x23E`) | hitloc component → `[BP-96]` elsewhere | RollHitLocation review |
+| `1465:07DE` | 19DD (2D6) | roll in targeting region (open: TN build vs confirm) | ComputeTargetNumber + Roll2D6 |
+| `1465:093F–098D` | link + 19DD + 2 tables | hitloc: `[BP-70]`=link (`2A0F:[BX+0x396C]`, `FF`→fallback `0x45B6`); row=`[0x2D11]`[link−[BP-96]]; **hitloc=`[0x2E40]`[row×11+2D6]** (roll 2..12 = 11 cols directly); `AX≥0x0C→−8` slot normalize | RollHitLocation — SUSPECT, structurally wrong (`& 0x0A`+6-table vs 2D6+2-level table) |
+| `1465:0990–09EE` | mod-5 + raw 0BC0 | gated on `[BP-72]==0x20`: mech-check, `idiv 5` quotient→`[0x3103]`, bit-3 pick `[0x2E43]`[0/8]→`[BP-96]` (override) | — open |
+| `1465:09F1–0A0F` | — | **SI=`[BP-72]`×`0x11` (stride live+static ✓)**; dmg=`[SI+0x2EE3]`, flags/count=`[SI+0x2EE4]` (bit7=tested: set→destroyed-path, open) | GetWeaponDamage — verify per-record |
+| `1465:0A1A–0A3C` | 19DD (2D6) | cluster (skipped if count≤1): `7×2D6+count` → shared table `[0x2E5E]` → hits; `[BP-124]`=hits×dmg (=SRM2 2/missile ✓) | RollClusterHits — SUSPECT (shared stride-7 table vs 4 size classes) |
+| `1465:0A42–0A4F` | 19DD vs `[BP-48]` | **to-hit: 2D6 < TN → `0x3EDE` Missed**; TN accumulated `[BP-48]` (`=3` base? `+=`×4 + `+2`/`+1` — addend labels open) | ComputeTargetNumber — verify addends |
 
 Non-combat 0BC0 callers exist (017D system ×8 incl. die roller, c3 menu/BLD ×11,
 0FAE ×1, 11B8 ×3) — encounter/elude/shop draws interleave BEFORE battle start.
@@ -57,6 +57,20 @@ there; full-boot determinism is Phase 2.
 **Known second stream (P2):** `BldInterpreter.RollD6` uses `GD.Randi()`, but the
 original funnels BLD/menu draws through the same single `0BC0` state — rebuild
 currently runs two independent streams. Route BLD through `CombatRng` in P2.
+
+## Static data map (all segs live-verified; tables = `0x3858`)
+
+- Hitloc row table `0x2D11`, hitloc table `0x2E40`, bit-3 table `0x2E43`,
+  cluster table `0x2E5E` — **byte-identical in EXE image** (`file = 0x3A1B0+off`
+  verified live-vs-file) → verifiable offline, zero heat.
+- Weapon records `0x2EE3`, stride `0x11`, layout stats[6]+name[11]
+  (byte0=dmg, byte1=count/flags; idx0=Knife, idx0x10=LargeLaser dmg 5,
+  idx0x17=Flamer dmg 2) — **NOT in image** (file shows pointers there) →
+  runtime-initialized, read live only. Weapon-source hunt open. Live
+  name↔idx correlations (MedLaser/MG/SRM) now SUSPECT (idx0x10 reads
+  LargeLaser; enemy text↔SI mapping needs re-pairing per round).
+- Segments: tables/`0x5652`/`0x5668`/`0x566A`/`0x566C` = `0x3858` (static);
+  `0x563C`/`0x5666`/`0x5648` = `0x2A0F` (story/live).
 
 ## Trace format v1 (per round)
 
