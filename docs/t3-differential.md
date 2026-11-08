@@ -48,6 +48,7 @@ Non-goals: AI-vs-AI (Phase 2), menus/shop/story draws, sound, graphics.
 | `1465:0990–09EE` | mod-5 + raw 0BC0 | gated on `[BP-72]==0x20`: mech-check, `idiv 5` quotient→`[0x3103]`, bit-3 pick `[0x2E43]`[0/8]→`[BP-96]` (override) | — open |
 | `1465:09F1–0A0F` | — | **SI=`[BP-72]`×`0x11` (stride live+static ✓)**; dmg=`[SI+0x2EE3]`, flags/count=`[SI+0x2EE4]` (bit7=tested: set→destroyed-path, open) | GetWeaponDamage — verify per-record |
 | `1465:0A1A–0A3C` | 19DD (2D6) | cluster (skipped if count≤1): `7×2D6+count` → shared table `[0x2E5E]` → hits; `[BP-124]`=hits×dmg | RollClusterHits — SUSPECT (shared stride-7 table vs 4 size classes) |
+| `1465:0BC2` | `sub ES:[BX-14556],CL` | **THE story-armor write (watchpoint-proven ×4 live 2026-11-08)**: BX=`0x7D`×slot+hitloc (hitloc = story offset `0x11..0x1B` directly), −14556≡+0xC724. CX=damage=record-byte0 (MG 2, SRM 2, ML 5). Text/stats skew: text name = stats[idx−1] (×3). DI = attacker combat X | ApplyLocationDamage — target formula exact; add text-skew map + halve step |
 | `1465:085B–08FE` | per-shot loop (`[BP-52]`=count byte) | **halve-if-armored** (`sar` dmg when armor>0), armor→0, structure overflow, `sub` per iteration; `[BP-86]`=`[BP-6]`=1 per shot | ApplyLocationDamage — SHAPE ✓ (halving is new) |
 | `1465:0CD3` | 12C7 setup | 10-word frame order: `[BP-86],[BP-12],[BP-58],[BP-44],[BP-6],[BP-88],[BP-72],[BP-40],[BP-2]`+`DX:AX` | probe context decoded |
 | flags | — | `[BP-86]`=hit(1)/miss(0), `[BP-44]`=bypass(structure-0 precheck), `[BP-58]`=kill (via `0EC0:0A35`, uncovered by dumps), `[BP-88]`=geometry copy of `[BP-96]`, `[BP-40]`=defender/`FFFF`, `[BP-2]`=counter | — |
@@ -89,7 +90,8 @@ currently runs two independent streams. Route BLD through `CombatRng` in P2.
 - Segments: tables/`0x5652`/`0x5668`/`0x566A`/`0x566C` = `0x3858` (static);
   `0x563C`/`0x5666`/`0x5648` = `0x2A0F` (story/live).
 
-- `[0x5648]` NEVER rewritten in either dump → story seg throughout; but numeric refutation: `0x11`×`[BP-12]`−14814 hits NO story-armor byte for any integer `[BP-12]` → 08xx write target is NOT +0x11 armor (ammo bins? unknown table — FILED, watchpoint experiment queued). Story armor writes go via 12C7/`0BC2` (`0x7D`·u wrap).
+- `[0x5648]` NEVER rewritten in either dump → story seg throughout; 08xx (`0x11`×idx−14814) target is NOT story-armor for any integer idx (watchpoint queued → answered below: 0BC2 is the armor write; 08xx target still open, ammo suspect).
+- Post-victory wrap-up (0728 loop, live 2026-11-08): restores armor FROM `+0x56` template (direction proven — template bytes unchanged; mid-loop transient observed via watchpoint re-trips). Battle armor damage is TRANSIENT; scavenge text = the repair. Rout can pay (13cr observed). Enemy slots (4,5) zeroed.
 - Nibble-masked `[BP-124]` entry (`& 0x0F` at 07A8) vs full-byte at 0A08 vs MG byte0 `0x14`≠live 2 → damage-byte semantics OPEN (byte0-as-damage REFUTED for MG; two-source resolution needs CFG).
 - `0EC0:0A35` (kill) in NEITHER dump → needs REA/r2 CFG or live trip.
 - Caller-frame decode: 7 of 9 locals closed (open: `[BP-6]` beyond loop-flag, `[BP-58]` trigger conditions).
