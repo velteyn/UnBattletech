@@ -69,6 +69,20 @@ currently runs two independent streams. Route BLD through `CombatRng` in P2.
   runtime-initialized, read live only. Weapon-source hunt open. Live
   name↔idx correlations (MedLaser/MG/SRM) now SUSPECT (idx0x10 reads
   LargeLaser; enemy text↔SI mapping needs re-pairing per round).
+- **Full 33-record table captured live 2026-11-08** (see WIP mini-session):
+  melee rows 00–0E all byte1=`0x81`, idx9 "SR Missile" `0x84`, idx0B
+  "LaserPistl" dmg `0xFF` (empty-marker?), idx20 empty, Inferno/Kick clear.
+- Cluster mechanism: single-shot iff byte1≤1 (LRM5 correctly skips);
+  else hits=`[0x2E5E]`[byte1+7×2D6], total=hits×dmg. Decoded windows:
+  SRM4 1..2, SRM6 1..4 (≠ tabletop 6 — original stands), LRM10 1..5,
+  LRM15 3..10, LRM20 5..15. **SRM2 (base 8) anomaly: window reads 6..20 —
+  impossible for a 2-rack; record possibly stale/unused. DO NOT "fix".**
+  Needs live firing test (E3).
+- Melee/odd branch: byte1 bit7 set → `0A05 jmp 0CD3` = straight to the 12C7
+  call, bypassing ALL damage/to-hit/cluster computation. `0CD3` pushes the
+  full 10-word frame: `[BP-86],[BP-12],[BP-58],[BP-44],[BP-6],[BP-88],`
+  `[BP-72],[BP-40],[BP-2]` + `DX:AX` (+CS = 12 words ✓) — caller-frame
+  Rosetta stone (local-by-local mapping now trivially next).
 - Segments: tables/`0x5652`/`0x5668`/`0x566A`/`0x566C` = `0x3858` (static);
   `0x563C`/`0x5666`/`0x5648` = `0x2A0F` (story/live).
 
