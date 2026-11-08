@@ -2662,6 +2662,24 @@ projection and the cursor `0xA44B/0xA44D` is restored, then `[BP-0x42]++` starts
 > / dummy-FX branches, and the stage-advance bookkeeping. The cue ids are **PC-speaker sound cues**
 > (cue stream fully decoded, §28.1 — sound is WONT_DO, §6). `arg4` (`[BP-0x58]`) remains the only
 > unresolved detail.
+>
+> **12C7 calling convention (closed 2026-11-08, static + 20 live rows):** the single post-fire
+> entry `1465:12C7` takes **12 stack words** (`DX:AX`=`2A0F:4314` struct ptr + 10 caller words +
+> `CS`); entry `BX/CX/SI/DI` are **caller leftovers, not inputs** (verified: `BX` clobbered at
+> `1329` without read; `SI` pushed-then-clobbered; `CX`/`DX`/`DI` never read in the 1700-line body).
+> Surviving correlations (all consistent): `CX` mirrors damage (`0005` MedLaser / `0002` MG-class /
+> `0000` clean miss; `19FE` once on a MedLaser-path miss — alternate miss code, mechanism open);
+> `SI` = weapon_index × `0x11` (`0x10` MedLaser, `0x17` MG, `0x1D` SRM — `0x11` = weapon-record
+> stride); stack `[BP-40]` = defender unit slot (0 Jason / 1 Rex); `[BP-72]` = weapon index
+> (`×0x11`=SI; range-checked vs `0x0A/0x0B/0x19–0x1F` in-body); `[BP-88]` ∈ {0,1,4,5,6}
+> (hitloc-related, exact encoding open); `[BP-2]` = `0x0C/0x0D` small int (likely round/phase
+> counter, open); `DI`/`BX` defender-or-battle-linked (open — need a both-mechs-hit battle to
+> split). Damage application `1465:0BC2` decrements `ES:[0x7D·u+off−0x38DC]` with
+> `ES=[0x5648]`=**`0x2A0F` live-verified** → direct story writes via wraparound (`−0x38DC` mod
+> `0x10000` = `+0xC724`), closing the no-copy mechanism independently. `0FAE:11AB` (crit
+> equipment-damage flagger) call sites confirmed in the postfire path (`1465:0BDE/0C8D`,
+> gated on hitloc `0x1C..0x23` + RNG). Probe guidance: keep logging regs as *context*,
+> treat `CX` as the damage mirror; for T3, compare story `+0x11` round-to-round (no snapshot).
 
 **e. Kill-noun selection incl. the Spectator gate (E1 — closed 2026-11-04).** The
 `1AE8` narrative path (`1AE8:06C5`–`071B`, `UNBTECH_all.asm:35184`) picks the kill
