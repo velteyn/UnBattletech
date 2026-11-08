@@ -128,13 +128,13 @@ that IS the diagnostic.
    geometry + mod-5 `09C0` — needs caller-frame decode first.
 4. OPEN: `19FE` (inner die-call offset seen once as CX) — mechanism unknown.
 
-## Experiment queue (live, needs reboot — deferred)
+## Experiment queue (all closed or moved live — updated 2026-11-08)
 
-- E1: fresh-boot read of `0x3858:0x4FC0` before any battle → reseed? (no
-  writer found statically; expect image `04 03 02` until first draw).
-- E2: GAME5 save coverage — does a save file store the 3 state bytes?
-  (determines reload-determinism).
-- E3: per-round snapshot loop on a scripted battle (validates v1 tooling).
+- E1 (fresh-boot reseed): CLOSED. Image `04 03 02` at boot → #272 at title → #348 post-load. Never reseeded; pure draw-count. Harness: seed image default or snapshot-and-continue.
+- E2 (save coverage): open — does GAME5 store the 3 state bytes (reload-determinism)?
+- E3 (per-round snapshots): tooling live-verified (`t3_trace.py`); needs scripted battle loop (v2).
+- E4 (rout-restore): open — damaged-then-rout battle: does wrap-up restore without victory?
+- Wrap-up loop (`0728:00C7–018D`): pool = Σ enemy slots (12–15→story 4–7, `[0x393C]`-gated) remaining armor; per-loc-descending min(need,pool) to party 0–3; net = armor:=template on victory.
 
 ## Why Phase 1 got easier (2026-11-07/08 findings)
 
