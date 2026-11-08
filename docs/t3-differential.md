@@ -1,7 +1,9 @@
 # T3 Combat Differential — Phase 1 design
 
 > Status 2026-11-08: RNG recovered statically (no live work needed). Rebuild RNG
-> fix specified; trace/comparator v1 scoped. Emulator stays paused.
+> fix specified; trace/comparator v1 scoped. **Deterministic staging is solved:**
+> the shipped record/replay engine is the universal key-wait, proven live
+> (`[0x3938]=1` + a key script = full scripted play, mid-game). Emulator paused.
 
 ## Goal (Phase 1)
 
@@ -147,7 +149,7 @@ that IS the diagnostic.
 
 - E1 (fresh-boot reseed): CLOSED for normal play. Image `04 03 02` at boot → #272 at title → #348 post-load. Never reseeded *on the normal path*; pure draw-count. Harness: seed image default or snapshot-and-continue. **Caveat 2026-11-08:** the demo/attract path *does* write the state (`0x1325/0x0090`), so "no writer exists" is false and RNG-injection is a legal, in-binary operation (we use exactly that to stage).
 - E2 (save coverage): CLOSED static — saves do not store the 3 state bytes; GAME5 load consumes exactly 76 draws. Reload determinism therefore requires the post-load draw count, not a stored seed.
-- E3 (per-round snapshots): tooling live-verified (`t3_trace.py`); needs scripted battle loop (v2).
+- E3 (per-round snapshots): tooling live-verified (`t3_trace.py`); needs scripted battle loop (v2). **Scripted input is now solved (2026-11-08):** set `[0x2A0F:0x3938]=1` + `[0x2A0F:0x39F8]=<index>` + write key codes at `0x2A0F:0x27B0`; the universal key-wait *is* the replay player (`173D:0259` → runtime `18BA:0259`), `kbhit` returns 1 while `[0x3938]≠0`, and all four side-effect branches are input-only. Proven live mid-game (25 script bytes consumed). Use this instead of RNG-clocking for staging; pad with `0x48` delays. See [`tools/staging-triggers.md`](tools/staging-triggers.md#the-replay-wrapper-is-the-universal-key-wait--proven-2026-11-08).
 - E4 (rout-restore): open — damaged-then-rout battle: does wrap-up restore without victory?
 - Wrap-up loop (`0728:00C7–018D`): pool = Σ enemy slots (12–15→story 4–7, `[0x393C]`-gated) remaining armor; per-loc-descending min(need,pool) to party 0–3; net = armor:=template on victory.
 

@@ -487,13 +487,26 @@ Concrete: `r2 0x13BB9` = Reko `1000:52B9` = the combat `play_anm(0x10)` call; `r
 one routine is emitted under many `ghidra_guess_*`/`unknown_*` names — **resolve by physical address
 and confirm the bytes with `pd`/`px`**, don't trust a symbol name.
 
-> **Load-bias warning (2026-10-13):** Reko *segment labels* are not uniformly physical —
-> `seg*0x10+off` label arithmetic fails per-module (e.g. Reko `1E56:0B5E` is really at file
-> `0x1A4CA` = Ghidra `2656:0B5E`; Reko `0800:2DA8` = Ghidra `1000:2DA8`; Reko `0170:1732` =
-> file `0x4B32` with no bias). The `+0x1700` rule above holds for the game-code modules it was
-> measured on, not universally. **Robust method: locate a function by byte signature**
-> (`python3 -c "d=open('UNBTECH.exe','rb').read(); print(hex(d.find(bytes.fromhex('...'))))"`)
-> from its known prologue, then `REA_linear = file − 0x3400 + 0x10000`.
+> **Load-bias warning — exact formulas (pinned 2026-11-08):** there is **one** load bias.
+> Let `link_phys = segment*16 + offset` for a `segment:offset` **as encoded in the EXE**.
+> Then:
+> - **runtime** (what the CPU actually uses, what gencode/Reko-runtime labels and r2 live
+>   addresses show): `runtime segment = link segment + 0x17D`, so
+>   `runtime_phys = link_phys + 0x17D0`.
+> - **file**: `file = link_phys + 0x3400 = runtime_phys + 0x1C30`
+>   (`0x3400 − 0x17D0 = 0x1C30`).
+> - **DS data**: `file = DS*16 + off + 0x1C30` for the runtime DS (`0x3858`), or
+>   `+0x3400` if the DS value is a link value.
+> - **Reko pseudo-segments** (`1000:*`, `0170:*`, …): `file = Reko_linear + 0x1D00`,
+>   equivalently `Reko_linear = r2/link_phys + 0x1700`. This is uniform for every Reko
+>   module measured (`1000:52B9`→`0x16FB9`, `1000:C312`→`0x1E012`, `0170:1732`→`0x4B32`
+>   — all exactly `+0x1D00`; earlier "no bias" note was an arithmetic slip). Reko
+>   *runtime*-style labels (`1E56:0B5E`) instead use the runtime `+0x1C30` rule.
+>
+> Verified anchors: RNG `19FC:0BC0` → file `0x1C7B0`; key-wait wrapper `173D:0259`
+> (= runtime `18BA:0259`) → file `0x1AA29`. **Robust method when a label still disagrees:
+> locate the function by byte signature** (`python3 -c "d=open('UNBTECH.exe','rb').read();
+> print(hex(d.find(bytes.fromhex('...'))))"`) and trust the bytes.
 
 ### Finding a routine by signature (when strings/xrefs fail)
 
