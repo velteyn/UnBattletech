@@ -47,8 +47,11 @@ Non-goals: AI-vs-AI (Phase 2), menus/shop/story draws, sound, graphics.
 | `1465:093F–098D` | link + 19DD + 2 tables | hitloc: `[BP-70]`=link (`2A0F:[BX+0x396C]`, `FF`→fallback `0x45B6`); row=`[0x2D11]`[link−[BP-96]]; **hitloc=`[0x2E40]`[row×11+2D6]** (roll 2..12 = 11 cols directly); `AX≥0x0C→−8` slot normalize | RollHitLocation — SUSPECT, structurally wrong (`& 0x0A`+6-table vs 2D6+2-level table) |
 | `1465:0990–09EE` | mod-5 + raw 0BC0 | gated on `[BP-72]==0x20`: mech-check, `idiv 5` quotient→`[0x3103]`, bit-3 pick `[0x2E43]`[0/8]→`[BP-96]` (override) | — open |
 | `1465:09F1–0A0F` | — | **SI=`[BP-72]`×`0x11` (stride live+static ✓)**; dmg=`[SI+0x2EE3]`, flags/count=`[SI+0x2EE4]` (bit7=tested: set→destroyed-path, open) | GetWeaponDamage — verify per-record |
-| `1465:0A1A–0A3C` | 19DD (2D6) | cluster (skipped if count≤1): `7×2D6+count` → shared table `[0x2E5E]` → hits; `[BP-124]`=hits×dmg (=SRM2 2/missile ✓) | RollClusterHits — SUSPECT (shared stride-7 table vs 4 size classes) |
-| `1465:0A42–0A4F` | 19DD vs `[BP-48]` | **to-hit: 2D6 < TN → `0x3EDE` Missed**; TN accumulated `[BP-48]` (`=3` base? `+=`×4 + `+2`/`+1` — addend labels open) | ComputeTargetNumber — verify addends |
+| `1465:0A1A–0A3C` | 19DD (2D6) | cluster (skipped if count≤1): `7×2D6+count` → shared table `[0x2E5E]` → hits; `[BP-124]`=hits×dmg | RollClusterHits — SUSPECT (shared stride-7 table vs 4 size classes) |
+| `1465:085B–08FE` | per-shot loop (`[BP-52]`=count byte) | **halve-if-armored** (`sar` dmg when armor>0), armor→0, structure overflow, `sub` per iteration; `[BP-86]`=`[BP-6]`=1 per shot | ApplyLocationDamage — SHAPE ✓ (halving is new) |
+| `1465:0CD3` | 12C7 setup | 10-word frame order: `[BP-86],[BP-12],[BP-58],[BP-44],[BP-6],[BP-88],[BP-72],[BP-40],[BP-2]`+`DX:AX` | probe context decoded |
+| flags | — | `[BP-86]`=hit(1)/miss(0), `[BP-44]`=bypass(structure-0 precheck), `[BP-58]`=kill (via `0EC0:0A35`, uncovered by dumps), `[BP-88]`=geometry copy of `[BP-96]`, `[BP-40]`=defender/`FFFF`, `[BP-2]`=counter | — |
+| `1465:0A42–0A4F` | 19DD vs `[BP-48]` | **to-hit: 2D6 < TN → `0x3EDE` Missed**; TN = `[BP-92]`×2+4 (action×2+4 ✓ rebuild shape), kick (`[BP-72]`==`0x20`)→3 ✓, + table addends (`1B44` skill ×2; `[0x5654]` terrain+1; `[0x5656]` table; `>>3` term) | ComputeTargetNumber — shape ✓, sources → tables |
 
 Non-combat 0BC0 callers exist (017D system ×8 incl. die roller, c3 menu/BLD ×11,
 0FAE ×1, 11B8 ×3) — encounter/elude/shop draws interleave BEFORE battle start.
@@ -85,6 +88,11 @@ currently runs two independent streams. Route BLD through `CombatRng` in P2.
   Rosetta stone (local-by-local mapping now trivially next).
 - Segments: tables/`0x5652`/`0x5668`/`0x566A`/`0x566C` = `0x3858` (static);
   `0x563C`/`0x5666`/`0x5648` = `0x2A0F` (story/live).
+
+- `[0x5648]` NEVER rewritten in either dump → story seg throughout; but numeric refutation: `0x11`×`[BP-12]`−14814 hits NO story-armor byte for any integer `[BP-12]` → 08xx write target is NOT +0x11 armor (ammo bins? unknown table — FILED, watchpoint experiment queued). Story armor writes go via 12C7/`0BC2` (`0x7D`·u wrap).
+- Nibble-masked `[BP-124]` entry (`& 0x0F` at 07A8) vs full-byte at 0A08 vs MG byte0 `0x14`≠live 2 → damage-byte semantics OPEN (byte0-as-damage REFUTED for MG; two-source resolution needs CFG).
+- `0EC0:0A35` (kill) in NEITHER dump → needs REA/r2 CFG or live trip.
+- Caller-frame decode: 7 of 9 locals closed (open: `[BP-6]` beyond loop-flag, `[BP-58]` trigger conditions).
 
 ## Trace format v1 (per round)
 
