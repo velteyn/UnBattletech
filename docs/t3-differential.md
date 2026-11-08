@@ -87,8 +87,14 @@ currently runs two independent streams. Route BLD through `CombatRng` in P2.
   full 10-word frame: `[BP-86],[BP-12],[BP-58],[BP-44],[BP-6],[BP-88],`
   `[BP-72],[BP-40],[BP-2]` + `DX:AX` (+CS = 12 words ✓) — caller-frame
   Rosetta stone (local-by-local mapping now trivially next).
-- Segments: tables/`0x5652`/`0x5668`/`0x566A`/`0x566C` = `0x3858` (static);
-  `0x563C`/`0x5666`/`0x5648` = `0x2A0F` (story/live).
+- Segments: tables/`0x5656`/`0x5652`/`0x5668`/`0x566A`/`0x566C` = `0x3858` (static);
+  **correction (live 2026-11-08):** `0x5654`/`0x5662`/`0x5416`/`0x563C`/`0x5666`/`0x5648`/`0x5412` = `0x2A0F` (story/live; terrain/heat/fog are map-state, zeros at field).
+- TN formula (all shapes verified vs rebuild `ComputeTargetNumber`): base action×2+4, kick→3,
+  + skill (`[0x5656]` table: `00 00 00 01 01 02 02 03 03 03 04 04 04…`, or `1B44`×2 for kick),
+  + terrain (story `[0x5654]`+1), + heat (`[0x32AE]`>>3 hypothesis), + story (+2 on nonzero byte).
+- Wrap-up callers (both in `11B8:000A` scan): per-unit restore `0728:0002` (link≠FF + status≠0;
+  NO rout-gate — rout restores too, presumably; E4 optional); crit path `0728:04F9` UNRECOVERED.
+- E2: saves don't store RNG (no writer in dumps + load draws exactly 76; caveat: dumps = executed paths only).
 
 - `[0x5648]` NEVER rewritten in either dump → story seg throughout; 08xx (`0x11`×idx−14814) target is NOT story-armor for any integer idx (watchpoint queued → answered below: 0BC2 is the armor write; 08xx target still open, ammo suspect).
 - Post-victory wrap-up (0728 loop, live 2026-11-08): restores armor FROM `+0x56` template (direction proven — template bytes unchanged; mid-loop transient observed via watchpoint re-trips). Battle armor damage is TRANSIENT; scavenge text = the repair. Rout can pay (13cr observed). Enemy slots (4,5) zeroed.
