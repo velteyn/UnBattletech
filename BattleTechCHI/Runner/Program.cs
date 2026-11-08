@@ -325,6 +325,25 @@ DispatcherDispatch0FDC_1A26(rs);
 Assert(!rs.RoomActive, "room not inactive");
 Assert(rs.StorySlots[0].StoryState == 5, $"restored={rs.StorySlots[0].StoryState}");
 
+// ===== T3 RNG TESTS (19FC:0BC0 exact port) =====
+Console.Write(" CombatRng ");
+BattleTechCHI.Combat.CombatRng.ResetToImageDefault();
+Assert(BattleTechCHI.Combat.CombatRng.NextByte() == 0x04, "b0");
+Assert(BattleTechCHI.Combat.CombatRng.NextByte() == 0x8D, "b1");
+Assert(BattleTechCHI.Combat.CombatRng.NextByte() == 0x58, "b2");
+Assert(BattleTechCHI.Combat.CombatRng.NextByte() == 0x90, "b3");
+var st = BattleTechCHI.Combat.CombatRng.GetState();
+Assert(st.S0 == 0xA0 && st.S1 == 0x30 && st.S2 == 0x24, $"state={st.S0:X2}{st.S1:X2}{st.S2:X2}");
+// dice from image seed: 5,6 then 1,1 (rejection draws advance state)
+BattleTechCHI.Combat.CombatRng.ResetToImageDefault();
+Assert(BattleTechCHI.Combat.CombatRng.NextDie() == 5, "d0");
+Assert(BattleTechCHI.Combat.CombatRng.NextDie() == 6, "d1");
+Assert(BattleTechCHI.Combat.CombatRng.Roll2D6() == 2, "2d6");
+// SetState round-trip
+BattleTechCHI.Combat.CombatRng.SetState(0x91, 0xB8, 0x9B);
+st = BattleTechCHI.Combat.CombatRng.GetState();
+Assert(st.S0 == 0x91 && st.S1 == 0xB8 && st.S2 == 0x9B, "setstate");
+
 Console.WriteLine($"\n\nResults: {passed} passed, {failed} failed");
 return failed > 0 ? 1 : 0;
 

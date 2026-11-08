@@ -5,30 +5,14 @@ namespace BattleTechCHI.Combat;
 
 public static class CombatResolver
 {
-    private static uint _rngState = 0x4FC0;
+    // RNG: exact port of `19FC:0BC0` lives in CombatRng (Godot-free, testable).
+    // State = 3 bytes at main-DS 0x4FC0; single die = `017D:19F3`
+    // (& 7, reject > 5, +1); 2D6 = `017D:19DD`. See docs/t3-differential.md.
+    public static byte RngByte() => CombatRng.NextByte();
 
-    public static byte RngByte()
-    {
-        uint carry = (_rngState >> 16) & 1;
-        _rngState = (_rngState << 1) | carry;
-        if (carry != 0)
-            _rngState ^= 0x1021;
-        return (byte)(_rngState & 0xFF);
-    }
+    public static int Roll2D6() => CombatRng.Roll2D6();
 
-    public static int Roll2D6()
-    {
-        int d1 = RngDie();
-        int d2 = RngDie();
-        return d1 + d2;
-    }
-
-    private static int RngDie()
-    {
-        int val;
-        do { val = RngByte() & 0x07; } while (val > 5);
-        return val + 1;
-    }
+    private static int RngDie() => CombatRng.NextDie();
 
     // ─── MOVEMENT ───
 
