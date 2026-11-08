@@ -99,7 +99,9 @@ currently runs two independent streams. Route BLD through `CombatRng` in P2.
 - `[0x5648]` NEVER rewritten in either dump → story seg throughout; 08xx (`0x11`×idx−14814) target is NOT story-armor for any integer idx (watchpoint queued → answered below: 0BC2 is the armor write; 08xx target still open, ammo suspect).
 - Post-victory wrap-up (0728 loop, live 2026-11-08): restores armor FROM `+0x56` template (direction proven — template bytes unchanged; mid-loop transient observed via watchpoint re-trips). Battle armor damage is TRANSIENT; scavenge text = the repair. Rout can pay (13cr observed). Enemy slots (4,5) zeroed.
 - Nibble-masked `[BP-124]` entry (`& 0x0F` at 07A8) vs full-byte at 0A08 vs MG byte0 `0x14`≠live 2 → damage-byte semantics OPEN (byte0-as-damage REFUTED for MG; two-source resolution needs CFG).
-- `0EC0:0A35` (kill) in NEITHER dump → needs REA/r2 CFG or live trip.
+- `0EC0:0A35` (live disasm 2026-11-08): kill cleanup — fog→0, destroyed=1, roster `0xFF` scan. Called with destroyed slot; explains roster removals.
+- `0728:04F9` (recovered): max-status selector + fog scan (crit path).
+- 08xx branches complete; halve does NOT reach story (0A08 resets full; 0BC2 writes full). 08xx = pre-slot scratch loop, purpose open.
 - Caller-frame decode: 7 of 9 locals closed (open: `[BP-6]` beyond loop-flag, `[BP-58]` trigger conditions).
 
 ## Trace format v1 (per round)
