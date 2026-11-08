@@ -2663,6 +2663,17 @@ projection and the cursor `0xA44B/0xA44D` is restored, then `[BP-0x42]++` starts
 > (cue stream fully decoded, §28.1 — sound is WONT_DO, §6). `arg4` (`[BP-0x58]`) remains the only
 > unresolved detail.
 >
+> **Presentation pipeline (mapped 2026-11-08, live disasm — beam/missile skeleton):**
+> `5847` setup (`17BB` transit → `19FC:1314` aim vector → `19FC:1ECE` 0x120-word buffer
+> copy → `19FC:18EF` 13-row tile blit → `017D:0E4B` → `18BA:06C3` frame delay) →
+> `1000:5528` 24-unit frame loop (active/coordinate checks, `0x32C6` cell updates) →
+> `1000:542D` sub-phase slots (roster `[0x564E:0x3800]`, heat-gate `[0x6E]/[0x66]`, cursor follow) →
+> `1000:4739` mech-FX (`0FAE:0F24` range gate, `0971` aim ×2, `0FAE:1BFE` confirm, heat/ammo books).
+> Aim core `1314` + shape-select `19FC:13D9` (direction attrs → `1DE9:[0x272]/[0x273]`,
+> shape id → `[0x2C9]/[0x2CA]`). `18EF` is a tile blitter, not a line primitive — beam/missiles
+> are shaped sprites stepped per frame; exact stepper + shape bytes + class branch open
+> (1–2 hops past `1000:4889`). `11B8:27C9` is a map marker, not the renderer.
+>
 > **12C7 calling convention (closed 2026-11-08, static + 20 live rows):** the single post-fire
 > entry `1465:12C7` takes **12 stack words** (`DX:AX`=`2A0F:4314` struct ptr + 10 caller words +
 > `CS`); entry `BX/CX/SI/DI` are **caller leftovers, not inputs** (verified: `BX` clobbered at
